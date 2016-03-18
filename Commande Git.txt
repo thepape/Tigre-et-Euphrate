@@ -1,0 +1,269 @@
+Séance 1 :
+
+
+git config --global alias.lg "log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr %an)%Creset' --abbrev-commit --date=relative"
+
+
+créer fichier exemple : mkdir exemple
+cd exemple
+LI (affiche repertoire caché)
+Git init
+cd .git(Objet pour gérer les sources)
+
+nano readme.txt
+	hello Git
+	Première Ligne
+quitter ano
+
+More readme.txt
+
+Git status-S
+
+Git add readme.txt (dit a git de placer le fichier dans l'index. donc au prochin commit, l'état du fichier sera enregistré)
+
+Git status-s (comme append donc ajouté au prochain commit)
+
+Git commit-m "Commit initial"
+
+Git status -s
+
+Git log (log ID/ pointeur/ Branche/Message/ Commiteur)
+
+
+git branche nouveauté
+
+git tag checkout nouveauté
+
+git merge nouveauté "intégration nouveauté"
+
+
+
+dossier pierre :
+
+
+
+
+
+
+
+
+--git hub
+
+
+git push -u origin master  (envoi du repo local  -u : ref  origin : non logique  master : branche)
+
+git add -A = git .  ajoute tout l'index
+
+
+
+
+
+
+
+
+
+
+---------------------------------------
+
+
+
+mkdir linux
+mkdir mixed
+mkdir windows
+
+
+printf "linux \n a \n b \n c \n d" > linux/abcd.txt
+printf "linux \n a \r\n b \r\c \n d" > mixed/abcd.txt
+printf "linux \r\n a \r\n b \r\c \r\n d" > linux/abcd.text
+
+
+cd temp
+
+ll
+
+git init
+
+eof = lf
+
+windows/*eol=crlf
+
+
+git add -A
+
+git commit -m "Commit initial"
+
+git config -global core.autocrlf true
+
+hexdump -c linux/abcd.txt
+
+git -checkout -b test
+
+cd windows
+
+git merge master -m "TEST CLRF"
+
+Nano abcd.txt
+
+	E
+
+git add abcd.txt
+
+commit -m
+
+merge master -m
+
+log
+
+more abcd
+
+merge master
+
+checkout master 
+
+merge -
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Séance 2 :
+
+
+echo a > a.txt
+git add -A
+git commit -m "a"
+
+echo b > b.txt
+echo c > c.txt
+
+git log
+
+
+git reset  => se replacer sur un commit
+git reset --hard idCommit
+git log
+git reflog expire --all --expire=now
+
+git prune (efface les commit)
+git reset --hard idCommit  (ne marche pas à cause du prune fait avant)
+git amend 
+echo une tentative de comit
+git commit -m "commit"
+
+git log
+git commit --amend "commit" (remplace le dernier commit)
+
+git add m1.txt
+git commit -m "C1"
+
+echo mauvais commit > m1.txt
+git checkout -b doc
+git add -A m1.txt
+git commit -m "commit sur la mauvaise branche"
+git log
+git log doc
+git branch
+
+git cherry-pick doc ( va cherhcer le commit sur la branche doc et le ramener sur la branche actuelle)
+git log master
+git log doc
+
+git reset --hard HEAD~ (reviens à l'avant dernier commit  ~~ = 2 commit avant)
+git log
+
+
+git commit -m "d"
+git log
+
+git show --name-only HEAD
+git show --name-only HEAD~
+git show --name-only HEAD~~
+
+git log
+
+git rebase -i HEAD~3
+
+git rebase -i HEAD~3  (-i = interactif  ~3 prend les 3 dernier commit pour regrouper)
+
+
+-----------------------------------
+
+
+echo test cherry-pick > f1.txt
+git add f1.txt
+git commit -m "dezdzfdezfezfez"
+
+git checkout master
+git log
+echo d > d.txt
+git add d.txt
+git commit -m "d"
+echo e > e.txt
+git add e.txt
+git commit -m "e"
+
+
+git log
+git log master
+
+
+git cherry-pick master~ 
+git log
+
+
+git checkout -b feature
+
+
+echo test squashing > f1.txt
+git add F1.txt
+git commit -m "[Feature] test Saquahing"
+
+{travail ( echo, add, commit}
+
+git log feature
+
+git merge --squash feature (permet de merge en regroupant pls commit)
+git commit -m "Branche [Feature] squashée"
+
+git log
+
+git init --bare repo-partage (__bare = pas pour travail juste pour conserver les ref)
+
+git clone repo-partage repo-jerome
+
+cd repo-jerome
+
+(echo, add, commit)
+
+git log
+
+git push -u origin master
+
+cd..
+
+git clone repo-partage repo-anne
+cd repo-anne
+
+(echo, add, commit)
+
+git status -sb
+
+git push origin master
+
+cd repo-anne
+
+git status -sb
+git push -u origin matser
+
+git fetch origin
+
+
+git status -sb
+
+git rebase origin/master master
+
+git log
+
+git push -u origin master
+
+git log
+
