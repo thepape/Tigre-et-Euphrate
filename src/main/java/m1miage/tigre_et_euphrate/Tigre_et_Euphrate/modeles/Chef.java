@@ -51,6 +51,19 @@ public class Chef extends Placable{
 		this.puissance = 0;
 		this.retiree = true;
 	}
+	
+	/**
+	 * Constructeur vide
+	 */
+	public Chef() {
+		super();
+		this.typeChef = null; //clone pour eviter le couplage 
+		this.joueur = null;
+		this.dynastie = null;
+		this.puissance = 0;
+		this.retiree = true;
+	}
+	
 
 
 	/**
