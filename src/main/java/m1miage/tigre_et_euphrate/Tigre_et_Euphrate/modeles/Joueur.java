@@ -14,6 +14,11 @@ public class Joueur {
 	private String nom;
 	
 	/**
+	 * Dynastie du joueur
+	 */
+	private Dynastie dynastie;
+	
+	/**
 	 * Les cartes civilisations cachées du joueur (hors terrain)
 	 */
 	//private Deck caché;
@@ -42,12 +47,23 @@ public class Joueur {
 	 * Constructeur d'un joueur 
 	 * @param pnom nom du joueur
 	 */
-	public Joueur(String pnom){
+	public Joueur(String pnom, Dynastie pdynastie){
+		this.dynastie = pdynastie;
 		this.nom = pnom;
 		//this.caché = new Deck();
 		//this.visible = new Deck();
 	}
 	
+	/**
+	 * retourne la dynastie du joueur
+	 * @return
+	 */
+	public Dynastie getDynastie() {
+		return dynastie;
+	}
+
+
+
 	/**
 	 * Méthode permettant de passer le tour du joueur
 	 */
