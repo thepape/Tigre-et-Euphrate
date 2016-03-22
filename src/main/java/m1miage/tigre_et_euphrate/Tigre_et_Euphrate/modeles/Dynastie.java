@@ -50,6 +50,14 @@ public class Dynastie {
 		this.nom = pnom;
 		this.lien = plien;
 	}
+	
+	/**
+	 * Constructeur vide
+	 */
+	public Dynastie(){
+		this.nom = "non defini";
+		this.lien = "non defini";
+	}
 
 
 	/**
