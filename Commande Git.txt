@@ -77,7 +77,7 @@ printf "linux \n a \r\n b \r\c \n d" > mixed/abcd.txt
 printf "linux \r\n a \r\n b \r\c \r\n d" > linux/abcd.text
 
 
-cd temp
+cd temp --
 
 ll
 
