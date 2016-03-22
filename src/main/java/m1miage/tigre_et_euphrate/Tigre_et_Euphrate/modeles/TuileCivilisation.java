@@ -35,6 +35,14 @@ public class TuileCivilisation extends Tuile {
 		this.tresor = null;
 		this.type = pType.clone();	//clone pour eviter le couplage au maximum entre les objets.
 		this.monument = null;
+		
+		//on définit si la tuile est dde type eau
+		if(this.type.equals(TypeTuileCivilisation.Ferme)){
+			this.tuileEau = true;
+		}
+		else{
+			this.tuileEau = false;
+		}
 	}
 	
 	/**

@@ -13,7 +13,7 @@ public abstract class Tuile extends Placable {
 	 * Définit si la tuile doit être placée sur une case d'eau.
 	 * Si non, elle doit être placée sur une case de terre.
 	 */
-	private boolean tuileEau;
+	protected boolean tuileEau;
 	
 	/**
 	 * Définit si la tuile est retirée du jeu définitivement.
