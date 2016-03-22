@@ -46,6 +46,17 @@ public class TuileCivilisation extends Tuile {
 	}
 	
 	/**
+	 * Constructeur des tuiles Sphynx(temple)
+	 * @param ptresor tresor du sphynx
+	 */
+	public TuileCivilisation(Tresor ptresor){
+		this.tresor = ptresor;
+		this.type = TypeTuileCivilisation.Temple;
+		this.monument = null;
+		this.tuileEau = false;
+	}
+	
+	/**
 	 * Retourne la carte et en fait une tuile de monument.
 	 * @param pMonument référence vers le monument construit par dessus la tuile.
 	 */
@@ -85,5 +96,16 @@ public class TuileCivilisation extends Tuile {
 	 */
 	public void setJonction(boolean pEstJonction){
 		this.estJonction = pEstJonction;
+	}
+	
+	
+	/**
+	 * permet de recuperer un tresor pour le decompte des points
+	 * @return
+	 */
+	public Tresor recupererTresor(){
+		Tresor rep = this.tresor;
+		this.tresor = null;
+		return rep;
 	}
 }
