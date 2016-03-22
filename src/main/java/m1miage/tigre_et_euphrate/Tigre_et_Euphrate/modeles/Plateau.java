@@ -1,5 +1,9 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
+/**
+ * Classe representant un plateau de jeu
+ *
+ */
 public class Plateau {
 	
 	/**
@@ -23,6 +27,10 @@ public class Plateau {
 		genererSphynx(this.plateau);
 	}
 	
+	/**
+	 * Permet de generer le terrain en terre puis 41 fois en eau
+	 * @param pplateauTerrain
+	 */
 	public void genererTerrain(boolean[][] pplateauTerrain){
 		for(int i =0; i<pplateauTerrain.length;i++){
 			for(int j=0; j<pplateauTerrain[i].length;j++){
@@ -83,6 +91,7 @@ public class Plateau {
 			}
 		}
 		
+		//Les 10 sphinx et les tresors
 		pplateau[1][1] = new TuileCivilisation(new Tresor());
 		pplateau[10][0] = new TuileCivilisation(new Tresor());
 		pplateau[15][1] = new TuileCivilisation(new Tresor());
@@ -96,23 +105,41 @@ public class Plateau {
 		
 	}
 
+	/**
+	 * getter de Plateau
+	 * @return
+	 */
 	public TuileCivilisation[][] getPlateau() {
 		return plateau;
 	}
 
+	/**
+	 * setter de plateau
+	 * @param plateau
+	 */
 	public void setPlateau(TuileCivilisation[][] plateau) {
 		this.plateau = plateau;
 	}
 
+	/**
+	 * getter de plateauterrain
+	 * @return
+	 */
 	public boolean[][] getPlateauTerrain() {
 		return plateauTerrain;
 	}
 
+	/**
+	 * setter de plateauterrain
+	 * @param plateauTerrain
+	 */
 	public void setPlateauTerrain(boolean[][] plateauTerrain) {
 		this.plateauTerrain = plateauTerrain;
 	}
 	
-	
+	/**
+	 * Permet d'afficher le terrain dans la console
+	 */
 	public void afficherPlateauTerrain(){
 		for(int i =0; i<this.plateauTerrain.length;i++){
 			for(int j=0; j<this.plateauTerrain[i].length;j++){
