@@ -2,6 +2,8 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
 import java.util.ArrayList;
 
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Monument;
+
 /**
  * Classe representant une partie
  *
@@ -27,5 +29,6 @@ public class Partie {
 		this.plateauJeu = pPlateauJeu;
 		this.listeJoueur = plistejoueur;
 	}
+	
 	
 }

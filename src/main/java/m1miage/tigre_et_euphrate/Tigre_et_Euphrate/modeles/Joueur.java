@@ -2,6 +2,8 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
 import java.util.ArrayList;
 
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
+
 /**
  * Classe representant un joueur
  *

@@ -2,6 +2,9 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
 import java.util.ArrayList;
 
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
+
 /**
  * Class représentant un royaume.
  * un royaume doit avoir au moins un chef et une tuile civilisation

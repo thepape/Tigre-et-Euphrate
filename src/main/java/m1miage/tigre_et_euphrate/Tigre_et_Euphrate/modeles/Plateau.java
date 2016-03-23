@@ -1,5 +1,8 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Tresor;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
+
 /**
  * Classe representant un plateau de jeu
  *
