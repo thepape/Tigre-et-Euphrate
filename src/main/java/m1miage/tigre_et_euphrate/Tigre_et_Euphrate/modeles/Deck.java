@@ -8,6 +8,8 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Tuile;
 /**
  * Classe representant un Deck.
  * Un deck est constitué d'une liste de tuiles et d'une liste de chefs
+ * Il contient 2 tuiles catastrophe, 4 chefs  visible
+ * Il contient 6 tuiles civilisation
  *
  */
 public class Deck {
@@ -65,7 +67,31 @@ public class Deck {
 		this.joueur = null;
 		this.idDeck = 0;
 	}
+	
+	//Methodes
+	
+	/**
+	 * Méthode pour ajouter une tuile dans le deck
+	 * tuile catastrophe pour deck visible
+	 * tuile civilisation pour deck caché
+	 * @param pTuile la tuile à ajouter
+	 */
+	public void AddTuiles(Tuile pTuile){
+		this.tuiles.add(pTuile);
+	}
+	
+	/**
+	 * Méthode pour ajouter un chef dans le deck
+	 * chef pour le deck visible
+	 * @param pChef le chef à ajouter
+	 */
+	public void AddChefs(Chef pChef){
+		this.chefs.add(pChef);
+	}
 
+	
+	//geter & Setter
+	
 	/**
 	 * return l'id du deck
 	 * @return
