@@ -1,7 +1,9 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Tresor;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
 /**
  * Classe representant un plateau de jeu
@@ -12,7 +14,7 @@ public class Plateau {
 	/**
 	 * Contient toutes les tuiles civilisations du plateau
 	 */
-	private TuileCivilisation[][] plateau;
+	private Placable[][] plateau;
 	
 	/**
 	 * Contient les données de terrain du plateau (1 = terre/0 = eau)
@@ -24,7 +26,7 @@ public class Plateau {
 	 * Constructeur d'un plateau avec son initialisation
 	 */
 	public Plateau(){
-		this.plateau = new TuileCivilisation[16][11];
+		this.plateau = new Placable[16][11];
 		this.plateauTerrain = new boolean[16][11];
 		genererTerrain(this.plateauTerrain);
 		genererSphynx(this.plateau);
@@ -87,7 +89,7 @@ public class Plateau {
 		pplateauTerrain[0][6] = false;
 	}
 	
-	public void genererSphynx(TuileCivilisation[][] pplateau){
+	public void genererSphynx(Placable[][] pplateau){
 		for(int i =0; i<pplateau.length;i++){
 			for(int j=0; j<pplateau[i].length;j++){
 				pplateau[i][j] = null;
@@ -112,7 +114,7 @@ public class Plateau {
 	 * getter de Plateau
 	 * @return
 	 */
-	public TuileCivilisation[][] getPlateau() {
+	public Placable[][] getPlateau() {
 		return plateau;
 	}
 
@@ -152,5 +154,89 @@ public class Plateau {
 		}
 	}
 	
+	/**
+	 * Permet de placer une tuile civilisation sur le plateau
+	 * @param ptuile tuile a placer
+	 * @param ppos position ou placer
+	 */
+	public boolean placerTuile(TuileCivilisation ptuile, Position ppos){
+		int x = ppos.getX();
+		int y = ppos.getY();
+		
+		if(this.plateau[x][y] != null){
+			return false;
+		}
+		if(this.plateauTerrain[x][y] && !ptuile.estTuileEau()){
+			return false;
+		}
+		if(!this.plateauTerrain[x][y] && ptuile.estTuileEau()){
+			return false;
+		}
+		
+		this.plateau[x][y] = ptuile;
+		ptuile.placer(ppos);
+		return true;
+	}
+	
+	/**
+	 * Permet de placer une tuile chef sur le plateau
+	 * @param pchef chef a placer
+	 * @param ppos position ou placer
+	 * @return true si placer sinon false
+	 */
+	public boolean placerChef(Chef pchef, Position ppos){
+		int x = ppos.getX();
+		int y = ppos.getY();
+		
+		if(this.plateau[x][y] != null){
+			return false;
+		}
+		if(this.plateauTerrain[x][y]){
+			return false;
+		}
+		
+		boolean ok = verifierTemple(ppos);
+		
+		if(!ok){
+			return false;
+		}
+		
+		this.plateau[x][y] = pchef;
+		return true;
+	}
+	
+	/**
+	 * Permet de verifier si il y a un temple a côté de la position ou on veut placer le chef #pavéCésar
+	 * @param ppos position pour le chef
+	 * @return si temple adjacent true sinon false
+	 */
+	public boolean verifierTemple(Position ppos){
+		int x = ppos.getX();
+		int y = ppos.getY();
+		
+		if(x-1>=0 || x-1<=15){
+			if(this.plateau[x-1][y].equals(TypeTuileCivilisation.Temple)){
+				return true;
+			}
+		}
+		
+		if(x+1<=15 || x+1<=0){
+			if(this.plateau[x+1][y].equals(TypeTuileCivilisation.Temple)){
+				return true;
+			}
+		}
+		if(y-1>=0 || y-1<=11){
+			if(this.plateau[x][y-1].equals(TypeTuileCivilisation.Temple)){
+				return true;
+			}
+		}
+		
+		if(y+1<=11 || y+1<=0){
+			if(this.plateau[x][y+1].equals(TypeTuileCivilisation.Temple)){
+				return true;
+			}
+		}		
+		return false;
+	}
 	
 }
