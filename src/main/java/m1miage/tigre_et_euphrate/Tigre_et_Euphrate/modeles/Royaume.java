@@ -14,7 +14,11 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisat
 //TODO tester la class !!
 public class Royaume {
 
+	/**
+	 *  Incrément de l'id des objets royaume.
+	 */
 	private static int idIncrementRoyaume = 0;
+	
 	/**
 	 * Liste contenant toute les tuiles civilisation
 	 * du royaume.
