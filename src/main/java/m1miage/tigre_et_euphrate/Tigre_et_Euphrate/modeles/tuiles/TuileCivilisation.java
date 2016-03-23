@@ -13,6 +13,12 @@ public class TuileCivilisation extends Tuile {
 	 * Type de la tuile civilisation.
 	 */
 	private TypeTuileCivilisation type;
+	
+	/**
+	 * Définit si la tuile doit être placée sur une case d'eau.
+	 * Si non, elle doit être placée sur une case de terre.
+	 */
+	protected boolean tuileEau;
 
 	/**
 	 * Tresor si la tuile en possède un (Seule une tuile temple peut avoir un trésor).
@@ -125,5 +131,13 @@ public class TuileCivilisation extends Tuile {
 		Tresor rep = this.tresor;
 		this.tresor = null;
 		return rep;
+	}
+	
+	/**
+	 * Indique si cette tuile est une tuile à placer sur une case d'eau.
+	 * @return vrai si la tuile doit être placée sur une case d'eau.
+	 */
+	public boolean estTuileEau(){
+		return this.tuileEau;
 	}
 }

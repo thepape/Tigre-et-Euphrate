@@ -12,11 +12,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
  */
 public abstract class Tuile extends Placable {
 	
-	/**
-	 * Définit si la tuile doit être placée sur une case d'eau.
-	 * Si non, elle doit être placée sur une case de terre.
-	 */
-	protected boolean tuileEau;
+	
 	
 	/**
 	 * Définit si la tuile est retirée du jeu définitivement.
@@ -42,13 +38,7 @@ public abstract class Tuile extends Placable {
 		this.retiree = true;
 	}
 	
-	/**
-	 * Indique si cette tuile est une tuile à placer sur une case d'eau.
-	 * @return vrai si la tuile doit être placée sur une case d'eau.
-	 */
-	public boolean estTuileEau(){
-		return this.tuileEau;
-	}
+	
 	
 	/**
 	 * Indique si la tuile est retirée du jeu.
