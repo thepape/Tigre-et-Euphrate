@@ -8,6 +8,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisat
 
 public class Conflits {
 
+	private static int idIncrementConflit = 0;
 	/**
 	 * Chef qui attaque
 	 */
@@ -33,6 +34,10 @@ public class Conflits {
 	private boolean estResolu;
 
 	/**
+	 * id du conflit
+	 */
+	private int conflitId;
+	/**
 	 * Constructeur vide
 	 */
 	public Conflits()
@@ -42,6 +47,8 @@ public class Conflits {
 		this.chefDefenseur = null;
 		this.royaumeDefenseur = null;
 		this.royaumeAttaquant = null;
+		this.conflitId = Conflits.idIncrementConflit;
+		Conflits.idIncrementConflit++;
 	}
 
 	/**
@@ -57,6 +64,8 @@ public class Conflits {
 		this.chefDefenseur = chefDefenseur;
 		this.royaumeDefenseur = royaumeDefenseur;
 		this.royaumeAttaquant = royaumeAttaquant;
+		this.conflitId = Conflits.idIncrementConflit;
+		Conflits.idIncrementConflit++;
 	}
 
 	/**

@@ -8,12 +8,13 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisat
 /**
  * Class représentant un royaume.
  * un royaume doit avoir au moins un chef et une tuile civilisation
- * 
+ *
  *
  */
 //TODO tester la class !!
 public class Royaume {
 
+	private static int idIncrementRoyaume = 0;
 	/**
 	 * Liste contenant toute les tuiles civilisation
 	 * du royaume.
@@ -28,7 +29,7 @@ public class Royaume {
 	/**
 	 * L'id du royaume
 	 */
-	private int idRoyaume = 0;
+	private int idRoyaume;
 
 
 
@@ -41,9 +42,10 @@ public class Royaume {
 		super();
 		this.tuilesCivilisation = tuilesCivilisation;
 		this.chefs = chefs;
-		this.idRoyaume +=1;
+		this.idRoyaume = Royaume.idIncrementRoyaume;
+		Royaume.idIncrementRoyaume++;
 	}
-	
+
 	//Méthodes concernant l'ajout
 
 	/**
@@ -102,7 +104,7 @@ public class Royaume {
 			}
 		}
 	}
-	
+
 
 	//Méthodes pour la supprésion
 
@@ -116,7 +118,7 @@ public class Royaume {
 			this.tuilesCivilisation.remove(tuileRemove);
 		}
 	}
-	
+
 	/**
 	 * Méthode pour supprimer un chef du royaume
 	 * @param pChef le chef à supprimer
@@ -127,12 +129,12 @@ public class Royaume {
 			this.chefs.remove(chefRemove);
 		}
 	}
-	
-	
+
+
 	//Getter
 
 	/**
-	 * return la liste des tuiles civilisation 
+	 * return la liste des tuiles civilisation
 	 * @return
 	 */
 	public ArrayList<TuileCivilisation> getTuilesCivilisation() {
