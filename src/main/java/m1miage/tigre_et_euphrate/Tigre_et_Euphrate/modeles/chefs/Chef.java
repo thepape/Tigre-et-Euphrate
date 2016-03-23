@@ -53,6 +53,7 @@ public class Chef extends Placable{
 		this.dynastie = pjoueur.getDynastie();
 		this.puissance = 0;
 		this.retiree = true;
+		this.id = Placable.idIncrement++;
 	}
 	
 	/**
@@ -65,6 +66,7 @@ public class Chef extends Placable{
 		this.dynastie = null;
 		this.puissance = 0;
 		this.retiree = true;
+		this.id = Placable.idIncrement++;
 	}
 	
 

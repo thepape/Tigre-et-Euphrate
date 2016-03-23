@@ -10,12 +10,12 @@ public abstract class Placable {
 	/**
 	 * Incrément de l'id des objets placables.
 	 */
-	private static int idIncrement = 1;
+	protected static int idIncrement = 1;
 	
 	/**
 	 * Id de l'objet placable.
 	 */
-	private int id;
+	protected int id;
 	
 	/**
 	 * Position de l'objet placable.

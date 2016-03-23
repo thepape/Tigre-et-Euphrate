@@ -1,5 +1,7 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles;
 
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
+
 /**
  *
  * Classe représentant une tuile civilisation.
@@ -35,6 +37,7 @@ public class TuileCivilisation extends Tuile {
 		this.tresor = null;
 		this.type = pType.clone();	//clone pour eviter le couplage au maximum entre les objets.
 		this.monument = null;
+		this.id = Placable.idIncrement++;
 
 		//on définit si la tuile est dde type eau
 		if(this.type.equals(TypeTuileCivilisation.Ferme)){
@@ -54,6 +57,7 @@ public class TuileCivilisation extends Tuile {
 		this.type = TypeTuileCivilisation.Temple;
 		this.monument = null;
 		this.tuileEau = false;
+		this.id = Placable.idIncrement++;
 	}
 
 	/**
