@@ -18,7 +18,7 @@ public class Royaume {
 	 *  Incrément de l'id des objets royaume.
 	 */
 	private static int idIncrementRoyaume = 0;
-	
+
 	/**
 	 * Liste contenant toute les tuiles civilisation
 	 * du royaume.
@@ -35,7 +35,14 @@ public class Royaume {
 	 */
 	private int idRoyaume;
 
-
+	/**
+	 * Constructeur vide d'un royaume
+	 */
+	public Royaume() {
+		super();
+		this.idRoyaume = Royaume.idIncrementRoyaume;
+		Royaume.idIncrementRoyaume++;
+	}
 
 	/**
 	 * Constructeur d'un royaume avec les listes

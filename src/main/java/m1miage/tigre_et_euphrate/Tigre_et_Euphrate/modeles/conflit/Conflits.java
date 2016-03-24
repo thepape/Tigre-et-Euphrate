@@ -31,7 +31,7 @@ public class Conflits {
 	/**
 	 * Boolean qui représente la résolution du conflit
 	 */
-	private boolean estResolu;
+	private boolean estResolu = false;
 
 	/**
 	 * id du conflit
@@ -60,10 +60,10 @@ public class Conflits {
 	 */
 	public Conflits(Chef chefAttaquant, Chef chefDefenseur, Royaume royaumeDefenseur, Royaume royaumeAttaquant) {
 		super();
-		this.chefAttaquant = chefAttaquant;
-		this.chefDefenseur = chefDefenseur;
-		this.royaumeDefenseur = royaumeDefenseur;
+		this.setChefDefenseur(chefDefenseur);
+		this.setChefAttaquant(chefAttaquant);
 		this.royaumeAttaquant = royaumeAttaquant;
+		this.royaumeDefenseur = royaumeDefenseur;
 		this.conflitId = Conflits.idIncrementConflit;
 		Conflits.idIncrementConflit++;
 	}
@@ -90,7 +90,17 @@ public class Conflits {
 	 * @param chefAttaquant
 	 */
 	public void setChefAttaquant(Chef chefAttaquant) {
-		this.chefAttaquant = chefAttaquant;
+		if(this.chefDefenseur != null)
+		{
+			if(chefAttaquant.getTypeChef().getCouleur().equals(chefDefenseur.getTypeChef().getCouleur()))
+			{
+				this.chefAttaquant = chefAttaquant;
+			} else {
+				this.chefAttaquant = null;
+			}
+		} else {
+			this.chefAttaquant = chefAttaquant;
+		}
 	}
 
 	/**
@@ -105,7 +115,18 @@ public class Conflits {
 	 * @param chefDefenseur
 	 */
 	public void setChefDefenseur(Chef chefDefenseur) {
-		this.chefDefenseur = chefDefenseur;
+		if(this.chefAttaquant != null)
+		{
+			if(chefDefenseur.getTypeChef().getCouleur().equals(this.chefAttaquant.getTypeChef().getCouleur()))
+			{
+				this.chefDefenseur = chefDefenseur;
+			} else {
+				this.chefDefenseur = null;
+			}
+		} else {
+			this.chefDefenseur = chefDefenseur;
+		}
+
 	}
 
 	/**
@@ -183,6 +204,10 @@ public class Conflits {
 		this.estResolu = estResolu;
 	}
 
+	/**
+	 * Fonction qui retourne le chef gagnant d'Un conflit et l'indique comme résolu. Retire le chef du plateau
+	 * @return le chef gagnant du conflit
+	 */
 	public Chef definirChefGagnant()
 	{
 		int nbTuileCivilisationDefenseur = 0;
@@ -213,9 +238,24 @@ public class Conflits {
 
 		if(nbTuileCivilisationDefenseur >= nbTuileCivilisationAttaquant)
 		{
+			this.setEstResolu(true);
+			this.getChefAttaquant().setRetiree(true);
 			return this.getChefDefenseur();
 		} else {
+			this.setEstResolu(true);
+			this.getChefDefenseur().setRetiree(true);
 			return this.getChefAttaquant();
+		}
+	}
+
+	public boolean ajoutRenfort(ArrayList<TuileRenfort> listeTuileRenfort, TuileRenfort tuileRenfort)
+	{
+		if(tuileRenfort.getTuileCorrespondante().getType().getCouleur().equals(this.chefAttaquant.getTypeChef().getCouleur()))
+		{
+			listeTuileRenfort.add(tuileRenfort);
+			return true;
+		} else {
+			return false;
 		}
 	}
 }

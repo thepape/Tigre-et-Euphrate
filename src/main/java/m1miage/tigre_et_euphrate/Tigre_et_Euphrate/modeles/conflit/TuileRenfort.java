@@ -10,6 +10,22 @@ public class TuileRenfort {
 	private TuileCivilisation tuileCorrespondante;
 
 	/**
+	 * Constructeur vide d'une tuile renfort
+	 */
+	public TuileRenfort() {
+		super();
+	}
+
+	/**
+	 * Constructeur d'une tuileRenfort
+	 * @param tuileCorrespondante
+	 */
+	public TuileRenfort(TuileCivilisation tuileCorrespondante) {
+		super();
+		this.tuileCorrespondante = tuileCorrespondante;
+	}
+
+	/**
 	 * @return Tuile correspondante du deck d'un joueur
 	 */
 	public TuileCivilisation getTuileCorrespondante() {
