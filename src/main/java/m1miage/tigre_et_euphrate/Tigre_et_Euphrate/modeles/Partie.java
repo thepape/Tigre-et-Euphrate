@@ -29,6 +29,22 @@ public class Partie {
 		this.plateauJeu = pPlateauJeu;
 		this.listeJoueur = plistejoueur;
 	}
+
+	public Plateau getPlateauJeu() {
+		return plateauJeu;
+	}
+
+	public void setPlateauJeu(Plateau plateauJeu) {
+		this.plateauJeu = plateauJeu;
+	}
+
+	public ArrayList<Joueur> getListeJoueur() {
+		return listeJoueur;
+	}
+
+	public void setListeJoueur(ArrayList<Joueur> listeJoueur) {
+		this.listeJoueur = listeJoueur;
+	}
 	
 	
 }

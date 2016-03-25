@@ -1,17 +1,64 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action;
 
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
+
 /**
  * 
  * Classe hérite de la classe Action et permet de deplacer un chef
  *
  */
 public class DeplacerChef extends Action {
+	
+	/**
+	 * Chef 
+	 */
+	private Chef chef;
+	
+	/**
+	 * Position souhaitee
+	 */
+	private Position position;
+	
+	/**
+	 * @param ppartie
+	 * @param pjoueur
+	 * @param pchef
+	 * @param ppos
+	 */
+	public DeplacerChef(Partie partie, Joueur joueur, Chef pchef, Position ppos) {
+		super(partie, joueur);
+		this.chef = pchef;
+		this.position = ppos;
+	}
 
 	/**
-	 * Constructeur de RetirerChef
+	 * Permet de deplacer une tuile chef sur le plateau
+	 * @param pchef chef a deplacer
+	 * @param ppos position ou deplacer
+	 * @return true si deplace sinon false
 	 */
-	public DeplacerChef(){
+	public boolean deplacerChef(Chef pchef, Position ppos){
+		int x = ppos.getX();
+		int y = ppos.getY();
 		
+		if(this.partie.getPlateauJeu().getPlateau()[x][y] != null){
+			return false;
+		}
+		if(this.partie.getPlateauJeu().getPlateauTerrain()[x][y]){
+			return false;
+		}
+		
+		boolean ok = this.partie.getPlateauJeu().verifierTemple(ppos);
+		
+		if(!ok){
+			return false;
+		}
+		
+		this.partie.getPlateauJeu().getPlateau()[x][y] = pchef;
+		return true;
 	}
 
 	/**
@@ -19,6 +66,7 @@ public class DeplacerChef extends Action {
 	 * @return vrai ou faux, selon le bon déroulement ou non de l'action
 	 */
 	public boolean executer(){
-		return false;
+		boolean place = this.deplacerChef(this.chef, this.position);
+		return place;
 	}
 }

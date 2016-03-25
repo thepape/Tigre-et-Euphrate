@@ -1,5 +1,8 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action;
 
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
+
 /**
  * 
  * Classe hérite de la classe Action et permet d echanger une tuile civilisation
@@ -8,10 +11,12 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action;
 public class EchangerTuileCivilisation extends Action {
 
 	/**
-	 * Constructeur de RetirerChef
+	 * @param partie
+	 * @param joueur
 	 */
-	public EchangerTuileCivilisation(){
-		
+	public EchangerTuileCivilisation(Partie partie, Joueur joueur) {
+		super(partie, joueur);
+		// TODO Auto-generated constructor stub
 	}
 
 	/**

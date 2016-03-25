@@ -28,7 +28,7 @@ public class Joueur {
 	/**
 	 * Les cartes catastrophes et chefs non cachées du joueur (hors terrain)
 	 */
-	//private Deck visible;
+	private Deck deckVisible;
 
 	/**
 	 * boolean pour savoir si c'est le tour du joueur ou non
@@ -78,5 +78,19 @@ public class Joueur {
 	 */
 	public void passerTour(){
 		this.tour = false;
+	}
+
+	/**
+	 * @return the deckVisible
+	 */
+	public Deck getDeckVisible() {
+		return deckVisible;
+	}
+
+	/**
+	 * @param pdeckVisible the deckVisible to set
+	 */
+	public void setDeckVisible(Deck pdeckVisible) {
+		this.deckVisible = pdeckVisible;
 	}
 }
