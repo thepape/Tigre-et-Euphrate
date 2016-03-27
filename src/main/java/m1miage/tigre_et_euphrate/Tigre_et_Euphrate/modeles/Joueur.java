@@ -19,9 +19,14 @@ public class Joueur {
 	private Dynastie dynastie;
 
 	/**
-	 * Le deck du joueur
+	 * Le deck public du joueur
 	 */
-	private Deck deck;
+	private DeckPublic deckPublic;
+	
+	/**
+	 * Le deck public du joueur
+	 */
+	private DeckPrive deckPrive;
 
 	/**
 	 * boolean pour savoir si c'est le tour du joueur ou non
@@ -48,11 +53,14 @@ public class Joueur {
 	/**
 	 * Constructeur d'un joueur
 	 * @param pnom nom du joueur
+	 * @param pdeckPublic le deck public
+	 * @param pdeckPrive le deck prive
 	 */
-	public Joueur(String pnom, Dynastie pdynastie){
+	public Joueur(String pnom, Dynastie pdynastie, DeckPublic pdeckPublic, DeckPrive pdeckPrive){
 		this.dynastie = pdynastie;
 		this.nom = pnom;
-		this.deck = new Deck();
+		this.deckPublic = pdeckPublic;
+		this.deckPrive = pdeckPrive;
 	}
 
 	/**
@@ -73,16 +81,32 @@ public class Joueur {
 	}
 
 	/**
-	 * @return the deck
+	 * @return the deckPublic
 	 */
-	public Deck getDeck() {
-		return deck;
+	public DeckPublic getDeckPublic() {
+		return deckPublic;
 	}
 
 	/**
-	 * @param pdeck the deck to set
+	 * @param pdeckPublic the deckPublic to set
 	 */
-	public void setDeck(Deck pdeck) {
-		this.deck = pdeck;
+	public void setDeckPublic(DeckPublic pdeckPublic) {
+		this.deckPublic = pdeckPublic;
 	}
+
+	/**
+	 * @return the deckPrive
+	 */
+	public DeckPrive getDeckPrive() {
+		return deckPrive;
+	}
+
+	/**
+	 * @param pdeckPrive the deckPrive to set
+	 */
+	public void setDeckPrive(DeckPrive pdeckPrive) {
+		this.deckPrive = pdeckPrive;
+	}
+	
+	
 }

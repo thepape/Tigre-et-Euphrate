@@ -43,6 +43,6 @@ public class PlacerChef extends Action {
 	public boolean executer(){
 		if(this.chef.getDynastie() != this.joueur.getDynastie())
 			return false;
-		return this.partie.getPlateauJeu().placerChef(this.chef, this.position) && this.joueur.getDeck().supprimerChef(this.chef);
+		return this.partie.getPlateauJeu().placerChef(this.chef, this.position) && this.joueur.getDeckPublic().supprimerChef(this.chef);
 	}
 }

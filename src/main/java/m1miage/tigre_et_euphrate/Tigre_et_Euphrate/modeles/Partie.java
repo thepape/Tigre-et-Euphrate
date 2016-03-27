@@ -28,9 +28,10 @@ public class Partie {
 	 * @param pPlateauJeu plateau du jeu
 	 * @param plistejoueur liste des joueurs
 	 */
-	public Partie(Plateau pPlateauJeu, ArrayList<Joueur> plistejoueur){
+	public Partie(Plateau pPlateauJeu, ArrayList<Joueur> plistejoueur, Pioche pPioche){
 		this.plateauJeu = pPlateauJeu;
 		this.listeJoueur = plistejoueur;
+		this.pioche = pPioche;
 	}
 
 	public Plateau getPlateauJeu() {

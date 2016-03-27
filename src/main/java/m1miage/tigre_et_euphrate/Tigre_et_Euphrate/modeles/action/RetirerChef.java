@@ -45,7 +45,7 @@ public class RetirerChef extends Action {
 		if(this.chef.getDynastie() != this.joueur.getDynastie())
 			return false;
 		this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = null;
-		this.joueur.getDeck().ajouterChef(this.chef);
+		this.joueur.getDeckPublic().ajouterChef(this.chef);
 		return true;
 	}
 }
