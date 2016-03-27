@@ -1,7 +1,5 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
-import java.util.ArrayList;
-
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 
 /**
@@ -21,14 +19,9 @@ public class Joueur {
 	private Dynastie dynastie;
 
 	/**
-	 * Les cartes civilisations cachées du joueur (hors terrain)
+	 * Le deck du joueur
 	 */
-	//private Deck caché;
-
-	/**
-	 * Les cartes catastrophes et chefs non cachées du joueur (hors terrain)
-	 */
-	private Deck deckVisible;
+	private Deck deck;
 
 	/**
 	 * boolean pour savoir si c'est le tour du joueur ou non
@@ -59,8 +52,7 @@ public class Joueur {
 	public Joueur(String pnom, Dynastie pdynastie){
 		this.dynastie = pdynastie;
 		this.nom = pnom;
-		//this.caché = new Deck();
-		//this.visible = new Deck();
+		this.deck = new Deck();
 	}
 
 	/**
@@ -81,16 +73,16 @@ public class Joueur {
 	}
 
 	/**
-	 * @return the deckVisible
+	 * @return the deck
 	 */
-	public Deck getDeckVisible() {
-		return deckVisible;
+	public Deck getDeck() {
+		return deck;
 	}
 
 	/**
-	 * @param pdeckVisible the deckVisible to set
+	 * @param pdeck the deck to set
 	 */
-	public void setDeckVisible(Deck pdeckVisible) {
-		this.deckVisible = pdeckVisible;
+	public void setDeck(Deck pdeck) {
+		this.deck = pdeck;
 	}
 }

@@ -2,6 +2,7 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 
 /**
  * 
@@ -11,12 +12,17 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 public class EchangerTuileCivilisation extends Action {
 
 	/**
+	 * Tuile Civilisation a echanger
+	 */
+	private TuileCivilisation tuileAEchanger;
+	
+	/**
 	 * @param partie
 	 * @param joueur
 	 */
-	public EchangerTuileCivilisation(Partie partie, Joueur joueur) {
-		super(partie, joueur);
-		// TODO Auto-generated constructor stub
+	public EchangerTuileCivilisation(Partie ppartie, Joueur pjoueur, TuileCivilisation ptuile) {
+		super(ppartie, pjoueur);
+		this.tuileAEchanger = ptuile;
 	}
 
 	/**
@@ -25,6 +31,11 @@ public class EchangerTuileCivilisation extends Action {
 	 * @return vrai ou faux, selon le bon déroulement ou non de l'action
 	 */
 	public boolean executer(){
-		return false;
+		if(this.partie.getPioche().estVide())
+			return false;
+		TuileCivilisation tuilePiochee = this.partie.getPioche().piocherTuile();
+		return this.joueur.getDeck().supprimerTuileCivilisation(this.tuileAEchanger) && this.joueur.getDeck().ajouterTuileCivilisation(tuilePiochee);
+		
 	}
+	
 }

@@ -47,24 +47,24 @@ public class Pioche {
 		// RANDOM A FAIRE
 		if(this.estVide())
 			return null;
-		int total = this.nbTuilesFerme+this.nbTuilesMarche+this.nbTuilesPopulation+this.nbTuilesTemple;
+		int total = Pioche.nbTuilesFerme+Pioche.nbTuilesMarche+Pioche.nbTuilesPopulation+Pioche.nbTuilesTemple;
 		Random random = new Random();
 		int val = random.nextInt(total)+1;
 		TuileCivilisation tuilePiochee;
-		if(val <= this.nbTuilesFerme){	
+		if(val <= Pioche.nbTuilesFerme){	
 			tuilePiochee = new TuileCivilisation(new TypeTuileCivilisation("bleu","Ferme"));
-			this.nbTuilesFerme--;
+			Pioche.nbTuilesFerme--;
 		}else{
-			if(val > this.nbTuilesFerme && val <= (this.nbTuilesFerme+this.nbTuilesMarche)){
+			if(val > Pioche.nbTuilesFerme && val <= (Pioche.nbTuilesFerme+Pioche.nbTuilesMarche)){
 				tuilePiochee = new TuileCivilisation(new TypeTuileCivilisation("vert","Marché"));
-				this.nbTuilesMarche--;
+				Pioche.nbTuilesMarche--;
 			}else{
-				if(val > (this.nbTuilesFerme+this.nbTuilesMarche) && val <= (this.nbTuilesFerme+this.nbTuilesMarche+this.nbTuilesPopulation)){
+				if(val > (Pioche.nbTuilesFerme+Pioche.nbTuilesMarche) && val <= (Pioche.nbTuilesFerme+Pioche.nbTuilesMarche+Pioche.nbTuilesPopulation)){
 					tuilePiochee = new TuileCivilisation(new TypeTuileCivilisation("jaune","Population"));
-					this.nbTuilesPopulation--;
+					Pioche.nbTuilesPopulation--;
 				}else{
 					tuilePiochee = new TuileCivilisation(new TypeTuileCivilisation("rouge","Temple"));
-					this.nbTuilesTemple--;
+					Pioche.nbTuilesTemple--;
 				}
 			}
 		}
@@ -76,7 +76,7 @@ public class Pioche {
 	 * @return vrai ou faux
 	 */
 	public boolean estVide(){
-		return (this.nbTuilesFerme == 0 && this.nbTuilesMarche == 0 && this.nbTuilesPopulation == 0 && this.nbTuilesTemple == 0);	
+		return (Pioche.nbTuilesFerme == 0 && Pioche.nbTuilesMarche == 0 && Pioche.nbTuilesPopulation == 0 && Pioche.nbTuilesTemple == 0);	
 	}
 
 }

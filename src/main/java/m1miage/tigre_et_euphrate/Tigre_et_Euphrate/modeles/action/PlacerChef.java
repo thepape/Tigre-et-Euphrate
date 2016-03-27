@@ -41,8 +41,8 @@ public class PlacerChef extends Action {
 	 * @return vrai ou faux, selon le bon déroulement ou non de l'action
 	 */
 	public boolean executer(){
-		boolean place = this.partie.getPlateauJeu().placerChef(this.chef, this.position);
-		//this.joueur.getDeckVisible().deleteChef(this.chef);
-		return place;
+		if(this.chef.getDynastie() != this.joueur.getDynastie())
+			return false;
+		return this.partie.getPlateauJeu().placerChef(this.chef, this.position) && this.joueur.getDeck().supprimerChef(this.chef);
 	}
 }

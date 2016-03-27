@@ -66,7 +66,8 @@ public class DeplacerChef extends Action {
 	 * @return vrai ou faux, selon le bon déroulement ou non de l'action
 	 */
 	public boolean executer(){
-		boolean place = this.deplacerChef(this.chef, this.position);
-		return place;
+		if(this.chef.getDynastie() != this.joueur.getDynastie())
+			return false;
+		return this.deplacerChef(this.chef, this.position);
 	}
 }

@@ -2,8 +2,6 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
 import java.util.ArrayList;
 
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Monument;
-
 /**
  * Classe representant une partie
  *
@@ -19,6 +17,11 @@ public class Partie {
 	 * La liste des joueurs jouant la partie
 	 */
 	private ArrayList<Joueur> listeJoueur;
+	
+	/**
+	 * La pioche
+	 */
+	private Pioche pioche;
 	
 	/**
 	 * Constructeur simple d'une partie
@@ -45,6 +48,19 @@ public class Partie {
 	public void setListeJoueur(ArrayList<Joueur> listeJoueur) {
 		this.listeJoueur = listeJoueur;
 	}
-	
+
+	/**
+	 * @return la pioche
+	 */
+	public Pioche getPioche() {
+		return pioche;
+	}
+
+	/**
+	 * @param ppioche the pioche to set
+	 */
+	public void setPioche(Pioche ppioche) {
+		this.pioche = ppioche;
+	}
 	
 }
