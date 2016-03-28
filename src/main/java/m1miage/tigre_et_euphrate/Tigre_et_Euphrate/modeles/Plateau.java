@@ -1,5 +1,7 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
+import java.util.ArrayList;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Tresor;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
@@ -21,6 +23,10 @@ public class Plateau {
 	 */
 	private boolean[][] plateauTerrain;
 	
+	/**
+	 * Liste des differents royaumes présent sur le plateau
+	 */
+	private ArrayList<Royaume> listeRoyaume;
 	
 	/**
 	 * Constructeur d'un plateau avec son initialisation
@@ -28,6 +34,7 @@ public class Plateau {
 	public Plateau(){
 		this.plateau = new Placable[16][11];
 		this.plateauTerrain = new boolean[16][11];
+		this.listeRoyaume = new ArrayList<Royaume>();
 		genererTerrain(this.plateauTerrain);
 		genererSphynx(this.plateau);
 	}
@@ -155,6 +162,30 @@ public class Plateau {
 	}
 	
 	/**
+	 * permet de retourner la liste des royaumes
+	 * @return liste des royaumes
+	 */
+	public ArrayList<Royaume> getListeRoyaume(){
+		return listeRoyaume;
+	}
+	
+	/**
+	 * permet d'ajouter un royaume dans la liste 
+	 * @param proyaume
+	 */
+	public void addRoyaume(Royaume proyaume){
+		this.listeRoyaume.add(proyaume);
+	}
+	
+	/**
+	 * permet de supprimer un royaume dans la liste
+	 * @param proyaume
+	 */
+	public void supprRoyaume(Royaume proyaume){
+		this.listeRoyaume.remove(proyaume);
+	}
+	
+	/**
 	 * Permet de placer une tuile civilisation sur le plateau
 	 * @param ptuile tuile a placer
 	 * @param ppos position ou placer
@@ -213,27 +244,36 @@ public class Plateau {
 	public boolean verifierTemple(Position ppos){
 		int x = ppos.getX();
 		int y = ppos.getY();
+		TuileCivilisation tuileCivilisation;
 		
 		if(x-1>=0 || x-1<=15){
-			if(this.plateau[x-1][y].equals(TypeTuileCivilisation.Temple)){
-				return true;
+			if(this.plateau[x-1][y] instanceof TuileCivilisation){
+				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
+				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
+					return true;
 			}
 		}
 		
-		if(x+1<=15 || x+1<=0){
-			if(this.plateau[x+1][y].equals(TypeTuileCivilisation.Temple)){
-				return true;
+		if(x+1<=15 || x+1>=0){
+			if(this.plateau[x+1][y] instanceof TuileCivilisation){
+				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
+				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
+					return true;
 			}
 		}
 		if(y-1>=0 || y-1<=11){
-			if(this.plateau[x][y-1].equals(TypeTuileCivilisation.Temple)){
-				return true;
+			if(this.plateau[x][y-1] instanceof TuileCivilisation){
+				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
+				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
+					return true;
 			}
 		}
 		
-		if(y+1<=11 || y+1<=0){
-			if(this.plateau[x][y+1].equals(TypeTuileCivilisation.Temple)){
-				return true;
+		if(y+1<=11 || y+1>=0){
+			if(this.plateau[x][y+1] instanceof TuileCivilisation){
+				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
+				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
+					return true;
 			}
 		}		
 		return false;
