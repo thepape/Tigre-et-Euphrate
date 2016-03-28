@@ -1,7 +1,6 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
@@ -13,12 +12,18 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisat
  *
  */
 //TODO tester la class !!
-public class Royaume extends Territoire{
+public class Royaume {
 
 	/**
 	 *  Incrément de l'id des objets royaume.
 	 */
 	private static int idIncrementRoyaume = 0;
+
+	/**
+	 * Liste contenant toute les tuiles civilisation
+	 * du royaume.
+	 */
+	private ArrayList<TuileCivilisation> tuilesCivilisation;
 
 	/**
 	 * Liste contenant tous les chefs du royaume
@@ -136,7 +141,16 @@ public class Royaume extends Territoire{
 		}
 	}
 
+
 	//Getter
+
+	/**
+	 * return la liste des tuiles civilisation
+	 * @return
+	 */
+	public ArrayList<TuileCivilisation> getTuilesCivilisation() {
+		return tuilesCivilisation;
+	}
 
 	/**
 	 * return la liste des chefs
