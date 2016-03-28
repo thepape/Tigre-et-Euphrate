@@ -1,7 +1,5 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
-import java.util.ArrayList;
-
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Tresor;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
@@ -23,10 +21,6 @@ public class Plateau {
 	 */
 	private boolean[][] plateauTerrain;
 	
-	/**
-	 * Liste des territoires
-	 */
-	private ArrayList<Territoire> listeTerritoire;
 	
 	/**
 	 * Constructeur d'un plateau avec son initialisation
@@ -34,7 +28,6 @@ public class Plateau {
 	public Plateau(){
 		this.plateau = new Placable[16][11];
 		this.plateauTerrain = new boolean[16][11];
-		this.listeTerritoire = new ArrayList<Territoire>();
 		genererTerrain(this.plateauTerrain);
 		genererSphynx(this.plateau);
 	}
@@ -143,40 +136,12 @@ public class Plateau {
 
 	/**
 	 * setter de plateauterrain
-	 * @param pplateauTerrain
+	 * @param plateauTerrain
 	 */
-	public void setPlateauTerrain(boolean[][] pplateauTerrain) {
-		this.plateauTerrain = pplateauTerrain;
+	public void setPlateauTerrain(boolean[][] plateauTerrain) {
+		this.plateauTerrain = plateauTerrain;
 	}
 	
-	/**
-	 * @return the listeRoyaume
-	 */
-	public ArrayList<Territoire> getListeTerritoire() {
-		return listeTerritoire;
-	}
-
-	/**
-	 * @param plisteTerritoire the listeTerritoire to set
-	 */
-	public void setListeRoyaume(ArrayList<Territoire> plisteTerritoire) {
-		this.listeTerritoire = plisteTerritoire;
-	}
-
-	/**
-	 * @param pplateau the plateau to set
-	 */
-	public void setPlateau(Placable[][] pplateau) {
-		this.plateau = pplateau;
-	}
-
-	/**
-	 * @param plisteTerritoire the listeTerritoire to set
-	 */
-	public void setListeTerritoire(ArrayList<Territoire> plisteTerritoire) {
-		this.listeTerritoire = plisteTerritoire;
-	}
-
 	/**
 	 * Permet d'afficher le terrain dans la console
 	 */
@@ -226,7 +191,7 @@ public class Plateau {
 		if(this.plateau[x][y] != null){
 			return false;
 		}
-		if(!this.plateauTerrain[x][y]){
+		if(this.plateauTerrain[x][y]){
 			return false;
 		}
 		
@@ -248,36 +213,27 @@ public class Plateau {
 	public boolean verifierTemple(Position ppos){
 		int x = ppos.getX();
 		int y = ppos.getY();
-		TuileCivilisation tuileCivilisation;
 		
-		if(x-1>=0 && x-1<=15){
-			if(this.plateau[x-1][y] instanceof TuileCivilisation){
-				tuileCivilisation = (TuileCivilisation)this.plateau[x-1][y];
-			if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
-					return true;
+		if(x-1>=0 || x-1<=15){
+			if(this.plateau[x-1][y].equals(TypeTuileCivilisation.Temple)){
+				return true;
 			}
 		}
 		
-		if(x+1<=15 && x+1<=0){
-			if(this.plateau[x+1][y] instanceof TuileCivilisation){
-				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
-				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
-					return true;
+		if(x+1<=15 || x+1<=0){
+			if(this.plateau[x+1][y].equals(TypeTuileCivilisation.Temple)){
+				return true;
 			}
 		}
-		if(y-1>=0 && y-1<=11){
-			if(this.plateau[x][y-1] instanceof TuileCivilisation){
-				tuileCivilisation = (TuileCivilisation)this.plateau[x][y-1];
-				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
-					return true;
+		if(y-1>=0 || y-1<=11){
+			if(this.plateau[x][y-1].equals(TypeTuileCivilisation.Temple)){
+				return true;
 			}
 		}
 		
-		if(y+1<=11 && y+1<=0){
-			if(this.plateau[x][y+1] instanceof TuileCivilisation){
-				tuileCivilisation = (TuileCivilisation)this.plateau[x][y+1];
-				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
-					return true;
+		if(y+1<=11 || y+1<=0){
+			if(this.plateau[x][y+1].equals(TypeTuileCivilisation.Temple)){
+				return true;
 			}
 		}		
 		return false;
