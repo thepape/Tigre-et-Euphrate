@@ -71,16 +71,24 @@ public class Royaume {
 	 * Méthode pour ajouter un chef au royaume.
 	 * Vérifie également si cela créer un conflit
 	 * @param pChef le chef à ajouter
+	 * @return ok si le chef est ajouté
 	 */
-	public void addChefs(Chef pChef){
-		this.chefs.add(pChef);
+	public boolean addChefs(Chef pChef){
+		boolean ok = true;
 		//On vérifie s'il y a un conflit (2 chefs du meme type)
 		for(Chef c : this.chefs)
 		{
 			if(pChef.getTypeChef().equals(c.getTypeChef())){
+				ok = false;
 				//TODO faire un conflit
 			}
 		}
+
+		if (ok){
+			this.chefs.add(pChef);
+		}
+		
+		return ok;
 	}
 
 	/**
@@ -100,20 +108,30 @@ public class Royaume {
 	 * Méthode pour ajouter une liste de chefs au royaume.
 	 * Utile pour la jonction de deux royaume
 	 * @param pChefs la liste de chefs à ajouter
+	 * @return ok si les chef est ajouté
 	 */
-	public void addListeChefs(ArrayList<Chef> pChefs){
-		//For Each
-		for(Chef c : pChefs){
-			this.chefs.add(c);
-		}
+	public boolean addListeChefs(ArrayList<Chef> pChefs){
+
+		boolean ok = true;
+
 		//On vérifie s'il y a un conflit (2 chefs du meme type)
 		for(int i=1; i<chefs.size();i++){
 			for(int j=1; j<pChefs.size(); j++){
 				if(chefs.get(i).getTypeChef().equals(pChefs.get(j).getTypeChef())){
+					ok = false;
 					//TODO faire un conflit
 				}
 			}
 		}
+
+		if(ok){
+			//For Each
+			for(Chef c : pChefs){
+				this.chefs.add(c);
+			}
+		}
+		
+		return ok;
 	}
 
 
