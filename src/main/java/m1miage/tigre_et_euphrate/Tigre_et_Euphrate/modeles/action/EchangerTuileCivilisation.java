@@ -34,8 +34,9 @@ public class EchangerTuileCivilisation extends Action {
 		if(this.partie.getPioche().estVide())
 			return false;
 		TuileCivilisation tuilePiochee = this.partie.getPioche().piocherTuile();
-		return this.joueur.getDeckPrive().supprimerTuileCivilisation(this.tuileAEchanger) && this.joueur.getDeckPrive().ajouterTuileCivilisation(tuilePiochee);
-		
+		this.joueur.getDeckPrive().supprimer(this.tuileAEchanger);
+		this.joueur.getDeckPrive().ajouter(tuilePiochee);
+		this.tuileAEchanger.retirer();
+		return true;
 	}
-	
 }

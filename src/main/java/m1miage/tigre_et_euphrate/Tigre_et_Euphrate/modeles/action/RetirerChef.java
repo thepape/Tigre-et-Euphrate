@@ -42,10 +42,11 @@ public class RetirerChef extends Action {
 	 * @return vrai ou faux, selon le bon déroulement ou non de l'action
 	 */
 	public boolean executer(){
+		// VERIFIER SI IL FAIT PARTIE D'UN ROYAUME OU D'UN TERRITOIRE
 		if(this.chef.getDynastie() != this.joueur.getDynastie())
 			return false;
 		this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = null;
-		this.joueur.getDeckPublic().ajouterChef(this.chef);
+		this.joueur.getDeckPublic().ajouter(this.chef);
 		return true;
 	}
 }
