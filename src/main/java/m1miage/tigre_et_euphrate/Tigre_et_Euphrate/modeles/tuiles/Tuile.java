@@ -31,6 +31,15 @@ public abstract class Tuile extends Placable {
 	}
 	
 	/**
+	 * Méthode pour placer la tuile sur une case du plateau.
+	 * @param pX abscisse
+	 * @param pY ordonnée
+	 */
+	public void placer(int pX, int pY){
+		this.placer(new Position(pX,pY));
+	}
+	
+	/**
 	 * Retire la tuile du jeu.
 	 */
 	public void retirer(){
