@@ -65,7 +65,12 @@ public class Monument {
 	 * @param pTuileSO tuile sud ouest
 	 * @param pTuileSE tuile sud est
 	 */
-	public void construire(TuileCivilisation pTuileNO, TuileCivilisation pTuileNE, TuileCivilisation pTuileSO, TuileCivilisation pTuileSE){
+	public boolean construire(TuileCivilisation pTuileNO, TuileCivilisation pTuileNE, TuileCivilisation pTuileSO, TuileCivilisation pTuileSE){
+		
+		if(!this.verifierCouleurCases(pTuileNO, pTuileNE, pTuileSO, pTuileSE)){
+			return false;
+		}
+		
 		this.tuileNE = pTuileNE;
 		this.tuileNO = pTuileNO;
 		this.tuileSE = pTuileSE;
@@ -75,5 +80,32 @@ public class Monument {
 		this.tuileNO.setMonument(this);
 		this.tuileSE.setMonument(this);
 		this.tuileSO.setMonument(this);
+		
+		return true;
+	}
+	
+	/**
+	 * Verifie que les 4 cases de base sont de meme couleur
+	 * @param pTuileNO
+	 * @param pTuileNE
+	 * @param pTuileSO
+	 * @param pTuileSE
+	 * @return vrai si les 4 cases sont de meme couleur
+	 */
+	public boolean verifierCouleurCases(TuileCivilisation pTuileNO, TuileCivilisation pTuileNE, TuileCivilisation pTuileSO, TuileCivilisation pTuileSE){
+		
+		boolean couleursIdentiques = pTuileNO.estDeMemeType(pTuileNE) && pTuileNO.estDeMemeType(pTuileSO) && pTuileNO.estDeMemeType(pTuileSE);
+		//verifie que les 4 tuiles ont la meme couleur
+		if(!couleursIdentiques){
+			return false;
+		}
+		
+		String couleur = pTuileNO.getType().getCouleur();
+		//verifie que l'une des deux couleurs du monument est egale a la couleur des 4 tuiles
+		if(!this.couleurArche.equals(couleur) && !this.couleurEscaliers.equals(couleur)){
+			return false;
+		}
+		
+		return true;
 	}
 }
