@@ -17,6 +17,7 @@ public class DeckPublic extends Deck{
 	 */
 	public DeckPublic() {
 		super();
+		this.deckPublic = new ArrayList<Placable>();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -30,37 +31,35 @@ public class DeckPublic extends Deck{
 	}
 
 	/**
-	 * Méthode pour ajouter un chef dans le deckPublic
-	 * @param pChef le chef à ajouter
+	 * Méthode pour ajouter un chef ou une tuile catastrophe dans le deckPublic
+	 * @param l'objet placable
+	 * @return vrai ou faux
 	 */
-	public void ajouterChef(Chef pChef){
-		this.deckPublic.add(pChef);
+	public boolean ajouter(Placable pobj){
+		if(pobj instanceof Chef)
+			return this.deckPublic.add((Chef)pobj);
+		if(pobj instanceof TuileCatastrophe)
+			return this.deckPublic.add((TuileCatastrophe)pobj);
+		return false;
 	}
 	
 	/**
-	 * Méthode pour supprimer un chef du deck public
-	 * @param pChef le chef à supprimer
-	 * @return vrai ou faux si ça c'esr bien passé ou non
+	 * Méthode pour supprimer un chef ou une tuile catastrophe du deck public
+	 * @param l'objet placable
+	 * @return vrai ou faux
 	 */
-	public boolean supprimerChef(Chef pChef){
-		return this.deckPublic.remove(pChef);
+	public boolean supprimer(Placable pobj){
+		if(pobj instanceof Chef)
+			return this.deckPublic.remove((Chef)pobj);
+		if(pobj instanceof TuileCatastrophe)
+			return this.deckPublic.remove((Chef)pobj);
+		return false;
 	}
 	
-	/**
-	 * Méthode pour ajouter une tuile catastrophe au deck public
-	 */
-	public void ajouterTuileCatastrophe(TuileCatastrophe pTuile){
-		this.deckPublic.add(pTuile);
-	}
-	
-	/**
-	 * Méthode pour supprimer une tuile catastrophe du deck public
-	 * @param pTuile la tuile catastrophe à supprimer
-	 * @return vrai ou faux si ça s'est bien passé ou non
-	 */
-	public boolean supprimerTuileCatastrophe(TuileCatastrophe pTuile){
-		return this.deckPublic.remove(pTuile);
-	}
+	/*public static void main(String[] args) {
+		DeckPublic deck = new DeckPublic();
+		System.out.println(deck.ajouter(new TuileCatastrophe()));
+	}*/
 
 
 }

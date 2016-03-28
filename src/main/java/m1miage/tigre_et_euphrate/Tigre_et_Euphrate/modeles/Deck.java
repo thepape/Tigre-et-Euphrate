@@ -42,6 +42,18 @@ public abstract class Deck {
 		this.idDeck = 0;
 	}
 	
+	/**
+	 * Méthode abstraite pour l'ajout d'un objet placable
+	 * @param objet à inserer
+	 */
+	public abstract boolean ajouter(Placable pobjet);
+	
+	/**
+	 * Méthode abstraite pour la suppression d'un objet placable
+	 * @param objet à supprimer
+	 */
+	public abstract boolean supprimer(Placable pobjet);
+	
 	//geter & Setter
 	
 	/**

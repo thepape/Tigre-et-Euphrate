@@ -16,6 +16,7 @@ public class DeckPrive extends Deck{
 	 */
 	public DeckPrive() {
 		super();
+		this.deckPrive = new ArrayList<TuileCivilisation>();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -30,20 +31,20 @@ public class DeckPrive extends Deck{
 
 	/**
 	 * Méthode pour ajouter une tuile civilisation dans le deck prive
-	 * @param pTuile la tuile à ajouter
+	 * @param pTuile l'objet Placable
 	 * @return vrai ou faux
 	 */
-	public boolean ajouterTuileCivilisation(TuileCivilisation pTuile){
-		return this.deckPrive.add(pTuile);
+	public boolean ajouter(Placable pTuile){
+		return this.deckPrive.add((TuileCivilisation)pTuile);
 	}
 	
 	/**
 	 * Méthode pour supprimer une tuile civilisation du deck prive
-	 * @param pTuile la tuile à supprimer
+	 * @param pTuile l'objet placable
 	 * @return vrai ou faux
 	 */
-	public boolean supprimerTuileCivilisation(TuileCivilisation pTuile){
-		return this.deckPrive.remove(pTuile);
+	public boolean supprimer(Placable pTuile){
+		return this.deckPrive.remove((TuileCivilisation)pTuile);
 	}
 
 
