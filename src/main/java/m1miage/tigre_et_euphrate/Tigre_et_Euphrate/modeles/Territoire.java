@@ -12,7 +12,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisat
  */
 
 public class Territoire {
-	
+
 	/**
 	 * Boolean pour savoir si le territoire est un royaume
 	 */
@@ -43,7 +43,7 @@ public class Territoire {
 	 * Constructeur vide d'un territoire
 	 */
 	public Territoire() {
-		
+
 		this.tuilesCivilisation = new ArrayList<TuileCivilisation>();
 		this.chefs = new ArrayList<Chef>();
 		this.estRoyaume = false;
@@ -183,8 +183,24 @@ public class Territoire {
 	public void setEstRoyaume(boolean estRoyaume) {
 		this.estRoyaume = estRoyaume;
 	}
-	
-	
+
+	/**
+	 * setter de la liste des tuiles civilisations
+	 * @param tuilesCivilisation
+	 */
+	public void setTuilesCivilisation(ArrayList<TuileCivilisation> tuilesCivilisation) {
+		this.tuilesCivilisation = tuilesCivilisation;
+	}
+
+	/**
+	 * setter de la liste chefs
+	 * @param chefs
+	 */
+	public void setChefs(ArrayList<Chef> chefs) {
+		this.chefs = chefs;
+	}
+
+
 
 
 }
