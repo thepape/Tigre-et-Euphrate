@@ -34,6 +34,11 @@ public class TuileCivilisation extends Tuile {
 	 * Indique si la tuile est une tuile de jonction.
 	 */
 	private boolean estJonction;
+	
+	/**
+	 * Référence vers le territoire dans lequel se trouve la tuile.
+	 */
+	private Territoire territoire;
 
 	/**
 	 * Constructeur d'une tuile civilisation.
@@ -44,6 +49,7 @@ public class TuileCivilisation extends Tuile {
 		this.type = pType.clone();	//clone pour eviter le couplage au maximum entre les objets.
 		this.monument = null;
 		this.id = Placable.idIncrement++;
+		this.territoire = null;
 
 		//on définit si la tuile est dde type eau
 		if(this.type.equals(TypeTuileCivilisation.Ferme)){
@@ -64,6 +70,7 @@ public class TuileCivilisation extends Tuile {
 		this.monument = null;
 		this.tuileEau = false;
 		this.id = Placable.idIncrement++;
+		this.territoire = null;
 	}
 
 	/**
@@ -154,5 +161,13 @@ public class TuileCivilisation extends Tuile {
 	 */
 	public boolean estDeMemeType(TuileCivilisation pTuile){
 		return this.type.equals(pTuile.type);
+	}
+	
+	public Territoire getTerritoire(){
+		return this.territoire;
+	}
+	
+	public void setTerritoire(Territoire pTerritoire){
+		this.territoire = pTerritoire;
 	}
 }
