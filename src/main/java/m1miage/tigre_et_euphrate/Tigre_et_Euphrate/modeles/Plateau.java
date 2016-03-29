@@ -26,7 +26,8 @@ public class Plateau {
 	/**
 	 * Liste des differents royaumes présent sur le plateau
 	 */
-	private ArrayList<Royaume> listeRoyaume;
+	private ArrayList<Territoire> listeTerritoire;
+	
 	
 	/**
 	 * Constructeur d'un plateau avec son initialisation
@@ -34,7 +35,7 @@ public class Plateau {
 	public Plateau(){
 		this.plateau = new Placable[16][11];
 		this.plateauTerrain = new boolean[16][11];
-		this.listeRoyaume = new ArrayList<Royaume>();
+		this.listeTerritoire = new ArrayList<Territoire>();
 		genererTerrain(this.plateauTerrain);
 		genererSphynx(this.plateau);
 	}
@@ -165,24 +166,24 @@ public class Plateau {
 	 * permet de retourner la liste des royaumes
 	 * @return liste des royaumes
 	 */
-	public ArrayList<Royaume> getListeRoyaume(){
-		return listeRoyaume;
+	public ArrayList<Territoire> getListeRoyaume(){
+		return listeTerritoire;
 	}
 	
 	/**
 	 * permet d'ajouter un royaume dans la liste 
 	 * @param proyaume
 	 */
-	public void addRoyaume(Royaume proyaume){
-		this.listeRoyaume.add(proyaume);
+	public void addRoyaume(Territoire proyaume){
+		this.listeTerritoire.add(proyaume);
 	}
 	
 	/**
 	 * permet de supprimer un royaume dans la liste
 	 * @param proyaume
 	 */
-	public void supprRoyaume(Royaume proyaume){
-		this.listeRoyaume.remove(proyaume);
+	public void supprRoyaume(Territoire proyaume){
+		this.listeTerritoire.remove(proyaume);
 	}
 	
 	/**
