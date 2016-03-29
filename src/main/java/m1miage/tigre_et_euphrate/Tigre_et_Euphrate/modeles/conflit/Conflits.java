@@ -2,7 +2,7 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit;
 
 import java.util.ArrayList;
 
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Royaume;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 
@@ -19,14 +19,14 @@ public class Conflits {
 	private Chef chefDefenseur;
 
 	/**
-	 * Royaume du chef qui défend
+	 * Territoire du chef qui défend
 	 */
-	private Royaume royaumeDefenseur;
+	private Territoire territoireDefenseur;
 
 	/**
-	 * Royaume du chef qui attaque. A NULL si il n'y a pas de jonction de royaume
+	 * Territoire du chef qui attaque. A NULL si il n'y a pas de jonction de Territoire
 	 */
-	private Royaume royaumeAttaquant;
+	private Territoire territoireAttaquant;
 
 	/**
 	 * Boolean qui représente la résolution du conflit
@@ -37,36 +37,6 @@ public class Conflits {
 	 * id du conflit
 	 */
 	private int conflitId;
-	/**
-	 * Constructeur vide
-	 */
-	public Conflits()
-	{
-		super();
-		this.chefAttaquant = null;
-		this.chefDefenseur = null;
-		this.royaumeDefenseur = null;
-		this.royaumeAttaquant = null;
-		this.conflitId = Conflits.idIncrementConflit;
-		Conflits.idIncrementConflit++;
-	}
-
-	/**
-	 * Constructeur d'un conflit qui débute
-	 * @param chefAttaquant
-	 * @param chefDefenseur
-	 * @param royaumeDefenseur
-	 * @param royaumeAttaquant
-	 */
-	public Conflits(Chef chefAttaquant, Chef chefDefenseur, Royaume royaumeDefenseur, Royaume royaumeAttaquant) {
-		super();
-		this.setChefDefenseur(chefDefenseur);
-		this.setChefAttaquant(chefAttaquant);
-		this.royaumeAttaquant = royaumeAttaquant;
-		this.royaumeDefenseur = royaumeDefenseur;
-		this.conflitId = Conflits.idIncrementConflit;
-		Conflits.idIncrementConflit++;
-	}
 
 	/**
 	 * Liste des tuiles ajoutées en renforts par l'attaquant
@@ -77,6 +47,37 @@ public class Conflits {
 	 * Liste des tuiles ajoutées en renforts par le défenseur
 	 */
 	private ArrayList<TuileRenfort> listeTuileRenfortDefenseur;
+
+	/**
+	 * Constructeur vide
+	 */
+	public Conflits()
+	{
+		super();
+		this.chefAttaquant = null;
+		this.chefDefenseur = null;
+		this.territoireDefenseur = null;
+		this.territoireAttaquant = null;
+		this.conflitId = Conflits.idIncrementConflit;
+		Conflits.idIncrementConflit++;
+	}
+
+	/**
+	 * Constructeur d'un conflit qui débute
+	 * @param chefAttaquant
+	 * @param chefDefenseur
+	 * @param TerritoireDefenseur
+	 * @param TerritoireAttaquant
+	 */
+	public Conflits(Chef chefAttaquant, Chef chefDefenseur, Territoire TerritoireDefenseur, Territoire TerritoireAttaquant) {
+		super();
+		this.setChefDefenseur(chefDefenseur);
+		this.setChefAttaquant(chefAttaquant);
+		this.territoireAttaquant = TerritoireAttaquant;
+		this.territoireDefenseur = TerritoireDefenseur;
+		this.conflitId = Conflits.idIncrementConflit;
+		Conflits.idIncrementConflit++;
+	}
 
 	/**
 	 * @return le chef qui attaque
@@ -130,33 +131,33 @@ public class Conflits {
 	}
 
 	/**
-	 * @return royaume du chef qui défend
+	 * @return Territoire du chef qui défend
 	 */
-	public Royaume getRoyaumeDefenseur() {
-		return royaumeDefenseur;
+	public Territoire getTerritoireDefenseur() {
+		return territoireDefenseur;
 	}
 
 	/**
-	 * setter du royaumeDefenseur
-	 * @param royaumeDefenseur
+	 * setter du TerritoireDefenseur
+	 * @param TerritoireDefenseur
 	 */
-	public void setRoyaumeDefenseur(Royaume royaumeDefenseur) {
-		this.royaumeDefenseur = royaumeDefenseur;
+	public void setTerritoireDefenseur(Territoire TerritoireDefenseur) {
+		this.territoireDefenseur = TerritoireDefenseur;
 	}
 
 	/**
-	 * @return royaume du chef qui attaque (à NULL s'il n'y a pas de jonction de royaume)
+	 * @return Territoire du chef qui attaque (à NULL s'il n'y a pas de jonction de Territoire)
 	 */
-	public Royaume getRoyaumeAttaquant() {
-		return royaumeAttaquant;
+	public Territoire getTerritoireAttaquant() {
+		return territoireAttaquant;
 	}
 
 	/**
-	 * setter de royaumeAttaquant
-	 * @param royaumeAttaquant
+	 * setter de TerritoireAttaquant
+	 * @param TerritoireAttaquant
 	 */
-	public void setRoyaumeAttaquant(Royaume royaumeAttaquant) {
-		this.royaumeAttaquant = royaumeAttaquant;
+	public void setTerritoireAttaquant(Territoire TerritoireAttaquant) {
+		this.territoireAttaquant = TerritoireAttaquant;
 	}
 
 	/**
@@ -212,20 +213,21 @@ public class Conflits {
 	{
 		int nbTuileCivilisationDefenseur = 0;
 		int nbTuileCivilisationAttaquant = 0;
-		for(int i = 0; i < this.getRoyaumeDefenseur().getTuilesCivilisation().size(); i++)
+
+		for(int i = 0; i < this.getTerritoireDefenseur().getTuilesCivilisation().size(); i++)
 		{
-			TuileCivilisation tuileDefenseur = (TuileCivilisation) this.getRoyaumeDefenseur().getTuilesCivilisation().get(i);
+			TuileCivilisation tuileDefenseur = (TuileCivilisation) this.getTerritoireDefenseur().getTuilesCivilisation().get(i);
 			if(tuileDefenseur.getType().getCouleur().equals(this.getChefDefenseur().getTypeChef().getCouleur()))
 			{
 				nbTuileCivilisationDefenseur++;
 			}
 		}
 
-		if(this.getRoyaumeAttaquant() != null)
+		if(this.getTerritoireAttaquant() != null)
 		{
-			for(int i = 0; i < this.getRoyaumeAttaquant().getTuilesCivilisation().size(); i++)
+			for(int i = 0; i < this.getTerritoireAttaquant().getTuilesCivilisation().size(); i++)
 			{
-				TuileCivilisation tuileAttaquant = (TuileCivilisation) this.getRoyaumeAttaquant().getTuilesCivilisation().get(i);
+				TuileCivilisation tuileAttaquant = (TuileCivilisation) this.getTerritoireAttaquant().getTuilesCivilisation().get(i);
 				if(tuileAttaquant.getType().getCouleur().equals(this.getChefAttaquant().getTypeChef().getCouleur()))
 				{
 					nbTuileCivilisationAttaquant++;
