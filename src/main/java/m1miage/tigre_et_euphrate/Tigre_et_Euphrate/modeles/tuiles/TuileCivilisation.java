@@ -1,6 +1,7 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 
 /**
  *
