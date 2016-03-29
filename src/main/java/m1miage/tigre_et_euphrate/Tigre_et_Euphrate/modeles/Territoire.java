@@ -6,22 +6,26 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 
 /**
- * Class représentant un royaume.
+ * Class représentant un territoire.
  * un royaume doit avoir au moins un chef et une tuile civilisation
  *
- *
  */
-//TODO tester la class !!
-public class Royaume {
+
+public class Territoire {
+	
+	/**
+	 * Boolean pour savoir si le territoire est un royaume
+	 */
+	private boolean estRoyaume = false;
 
 	/**
-	 *  Incrément de l'id des objets royaume.
+	 *  Incrément de l'id des objets territoire.
 	 */
-	private static int idIncrementRoyaume = 0;
+	private static int idIncrementTerritoire = 0;
 
 	/**
 	 * Liste contenant toute les tuiles civilisation
-	 * du royaume.
+	 * du territoire.
 	 */
 	private ArrayList<TuileCivilisation> tuilesCivilisation;
 
@@ -31,30 +35,36 @@ public class Royaume {
 	private ArrayList<Chef> chefs;
 
 	/**
-	 * L'id du royaume
+	 * L'id du territoire
 	 */
-	private int idRoyaume;
+	private int idTerritoire;
 
 	/**
-	 * Constructeur vide d'un royaume
+	 * Constructeur vide d'un territoire
 	 */
-	public Royaume() {
-		super();
-		this.idRoyaume = Royaume.idIncrementRoyaume;
-		Royaume.idIncrementRoyaume++;
+	public Territoire() {
+		
+		this.tuilesCivilisation = new ArrayList<TuileCivilisation>();
+		this.chefs = new ArrayList<Chef>();
+		this.estRoyaume = false;
+		this.idTerritoire = Territoire.idIncrementTerritoire;
+		Territoire.idIncrementTerritoire++;
 	}
 
 	/**
-	 * Constructeur d'un royaume avec les listes
+	 * Constructeur d'un territoire avec les listes
 	 * @param tuilesCivilisation  listes des tuiles civilisation
 	 * @param chefs liste des chefs
 	 */
-	public Royaume(ArrayList<TuileCivilisation> tuilesCivilisation, ArrayList<Chef> chefs) {
+	public Territoire(TuileCivilisation pTuileInit) {
 		super();
-		this.tuilesCivilisation = tuilesCivilisation;
-		this.chefs = chefs;
-		this.idRoyaume = Royaume.idIncrementRoyaume;
-		Royaume.idIncrementRoyaume++;
+		this.estRoyaume = false;
+		this.tuilesCivilisation = new ArrayList<TuileCivilisation>();
+		this.tuilesCivilisation.add(pTuileInit);
+		pTuileInit.setTerritoire(this);
+		this.chefs = new ArrayList<Chef>();
+		this.idTerritoire = Territoire.idIncrementTerritoire;
+		Territoire.idIncrementTerritoire++;
 	}
 
 	//Méthodes concernant l'ajout
@@ -73,22 +83,9 @@ public class Royaume {
 	 * @param pChef le chef à ajouter
 	 * @return ok si le chef est ajouté
 	 */
-	public boolean addChefs(Chef pChef){
-		boolean ok = true;
-		//On vérifie s'il y a un conflit (2 chefs du meme type)
-		for(Chef c : this.chefs)
-		{
-			if(pChef.getTypeChef().equals(c.getTypeChef())){
-				ok = false;
-				//TODO faire un conflit
-			}
-		}
-
-		if (ok){
-			this.chefs.add(pChef);
-		}
-		
-		return ok;
+	public void addChefs(Chef pChef){
+		this.chefs.add(pChef);
+		this.estRoyaume = true;
 	}
 
 	/**
@@ -110,28 +107,12 @@ public class Royaume {
 	 * @param pChefs la liste de chefs à ajouter
 	 * @return ok si les chef est ajouté
 	 */
-	public boolean addListeChefs(ArrayList<Chef> pChefs){
+	public void addListeChefs(ArrayList<Chef> pChefs){
 
-		boolean ok = true;
-
-		//On vérifie s'il y a un conflit (2 chefs du meme type)
-		for(int i=1; i<chefs.size();i++){
-			for(int j=1; j<pChefs.size(); j++){
-				if(chefs.get(i).getTypeChef().equals(pChefs.get(j).getTypeChef())){
-					ok = false;
-					//TODO faire un conflit
-				}
-			}
+		for(Chef c : pChefs){
+			this.chefs.add(c);
+			this.estRoyaume = true;
 		}
-
-		if(ok){
-			//For Each
-			for(Chef c : pChefs){
-				this.chefs.add(c);
-			}
-		}
-		
-		return ok;
 	}
 
 
@@ -160,7 +141,7 @@ public class Royaume {
 	}
 
 
-	//Getter
+	//Getter & Setter
 
 	/**
 	 * return la liste des tuiles civilisation
@@ -178,13 +159,32 @@ public class Royaume {
 		return chefs;
 	}
 
+
 	/**
 	 * return l'id du royaume
 	 * @return
 	 */
-	public int getIdRoyaume() {
-		return idRoyaume;
+	public int getIdTerritoire() {
+		return idTerritoire;
 	}
+
+	/**
+	 * return si le territoire est un royaume
+	 * @return
+	 */
+	public boolean isEstRoyaume() {
+		return estRoyaume;
+	}
+
+	/**
+	 * Change le territoire en royaume ou l'inverse
+	 * @param estRoyaume
+	 */
+	public void setEstRoyaume(boolean estRoyaume) {
+		this.estRoyaume = estRoyaume;
+	}
+	
+	
 
 
 }
