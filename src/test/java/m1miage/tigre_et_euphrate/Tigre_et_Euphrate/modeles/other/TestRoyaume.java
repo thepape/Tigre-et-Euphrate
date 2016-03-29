@@ -63,6 +63,7 @@ public class TestRoyaume {
 
 		assertEquals(territoire1.getTuilesCivilisation().size(), 7);
 		assertTrue(territoire1.getTuilesCivilisation().get(territoire1.getTuilesCivilisation().size()-1)==tuile7);
+		assertFalse(territoire1.isEstRoyaume());
 	}
 
 	/**
@@ -97,6 +98,7 @@ public class TestRoyaume {
 		
 		assertEquals(territoire1.getChefs().size(),1);
 		assertTrue(territoire1.getChefs().get(territoire1.getChefs().size()-1)==chef2);
+		assertTrue(territoire1.isEstRoyaume());
 		
 	}
 	
@@ -120,6 +122,7 @@ public class TestRoyaume {
 		
 		assertEquals(territoire1.getChefs().size(),3);
 		assertTrue(territoire1.getChefs().get(territoire1.getChefs().size()-1)==chef3);
+		assertTrue(territoire1.isEstRoyaume());
 		
 	}
 	
