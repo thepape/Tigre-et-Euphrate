@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Royaume;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
@@ -25,45 +25,49 @@ public class TestConflits {
 		ArrayList<TuileRenfort> listeRenfortDefenseur = new ArrayList<TuileRenfort>();
 		Chef chefAttaquant = new Chef(TypeChef.Fermier, new Joueur());
 		Chef chefDefenseur = new Chef(TypeChef.Fermier, new Joueur());
-		ArrayList<TuileCivilisation> listeTuileRoyaumeAttaquant = new ArrayList<TuileCivilisation>();
-		ArrayList<TuileCivilisation> listeTuileRoyaumeDefenseur = new ArrayList<TuileCivilisation>();
-		ArrayList<Chef> listeChefRoyaumeAttaquant = new ArrayList<Chef>();
-		ArrayList<Chef> listeChefRoyaumeDefenseur = new ArrayList<Chef>();
+		ArrayList<TuileCivilisation> listeTuileTerritoireAttaquant = new ArrayList<TuileCivilisation>();
+		ArrayList<TuileCivilisation> listeTuileTerritoireDefenseur = new ArrayList<TuileCivilisation>();
+		ArrayList<Chef> listeChefTerritoireAttaquant = new ArrayList<Chef>();
+		ArrayList<Chef> listeChefTerritoireDefenseur = new ArrayList<Chef>();
 
-		//Initialisation du royaume Defenseur
+		//Initialisation du Territoire Defenseur
 		TuileCivilisation tuile1Defenseur = new TuileCivilisation(TypeTuileCivilisation.Ferme);
 		TuileCivilisation tuile2Defenseur = new TuileCivilisation(TypeTuileCivilisation.Marché);
 		TuileCivilisation tuile3Defenseur = new TuileCivilisation(TypeTuileCivilisation.Population);
 		TuileCivilisation tuile4Defenseur = new TuileCivilisation(TypeTuileCivilisation.Temple);
 		TuileCivilisation tuile5Defenseur = new TuileCivilisation(TypeTuileCivilisation.Ferme);
 		TuileCivilisation tuile6Defenseur = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-		listeTuileRoyaumeDefenseur.add(tuile1Defenseur);
-		listeTuileRoyaumeDefenseur.add(tuile2Defenseur);
-		listeTuileRoyaumeDefenseur.add(tuile3Defenseur);
-		listeTuileRoyaumeDefenseur.add(tuile4Defenseur);
-		listeTuileRoyaumeDefenseur.add(tuile5Defenseur);
-		listeTuileRoyaumeDefenseur.add(tuile6Defenseur);
-		listeChefRoyaumeDefenseur.add(chefDefenseur);
-		Royaume royaumeDefenseur = new Royaume(listeTuileRoyaumeDefenseur, listeChefRoyaumeDefenseur);
+		listeTuileTerritoireDefenseur.add(tuile1Defenseur);
+		listeTuileTerritoireDefenseur.add(tuile2Defenseur);
+		listeTuileTerritoireDefenseur.add(tuile3Defenseur);
+		listeTuileTerritoireDefenseur.add(tuile4Defenseur);
+		listeTuileTerritoireDefenseur.add(tuile5Defenseur);
+		listeTuileTerritoireDefenseur.add(tuile6Defenseur);
+		listeChefTerritoireDefenseur.add(chefDefenseur);
+		Territoire territoireDefenseur = new Territoire();
+		territoireDefenseur.setChefs(listeChefTerritoireDefenseur);
+		territoireDefenseur.setTuilesCivilisation(listeTuileTerritoireDefenseur);
 
-		//Initialisation du royaume Attaquant
+		//Initialisation du Territoire Attaquant
 		TuileCivilisation tuile1Attaquant = new TuileCivilisation(TypeTuileCivilisation.Marché);
 		TuileCivilisation tuile2Attaquant = new TuileCivilisation(TypeTuileCivilisation.Marché);
 		TuileCivilisation tuile3Attaquant = new TuileCivilisation(TypeTuileCivilisation.Population);
 		TuileCivilisation tuile4Attaquant = new TuileCivilisation(TypeTuileCivilisation.Temple);
 		TuileCivilisation tuile5Attaquant = new TuileCivilisation(TypeTuileCivilisation.Temple);
 		TuileCivilisation tuile6Attaquant = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-		listeTuileRoyaumeAttaquant.add(tuile1Attaquant);
-		listeTuileRoyaumeAttaquant.add(tuile2Attaquant);
-		listeTuileRoyaumeAttaquant.add(tuile3Attaquant);
-		listeTuileRoyaumeAttaquant.add(tuile4Attaquant);
-		listeTuileRoyaumeAttaquant.add(tuile5Attaquant);
-		listeTuileRoyaumeAttaquant.add(tuile6Attaquant);
-		listeChefRoyaumeAttaquant.add(chefAttaquant);
-		Royaume royaumeAttaquant = new Royaume(listeTuileRoyaumeAttaquant, listeChefRoyaumeAttaquant);
+		listeTuileTerritoireAttaquant.add(tuile1Attaquant);
+		listeTuileTerritoireAttaquant.add(tuile2Attaquant);
+		listeTuileTerritoireAttaquant.add(tuile3Attaquant);
+		listeTuileTerritoireAttaquant.add(tuile4Attaquant);
+		listeTuileTerritoireAttaquant.add(tuile5Attaquant);
+		listeTuileTerritoireAttaquant.add(tuile6Attaquant);
+		listeChefTerritoireAttaquant.add(chefAttaquant);
+		Territoire territoireAttaquant = new Territoire();
+		territoireAttaquant.setChefs(listeChefTerritoireAttaquant);
+		territoireAttaquant.setTuilesCivilisation(listeTuileTerritoireAttaquant);
 
 		//Initialisation du conflit
-		conflit = new Conflits(chefAttaquant, chefDefenseur, royaumeDefenseur, royaumeAttaquant);
+		conflit = new Conflits(chefAttaquant, chefDefenseur, territoireDefenseur, territoireAttaquant);
 		conflit.setListeTuileRenfortAttaquant(listeRenfortAttaquant);
 		conflit.setListeTuileRenfortDefenseur(listeRenfortDefenseur);
 	}
@@ -134,7 +138,6 @@ public class TestConflits {
 		conflit.ajoutRenfort(conflit.getListeTuileRenfortAttaquant(), tuile3AttaquantRenfort);
 		conflit.ajoutRenfort(conflit.getListeTuileRenfortAttaquant(), tuile4AttaquantRenfort);
 		assertSame(conflit.definirChefGagnant(), conflit.getChefDefenseur());
-
 	}
 
 	/**
@@ -186,9 +189,9 @@ public class TestConflits {
 	 * sans ajout de renfort
 	 */
 	@Test
-	public void testDefinirGagnantConflitRoyaumeAttaquantNullSansRenfort()
+	public void testDefinirGagnantConflitTerritoireAttaquantNullSansRenfort()
 	{
-		conflit.setRoyaumeAttaquant(null);
+		conflit.setTerritoireAttaquant(null);
 		assertSame(conflit.definirChefGagnant(), conflit.getChefDefenseur());
 	}
 
@@ -198,9 +201,9 @@ public class TestConflits {
 	 */
 
 	@Test
-	public void testDefinirGagnantRoyaumeAttaquantNullAvecRenfort()
+	public void testDefinirGagnantTerritoireAttaquantNullAvecRenfort()
 	{
-		conflit.setRoyaumeAttaquant(null);
+		conflit.setTerritoireAttaquant(null);
 
 		TuileRenfort tuile3AttaquantRenfort = new TuileRenfort(new TuileCivilisation(TypeTuileCivilisation.Ferme));
 		TuileRenfort tuile4AttaquantRenfort = new TuileRenfort(new TuileCivilisation(TypeTuileCivilisation.Ferme));

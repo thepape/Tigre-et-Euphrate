@@ -10,22 +10,22 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
  *
  */
 public class Chef extends Placable{
-	
+
 	/**
 	 * Type du chef
 	 */
 	private TypeChef typeChef;
-	
+
 	/**
-	 * Joueur auquel il correspond 
+	 * Joueur auquel il correspond
 	 */
 	private Joueur joueur;
-	
+
 	/**
 	 * Dynastie du chef
 	 */
 	private Dynastie dynastie;
-	
+
 	/**
 	 * le nombres de points gagnés par le chef
 	 * par rapport aux nombres de tuiles de
@@ -33,14 +33,14 @@ public class Chef extends Placable{
 	 * (Sorte de compteur)
 	 */
 	private int puissance;
-	
+
 	/**
 	 * Boolean pour savoir si le chef est sur le plateau (False)
 	 * ou dans le deck ( True )
 	 */
 	private boolean retiree;
-	
-	
+
+
 	/**
 	 * Constructeur d'un chef
 	 * @param ptypeChef type du chef
@@ -48,27 +48,27 @@ public class Chef extends Placable{
 	 */
 	public Chef(TypeChef ptypeChef, Joueur pjoueur) {
 		super();
-		this.typeChef = ptypeChef.clone(); //clone pour eviter le couplage 
+		this.typeChef = ptypeChef.clone(); //clone pour eviter le couplage
 		this.joueur = pjoueur;
 		this.dynastie = pjoueur.getDynastie();
 		this.puissance = 0;
 		this.retiree = true;
 		this.id = Placable.idIncrement++;
 	}
-	
+
 	/**
 	 * Constructeur vide
 	 */
 	public Chef() {
 		super();
-		this.typeChef = null; //clone pour eviter le couplage 
+		this.typeChef = null; //clone pour eviter le couplage
 		this.joueur = null;
 		this.dynastie = null;
 		this.puissance = 0;
 		this.retiree = true;
 		this.id = Placable.idIncrement++;
 	}
-	
+
 
 
 	/**
@@ -86,7 +86,7 @@ public class Chef extends Placable{
 	public Joueur getJoueur() {
 		return joueur;
 	}
-	
+
 	/**
 	 * return la dynastie du chef
 	 * @return
@@ -134,6 +134,6 @@ public class Chef extends Placable{
 		this.retiree = retiree;
 	}
 
-	
+
 
 }

@@ -1,10 +1,13 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.other;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
-import static org.junit.Assert.*;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Royaume;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
@@ -15,7 +18,7 @@ import org.junit.Test;
 
 public class TestRoyaume {
 
-	private Royaume royaume1;
+	private Territoire territoire1;
 	private Joueur joueur1;
 
 	@Before
@@ -32,23 +35,20 @@ public class TestRoyaume {
 		TuileCivilisation tuile5 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
 		TuileCivilisation tuile6 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
 
-		//instance du chef
-		Chef chef1 = new Chef(TypeChef.Fermier, joueur1);
 
 		//création des listes
 		ArrayList<TuileCivilisation> listeTuiles = new ArrayList<TuileCivilisation>();
 		ArrayList<Chef> listeChef = new ArrayList<Chef>();
 
-		listeTuiles.add(tuile1);
 		listeTuiles.add(tuile2);
 		listeTuiles.add(tuile3);
 		listeTuiles.add(tuile4);
 		listeTuiles.add(tuile5);
 		listeTuiles.add(tuile6);
-		listeChef.add(chef1);
 
-		//Creation du royaume
-		this.royaume1 = new Royaume(listeTuiles, listeChef);
+		//Creation du territoire
+		this.territoire1 = new Territoire(tuile1);
+		territoire1.addListeTuiles(listeTuiles);
 
 	}
 
@@ -59,10 +59,11 @@ public class TestRoyaume {
 	@Test
 	public void testAddTuile() {
 		TuileCivilisation tuile7 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		royaume1.addTuile(tuile7);
+		territoire1.addTuile(tuile7);
 
-		assertEquals(royaume1.getTuilesCivilisation().size(), 7);
-		assertTrue(royaume1.getTuilesCivilisation().get(royaume1.getTuilesCivilisation().size()-1)==tuile7);
+		assertEquals(territoire1.getTuilesCivilisation().size(), 7);
+		assertTrue(territoire1.getTuilesCivilisation().get(territoire1.getTuilesCivilisation().size()-1)==tuile7);
+		assertFalse(territoire1.isEstRoyaume());
 	}
 
 	/**
@@ -78,12 +79,12 @@ public class TestRoyaume {
 		listeInsert.add(tuile8);
 		listeInsert.add(tuile9);
 
-		royaume1.addListeTuiles(listeInsert);
+		territoire1.addListeTuiles(listeInsert);
 
-		assertEquals(royaume1.getTuilesCivilisation().size(), 9);
-		assertTrue(royaume1.getTuilesCivilisation().contains(tuile7));
-		assertTrue(royaume1.getTuilesCivilisation().contains(tuile8));
-		assertTrue(royaume1.getTuilesCivilisation().get(royaume1.getTuilesCivilisation().size()-1)==tuile9);
+		assertEquals(territoire1.getTuilesCivilisation().size(), 9);
+		assertTrue(territoire1.getTuilesCivilisation().contains(tuile7));
+		assertTrue(territoire1.getTuilesCivilisation().contains(tuile8));
+		assertTrue(territoire1.getTuilesCivilisation().get(territoire1.getTuilesCivilisation().size()-1)==tuile9);
 
 	}
 
@@ -93,19 +94,12 @@ public class TestRoyaume {
 	@Test
 	public void testAddChefs(){
 		Chef chef2 = new Chef(TypeChef.Roi,joueur1);
-		Chef chef3 = new Chef(TypeChef.Fermier, new Joueur());
+		territoire1.addChefs(chef2);
 		
-		/*test si l'insertion d'un chef de type different de celui
-		 * déja présent dans le royaume fonctionne.
-		 */
-		assertTrue(royaume1.addChefs(chef2));
-		assertEquals(royaume1.getChefs().size(),2);
+		assertEquals(territoire1.getChefs().size(),1);
+		assertTrue(territoire1.getChefs().get(territoire1.getChefs().size()-1)==chef2);
+		assertTrue(territoire1.isEstRoyaume());
 		
-		/*test si l'insertion d'un chef de type idem de celui
-		 * déja présent dans le royaume ne fonctionne pas.
-		 */
-		assertFalse(royaume1.addChefs(chef3));
-		assertEquals(royaume1.getChefs().size(),2);	
 	}
 	
 	/**
@@ -114,34 +108,21 @@ public class TestRoyaume {
 	@Test
 	public void testAddListeChefs(){
 		
-		Chef chef2 = new Chef(TypeChef.Roi,joueur1);
-		Chef chef3 = new Chef(TypeChef.Fermier, joueur1);
-		Chef chef4 = new Chef(TypeChef.Marchand, joueur1);
-		Chef chef5 = new Chef(TypeChef.Pretre, joueur1);
-		Chef chef6 = new Chef(TypeChef.Roi, joueur1);
+		Chef chef1 = new Chef(TypeChef.Roi,joueur1);
+		Chef chef2 = new Chef(TypeChef.Marchand, joueur1);
+		Chef chef3 = new Chef(TypeChef.Pretre, joueur1);
 		
 		ArrayList<Chef> listeChefOk = new ArrayList<Chef>();
-		ArrayList<Chef> listeChefNonOk = new ArrayList<Chef>();
 		
+		listeChefOk.add(chef1);
 		listeChefOk.add(chef2);
-		listeChefOk.add(chef4);
-		listeChefOk.add(chef5);
+		listeChefOk.add(chef3);
 		
-		listeChefNonOk.add(chef3);
-		listeChefNonOk.add(chef6);
+		territoire1.addListeChefs(listeChefOk);
 		
-		/*test si l'insertion d'une liste de chef de type different de celui
-		 * déja présent dans le royaume fonctionne.
-		 */
-		assertTrue(royaume1.addListeChefs(listeChefOk));
-		assertEquals(royaume1.getChefs().size(),4);
-		
-		/*test si l'insertion d'une liste de chef avec un
-		 * chef de type idem de celui
-		 * déja présent dans le royaume ne fonctionne pas.
-		 */
-		assertFalse(royaume1.addListeChefs(listeChefNonOk));
-		assertEquals(royaume1.getChefs().size(),4);	
+		assertEquals(territoire1.getChefs().size(),3);
+		assertTrue(territoire1.getChefs().get(territoire1.getChefs().size()-1)==chef3);
+		assertTrue(territoire1.isEstRoyaume());
 		
 	}
 	
@@ -151,14 +132,14 @@ public class TestRoyaume {
 	@Test
 	public void testDeletTuilesCivilisation(){
 		
-		int taille = royaume1.getTuilesCivilisation().size();
-		TuileCivilisation t1 = royaume1.getTuilesCivilisation().get(1);
-		royaume1.deletTuilesCivilisation(royaume1.getTuilesCivilisation().get(1));
-		TuileCivilisation t2 = royaume1.getTuilesCivilisation().get(1);
+		int taille = territoire1.getTuilesCivilisation().size();
+		TuileCivilisation t1 = territoire1.getTuilesCivilisation().get(1);
+		territoire1.deletTuilesCivilisation(territoire1.getTuilesCivilisation().get(1));
+		TuileCivilisation t2 = territoire1.getTuilesCivilisation().get(1);
 		
 		assertFalse(t1.equals(t2));
-		assertFalse(royaume1.getTuilesCivilisation().contains(t1));
-		assertEquals(royaume1.getTuilesCivilisation().size(), taille-1);
+		assertFalse(territoire1.getTuilesCivilisation().contains(t1));
+		assertEquals(territoire1.getTuilesCivilisation().size(), taille-1);
 	}
 	
 	/**
@@ -167,17 +148,19 @@ public class TestRoyaume {
 	@Test
 	public void testDeletChef(){
 		
+		Chef chef1 = new Chef(TypeChef.Marchand, joueur1);
 		Chef chef2 = new Chef(TypeChef.Roi,joueur1);
-		royaume1.addChefs(chef2);
+		territoire1.addChefs(chef1);
+		territoire1.addChefs(chef2);
 		
-		int taille = royaume1.getChefs().size();
-		Chef c1 = royaume1.getChefs().get(0);
-		royaume1.deletChef(royaume1.getChefs().get(0));
-		Chef c2 = royaume1.getChefs().get(0);
+		int taille = territoire1.getChefs().size();
+		Chef c1 = territoire1.getChefs().get(0);
+		territoire1.deletChef(territoire1.getChefs().get(0));
+		Chef c2 = territoire1.getChefs().get(0);
 		
 		assertFalse(c1.equals(c2));
-		assertFalse(royaume1.getChefs().contains(c1));
-		assertEquals(royaume1.getChefs().size(), taille-1);
+		assertFalse(territoire1.getChefs().contains(c1));
+		assertEquals(territoire1.getChefs().size(), taille-1);
 		
 	}
 
