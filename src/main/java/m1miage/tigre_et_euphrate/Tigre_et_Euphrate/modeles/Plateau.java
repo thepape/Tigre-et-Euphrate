@@ -198,10 +198,10 @@ public class Plateau {
 		if(this.plateau[x][y] != null){
 			return false;
 		}
-		if(this.plateauTerrain[x][y] && !ptuile.estTuileEau()){
+		if(!this.plateauTerrain[x][y] && !ptuile.estTuileEau()){
 			return false;
 		}
-		if(!this.plateauTerrain[x][y] && ptuile.estTuileEau()){
+		if(this.plateauTerrain[x][y] && ptuile.estTuileEau()){
 			return false;
 		}
 		
@@ -209,6 +209,7 @@ public class Plateau {
 		ptuile.placer(ppos);
 		return true;
 	}
+
 	
 	/**
 	 * Permet de placer une tuile chef sur le plateau
@@ -223,7 +224,7 @@ public class Plateau {
 		if(this.plateau[x][y] != null){
 			return false;
 		}
-		if(this.plateauTerrain[x][y]){
+		if(!this.plateauTerrain[x][y]){
 			return false;
 		}
 		
@@ -247,7 +248,7 @@ public class Plateau {
 		int y = ppos.getY();
 		TuileCivilisation tuileCivilisation;
 		
-		if(x-1>=0 || x-1<=15){
+		if(x-1>=0 && x-1<=15){
 			if(this.plateau[x-1][y] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
 				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
@@ -255,14 +256,14 @@ public class Plateau {
 			}
 		}
 		
-		if(x+1<=15 || x+1>=0){
+		if(x+1<=15 && x+1>=0){
 			if(this.plateau[x+1][y] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
 				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
 					return true;
 			}
 		}
-		if(y-1>=0 || y-1<=11){
+		if(y-1>=0 && y-1<=11){
 			if(this.plateau[x][y-1] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
 				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
@@ -270,7 +271,7 @@ public class Plateau {
 			}
 		}
 		
-		if(y+1<=11 || y+1>=0){
+		if(y+1<=11 && y+1>=0){
 			if(this.plateau[x][y+1] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
 				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
