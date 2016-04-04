@@ -2,6 +2,7 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 
 /**
  * Class représentant un chef. Un chef peut etre placé, déplacé ou retiré
@@ -39,7 +40,11 @@ public class Chef extends Placable{
 	 * ou dans le deck ( True )
 	 */
 	private boolean retiree;
-
+	
+	/**
+	 * Territoire dans lequel le chef se trouve
+	 */
+	private Territoire territoire;
 
 	/**
 	 * Constructeur d'un chef
@@ -53,6 +58,7 @@ public class Chef extends Placable{
 		this.dynastie = pjoueur.getDynastie();
 		this.puissance = 0;
 		this.retiree = true;
+		this.territoire = null;
 		this.id = Placable.idIncrement++;
 	}
 
@@ -66,6 +72,7 @@ public class Chef extends Placable{
 		this.dynastie = null;
 		this.puissance = 0;
 		this.retiree = true;
+		this.territoire = null;
 		this.id = Placable.idIncrement++;
 	}
 
@@ -133,6 +140,21 @@ public class Chef extends Placable{
 	public void setRetiree(boolean retiree) {
 		this.retiree = retiree;
 	}
+
+	/**
+	 * @return the territoire
+	 */
+	public Territoire getTerritoire() {
+		return territoire;
+	}
+
+	/**
+	 * @param pterritoire the territoire to set
+	 */
+	public void setTerritoire(Territoire pterritoire) {
+		this.territoire = pterritoire;
+	}
+	
 
 
 
