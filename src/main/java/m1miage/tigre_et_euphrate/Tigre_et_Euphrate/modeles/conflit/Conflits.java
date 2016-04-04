@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
 public class Conflits {
 
@@ -47,6 +48,11 @@ public class Conflits {
 	 * Liste des tuiles ajoutées en renforts par le défenseur
 	 */
 	private ArrayList<TuileRenfort> listeTuileRenfortDefenseur;
+
+	/**
+	 * Type du conflit "E" ou "I"
+	 */
+	private String typeConflit;
 
 	/**
 	 * Constructeur vide
@@ -206,6 +212,22 @@ public class Conflits {
 	}
 
 	/**
+	 * getter du type de conflit
+	 * @return type du conflit
+	 */
+	public String getTypeConflit() {
+		return typeConflit;
+	}
+
+	/**
+	 * setter du type de conflit
+	 * @param typeConflit
+	 */
+	public void setTypeConflit(String typeConflit) {
+		this.typeConflit = typeConflit;
+	}
+
+	/**
 	 * Fonction qui retourne le chef gagnant d'Un conflit et l'indique comme résolu. Retire le chef du plateau
 	 * @return le chef gagnant du conflit
 	 */
@@ -214,21 +236,39 @@ public class Conflits {
 		int nbTuileCivilisationDefenseur = 0;
 		int nbTuileCivilisationAttaquant = 0;
 
-		for(int i = 0; i < this.getTerritoireDefenseur().getTuilesCivilisation().size(); i++)
-		{
-			TuileCivilisation tuileDefenseur = (TuileCivilisation) this.getTerritoireDefenseur().getTuilesCivilisation().get(i);
-			if(tuileDefenseur.getType().getCouleur().equals(this.getChefDefenseur().getTypeChef().getCouleur()))
-			{
-				nbTuileCivilisationDefenseur++;
-			}
-		}
-
 		if(this.getTerritoireAttaquant() != null)
 		{
+			for(int i = 0; i < this.getTerritoireDefenseur().getTuilesCivilisation().size(); i++)
+			{
+				TuileCivilisation tuileDefenseur = (TuileCivilisation) this.getTerritoireDefenseur().getTuilesCivilisation().get(i);
+				if(tuileDefenseur.getType().getCouleur().equals(this.getChefDefenseur().getTypeChef().getCouleur()))
+				{
+					nbTuileCivilisationDefenseur++;
+				}
+			}
+
 			for(int i = 0; i < this.getTerritoireAttaquant().getTuilesCivilisation().size(); i++)
 			{
 				TuileCivilisation tuileAttaquant = (TuileCivilisation) this.getTerritoireAttaquant().getTuilesCivilisation().get(i);
 				if(tuileAttaquant.getType().getCouleur().equals(this.getChefAttaquant().getTypeChef().getCouleur()))
+				{
+					nbTuileCivilisationAttaquant++;
+				}
+			}
+		} else {
+			for(int i = 0; i < this.getTerritoireDefenseur().getTuilesCivilisation().size(); i++)
+			{
+				TuileCivilisation tuileAdjacente = this.getTerritoireDefenseur().getTuilesCivilisation().get(i);
+				if(this.getChefDefenseur().estAdjacent(tuileAdjacente) && tuileAdjacente.getType().equals(TypeTuileCivilisation.Temple))
+				{
+					nbTuileCivilisationDefenseur++;
+				}
+			}
+
+			for(int i = 0; i < this.getTerritoireDefenseur().getTuilesCivilisation().size(); i++)
+			{
+				TuileCivilisation tuileAdjacente = this.getTerritoireDefenseur().getTuilesCivilisation().get(i);
+				if(this.getChefAttaquant().estAdjacent(tuileAdjacente) && tuileAdjacente.getType().equals(TypeTuileCivilisation.Temple))
 				{
 					nbTuileCivilisationAttaquant++;
 				}
@@ -252,12 +292,24 @@ public class Conflits {
 
 	public boolean ajoutRenfort(ArrayList<TuileRenfort> listeTuileRenfort, TuileRenfort tuileRenfort)
 	{
-		if(tuileRenfort.getTuileCorrespondante().getType().getCouleur().equals(this.chefAttaquant.getTypeChef().getCouleur()))
+		if(this.typeConflit.equals("E"))
 		{
-			listeTuileRenfort.add(tuileRenfort);
-			return true;
-		} else {
-			return false;
+			if(tuileRenfort.getTuileCorrespondante().getType().getCouleur().equals(this.chefAttaquant.getTypeChef().getCouleur()))
+			{
+				listeTuileRenfort.add(tuileRenfort);
+				return true;
+			} else {
+				return false;
+			}
+		} else
+		{
+			if(tuileRenfort.getTuileCorrespondante().getType().equals(TypeTuileCivilisation.Temple))
+			{
+				listeTuileRenfort.add(tuileRenfort);
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 }

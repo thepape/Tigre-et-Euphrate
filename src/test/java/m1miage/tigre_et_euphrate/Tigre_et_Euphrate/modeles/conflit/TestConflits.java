@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
@@ -25,10 +27,13 @@ public class TestConflits {
 		ArrayList<TuileRenfort> listeRenfortDefenseur = new ArrayList<TuileRenfort>();
 		Chef chefAttaquant = new Chef(TypeChef.Fermier, new Joueur());
 		Chef chefDefenseur = new Chef(TypeChef.Fermier, new Joueur());
+		chefDefenseur.setPosition(new Position(2,2));
+		chefAttaquant.setPosition(new Position(4,2));
 		ArrayList<TuileCivilisation> listeTuileTerritoireAttaquant = new ArrayList<TuileCivilisation>();
 		ArrayList<TuileCivilisation> listeTuileTerritoireDefenseur = new ArrayList<TuileCivilisation>();
 		ArrayList<Chef> listeChefTerritoireAttaquant = new ArrayList<Chef>();
 		ArrayList<Chef> listeChefTerritoireDefenseur = new ArrayList<Chef>();
+
 
 		//Initialisation du Territoire Defenseur
 		TuileCivilisation tuile1Defenseur = new TuileCivilisation(TypeTuileCivilisation.Ferme);
@@ -37,12 +42,24 @@ public class TestConflits {
 		TuileCivilisation tuile4Defenseur = new TuileCivilisation(TypeTuileCivilisation.Temple);
 		TuileCivilisation tuile5Defenseur = new TuileCivilisation(TypeTuileCivilisation.Ferme);
 		TuileCivilisation tuile6Defenseur = new TuileCivilisation(TypeTuileCivilisation.Ferme);
+		TuileCivilisation tuile7Defenseur = new TuileCivilisation(TypeTuileCivilisation.Temple);
+		TuileCivilisation tuile8Defenseur = new TuileCivilisation(TypeTuileCivilisation.Temple);
+		tuile1Defenseur.setPosition(new Position(1,1));
+		tuile2Defenseur.setPosition(new Position(1,2));
+		tuile3Defenseur.setPosition(new Position(1,3));
+		tuile4Defenseur.setPosition(new Position(2,1));
+		tuile5Defenseur.setPosition(new Position(3,3));
+		tuile6Defenseur.setPosition(new Position(3,1));
+		tuile7Defenseur.setPosition(new Position(3,2));
+		tuile8Defenseur.setPosition(new Position(2,3));
 		listeTuileTerritoireDefenseur.add(tuile1Defenseur);
 		listeTuileTerritoireDefenseur.add(tuile2Defenseur);
 		listeTuileTerritoireDefenseur.add(tuile3Defenseur);
 		listeTuileTerritoireDefenseur.add(tuile4Defenseur);
 		listeTuileTerritoireDefenseur.add(tuile5Defenseur);
 		listeTuileTerritoireDefenseur.add(tuile6Defenseur);
+		listeTuileTerritoireDefenseur.add(tuile7Defenseur);
+		listeTuileTerritoireDefenseur.add(tuile8Defenseur);
 		listeChefTerritoireDefenseur.add(chefDefenseur);
 		Territoire territoireDefenseur = new Territoire();
 		territoireDefenseur.setChefs(listeChefTerritoireDefenseur);
@@ -70,6 +87,7 @@ public class TestConflits {
 		conflit = new Conflits(chefAttaquant, chefDefenseur, territoireDefenseur, territoireAttaquant);
 		conflit.setListeTuileRenfortAttaquant(listeRenfortAttaquant);
 		conflit.setListeTuileRenfortDefenseur(listeRenfortDefenseur);
+		conflit.setTypeConflit("E");
 	}
 
 	/**
@@ -88,6 +106,30 @@ public class TestConflits {
 		TuileRenfort tuileRenfort = new TuileRenfort(new TuileCivilisation(TypeTuileCivilisation.Ferme));
 		assertTrue(conflit.ajoutRenfort(conflit.getListeTuileRenfortAttaquant(), tuileRenfort));
 		assertEquals(conflit.getListeTuileRenfortAttaquant().size(), 1);
+
+	}
+
+	/**
+	 * Test de l'ajout de renfort de type Temple pour un conflit interne
+	 */
+	@Test
+	public void testAjoutRenfortConflitInterneTemple() {
+		conflit.setTypeConflit("I");
+		TuileRenfort tuileRenfort = new TuileRenfort(new TuileCivilisation(TypeTuileCivilisation.Temple));
+		assertTrue(conflit.ajoutRenfort(conflit.getListeTuileRenfortAttaquant(), tuileRenfort));
+		assertEquals(conflit.getListeTuileRenfortAttaquant().size(), 1);
+
+	}
+
+	/**
+	 * Test de l'ajout de renfort de type différent de temple pour un conflit interne
+	 */
+	@Test
+	public void testAjoutRenfortConflitInterneDiffTemple() {
+		conflit.setTypeConflit("I");
+		TuileRenfort tuileRenfort = new TuileRenfort(new TuileCivilisation(TypeTuileCivilisation.Ferme));
+		assertFalse(conflit.ajoutRenfort(conflit.getListeTuileRenfortAttaquant(), tuileRenfort));
+		assertEquals(conflit.getListeTuileRenfortAttaquant().size(), 0);
 
 	}
 
@@ -205,10 +247,11 @@ public class TestConflits {
 	{
 		conflit.setTerritoireAttaquant(null);
 
-		TuileRenfort tuile3AttaquantRenfort = new TuileRenfort(new TuileCivilisation(TypeTuileCivilisation.Ferme));
-		TuileRenfort tuile4AttaquantRenfort = new TuileRenfort(new TuileCivilisation(TypeTuileCivilisation.Ferme));
-		TuileRenfort tuile5AttaquantRenfort = new TuileRenfort(new TuileCivilisation(TypeTuileCivilisation.Ferme));
-		TuileRenfort tuile6AttaquantRenfort = new TuileRenfort(new TuileCivilisation(TypeTuileCivilisation.Ferme));
+		TuileRenfort tuile3AttaquantRenfort = new TuileRenfort(new TuileCivilisation(TypeTuileCivilisation.Temple));
+		TuileRenfort tuile4AttaquantRenfort = new TuileRenfort(new TuileCivilisation(TypeTuileCivilisation.Temple));
+		TuileRenfort tuile5AttaquantRenfort = new TuileRenfort(new TuileCivilisation(TypeTuileCivilisation.Temple));
+		TuileRenfort tuile6AttaquantRenfort = new TuileRenfort(new TuileCivilisation(TypeTuileCivilisation.Temple));
+		conflit.setTypeConflit("I");
 		conflit.ajoutRenfort(conflit.getListeTuileRenfortAttaquant(), tuile3AttaquantRenfort);
 		conflit.ajoutRenfort(conflit.getListeTuileRenfortAttaquant(), tuile4AttaquantRenfort);
 		conflit.ajoutRenfort(conflit.getListeTuileRenfortAttaquant(), tuile5AttaquantRenfort);

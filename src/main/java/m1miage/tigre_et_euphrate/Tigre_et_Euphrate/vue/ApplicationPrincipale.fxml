@@ -8,9 +8,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane prefHeight="2000.0" prefWidth="2000.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane onDragOver="#dragOverTableau" prefHeight="2000.0" prefWidth="2000.0" stylesheets="@StyleSheet.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue.ControleurPlateau">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -32,7 +33,7 @@
       </MenuBar>
    </top>
    <center>
-      <GridPane gridLinesVisible="true" maxHeight="550.0" maxWidth="800.0" minHeight="550.0" minWidth="800.0" prefHeight="550.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+      <GridPane fx:id="plateau" gridLinesVisible="true" maxHeight="550.0" maxWidth="800.0" minHeight="550.0" minWidth="800.0" prefHeight="550.0" prefWidth="800.0" translateX="70.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -65,12 +66,466 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ImageView fitHeight="550.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" translateY="250.0">
+            <ImageView fitHeight="550.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" translateY="250.0" x="10.0">
                <image>
                   <Image url="@plateau_800x550.png" />
                </image>
             </ImageView>
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <ImageView fitHeight="49.0" fitWidth="65.0" layoutX="-48.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" x="50.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="49.0" fitWidth="60.0" layoutX="2.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@tresor.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <children>
+                  <ImageView fitHeight="49.0" fitWidth="65.0" layoutX="-48.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" x="50.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="49.0" fitWidth="60.0" layoutX="2.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@tresor.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="0" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="0" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="0" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="0">
+            <children>
+                  <ImageView fitHeight="49.0" fitWidth="65.0" layoutX="-48.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" x="50.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="49.0" fitWidth="60.0" layoutX="2.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@tresor.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="10" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="8" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="9" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="10" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
+            <children>
+                  <ImageView fitHeight="49.0" fitWidth="65.0" layoutX="-48.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" x="50.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="49.0" fitWidth="60.0" layoutX="2.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@tresor.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="6" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="7" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="8" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="9">
+            <children>
+                  <ImageView fitHeight="49.0" fitWidth="65.0" layoutX="-48.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" x="50.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="49.0" fitWidth="60.0" layoutX="2.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@tresor.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="10" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="6" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="7" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="8" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="9" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="10" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="4" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="6" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="7" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="8" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="9" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="10" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="1" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="4" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="6">
+            <children>
+                  <ImageView fitHeight="49.0" fitWidth="65.0" layoutX="-48.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" x="50.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="49.0" fitWidth="60.0" layoutX="2.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@tresor.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="7" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="8" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="9" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="10" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="1" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="4" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="6" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="7" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="8" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="9" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="10" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="1" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="4" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="6" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="7" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="8" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="9" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="10">
+            <children>
+                  <ImageView fitHeight="49.0" fitWidth="65.0" layoutX="-48.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" x="50.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="49.0" fitWidth="60.0" layoutX="2.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@tresor.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="1" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="4" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="6" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="7" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="8" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="9" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="10" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="12" GridPane.rowIndex="1" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="12" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="12" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="12" GridPane.rowIndex="4" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="12" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="12" GridPane.rowIndex="6" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="12" GridPane.rowIndex="7" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="12" GridPane.rowIndex="8" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="12" GridPane.rowIndex="9" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="12" GridPane.rowIndex="10" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="13" GridPane.rowIndex="1" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="13" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="13" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="13" GridPane.rowIndex="4">
+            <children>
+                  <ImageView fitHeight="49.0" fitWidth="65.0" layoutX="-48.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" x="50.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="49.0" fitWidth="60.0" layoutX="2.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@tresor.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="13" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="13" GridPane.rowIndex="6" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="13" GridPane.rowIndex="7" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="13" GridPane.rowIndex="8" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="13" GridPane.rowIndex="9" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="13" GridPane.rowIndex="10" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="14" GridPane.rowIndex="1" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="14" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="14" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="14" GridPane.rowIndex="4" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="14" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="14" GridPane.rowIndex="6" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="14" GridPane.rowIndex="7" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="14" GridPane.rowIndex="8">
+            <children>
+                  <ImageView fitHeight="49.0" fitWidth="65.0" layoutX="-48.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" x="50.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="49.0" fitWidth="60.0" layoutX="2.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@tresor.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="14" GridPane.rowIndex="9" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="14" GridPane.rowIndex="10" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="1">
+            <children>
+                  <ImageView fitHeight="49.0" fitWidth="65.0" layoutX="-48.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" x="50.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="49.0" fitWidth="60.0" layoutX="2.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@tresor.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="2" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="3" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="4" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="5" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="6" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="7" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="8" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="9" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="10" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" />
          </children>
       </GridPane>
    </center>
+   <bottom>
+
+   </bottom>
+   <right>
+      <GridPane fx:id="deckPublic" onDragOver="#dragOverTableau" prefHeight="1568.0" prefWidth="185.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0">
+                     <image>
+                        <Image url="@lanister_bleu.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+               <children>
+                  <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0">
+                     <image>
+                        <Image url="@lanister_jaune.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+               <children>
+                  <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0">
+                     <image>
+                        <Image url="@lanister_rouge.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+               <children>
+                  <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0">
+                     <image>
+                        <Image url="@lanister_vert.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </GridPane>
+   </right>
+   <bottom>
+      <GridPane fx:id="deckPrive" onDragOver="#dragOverTableau" prefHeight="157.0" prefWidth="2000.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+               <children>
+                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
+               <children>
+                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
+               <children>
+                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5">
+               <children>
+                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6">
+               <children>
+                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7">
+               <children>
+                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
+                     <image>
+                        <Image url="@tuile_temple.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10">
+               <children>
+                  <ImageView accessibleText="tuileCatastrophe" fitHeight="125.0" fitWidth="80.0" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
+                     <image>
+                        <Image url="@tuile_catastrophe.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11">
+               <children>
+                  <ImageView accessibleText="tuileCatastrophe" fitHeight="125.0" fitWidth="80.0" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
+                     <image>
+                        <Image url="@tuile_catastrophe.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </GridPane>
+   </bottom>
 </BorderPane>

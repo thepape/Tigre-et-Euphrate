@@ -31,6 +31,9 @@ public class MainApp extends Application {
             loader.setLocation(MainApp.class.getResource("ApplicationPrincipale.fxml"));
             rootLayout = (BorderPane) loader.load();
 
+            ControleurPlateau controleurPlateau = loader.getController();
+            controleurPlateau.setMainApp(this);
+
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
 
