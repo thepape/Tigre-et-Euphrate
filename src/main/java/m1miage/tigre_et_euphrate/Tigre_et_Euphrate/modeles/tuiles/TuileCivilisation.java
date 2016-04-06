@@ -171,4 +171,15 @@ public class TuileCivilisation extends Tuile {
 	public void setTerritoire(Territoire pTerritoire){
 		this.territoire = pTerritoire;
 	}
+	
+	/**
+	 * Une tuilecivilisation est identique à une autre si elles ont le même type.
+	 */
+	public boolean equals(Object pO){
+		if(pO instanceof TuileCivilisation){
+			return this.estDeMemeType((TuileCivilisation) pO);
+		}
+		
+		return false;
+	}
 }
