@@ -125,6 +125,15 @@ public class Plateau {
 	public Placable[][] getPlateau() {
 		return plateau;
 	}
+	
+	/**
+	 * getter du placable à la position passée en paramètre
+	 * @param pPos
+	 * @return
+	 */
+	public Placable getPlacableAt(Position pPos){
+		return this.plateau[pPos.getX()][pPos.getY()];
+	}
 
 	/**
 	 * setter de plateau
