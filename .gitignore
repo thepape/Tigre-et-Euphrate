@@ -1,2 +1,3 @@
 # Ignorer les fichiers .class, on veut que les sources .java
 *.class
+*.class
