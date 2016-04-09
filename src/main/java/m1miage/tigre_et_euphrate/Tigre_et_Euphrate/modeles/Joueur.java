@@ -24,6 +24,16 @@ public class Joueur {
 	private DeckPublic deckPublic;
 	
 	/**
+	 * Nombre de point victoire du joueur
+	 */
+	private int PointVictoire;
+	
+	/**
+	 * Nombre de point tresor du joueur
+	 */
+	private int PointTresor;
+	
+	/**
 	 * Le deck public du joueur
 	 */
 	private DeckPrive deckPrive;
@@ -61,6 +71,8 @@ public class Joueur {
 		this.nom = pnom;
 		this.deckPublic = pdeckPublic;
 		this.deckPrive = pdeckPrive;
+		this.PointVictoire = 0;
+		this.PointTresor = 0;
 	}
 
 	/**
@@ -108,5 +120,27 @@ public class Joueur {
 		this.deckPrive = pdeckPrive;
 	}
 	
+	/**
+	 * getter du nom du joueur
+	 * @return le nom
+	 */
+	public String getNom(){
+		return this.nom;
+	}
 	
+	/**
+	 * getter des points victoire du joueur
+	 * @return points victoire du joueur
+	 */
+	public int getPointVictoire(){
+		return this.PointVictoire;
+	}
+	
+	/**
+	 * getter des points tresor du joueur
+	 * @return points tresor du joueur
+	 */
+	public int getPointTresor(){
+		return this.PointTresor;
+	}
 }
