@@ -133,7 +133,6 @@ public class Territoire {
 	 * Méthode pour supprimer un chef du royaume
 	 * @param pChef le chef à supprimer
 	 */
-	//TODO ajouter un set de isroyaume a false si pu de chef
 	public void deletChef(Chef pChef){
 		if(this.chefs.contains(pChef)){
 			int chefRemove = this.chefs.indexOf(pChef);
