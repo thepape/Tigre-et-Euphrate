@@ -14,7 +14,7 @@ public class TuileCivilisation extends Tuile {
 	 * Type de la tuile civilisation.
 	 */
 	private TypeTuileCivilisation type;
-	
+
 	/**
 	 * Définit si la tuile doit être placée sur une case d'eau.
 	 * Si non, elle doit être placée sur une case de terre.
@@ -35,7 +35,7 @@ public class TuileCivilisation extends Tuile {
 	 * Indique si la tuile est une tuile de jonction.
 	 */
 	private boolean estJonction;
-	
+
 	/**
 	 * Référence vers le territoire dans lequel se trouve la tuile.
 	 */
@@ -47,7 +47,7 @@ public class TuileCivilisation extends Tuile {
 	 */
 	public TuileCivilisation(TypeTuileCivilisation pType){
 		this.tresor = null;
-		this.type = pType.clone();	//clone pour eviter le couplage au maximum entre les objets.
+		this.type = pType;	//clone pour eviter le couplage au maximum entre les objets.
 		this.monument = null;
 		this.id = Placable.idIncrement++;
 		this.territoire = null;
@@ -146,7 +146,7 @@ public class TuileCivilisation extends Tuile {
 		this.tresor = null;
 		return rep;
 	}
-	
+
 	/**
 	 * Indique si cette tuile est une tuile à placer sur une case d'eau.
 	 * @return vrai si la tuile doit être placée sur une case d'eau.
@@ -154,7 +154,7 @@ public class TuileCivilisation extends Tuile {
 	public boolean estTuileEau(){
 		return this.tuileEau;
 	}
-	
+
 	/**
 	 * verifie si deux tuiles ont le meme type
 	 * @param pTuile
@@ -163,15 +163,15 @@ public class TuileCivilisation extends Tuile {
 	public boolean estDeMemeType(TuileCivilisation pTuile){
 		return this.type.equals(pTuile.type);
 	}
-	
+
 	public Territoire getTerritoire(){
 		return this.territoire;
 	}
-	
+
 	public void setTerritoire(Territoire pTerritoire){
 		this.territoire = pTerritoire;
 	}
-	
+
 	/**
 	 * Une tuilecivilisation est identique à une autre si elles ont le même type.
 	 */
@@ -179,7 +179,7 @@ public class TuileCivilisation extends Tuile {
 		if(pO instanceof TuileCivilisation){
 			return this.estDeMemeType((TuileCivilisation) pO);
 		}
-		
+
 		return false;
 	}
 }

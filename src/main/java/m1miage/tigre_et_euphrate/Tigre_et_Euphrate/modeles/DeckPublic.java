@@ -11,9 +11,9 @@ public class DeckPublic extends Deck{
 	 * Liste des chefs et des tuiles catastrophes contenu dans le deck : Deck Public
 	 */
 	private ArrayList<Placable> deckPublic;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public DeckPublic() {
 		super();
@@ -31,6 +31,22 @@ public class DeckPublic extends Deck{
 	}
 
 	/**
+	 * getter du deck public
+	 * @return deckPublic
+	 */
+	public ArrayList<Placable> getDeckPublic() {
+		return deckPublic;
+	}
+
+	/**
+	 * setter du deck public
+	 * @param deckPublic
+	 */
+	public void setDeckPublic(ArrayList<Placable> pDeckPublic) {
+		this.deckPublic = pDeckPublic;
+	}
+
+	/**
 	 * Méthode pour ajouter un chef ou une tuile catastrophe dans le deckPublic
 	 * @param l'objet placable
 	 * @return vrai ou faux
@@ -42,7 +58,7 @@ public class DeckPublic extends Deck{
 			return this.deckPublic.add((TuileCatastrophe)pobj);
 		return false;
 	}
-	
+
 	/**
 	 * Méthode pour supprimer un chef ou une tuile catastrophe du deck public
 	 * @param l'objet placable
@@ -55,7 +71,7 @@ public class DeckPublic extends Deck{
 			return this.deckPublic.remove((Chef)pobj);
 		return false;
 	}
-	
+
 	/*public static void main(String[] args) {
 		DeckPublic deck = new DeckPublic();
 		System.out.println(deck.ajouter(new TuileCatastrophe()));

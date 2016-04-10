@@ -26,12 +26,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Box;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Pioche;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
 public class ControleurPlateau {
 
 	private static Pane imageEnDragAndDropChef = null;
 	private static Pane imageEnDragAndDropTuile = null;
+
 	/**
 	 * GridPane qui représente le plateau de jeu
 	 */
@@ -57,15 +61,7 @@ public class ControleurPlateau {
 
 	private MainApp mainApp;
 
-	/**
-	 * Partie en cours
-	 */
-	private Partie partie;
 
-	/**
-	 * Joueur traité
-	 */
-	private Joueur joueur;
 
 	/**
 	 * getter de l'application
@@ -76,10 +72,37 @@ public class ControleurPlateau {
 	}
 
 	/**
-	 * setter de l'application
+	 * setter de l'application. Initialise tous les champs de l'interface avec les données du joueur traité
 	 * @param mainApp
 	 */
 	public void setMainApp(MainApp mainApp) {
+
+		// Création aléatoire du deck privé du joueur
+		/*for(int i = 0; i < 6; i++)
+		{
+			joueur.getDeckPrive().ajouter(this.partie.getPioche().piocherTuile());
+		}*/
+
+		// Initialisation de l'interface du deck privé
+		for(int i = 0; i < mainApp.getListeJoueur().get(0).getDeckPrive().getDeckPrive().size(); i++)
+		{
+			Pane pane = (Pane) deckPrive.getChildren().get(i);
+			ImageView imageView = (ImageView) pane.getChildren().get(0);
+			String urlImage = getClass().getResource(mainApp.getListeJoueur().get(0).getDeckPrive().getDeckPrive().get(i).getType().getUrlImage()).toExternalForm();
+			Image image = new Image(urlImage);
+			imageView.setImage(image);
+		}
+
+		// Initialisation de l'interface du deck public
+		for(int i = 0; i < mainApp.getListeJoueur().get(0).getDeckPublic().getDeckPublic().size(); i++)
+		{
+			Pane pane = (Pane) deckPublic.getChildren().get(i);
+			ImageView imageView = (ImageView) pane.getChildren().get(0);
+			Chef chef = (Chef) mainApp.getListeJoueur().get(0).getDeckPublic().getDeckPublic().get(i);
+			String urlImage = getClass().getResource(mainApp.getListeJoueur().get(0).getDynastie().getNom().toLowerCase() + "_" + chef.getTypeChef().getFinUrlImage()).toExternalForm();
+			Image image = new Image(urlImage);
+			imageView.setImage(image);
+		}
 		this.mainApp = mainApp;
 	}
 
@@ -88,22 +111,6 @@ public class ControleurPlateau {
 	 */
 	public ControleurPlateau()
 	{
-	}
-
-	/**
-	 * getter de la partie en cours
-	 * @return partie
-	 */
-	public Partie getPartie() {
-		return partie;
-	}
-
-	/**
-	 * setter de la partie en cours
-	 * @param partie
-	 */
-	public void setPartie(Partie partie) {
-		this.partie = partie;
 	}
 
 	/**
@@ -238,7 +245,7 @@ public class ControleurPlateau {
 	}
 
 	/**
-	 * Fonction générale pour toutes les tuiles des decks. Cette fonction permet de drop sur le plateau de jeu une tuile que l'on a drag antérieurement. Elle dimensionne
+	 * Fonction générale pour toutes les tuiles des decks. Cette fonction permet de drop sur le deck une tuile que l'on a drag depuis le plateau. Elle dimensionne
 	 * la visualition des tuiles en fonction des tuiles et du deck dans lequel l'utilisateur drop.
 	 * @param DragEvent event
 	 */

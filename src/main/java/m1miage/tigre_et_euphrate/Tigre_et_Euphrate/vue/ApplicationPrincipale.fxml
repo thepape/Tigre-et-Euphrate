@@ -373,6 +373,26 @@
             <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="9" />
             <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="10" />
             <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" />
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="12">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-86.0" layoutY="-61.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="13">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-64.0" layoutY="-61.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="14">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-75.0" layoutY="-50.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-75.0" layoutY="-39.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
          </children>
       </GridPane>
    </center>
@@ -393,38 +413,22 @@
          <children>
             <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0">
-                     <image>
-                        <Image url="@lanister_bleu.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0" />
                </children>
             </Pane>
             <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                <children>
-                  <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0">
-                     <image>
-                        <Image url="@lanister_jaune.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0" />
                </children>
             </Pane>
             <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                <children>
-                  <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0">
-                     <image>
-                        <Image url="@lanister_rouge.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0" />
                </children>
             </Pane>
             <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
                <children>
-                  <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0">
-                     <image>
-                        <Image url="@lanister_vert.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0" />
                </children>
             </Pane>
          </children>
@@ -455,56 +459,32 @@
          <children>
             <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
-                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
-                     <image>
-                        <Image url="@tuile_temple.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0" />
                </children>
             </Pane>
             <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
                <children>
-                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
-                     <image>
-                        <Image url="@tuile_temple.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0" />
                </children>
             </Pane>
             <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
                <children>
-                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
-                     <image>
-                        <Image url="@tuile_temple.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0" />
                </children>
             </Pane>
             <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5">
                <children>
-                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
-                     <image>
-                        <Image url="@tuile_temple.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0" />
                </children>
             </Pane>
             <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6">
                <children>
-                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
-                     <image>
-                        <Image url="@tuile_temple.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0" />
                </children>
             </Pane>
             <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7">
                <children>
-                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
-                     <image>
-                        <Image url="@tuile_temple.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0" />
                </children>
             </Pane>
             <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10">

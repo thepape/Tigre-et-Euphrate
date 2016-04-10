@@ -40,7 +40,7 @@ public class Chef extends Placable{
 	 * ou dans le deck ( True )
 	 */
 	private boolean retiree;
-	
+
 	/**
 	 * Territoire dans lequel le chef se trouve
 	 */
@@ -53,7 +53,7 @@ public class Chef extends Placable{
 	 */
 	public Chef(TypeChef ptypeChef, Joueur pjoueur) {
 		super();
-		this.typeChef = ptypeChef.clone(); //clone pour eviter le couplage
+		this.typeChef = ptypeChef; //clone pour eviter le couplage
 		this.joueur = pjoueur;
 		this.dynastie = pjoueur.getDynastie();
 		this.puissance = 0;
@@ -61,6 +61,16 @@ public class Chef extends Placable{
 		this.territoire = null;
 		this.id = Placable.idIncrement++;
 	}
+
+	/**
+	 * Constructeur d'un chef seulement par son typeChef
+	 * @param typeChef
+	 */
+	public Chef(TypeChef typeChef) {
+		super();
+		this.typeChef = typeChef;
+	}
+
 
 	/**
 	 * Constructeur vide
@@ -154,7 +164,7 @@ public class Chef extends Placable{
 	public void setTerritoire(Territoire pterritoire) {
 		this.territoire = pterritoire;
 	}
-	
+
 
 
 
