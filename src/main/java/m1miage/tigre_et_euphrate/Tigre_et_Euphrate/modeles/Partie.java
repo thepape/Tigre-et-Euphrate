@@ -1,41 +1,50 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 
 /**
  * Classe representant une partie
  *
  */
-public class Partie implements PartieInterface{
+public class Partie extends UnicastRemoteObject implements PartieInterface{
 
 	/**
 	 * Le plateau de jeu des joueurs
 	 */
 	private Plateau plateauJeu;
-	
+
 	/**
 	 * La liste des joueurs jouant la partie
 	 */
-	private ArrayList<Partie> listePartie;
-	
+	private ArrayList<PartieInterface> listePartie = new ArrayList<PartieInterface>();
+
 	/**
 	 * Un joueur plutot beau gosse (ou pas)
 	 */
 	private Joueur joueur;
-	
+
 	/**
 	 * La pioche
 	 */
 	private Pioche pioche;
-	
-	
+
+	/**
+	 * Constructeur vide d'une partie
+	 */
+	public Partie() throws RemoteException{
+
+	}
+
 	/**
 	 * Constructeur simple d'une partie
 	 * @param pPlateauJeu plateau du jeu
 	 * @param plistejoueur liste des parties
 	 */
-	public Partie(Plateau pPlateauJeu, ArrayList<Partie> plistepartie, Pioche pPioche){
+	public Partie(Plateau pPlateauJeu, ArrayList<PartieInterface> plistepartie, Pioche pPioche) throws RemoteException {
 		this.plateauJeu = pPlateauJeu;
 		this.listePartie = plistepartie;
 		this.pioche = pPioche;
@@ -61,7 +70,7 @@ public class Partie implements PartieInterface{
 	 * getter de la liste des parties de la game (désolé anglais)
 	 * @return
 	 */
-	public ArrayList<Partie> getListePartie() {
+	public ArrayList<PartieInterface> getListePartie() {
 		return listePartie;
 	}
 
@@ -69,7 +78,7 @@ public class Partie implements PartieInterface{
 	 * setter de la liste des parties
 	 * @param listePartie
 	 */
-	public void setListeJoueur(ArrayList<Partie> listePartie) {
+	public void setListeJoueur(ArrayList<PartieInterface> listePartie) {
 		this.listePartie = listePartie;
 	}
 
@@ -114,5 +123,36 @@ public class Partie implements PartieInterface{
 	public DeckPublic getDeckPublic() throws RemoteException {
 		return joueur.getDeckPublic();
 	}
-	
+
+	public void ajouterAdversaire(PartieInterface adversaire) throws RemoteException {
+		if(this.listePartie.size() < 4)
+		{
+			this.listePartie.add(adversaire);
+		}
+	}
+
+	/**
+	 * getter du joueur
+	 */
+	public Joueur getJoueur()
+	{
+		return this.joueur;
+	}
+
+	/**
+	 * setter du joueur
+	 */
+	public void setJoueur(Joueur joueur) {
+		this.joueur = joueur;
+	}
+
+	public DeckPrive getDeckPrive() throws RemoteException {
+		return this.joueur.getDeckPrive();
+	}
+
+	public Dynastie getDynastie() throws RemoteException {
+		return this.joueur.getDynastie();
+	}
+
+
 }

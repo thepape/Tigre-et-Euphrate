@@ -1,5 +1,9 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.util.Arrays;
 
 import com.sun.prism.paint.Color;
@@ -26,6 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Box;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Pioche;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
@@ -59,7 +64,7 @@ public class ControleurPlateau {
 	 * Application principale
 	 */
 
-	private MainApp mainApp;
+	private App mainApp;
 
 
 
@@ -67,7 +72,7 @@ public class ControleurPlateau {
 	 * getter de l'application
 	 * @return l'application
 	 */
-	public MainApp getMainApp() {
+	public App getMainApp() {
 		return mainApp;
 	}
 
@@ -75,7 +80,7 @@ public class ControleurPlateau {
 	 * setter de l'application. Initialise tous les champs de l'interface avec les données du joueur traité
 	 * @param mainApp
 	 */
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(App mainApp) {
 
 		// Création aléatoire du deck privé du joueur
 		/*for(int i = 0; i < 6; i++)
@@ -84,24 +89,31 @@ public class ControleurPlateau {
 		}*/
 
 		// Initialisation de l'interface du deck privé
-		for(int i = 0; i < mainApp.getListeJoueur().get(0).getDeckPrive().getDeckPrive().size(); i++)
+		try
 		{
-			Pane pane = (Pane) deckPrive.getChildren().get(i);
-			ImageView imageView = (ImageView) pane.getChildren().get(0);
-			String urlImage = getClass().getResource(mainApp.getListeJoueur().get(0).getDeckPrive().getDeckPrive().get(i).getType().getUrlImage()).toExternalForm();
-			Image image = new Image(urlImage);
-			imageView.setImage(image);
-		}
 
-		// Initialisation de l'interface du deck public
-		for(int i = 0; i < mainApp.getListeJoueur().get(0).getDeckPublic().getDeckPublic().size(); i++)
+			for(int i = 0; i < mainApp.getListeJoueur().get(0).getDeckPrive().getDeckPrive().size(); i++)
+			{
+				Pane pane = (Pane) deckPrive.getChildren().get(i);
+				ImageView imageView = (ImageView) pane.getChildren().get(0);
+				String urlImage = getClass().getResource(mainApp.getListeJoueur().get(0).getDeckPrive().getDeckPrive().get(i).getType().getUrlImage()).toExternalForm();
+				Image image = new Image(urlImage);
+				imageView.setImage(image);
+			}
+
+			// Initialisation de l'interface du deck public
+			for(int i = 0; i < mainApp.getListeJoueur().get(0).getDeckPublic().getDeckPublic().size(); i++)
+			{
+				Pane pane = (Pane) deckPublic.getChildren().get(i);
+				ImageView imageView = (ImageView) pane.getChildren().get(0);
+				Chef chef = (Chef) mainApp.getListeJoueur().get(0).getDeckPublic().getDeckPublic().get(i);
+				String urlImage = getClass().getResource(mainApp.getListeJoueur().get(0).getDynastie().getNom().toLowerCase() + "_" + chef.getTypeChef().getFinUrlImage()).toExternalForm();
+				Image image = new Image(urlImage);
+				imageView.setImage(image);
+			}
+		} catch(RemoteException e)
 		{
-			Pane pane = (Pane) deckPublic.getChildren().get(i);
-			ImageView imageView = (ImageView) pane.getChildren().get(0);
-			Chef chef = (Chef) mainApp.getListeJoueur().get(0).getDeckPublic().getDeckPublic().get(i);
-			String urlImage = getClass().getResource(mainApp.getListeJoueur().get(0).getDynastie().getNom().toLowerCase() + "_" + chef.getTypeChef().getFinUrlImage()).toExternalForm();
-			Image image = new Image(urlImage);
-			imageView.setImage(image);
+			e.printStackTrace();
 		}
 		this.mainApp = mainApp;
 	}
@@ -119,6 +131,7 @@ public class ControleurPlateau {
 	@FXML
 	private void initialize()
 	{
+
 	}
 
 	/**

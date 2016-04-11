@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="200.0" maxWidth="400.0" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue.ControleurCreationPartie">
+   <center>
+      <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.0" BorderPane.alignment="CENTER" />
+   </center>
+   <top>
+      <Label text="En attente de connexions d'adversaire" translateY="50.0" BorderPane.alignment="CENTER" />
+   </top>
+</BorderPane>

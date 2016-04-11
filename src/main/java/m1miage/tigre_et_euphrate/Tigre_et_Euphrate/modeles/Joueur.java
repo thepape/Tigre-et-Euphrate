@@ -143,4 +143,14 @@ public class Joueur {
 	public int getPointTresor(){
 		return this.PointTresor;
 	}
+
+	/**
+	 * setter du nom du joueur
+	 * @param nom
+	 */
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+
 }

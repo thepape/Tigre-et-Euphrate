@@ -1,16 +1,17 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue;
 
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPrive;
@@ -24,8 +25,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
-
-public class MainApp extends Application implements App {
+public class MainAppClient extends Application implements App {
 
 	/**
 	 * Stage de l'interface
@@ -33,19 +33,19 @@ public class MainApp extends Application implements App {
 	private Stage primaryStage;
 
 	/**
-	 * Stage de la popUp d'attente
-	 */
-	private Stage popUpStage = new Stage();
-
-	/**
 	 * Vision principale de l'application
 	 */
     private BorderPane rootLayout;
 
     /**
-     * Liste des observables parties
+     * Liste contenant le joueur courant
      */
     private ObservableList<PartieInterface> joueur = FXCollections.observableArrayList();
+    //private ObservableList<Joueur> listeJoueur = FXCollections.observableArrayList();
+
+	public ObservableList<PartieInterface> getListeJoueur() {
+		return joueur;
+	}
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -89,6 +89,7 @@ public class MainApp extends Application implements App {
 	 */
 	public void initRootLayout() {
         try {
+        	primaryStage = new Stage();
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("ApplicationPrincipale.fxml"));
@@ -132,75 +133,25 @@ public class MainApp extends Application implements App {
 
             primaryStage.setScene(scene);
 
+            primaryStage.show();
+
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-	/**
-	 * Fonction affiche la PopUp d'attente de connexion
-	 */
-	public void afficherPopUpAttente()
+	public void cacherMenu()
 	{
-		try
-		{
-			FXMLLoader loader = new FXMLLoader();
-	        loader.setLocation(MainApp.class.getResource("FenetreAttenteConnection.fxml"));
-	        rootLayout = (BorderPane) loader.load();
-
-	        Scene scene = new Scene(rootLayout);
-
-	        popUpStage.setScene(scene);
-	        primaryStage.hide();
-	        popUpStage.show();
-
-	        ControleurCreationPartie controleur = loader.getController();
-	        controleur.setMainApp(this);
-		} catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+		this.primaryStage.hide();
 	}
 
-	/**
-	 * getter de la liste des observables joueurs
-	 * @return listeJoueur
-	 */
-	public ObservableList<PartieInterface> getListeJoueur() {
-		return joueur;
-	}
-
-	/**
-	 * setter de la liste des joueur
-	 * @param listeJoueur
-	 */
-	public void setListeJoueur(ObservableList<PartieInterface> listeJoueur) {
-		this.joueur = listeJoueur;
-	}
-
-
-	/**
-	 * getter de la primaryStage
-	 * @return primaryStage
-	 */
-	public Stage getPrimaryStage() {
-		return primaryStage;
-	}
-
-	/**
-	 * setter de la primaryStage
-	 * @param primaryStage
-	 */
-	public void setPrimaryStage(Stage primaryStage) {
-		this.primaryStage = primaryStage;
-	}
-
-	/**
-	 * Main qui lance le projet
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
+
+	public Stage getPrimaryStage() {
+		return this.primaryStage;
+	}
+
 }
