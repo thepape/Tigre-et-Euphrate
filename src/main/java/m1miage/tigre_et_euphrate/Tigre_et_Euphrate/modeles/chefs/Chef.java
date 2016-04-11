@@ -6,7 +6,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 
 /**
  * Class représentant un chef. Un chef peut etre placé, déplacé ou retiré
- * Il ne doit pas réunir deux royaumes !!!
+ * Il ne doit pas réunir deux royaumes !
  * @author jerome
  *
  */
