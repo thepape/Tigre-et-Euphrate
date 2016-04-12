@@ -50,6 +50,7 @@ public class ControleurFenetreAttente {
 
 		progressBar.progressProperty().bind(task.progressProperty());
 		Thread thread = new Thread(task);
+
 		thread.start();
 	}
 
