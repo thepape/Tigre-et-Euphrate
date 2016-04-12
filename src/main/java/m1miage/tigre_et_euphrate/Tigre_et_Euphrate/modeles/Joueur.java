@@ -1,12 +1,14 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
+import java.io.Serializable;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 
 /**
  * Classe representant un joueur
  *
  */
-public class Joueur {
+public class Joueur implements Serializable{
 
 	/**
 	 * Le nom du joueur
@@ -52,6 +54,8 @@ public class Joueur {
 	 * place dans le jeu par tour
 	 */
 	private int place;
+	
+	private boolean pret = false;
 
 	/**
 	 * Constructeur vide d'un joueur
@@ -152,5 +156,11 @@ public class Joueur {
 		this.nom = nom;
 	}
 
-
+	public void jeSuisPret(){
+		this.pret = true;
+	}
+	
+	public boolean estPret(){
+		return this.pret;
+	}
 }

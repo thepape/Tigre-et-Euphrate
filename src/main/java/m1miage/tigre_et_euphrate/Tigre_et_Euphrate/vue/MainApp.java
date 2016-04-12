@@ -5,10 +5,12 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -21,6 +23,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.*;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
@@ -45,12 +48,30 @@ public class MainApp extends Application implements App {
     /**
      * Liste des observables parties
      */
-    private ObservableList<PartieInterface> joueur = FXCollections.observableArrayList();
+    private ObservableList<PartieInterface> joueurs = FXCollections.observableArrayList();
 
+    /**
+     * instance de l'application en cours d'execution
+     */
+    private static MainApp instance;
+    
+    private Serveur serveur;
+    
+    private Client client;
+    
+    private FXMLLoader currentLoader;
+    /**
+     * retourne l'instance unique de l'application en cours d'execution
+     * @return
+     */
+    public static MainApp getInstance()
+	{
+		return MainApp.instance;
+	}
 
 	@Override
 	public void start(Stage primaryStage) {
-
+		MainApp.instance = this;
 		this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Tigre et Euphrate");
 
@@ -91,7 +112,7 @@ public class MainApp extends Application implements App {
         	try
     		{
         		popUpStage.hide();
-    			if(this.getListeJoueur().get(0).getListePartie().size() == 0)
+    			if(this.getListeJoueur().size() == 0)
     			{
     				this.afficherMenuDepart();
     			} else {
@@ -129,7 +150,7 @@ public class MainApp extends Application implements App {
 		    		Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
 		    		PartieInterface partie = (Partie) this.getListeJoueur().get(0);
 		    		partie.setJoueur(joueur);
-		    		this.joueur.add(partie);
+		    		this.joueurs.add(partie);
 
 
 		    		ControleurPlateau controleurPlateau = loader.getController();
@@ -180,7 +201,7 @@ public class MainApp extends Application implements App {
 	 * @return listeJoueur
 	 */
 	public ObservableList<PartieInterface> getListeJoueur() {
-		return joueur;
+		return joueurs;
 	}
 
 	/**
@@ -188,7 +209,7 @@ public class MainApp extends Application implements App {
 	 * @param listeJoueur
 	 */
 	public void setListeJoueur(ObservableList<PartieInterface> listeJoueur) {
-		this.joueur = listeJoueur;
+		this.joueurs = listeJoueur;
 	}
 
 
@@ -215,4 +236,81 @@ public class MainApp extends Application implements App {
 	public static void main(String[] args) {
 		launch(args);
 	}
+
+	public Serveur getServeur() {
+		return serveur;
+	}
+
+	public void setServeur(Serveur serveur) {
+		this.serveur = serveur;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+	
+	private Parent replaceSceneContent(String fxml) throws Exception
+	{
+		FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource(fxml));
+        
+		//FXMLLoader l = new FXMLLoader(getClass().getClassLoader().getResource(fxml));
+		this.currentLoader = loader;
+		Parent page = loader.load();
+		
+		
+        
+		//Parent page = (Parent) this.fxmLoader.load(getClass().getClassLoader().getResource(fxml), null, new JavaFXBuilderFactory());
+		Scene scene = this.primaryStage.getScene();
+		
+		if(scene == null)
+		{
+			scene = new Scene(page, 600,400);
+			scene.getStylesheets().add(App.class.getResource("application.css").toExternalForm());
+			this.primaryStage.setScene(scene);
+		}
+		else
+		{
+			scene.setRoot(page);
+		}
+		
+		return page;
+	}
+
+	public void goToHebergerPartiePage() {
+		try {
+			this.replaceSceneContent("CreerPartie.fxml");
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void goToMenuPage(){
+		try {
+			this.replaceSceneContent("MenuDepart.fxml");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void goToRejoindrePartiePage() {
+		try {
+			this.replaceSceneContent("RejoindrePartie.fxml");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 }
