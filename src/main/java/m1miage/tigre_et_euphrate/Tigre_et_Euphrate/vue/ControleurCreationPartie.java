@@ -6,8 +6,12 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
+import javax.swing.SwingWorker;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
@@ -23,12 +27,6 @@ public class ControleurCreationPartie {
 	 * Application gérer par ce controleur
 	 */
 	private App mainApp;
-
-	/**
-	 * Stage pris en compte
-	 */
-	private Stage popUp;
-
 
 	/**
 	 * ProgressBar qui conrrespond au 30 secondes d'attente des connexions
@@ -50,18 +48,26 @@ public class ControleurCreationPartie {
 	{
 		try
 		{
-			System.out.println("Le jeu est prêt");
+			//Création du serveur
 			LocateRegistry.createRegistry(42000);
 			System.setSecurityManager(new SecurityManager());
 			System.setProperty("java.rmi.server.hostname","127.0.0.1");
+
+			//Création de la partie du joueur qui héberge
 			Joueur joueur = new Joueur();
 			joueur.setNom("joueur hébergeur");
     		PartieInterface partie = new Partie();
     		partie.setJoueur(joueur);
-    		MainApp app = (MainApp) this.mainApp;
-    		app.getListeJoueur().add(partie);
+
+    		//Ajout du joueur hébergeur comme joueur de la partie
+    		ObservableList<PartieInterface> joueurCourant = FXCollections.observableArrayList();
+    		joueurCourant.add(partie);
+    		this.mainApp.setListeJoueur(joueurCourant);
+
 			PartieInterface serveur = (Partie)this.mainApp.getListeJoueur().get(0);
 			Naming.rebind("rmi://127.0.0.1:42000/ABC",serveur);
+
+			MainApp app = (MainApp) this.mainApp;
 			try
 			{
 				app.afficherPopUpAttente();
@@ -69,24 +75,7 @@ public class ControleurCreationPartie {
 			{
 				e.printStackTrace();
 			}
-			int i = 0;
-			while(i < 30)
-			{
-				i++;
-				try
-				{
-					//this.progressBar.setProgress(this.progressBar.getProgress() + 0.03);
-					//System.out.println(i);
-					System.out.println(serveur.getListePartie().size());
-					Thread.sleep(1000);
-				} catch(Exception e)
-				{
-					e.printStackTrace();
-				}
 
-			}
-
-			System.out.println("FINI ATTENTE");
 			/*if(serveur.getListePartie().size() < 1)
 			{
 				app.afficherMenuDepart();
@@ -107,14 +96,23 @@ public class ControleurCreationPartie {
 	{
 		try
 		{
+			//Recherche du serveur
 			System.setSecurityManager(new SecurityManager());
 			System.setProperty("java.rmi.server.hostname","127.0.0.1");
+
+			//Création de la partie du client qui se connecte
 			PartieInterface client = new Partie();
 			Joueur joueur = new Joueur();
 			joueur.setNom("joueur client");
 			client.setJoueur(joueur);
+
+			//Récupération du serveur
 			PartieInterface serveur = (PartieInterface)Naming.lookup("rmi://127.0.0.1:42000/ABC");
+
+			//Ajout du client à la liste du serveur
 			serveur.ajouterAdversaire(client);
+
+			//Affichage de l'interface d'une partie à la connection du client
 			MainAppClient appClient = (MainAppClient) this.mainApp;
 			appClient.initRootLayout();
 		} catch(RemoteException e)

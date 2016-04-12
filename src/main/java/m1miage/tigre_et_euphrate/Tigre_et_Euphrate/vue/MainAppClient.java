@@ -54,7 +54,6 @@ public class MainAppClient extends Application implements App {
         this.primaryStage.setTitle("Tigre et Euphrate");
 
         this.afficherMenuDepart();
-        //initRootLayout();
 
         primaryStage.show();
 
@@ -66,7 +65,6 @@ public class MainAppClient extends Application implements App {
 	public void afficherMenuDepart()
 	{
 		try {
-			// Load root layout from fxml file.
 	        FXMLLoader loader = new FXMLLoader();
 	        loader.setLocation(MainApp.class.getResource("MenuDepart.fxml"));
 	        rootLayout = (BorderPane) loader.load();
@@ -89,8 +87,9 @@ public class MainAppClient extends Application implements App {
 	 */
 	public void initRootLayout() {
         try {
+        	primaryStage.hide();
         	primaryStage = new Stage();
-            // Load root layout from fxml file.
+        	primaryStage.setTitle("Tigre et Euphrate : vous êtes un joueur client");
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("ApplicationPrincipale.fxml"));
             rootLayout = (BorderPane) loader.load();
@@ -128,7 +127,6 @@ public class MainAppClient extends Application implements App {
     		ControleurPlateau controleurPlateau = loader.getController();
             controleurPlateau.setMainApp(this);
 
-            // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
 
             primaryStage.setScene(scene);
@@ -152,6 +150,11 @@ public class MainAppClient extends Application implements App {
 
 	public Stage getPrimaryStage() {
 		return this.primaryStage;
+	}
+
+	public void setListeJoueur(ObservableList<PartieInterface> joueur) {
+		this.joueur = joueur;
+
 	}
 
 }

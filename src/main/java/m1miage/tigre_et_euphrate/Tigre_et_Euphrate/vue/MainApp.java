@@ -47,6 +47,7 @@ public class MainApp extends Application implements App {
      */
     private ObservableList<PartieInterface> joueur = FXCollections.observableArrayList();
 
+
 	@Override
 	public void start(Stage primaryStage) {
 
@@ -54,9 +55,6 @@ public class MainApp extends Application implements App {
         this.primaryStage.setTitle("Tigre et Euphrate");
 
         this.afficherMenuDepart();
-        //initRootLayout();
-
-        primaryStage.show();
 
 	}
 
@@ -66,7 +64,6 @@ public class MainApp extends Application implements App {
 	public void afficherMenuDepart()
 	{
 		try {
-			// Load root layout from fxml file.
 	        FXMLLoader loader = new FXMLLoader();
 	        loader.setLocation(MainApp.class.getResource("MenuDepart.fxml"));
 	        rootLayout = (BorderPane) loader.load();
@@ -77,6 +74,8 @@ public class MainApp extends Application implements App {
 	        Scene scene = new Scene(rootLayout);
 
             primaryStage.setScene(scene);
+
+            primaryStage.show();
 
 		}catch(Exception e)
 		{
@@ -89,50 +88,62 @@ public class MainApp extends Application implements App {
 	 */
 	public void initRootLayout() {
         try {
-            // Load root layout from fxml file.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("ApplicationPrincipale.fxml"));
-            rootLayout = (BorderPane) loader.load();
+        	try
+    		{
+        		popUpStage.hide();
+    			if(this.getListeJoueur().get(0).getListePartie().size() == 0)
+    			{
+    				this.afficherMenuDepart();
+    			} else {
+    				primaryStage = new Stage();
+    				primaryStage.setTitle("Tigre et Euphrate : vous êtes le joueur hébergeur");
+		            FXMLLoader loader = new FXMLLoader();
+		            loader.setLocation(MainApp.class.getResource("ApplicationPrincipale.fxml"));
+		            rootLayout = (BorderPane) loader.load();
 
-            //Simuation d'un joueur pour vérifier l'affichage
-    		TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-    		TuileCivilisation tuile2 = new TuileCivilisation(TypeTuileCivilisation.Marché);
-    		TuileCivilisation tuile3 = new TuileCivilisation(TypeTuileCivilisation.Population);
-    		TuileCivilisation tuile4 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-    		TuileCivilisation tuile5 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-    		TuileCivilisation tuile6 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-    		DeckPrive deckPrive = new DeckPrive();
-    		deckPrive.ajouter(tuile1);
-    		deckPrive.ajouter(tuile2);
-    		deckPrive.ajouter(tuile3);
-    		deckPrive.ajouter(tuile4);
-    		deckPrive.ajouter(tuile5);
-    		deckPrive.ajouter(tuile6);
+		            //Simuation d'un joueur pour vérifier l'affichage
+		    		TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
+		    		TuileCivilisation tuile2 = new TuileCivilisation(TypeTuileCivilisation.Marché);
+		    		TuileCivilisation tuile3 = new TuileCivilisation(TypeTuileCivilisation.Population);
+		    		TuileCivilisation tuile4 = new TuileCivilisation(TypeTuileCivilisation.Temple);
+		    		TuileCivilisation tuile5 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
+		    		TuileCivilisation tuile6 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
+		    		DeckPrive deckPrive = new DeckPrive();
+		    		deckPrive.ajouter(tuile1);
+		    		deckPrive.ajouter(tuile2);
+		    		deckPrive.ajouter(tuile3);
+		    		deckPrive.ajouter(tuile4);
+		    		deckPrive.ajouter(tuile5);
+		    		deckPrive.ajouter(tuile6);
 
-    		Chef chefFermier = new Chef(TypeChef.Fermier);
-    		Chef chefRoi = new Chef(TypeChef.Roi);
-    		Chef chefMarchand = new Chef(TypeChef.Marchand);
-    		Chef chefPretre = new Chef(TypeChef.Pretre);
-    		DeckPublic deckPublic = new DeckPublic();
-    		deckPublic.ajouter(chefFermier);
-    		deckPublic.ajouter(chefRoi);
-    		deckPublic.ajouter(chefMarchand);
-    		deckPublic.ajouter(chefPretre);
+		    		Chef chefFermier = new Chef(TypeChef.Fermier);
+		    		Chef chefRoi = new Chef(TypeChef.Roi);
+		    		Chef chefMarchand = new Chef(TypeChef.Marchand);
+		    		Chef chefPretre = new Chef(TypeChef.Pretre);
+		    		DeckPublic deckPublic = new DeckPublic();
+		    		deckPublic.ajouter(chefFermier);
+		    		deckPublic.ajouter(chefRoi);
+		    		deckPublic.ajouter(chefMarchand);
+		    		deckPublic.ajouter(chefPretre);
 
-    		Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
-    		PartieInterface partie = new Partie();
-    		partie.setJoueur(joueur);
-    		this.joueur.add(partie);
-
-    		ControleurPlateau controleurPlateau = loader.getController();
-            controleurPlateau.setMainApp(this);
-
-            // Show the scene containing the root layout.
-            Scene scene = new Scene(rootLayout);
-
-            primaryStage.setScene(scene);
+		    		Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
+		    		PartieInterface partie = (Partie) this.getListeJoueur().get(0);
+		    		partie.setJoueur(joueur);
+		    		this.joueur.add(partie);
 
 
+		    		ControleurPlateau controleurPlateau = loader.getController();
+		            controleurPlateau.setMainApp(this);
+
+		            Scene scene = new Scene(rootLayout);
+
+		            primaryStage.setScene(scene);
+		            primaryStage.show();
+    			}
+    		} catch(RemoteException exp)
+    		{
+    				exp.printStackTrace();
+    		}
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -148,15 +159,16 @@ public class MainApp extends Application implements App {
 			FXMLLoader loader = new FXMLLoader();
 	        loader.setLocation(MainApp.class.getResource("FenetreAttenteConnection.fxml"));
 	        rootLayout = (BorderPane) loader.load();
-
+	        System.out.println(this.getListeJoueur());
 	        Scene scene = new Scene(rootLayout);
 
 	        popUpStage.setScene(scene);
 	        primaryStage.hide();
 	        popUpStage.show();
 
-	        ControleurCreationPartie controleur = loader.getController();
+	        ControleurFenetreAttente controleur = loader.getController();
 	        controleur.setMainApp(this);
+	        System.out.println(controleur.getMainApp());
 		} catch(Exception e)
 		{
 			e.printStackTrace();
