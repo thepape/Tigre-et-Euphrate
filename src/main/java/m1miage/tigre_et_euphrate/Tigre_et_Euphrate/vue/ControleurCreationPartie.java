@@ -13,13 +13,17 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Client;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Serveur;
 
 public class ControleurCreationPartie {
 
@@ -34,10 +38,65 @@ public class ControleurCreationPartie {
 	@FXML
 	private ProgressBar progressBar;
 
+	@FXML
+	private TextField TFNomJoueur;
+
+	@FXML
+	private Button BTNHeberger;
+
+	@FXML
+	private Button BTNRejoindre;
+
+	@FXML
+	private Button BTNRetour;
+
+	@FXML
+	private TextField TFIP;
+
 	/**
 	 * Controleur vide
 	 */
 	public ControleurCreationPartie() {
+	}
+
+	@FXML
+	public void lancerServeur(){
+		//creation du serveur
+		Serveur serveur = new Serveur();
+		//this.mainApp.setServeur(serveur);
+		MainApp.getInstance().setServeur(serveur);
+
+		//creation du thread qui contient le serveur
+		Thread thread = new Thread(serveur);
+		//lancement du serveur
+		thread.start();
+
+		String nomJoueur = this.TFNomJoueur.getText();
+
+		Client client = new Client("localhost", nomJoueur);
+		client.attendreLancementServeur(serveur);
+		client.connect();
+		client.rejoindrePartie();
+	}
+
+	@FXML
+	public void rejoindreServeur(){
+		String nomJoueur = this.TFNomJoueur.getText();
+		String ip = this.TFIP.getText();
+
+		Client client = new Client(ip, nomJoueur);
+		client.connect();
+		client.rejoindrePartie();
+	}
+
+	@FXML
+	public void goToHebergerPartie(){
+		MainApp.getInstance().goToHebergerPartiePage();
+	}
+
+	@FXML
+	public void goToRejoindrePartie(){
+		MainApp.getInstance().goToRejoindrePartiePage();
 	}
 
 	/**
@@ -89,6 +148,11 @@ public class ControleurCreationPartie {
 		}
 	}
 
+	@FXML
+	public void retourAuMenu(){
+		MainApp.getInstance().goToMenuPage();
+	}
+
 	/**
 	 * Fonction qui permet au client de rejoindre la partie qui a été crée
 	 */
@@ -113,16 +177,10 @@ public class ControleurCreationPartie {
 
 			//Récupération du serveur
 			PartieInterface serveur = (PartieInterface)Naming.lookup("rmi://127.0.0.1:42000/ABC");
-    		this.mainApp.setServeur(serveur);
+    		//this.mainApp.setServeur(serveur);
 
 			//Ajout du client à la liste du serveur
-			for(int i = 0; i < serveur.getListePartie().size(); i++)
-			{
-				client.ajouterAdversaire(serveur.getListePartie().get(0).getListePartie().get(i));
-			}
 
-			serveur.ajouterAdversaire(client);
-			//client.ajouterAdversaire(serveur);
 
 			//Affichage de l'interface d'une partie à la connection du client
 			MainApp appClient = (MainApp) this.mainApp;

@@ -16,13 +16,13 @@ public interface PartieInterface extends Remote {
 	public int getPointTresor() throws RemoteException;
 	public int getPointVictoire() throws RemoteException;
 	public DeckPublic getDeckPublic() throws RemoteException;
-	public void setListeJoueur(ArrayList<PartieInterface> listeClient) throws RemoteException;
-	public ArrayList<PartieInterface> getListePartie() throws RemoteException;
-	public void ajouterAdversaire(PartieInterface adversaire) throws RemoteException;
+	public ArrayList<PartieInterface> getListeJoueurs() throws RemoteException;
+	public Joueur ajouterJoueur(PartieInterface joueur) throws RemoteException;
 	public Joueur getJoueur() throws RemoteException;
 	public void setJoueur(Joueur joueur) throws RemoteException;
 	public DeckPrive getDeckPrive() throws RemoteException;
 	public Dynastie getDynastie() throws RemoteException;
-	//test de send avec un String
-	public void send(String string) throws RemoteException;
+	public String getNomJoueur() throws RemoteException;
+	public void setNomJoueur(String pNom) throws RemoteException;
+
 }

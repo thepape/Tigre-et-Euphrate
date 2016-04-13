@@ -55,6 +55,8 @@ public class Joueur implements Serializable{
 	 */
 	private int place;
 
+	private boolean pret = false;
+
 	/**
 	 * Constructeur vide d'un joueur
 	 */
@@ -194,5 +196,11 @@ public class Joueur implements Serializable{
 		this.place = place;
 	}
 
+	public void jeSuisPret(){
+		this.pret = true;
+	}
 
+	public boolean estPret(){
+		return this.pret;
+	}
 }

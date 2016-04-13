@@ -1,5 +1,7 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue;
 
+import java.rmi.RemoteException;
+
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -19,6 +21,7 @@ public class ControleurFenetreAttente {
 	@FXML
 	public void initialize()
 	{
+		//Thread qui permet l'attente et le déroulement de la progressBar
 		Task task = new Task<Void>() {
 		    @Override public void run() {
 				boutonAcceder.setDisable(true);
@@ -34,6 +37,7 @@ public class ControleurFenetreAttente {
 		            updateProgress(i, max);
 		        }
 
+		        //Thread qui permet de modifier le text du bouton en fonction de l'avancée de la progressBar
 		        Platform.runLater(new Runnable() {
 	                 public void run() {
 	                	 boutonAcceder.setText("Vérifier les adversaires");
@@ -60,7 +64,7 @@ public class ControleurFenetreAttente {
 	@FXML
 	public void accederPartie()
 	{
-		this.mainApp.initRootLayout();
+		//this.mainApp.verifierAdversaire();
 	}
 
 	/**

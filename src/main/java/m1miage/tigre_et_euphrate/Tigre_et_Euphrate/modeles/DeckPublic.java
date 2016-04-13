@@ -1,11 +1,12 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCatastrophe;
 
-public class DeckPublic extends Deck{
+public class DeckPublic extends Deck implements Serializable {
 
 	/**
 	 * Liste des chefs et des tuiles catastrophes contenu dans le deck : Deck Public

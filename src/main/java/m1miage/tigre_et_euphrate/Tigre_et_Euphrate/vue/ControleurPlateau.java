@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.sun.prism.paint.Color;
@@ -33,6 +34,9 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Pioche;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerChef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
@@ -64,7 +68,12 @@ public class ControleurPlateau {
 	 * Application principale
 	 */
 
-	private App mainApp;
+	private MainApp mainApp;
+
+	/**
+	 * Liste des actions faites pendant le tour
+	 */
+	private ArrayList<Action> listeActionTour = new ArrayList<Action>();
 
 
 
@@ -72,7 +81,7 @@ public class ControleurPlateau {
 	 * getter de l'application
 	 * @return l'application
 	 */
-	public App getMainApp() {
+	public MainApp getMainApp() {
 		return mainApp;
 	}
 
@@ -80,7 +89,7 @@ public class ControleurPlateau {
 	 * setter de l'application. Initialise tous les champs de l'interface avec les données du joueur traité
 	 * @param mainApp
 	 */
-	public void setMainApp(App mainApp) {
+	public void setMainApp(MainApp mainApp) {
 
 		// Création aléatoire du deck privé du joueur
 		/*for(int i = 0; i < 6; i++)
@@ -180,62 +189,62 @@ public class ControleurPlateau {
 	@FXML
 	private void dropTuileDeckPriveTableau(DragEvent event)
 	{
-		Dragboard db = event.getDragboard();
-		Pane target = (Pane)event.getSource();
+			Dragboard db = event.getDragboard();
+			Pane target = (Pane)event.getSource();
 
-		if (db.hasImage()) {
-			ImageView image = new ImageView(db.getImage());
-			if(ControleurPlateau.imageEnDragAndDropChef != null)
-			{
-				image.setAccessibleText("tuileChef");
-			} else if(ControleurPlateau.imageEnDragAndDropTuile != null)
-			{
-				image.setAccessibleText("tuileCivilisation");
+			if (db.hasImage()) {
+				ImageView image = new ImageView(db.getImage());
+				if(ControleurPlateau.imageEnDragAndDropChef != null)
+				{
+					image.setAccessibleText("tuileChef");
+				} else if(ControleurPlateau.imageEnDragAndDropTuile != null)
+				{
+					image.setAccessibleText("tuileCivilisation");
+				}
+
+				image.setOnDragDetected(new EventHandler<MouseEvent>(){
+
+					public void handle(MouseEvent event) {
+						ImageView imageTuile = (ImageView) event.getSource();
+						imageTuile.setVisible(false);
+						if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
+						{
+							ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
+							ControleurPlateau.imageEnDragAndDropChef = null;
+						} else if(imageTuile.getAccessibleText().equals("tuileChef"))
+						{
+							ControleurPlateau.imageEnDragAndDropTuile = null;
+							ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
+						}
+						Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
+						ClipboardContent content = new ClipboardContent();
+				        content.putImage(imageTuile.getImage());
+				        db.setContent(content);
+				        event.consume();
+					} });
+
+				image.setOnDragDone(new EventHandler<DragEvent>(){
+					public void handle(DragEvent event) {
+						if(event.getTransferMode() == null)
+						{
+							ImageView image = (ImageView) event.getSource();
+							image.setVisible(true);
+						} else if(event.getTransferMode() == TransferMode.COPY)
+						{
+							ImageView image = (ImageView) event.getSource();
+							Pane pane = (Pane) image.getParent();
+							pane.getChildren().remove(0);
+						}
+					} });
+				if(target.getChildren().size() == 0)
+				{
+					target.getChildren().add(image);
+					event.setDropCompleted(true);
+				} else {
+
+					event.setDropCompleted(false);
+				}
 			}
-
-			image.setOnDragDetected(new EventHandler<MouseEvent>(){
-
-				public void handle(MouseEvent event) {
-					ImageView imageTuile = (ImageView) event.getSource();
-					imageTuile.setVisible(false);
-					if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
-					{
-						ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
-						ControleurPlateau.imageEnDragAndDropChef = null;
-					} else if(imageTuile.getAccessibleText().equals("tuileChef"))
-					{
-						ControleurPlateau.imageEnDragAndDropTuile = null;
-						ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
-					}
-					Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
-					ClipboardContent content = new ClipboardContent();
-			        content.putImage(imageTuile.getImage());
-			        db.setContent(content);
-			        event.consume();
-				} });
-
-			image.setOnDragDone(new EventHandler<DragEvent>(){
-				public void handle(DragEvent event) {
-					if(event.getTransferMode() == null)
-					{
-						ImageView image = (ImageView) event.getSource();
-						image.setVisible(true);
-					} else if(event.getTransferMode() == TransferMode.COPY)
-					{
-						ImageView image = (ImageView) event.getSource();
-						Pane pane = (Pane) image.getParent();
-						pane.getChildren().remove(0);
-					}
-				} });
-			if(target.getChildren().size() == 0)
-			{
-				target.getChildren().add(image);
-				event.setDropCompleted(true);
-			} else {
-
-				event.setDropCompleted(false);
-			}
-		}
 	}
 
 	/**

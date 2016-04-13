@@ -5,12 +5,15 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Serveur;
 
 /**
  * Classe representant une partie
  *
  */
 public class Partie extends UnicastRemoteObject implements PartieInterface{
+
+	private Serveur serveur;
 
 	/**
 	 * Le plateau de jeu des joueurs
@@ -20,12 +23,17 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	/**
 	 * La liste des joueurs jouant la partie
 	 */
-	private ArrayList<PartieInterface> listePartie = new ArrayList<PartieInterface>();
+	private ArrayList<PartieInterface> listeJoueurs = new ArrayList<PartieInterface>();
 
 	/**
 	 * Un joueur plutot beau gosse (ou pas)
 	 */
 	private Joueur joueur;
+
+	/**
+	 * nom du joueur de la partie
+	 */
+	private String nomJoueur;
 
 	/**
 	 * La pioche
@@ -36,7 +44,8 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	 * Constructeur vide d'une partie
 	 */
 	public Partie() throws RemoteException{
-
+		this.listeJoueurs = new ArrayList<PartieInterface>();
+		this.pioche = new Pioche();
 	}
 
 	/**
@@ -44,9 +53,9 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	 * @param pPlateauJeu plateau du jeu
 	 * @param plistejoueur liste des parties
 	 */
-	public Partie(Plateau pPlateauJeu, ArrayList<PartieInterface> plistepartie, Pioche pPioche) throws RemoteException {
+	public Partie(Plateau pPlateauJeu, ArrayList<PartieInterface> pListeJoueurs, Pioche pPioche) throws RemoteException {
 		this.plateauJeu = pPlateauJeu;
-		this.listePartie = plistepartie;
+		this.listeJoueurs = pListeJoueurs;
 		this.pioche = pPioche;
 	}
 
@@ -70,17 +79,10 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	 * getter de la liste des parties de la game (désolé anglais)
 	 * @return
 	 */
-	public ArrayList<PartieInterface> getListePartie() {
-		return listePartie;
+	public ArrayList<PartieInterface> getListeJoueurs() {
+		return this.listeJoueurs;
 	}
 
-	/**
-	 * setter de la liste des parties
-	 * @param listePartie
-	 */
-	public void setListeJoueur(ArrayList<PartieInterface> listePartie) {
-		this.listePartie = listePartie;
-	}
 
 	/**
 	 * @return la pioche
@@ -97,10 +99,21 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	}
 
 	/**
-	 * getter du nom du joueur de la partie
+	 * getter du nom de l'objet joueur de la partie
 	 */
 	public String getName() throws RemoteException {
 		return joueur.getNom();
+	}
+
+	/**
+	 * getter du nom de joueur de la partie
+	 */
+	public String getNomJoueur() throws RemoteException {
+		return this.nomJoueur;
+	}
+
+	public void setNomJoueur(String pNom){
+		this.nomJoueur = pNom;
 	}
 
 	/**
@@ -124,11 +137,26 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 		return joueur.getDeckPublic();
 	}
 
-	public void ajouterAdversaire(PartieInterface adversaire) throws RemoteException {
-		if(this.listePartie.size() < 4)
+	/**
+	 * ajoute un joueur a la liste des joueurs de la partie
+	 * @param Partie du joueur à ajouter
+	 * @return nouveau joueur ajouté à la partie
+	 * @throws RemoteException
+	 */
+	public Joueur ajouterJoueur(PartieInterface pJoueur) throws RemoteException {
+		Joueur j = null;
+
+		if(this.listeJoueurs.size() < 4)
 		{
-			this.listePartie.add(adversaire);
+			j = new Joueur();
+			j.setNom(pJoueur.getNomJoueur());
+
+			this.listeJoueurs.add(pJoueur);
 		}
+
+		System.out.println("Le joueur "+pJoueur.getNomJoueur()+" s'est connecté.");
+
+		return j;
 	}
 
 	/**
@@ -154,9 +182,24 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 		return this.joueur.getDynastie();
 	}
 
-	public void send(String string) throws RemoteException {
-		System.out.println(string);
+	public boolean tousLesJoueursPrets() {
+		boolean res = true;
+		for(PartieInterface joueur : this.listeJoueurs){
+			try {
+				if(!joueur.getJoueur().estPret()){
+					res = false;
+					break;
+				}
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return res;
 	}
 
-
+	public void setServeur(Serveur pServeur){
+		this.serveur = pServeur;
+	}
 }
