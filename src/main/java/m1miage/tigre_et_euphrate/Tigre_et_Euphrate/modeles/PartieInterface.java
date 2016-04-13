@@ -23,4 +23,6 @@ public interface PartieInterface extends Remote {
 	public void setJoueur(Joueur joueur) throws RemoteException;
 	public DeckPrive getDeckPrive() throws RemoteException;
 	public Dynastie getDynastie() throws RemoteException;
+	//test de send avec un String
+	public void send(String string) throws RemoteException;
 }

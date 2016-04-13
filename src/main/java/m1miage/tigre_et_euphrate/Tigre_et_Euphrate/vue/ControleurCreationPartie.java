@@ -26,7 +26,7 @@ public class ControleurCreationPartie {
 	/**
 	 * Application gérer par ce controleur
 	 */
-	private App mainApp;
+	private MainApp mainApp;
 
 	/**
 	 * ProgressBar qui conrrespond au 30 secondes d'attente des connexions
@@ -106,14 +106,26 @@ public class ControleurCreationPartie {
 			joueur.setNom("joueur client");
 			client.setJoueur(joueur);
 
+    		//Ajout du joueur hébergeur comme joueur de la partie
+    		ObservableList<PartieInterface> joueurCourant = FXCollections.observableArrayList();
+    		joueurCourant.add(client);
+    		this.mainApp.setListeJoueur(joueurCourant);
+
 			//Récupération du serveur
 			PartieInterface serveur = (PartieInterface)Naming.lookup("rmi://127.0.0.1:42000/ABC");
+    		this.mainApp.setServeur(serveur);
 
 			//Ajout du client à la liste du serveur
+			for(int i = 0; i < serveur.getListePartie().size(); i++)
+			{
+				client.ajouterAdversaire(serveur.getListePartie().get(0).getListePartie().get(i));
+			}
+
 			serveur.ajouterAdversaire(client);
+			//client.ajouterAdversaire(serveur);
 
 			//Affichage de l'interface d'une partie à la connection du client
-			MainAppClient appClient = (MainAppClient) this.mainApp;
+			MainApp appClient = (MainApp) this.mainApp;
 			appClient.initRootLayout();
 		} catch(RemoteException e)
 		{
@@ -137,7 +149,7 @@ public class ControleurCreationPartie {
 	 * getter de l'application
 	 * @return mainApp
 	 */
-	public App getMainApp() {
+	public MainApp getMainApp() {
 		return mainApp;
 	}
 
@@ -145,7 +157,7 @@ public class ControleurCreationPartie {
 	 * setter de l'application
 	 * @param mainApp
 	 */
-	public void setMainApp(App mainApp) {
+	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 	}
 

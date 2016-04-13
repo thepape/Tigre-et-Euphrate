@@ -154,5 +154,9 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 		return this.joueur.getDynastie();
 	}
 
+	public void send(String string) throws RemoteException {
+		System.out.println(string);
+	}
+
 
 }
