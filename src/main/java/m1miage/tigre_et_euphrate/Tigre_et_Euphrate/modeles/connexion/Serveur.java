@@ -15,31 +15,28 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 public class Serveur implements Runnable
 {
 	private Partie partie;
-	
+
 	private ArrayList<PartieInterface> clients;
-	
+
 	private boolean lance = false;
-	
+
 	private int port;
-	
+
 	private String namespace;
-	
+
 	private Registry registry;
-	
+
 	private String url;
-	
+
 	public Serveur()
 	{
 		this.clients = new ArrayList<PartieInterface>();
-		
+
 		this.port = 42000;
 		this.namespace = "Tigre-et-euphrate";
 	}
-	
-	public void initialiser(){
-		
 
-		
+	public void initialiser(){
 		try {
 			partie = new Partie();
 			partie.setServeur(this);
@@ -47,7 +44,7 @@ public class Serveur implements Runnable
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		//lancement du registre
 		try {
 			this.registry = LocateRegistry.createRegistry(this.port);
@@ -55,13 +52,13 @@ public class Serveur implements Runnable
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		System.setSecurityManager(null);
-		
+
 		System.setProperty("java.security.policy", "file:/security.policy");
 		System.setProperty("java.rmi.server.hostname", "127.0.0.1");
-		
-		
+
+
 		this.url = "rmi://localhost:"+this.port+"/"+this.namespace;
 		try {
 			Naming.rebind(url, partie);
@@ -69,17 +66,17 @@ public class Serveur implements Runnable
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		System.out.println("Serveur lancé !");
-		
+
 		this.lance = true;
 	}
-	
+
 	public void attendreJoueursPrets()
 	{
 		while(!partie.tousLesJoueursPrets())
 		{
-			
+
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -88,17 +85,17 @@ public class Serveur implements Runnable
 			}
 		}
 	}
-	
+
 	public void run() {
 		// TODO Auto-generated method stub
-		
+
 		this.initialiser();
-		
+
 		this.attendreJoueursPrets();
-		
-		
+
+
 	}
-	
+
 	public void shutDown()
 	{
 		try {
@@ -145,7 +142,7 @@ public class Serveur implements Runnable
 	public void setNamespace(String namespace) {
 		this.namespace = namespace;
 	}
-	
+
 	public void ajouterClient(PartieInterface pClient){
 		this.clients.add(pClient);
 	}
