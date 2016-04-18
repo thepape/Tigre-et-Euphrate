@@ -311,6 +311,14 @@ public class MainApp extends Application implements App {
 		}
 
 	}
+	
+	public void goToSalon(){
+		try{
+			this.replaceSceneContent("Salleattente.fxml");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 
 
 }

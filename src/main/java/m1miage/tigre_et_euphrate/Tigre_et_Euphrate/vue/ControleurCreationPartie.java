@@ -94,6 +94,7 @@ public class ControleurCreationPartie {
 		MainApp.getInstance().setClient(client);
 		client.connect();
 		//client.rejoindrePartie();
+		this.goToSalon();
 	}
 
 	@FXML
@@ -142,6 +143,11 @@ public class ControleurCreationPartie {
 		MainApp.getInstance().goToMenuPage();
 	}
 
+	@FXML
+	public void goToSalon(){
+		MainApp.getInstance().goToSalon();
+	}
+	
 	@FXML
 	public void initialize()
 	{
