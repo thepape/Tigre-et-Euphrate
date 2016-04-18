@@ -149,7 +149,7 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	/**
 	 * Fonction qui permet de renjoindre une partie
 	 */
-	public void rejoindrePartie()
+	/*public void rejoindrePartie()
 	{
 
 		try {
@@ -173,7 +173,7 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 			e.printStackTrace();
 		}
 
-	}
+	}*/
 
 	/**
 	 * Fonction qui permet d'attendre le lancement du serveur si un client veut se connecter sans que le serveur doit lancer
