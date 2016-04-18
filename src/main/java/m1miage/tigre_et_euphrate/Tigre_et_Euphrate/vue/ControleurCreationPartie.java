@@ -112,6 +112,8 @@ public class ControleurCreationPartie {
 		{
 			e.printStackTrace();
 		}
+		
+		this.goToSalon();
 	}
 
 	@FXML
