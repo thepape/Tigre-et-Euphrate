@@ -1,7 +1,9 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue;
 
-import javafx.scene.control.Button;
+import javafx.event.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 
 /**
  * Controlleur de la salle d'attente
@@ -59,8 +61,10 @@ public class ControleurSalleAttente {
 	 * Fonction de mis a jour lorsqu'une dynastie est choisi
 	 */
 	@FXML
-	public void dynastieChoisi(){
-		
+	public void dynastieChoisi(Event event){
+		Button pButton = (Button) event.getSource();
+		pButton.setDisable(true);
+		//TODO envoyer au serveur + passer la dynastie au joueur
 	}
 	
 	
