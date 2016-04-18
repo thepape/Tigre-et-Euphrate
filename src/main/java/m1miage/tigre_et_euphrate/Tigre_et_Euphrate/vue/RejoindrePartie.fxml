@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue.ControleurCreationPartie">
+   <children>
+      <TextField fx:id="TFIP" layoutX="226.0" layoutY="144.0" />
+      <Label layoutX="270.0" layoutY="115.0" text="Adresse IP :" />
+      <Button fx:id="BTRejoindre" layoutX="244.0" layoutY="237.0" mnemonicParsing="false" onMouseClicked="#rejoindreServeur" text="Rejoindre la partie" />
+      <Button layoutX="50.0" layoutY="330.0" mnemonicParsing="false" onMouseClicked="#retourAuMenu" text="Retour" />
+      <Label layoutX="270.0" layoutY="175.0" text="Votre nom :" />
+      <TextField fx:id="TFNomJoueur" layoutX="227.0" layoutY="200.0" />
+      <Button mnemonicParsing="false" onMouseClicked="#testerSend" text="Test send" />
+   </children>
+</Pane>
