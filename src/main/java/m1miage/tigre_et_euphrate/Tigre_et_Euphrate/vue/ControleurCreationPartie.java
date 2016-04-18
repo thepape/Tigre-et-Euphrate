@@ -5,6 +5,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.Scanner;
 
 import javax.swing.SwingWorker;
 
@@ -62,7 +63,14 @@ public class ControleurCreationPartie {
 	@FXML
 	public void lancerServeur(){
 		//creation du serveur
-		Serveur serveur = new Serveur();
+		Serveur serveur = null;
+		try
+		{
+			serveur = new Serveur();
+		} catch(RemoteException e)
+		{
+			e.printStackTrace();
+		}
 		//this.mainApp.setServeur(serveur);
 		MainApp.getInstance().setServeur(serveur);
 
@@ -70,23 +78,53 @@ public class ControleurCreationPartie {
 		Thread thread = new Thread(serveur);
 		//lancement du serveur
 		thread.start();
+		//serveur.initialiser();
+		//serveur.attendreJoueursPrets();
 
 		String nomJoueur = this.TFNomJoueur.getText();
-
-		Client client = new Client("localhost", nomJoueur);
+		Client client = null;
+		try
+		{
+			client = new Client("localhost", nomJoueur);
+		} catch(RemoteException e)
+		{
+			e.printStackTrace();
+		}
 		client.attendreLancementServeur(serveur);
+		MainApp.getInstance().setClient(client);
 		client.connect();
-		client.rejoindrePartie();
+		//client.rejoindrePartie();
 	}
 
 	@FXML
 	public void rejoindreServeur(){
 		String nomJoueur = this.TFNomJoueur.getText();
 		String ip = this.TFIP.getText();
+		try
+		{
+			Client client = new Client(ip, nomJoueur);
+			client.connect();
+			MainApp.getInstance().setServeur(client.getServeur());
+			MainApp.getInstance().setClient(client);
+			//client.rejoindrePartie();
+		} catch(RemoteException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
-		Client client = new Client(ip, nomJoueur);
-		client.connect();
-		client.rejoindrePartie();
+	@FXML
+	public void testerSend()
+	{
+		try
+		{
+			System.out.println(MainApp.getInstance().getClient().getNomJoueur());
+			System.out.println("Message du serveur");
+			MainApp.getInstance().getServeur().send("client envoie", MainApp.getInstance().getClient().getIdObjetPartie());
+		} catch(RemoteException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
@@ -99,102 +137,9 @@ public class ControleurCreationPartie {
 		MainApp.getInstance().goToRejoindrePartiePage();
 	}
 
-	/**
-	 * Lancement du serveur en attente de connexions clients
-	 */
-	@FXML
-	public void connectionServeur()
-	{
-		try
-		{
-			//Création du serveur
-			LocateRegistry.createRegistry(42000);
-			System.setSecurityManager(new SecurityManager());
-			System.setProperty("java.rmi.server.hostname","127.0.0.1");
-
-			//Création de la partie du joueur qui héberge
-			Joueur joueur = new Joueur();
-			joueur.setNom("joueur hébergeur");
-    		PartieInterface partie = new Partie();
-    		partie.setJoueur(joueur);
-
-    		//Ajout du joueur hébergeur comme joueur de la partie
-    		ObservableList<PartieInterface> joueurCourant = FXCollections.observableArrayList();
-    		joueurCourant.add(partie);
-    		this.mainApp.setListeJoueur(joueurCourant);
-
-			PartieInterface serveur = (Partie)this.mainApp.getListeJoueur().get(0);
-			Naming.rebind("rmi://127.0.0.1:42000/ABC",serveur);
-
-			MainApp app = (MainApp) this.mainApp;
-			try
-			{
-				app.afficherPopUpAttente();
-			} catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-
-			/*if(serveur.getListePartie().size() < 1)
-			{
-				app.afficherMenuDepart();
-			}*/
-		} catch(RemoteException e)
-		{
-			e.printStackTrace();
-		} catch(MalformedURLException ex)
-		{
-			ex.printStackTrace();
-		}
-	}
-
 	@FXML
 	public void retourAuMenu(){
 		MainApp.getInstance().goToMenuPage();
-	}
-
-	/**
-	 * Fonction qui permet au client de rejoindre la partie qui a été crée
-	 */
-	public void connexionClient()
-	{
-		try
-		{
-			//Recherche du serveur
-			System.setSecurityManager(new SecurityManager());
-			System.setProperty("java.rmi.server.hostname","127.0.0.1");
-
-			//Création de la partie du client qui se connecte
-			PartieInterface client = new Partie();
-			Joueur joueur = new Joueur();
-			joueur.setNom("joueur client");
-			client.setJoueur(joueur);
-
-    		//Ajout du joueur hébergeur comme joueur de la partie
-    		ObservableList<PartieInterface> joueurCourant = FXCollections.observableArrayList();
-    		joueurCourant.add(client);
-    		this.mainApp.setListeJoueur(joueurCourant);
-
-			//Récupération du serveur
-			PartieInterface serveur = (PartieInterface)Naming.lookup("rmi://127.0.0.1:42000/ABC");
-    		//this.mainApp.setServeur(serveur);
-
-			//Ajout du client à la liste du serveur
-
-
-			//Affichage de l'interface d'une partie à la connection du client
-			MainApp appClient = (MainApp) this.mainApp;
-			appClient.initRootLayout();
-		} catch(RemoteException e)
-		{
-			e.printStackTrace();
-		} catch(MalformedURLException ex)
-		{
-			ex.printStackTrace();
-		} catch(NotBoundException exp)
-		{
-			exp.printStackTrace();
-		}
 	}
 
 	@FXML

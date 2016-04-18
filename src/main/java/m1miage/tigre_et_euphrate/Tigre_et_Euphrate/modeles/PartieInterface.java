@@ -24,5 +24,7 @@ public interface PartieInterface extends Remote {
 	public Dynastie getDynastie() throws RemoteException;
 	public String getNomJoueur() throws RemoteException;
 	public void setNomJoueur(String pNom) throws RemoteException;
+	//test send
+	public void send(String string, int idClient) throws RemoteException;
 
 }

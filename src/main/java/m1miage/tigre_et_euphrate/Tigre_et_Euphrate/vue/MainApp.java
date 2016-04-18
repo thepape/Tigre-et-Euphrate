@@ -55,9 +55,9 @@ public class MainApp extends Application implements App {
      */
     private static MainApp instance;
 
-    private Serveur serveur;
+    private InterfaceServeurClient serveur;
 
-    private Client client;
+    private InterfaceServeurClient client;
 
     private FXMLLoader currentLoader;
     /**
@@ -237,15 +237,15 @@ public class MainApp extends Application implements App {
 		launch(args);
 	}
 
-	public Serveur getServeur() {
+	public InterfaceServeurClient getServeur() {
 		return serveur;
 	}
 
-	public void setServeur(Serveur serveur) {
+	public void setServeur(InterfaceServeurClient serveur) {
 		this.serveur = serveur;
 	}
 
-	public Client getClient() {
+	public InterfaceServeurClient getClient() {
 		return client;
 	}
 
