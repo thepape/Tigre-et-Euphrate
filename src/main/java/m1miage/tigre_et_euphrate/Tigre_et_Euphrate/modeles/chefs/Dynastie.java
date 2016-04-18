@@ -38,6 +38,11 @@ public class Dynastie {
 	 * Lien vers l'image
 	 */
 	private String lien;
+	
+	/**
+	 * Booleen si la dynastie est prise
+	 */
+	private boolean estPrise;
 
 	
 	/**
@@ -49,6 +54,7 @@ public class Dynastie {
 		super();
 		this.nom = pnom;
 		this.lien = plien;
+		this.estPrise = false;
 	}
 	
 	/**
@@ -57,6 +63,7 @@ public class Dynastie {
 	public Dynastie(){
 		this.nom = "non defini";
 		this.lien = "non defini";
+		this.estPrise = false;
 	}
 
 
@@ -75,6 +82,23 @@ public class Dynastie {
 	 */
 	public String getLien() {
 		return lien;
+	}
+
+	
+	/**
+	 * indique si la dynastie est déja selectionne par un joueur
+	 * @return
+	 */
+	public boolean isEstPrise() {
+		return estPrise;
+	}
+
+	/**
+	 * Met a jour le statut d'une dynastie
+	 * @param estPrise
+	 */
+	public void setEstPrise(boolean estPrise) {
+		this.estPrise = estPrise;
 	}
 
 	
