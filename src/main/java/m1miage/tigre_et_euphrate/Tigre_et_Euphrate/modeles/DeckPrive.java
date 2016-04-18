@@ -1,10 +1,11 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 
-public class DeckPrive extends Deck{
+public class DeckPrive extends Deck implements Serializable{
 
 	/**
 	 * Liste des tuiles civilisation : Deck Privé
