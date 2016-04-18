@@ -69,6 +69,6 @@ public class ControleurSalleAttente {
 	
 	@FXML
 	public void afficherPlateau(){
-		
+		MainApp.getInstance().afficherPlateau();
 	}
 }

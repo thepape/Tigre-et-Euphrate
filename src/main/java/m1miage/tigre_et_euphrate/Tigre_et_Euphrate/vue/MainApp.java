@@ -322,7 +322,7 @@ public class MainApp extends Application implements App {
 	
 	public void afficherPlateau(){
 		try{
-			this.replaceSceneContent("ApplicationPrincipale");
+			this.replaceSceneContent("ApplicationPrincipale.fxml");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
