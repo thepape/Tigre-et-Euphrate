@@ -67,5 +67,8 @@ public class ControleurSalleAttente {
 		//TODO envoyer au serveur + passer la dynastie au joueur
 	}
 	
-	
+	@FXML
+	public void afficherPlateau(){
+		
+	}
 }
