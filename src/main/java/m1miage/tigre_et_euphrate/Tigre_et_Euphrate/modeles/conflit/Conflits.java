@@ -226,6 +226,14 @@ public class Conflits {
 	public void setTypeConflit(String typeConflit) {
 		this.typeConflit = typeConflit;
 	}
+	
+	public boolean equals(Object pObject){
+		if(pObject instanceof Conflits){
+			return this.conflitId == ((Conflits) pObject).conflitId;
+		}
+		
+		return false;
+	}
 
 	/**
 	 * Fonction qui retourne le chef gagnant d'Un conflit et l'indique comme résolu. Retire le chef du plateau

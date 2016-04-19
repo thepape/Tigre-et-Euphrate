@@ -5,6 +5,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Serveur;
 
 /**
@@ -39,6 +40,11 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	 * La pioche
 	 */
 	private Pioche pioche;
+	
+	/**
+	 * liste des conflits
+	 */
+	private ArrayList<Conflits> conflits;
 
 	/**
 	 * Constructeur vide d'une partie
@@ -46,6 +52,7 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	public Partie() throws RemoteException{
 		this.listeJoueurs = new ArrayList<PartieInterface>();
 		this.pioche = new Pioche();
+		this.conflits = new ArrayList<Conflits>();
 	}
 
 	/**
@@ -57,6 +64,7 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 		this.plateauJeu = pPlateauJeu;
 		this.listeJoueurs = pListeJoueurs;
 		this.pioche = pPioche;
+		this.conflits = new ArrayList<Conflits>();
 	}
 
 	/**
@@ -206,5 +214,17 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	public void send(String string, int idClient) throws RemoteException {
 		System.out.println(idClient);
 		System.out.println(string);
+	}
+	
+	public ArrayList<Conflits> getConflits(){
+		return this.conflits;
+	}
+	
+	public void ajouterConflit(Conflits pConflit){
+		this.conflits.add(pConflit);
+	}
+	
+	public void retirerConflit(Conflits pConflit){
+		this.conflits.remove(pConflit);
 	}
 }
