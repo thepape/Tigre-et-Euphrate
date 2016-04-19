@@ -12,6 +12,7 @@ import java.util.Scanner;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 
 
 public class Client extends UnicastRemoteObject implements InterfaceServeurClient {
@@ -260,6 +261,10 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	 */
 	public void setIdObjetPartie(int idObjetPartie) throws RemoteException {
 		this.idClientCourant = idObjetPartie;
+	}
+
+	public void sendDynastieChoisi(Dynastie dynastie, int idClient) throws RemoteException {
+		System.out.println(dynastie.getNom());
 	}
 
 }

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue.ControleurSalleAttente">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue.ControleurSalleAttente">
   <children>
     <SplitPane dividerPositions="0.6872909698996655" layoutY="-3.0" prefHeight="406.0" prefWidth="600.0">
       <items>
@@ -36,7 +36,7 @@
           <children>
             <Button layoutX="71.0" layoutY="304.0" mnemonicParsing="false" text="Prêt" />
             <Button layoutX="65.0" layoutY="343.0" mnemonicParsing="false" onMouseClicked="#retourAuMenu" text="Quiter" />
-            <Button fx:id="lanister" layoutX="19.0" layoutY="61.0" minHeight="61.0" minWidth="61.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="61.0" text="">
+            <Button fx:id="lanister" layoutX="19.0" layoutY="61.0" minHeight="61.0" minWidth="61.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="61.0" text="" onMouseClicked="#dynastieChoisi">
               <graphic>
                 <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                   <image>
@@ -77,7 +77,7 @@
                 <Font name="System Bold" size="16.0" />
               </font>
             </Label>
-                  <Button layoutX="38.0" layoutY="259.0" mnemonicParsing="false" onMouseClicked="#afficherPlateau" text="Lancer la partie !" />
+            <Button layoutX="38.0" layoutY="259.0" mnemonicParsing="false" onMouseClicked="#afficherPlateau" text="Lancer la partie !" />
           </children>
         </AnchorPane>
       </items>

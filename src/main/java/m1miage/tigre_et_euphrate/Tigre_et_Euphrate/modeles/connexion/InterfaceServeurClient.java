@@ -20,8 +20,10 @@ public interface InterfaceServeurClient extends Remote {
 	public InterfaceServeurClient getServeur() throws RemoteException;
 	public String getNamespace() throws RemoteException;
 	public String getNomJoueur() throws RemoteException;
+	public Joueur getJoueur() throws RemoteException; //Ligne en trop
 	public int getIdObjetPartie() throws RemoteException;
 	public void setIdObjetPartie(int idObjetPartie) throws RemoteException;
+	public void sendDynastieChoisi(Dynastie dynastie, int idClient) throws RemoteException;
 	//test send
 	public void send(String string, int idClient) throws RemoteException;
 

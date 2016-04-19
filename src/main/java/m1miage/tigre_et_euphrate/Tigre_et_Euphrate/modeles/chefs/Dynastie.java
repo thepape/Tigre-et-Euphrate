@@ -1,12 +1,14 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs;
 
+import java.io.Serializable;
+
 /**
  * Class représentant une Dynastie. une dynastie est unique à chaque joueur.
  * les dynasties sont : Lanister, Starks, Tyrell, Targaryens 
  * @author jerome
  *
  */
-public class Dynastie {
+public class Dynastie implements Serializable {
 
 	/**
 	 * Fournit une instance de la dynastie "Lanister"

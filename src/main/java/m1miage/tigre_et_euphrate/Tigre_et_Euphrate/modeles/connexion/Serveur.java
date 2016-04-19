@@ -1,17 +1,16 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion;
 
 import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 
 public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceServeurClient, Serializable
 {
@@ -54,6 +53,8 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 * url du serveur
 	 */
 	private String url;
+	
+	//ObservableList<String> observableList = FXCollections.observableList();
 
 	/**
 	 * constructeur du serveur
@@ -297,5 +298,22 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 */
 	public void setIdObjetPartie(int idObjetPartie) throws RemoteException {
 		this.idServeur = idObjetPartie;
+	}
+
+	public Joueur getJoueur() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void sendDynastieChoisi(Dynastie dynastie, int idClient) throws RemoteException {
+		System.out.println("J'ai recu la dynastie :" + dynastie.getNom() + " du client :" + idClient);
+		for(int i = 0; i < this.clients.size(); i++)
+		{
+			InterfaceServeurClient client = this.clients.get(i);
+			if(client.getIdObjetPartie() != idClient)
+			{
+				client.sendDynastieChoisi(dynastie, idClient);
+			}
+		}
 	}
 }

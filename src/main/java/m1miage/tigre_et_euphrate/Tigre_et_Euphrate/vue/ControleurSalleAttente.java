@@ -1,5 +1,8 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue;
 
+import java.rmi.RemoteException;
+
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -61,9 +64,17 @@ public class ControleurSalleAttente {
 	 * Fonction de mis a jour lorsqu'une dynastie est choisi
 	 */
 	@FXML
-	public void dynastieChoisi(Event event){
+	public void dynastieChoisi(Event event) throws RemoteException {
 		Button pButton = (Button) event.getSource();
 		pButton.setDisable(true);
+		System.out.println(pButton.getId());
+		Dynastie dynastie = null;
+		if(pButton.getId().equals("lanister"))
+		{
+			dynastie = Dynastie.Lanister;
+		}
+		
+		MainApp.getInstance().getServeur().sendDynastieChoisi(dynastie, MainApp.getInstance().getClient().getIdObjetPartie());
 		//TODO envoyer au serveur + passer la dynastie au joueur
 	}
 	

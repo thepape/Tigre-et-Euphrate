@@ -319,7 +319,6 @@ public class MainApp extends Application implements App {
 			e.printStackTrace();
 		}
 	}
-	
 	public void afficherPlateau(){
 		try{
 			this.replaceSceneContent("ApplicationPrincipale.fxml");
