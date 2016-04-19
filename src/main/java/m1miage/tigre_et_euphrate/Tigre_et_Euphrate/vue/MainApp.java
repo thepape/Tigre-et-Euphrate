@@ -5,9 +5,13 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,7 +31,6 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.*;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
-
 public class MainApp extends Application implements App {
 
 	/**
@@ -43,161 +46,167 @@ public class MainApp extends Application implements App {
 	/**
 	 * Vision principale de l'application
 	 */
-    private BorderPane rootLayout;
+	private BorderPane rootLayout;
 
-    /**
-     * Liste des observables parties
-     */
-    private ObservableList<PartieInterface> joueurs = FXCollections.observableArrayList();
+	/**
+	 * Liste des observables parties
+	 */
+	private ObservableList<PartieInterface> joueurs = FXCollections.observableArrayList();
 
-    /**
-     * instance de l'application en cours d'execution
-     */
-    private static MainApp instance;
+	/**
+	 * instance de l'application en cours d'execution
+	 */
+	private static MainApp instance;
 
-    private InterfaceServeurClient serveur;
+	private InterfaceServeurClient serveur;
 
-    private InterfaceServeurClient client;
+	private InterfaceServeurClient client;
 
-    private FXMLLoader currentLoader;
-    /**
-     * retourne l'instance unique de l'application en cours d'execution
-     * @return
-     */
-    public static MainApp getInstance()
-	{
+	private FXMLLoader currentLoader;
+	
+	public Object currentControler;
+
+	ArrayList<Dynastie> listeDynastieDispo = new ArrayList<Dynastie>();
+
+	// private ObservableList<Dynastie> listeDynastie;
+
+	/**
+	 * retourne l'instance unique de l'application en cours d'execution
+	 *
+	 * @return
+	 */
+	public static MainApp getInstance() {
 		return MainApp.instance;
 	}
+	
+	
 
 	@Override
 	public void start(Stage primaryStage) {
+		listeDynastieDispo.add(Dynastie.Lanister);
+		listeDynastieDispo.add(Dynastie.Stark);
+		listeDynastieDispo.add(Dynastie.Targaryen);
+		listeDynastieDispo.add(Dynastie.Tyrell);
 		MainApp.instance = this;
 		this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Tigre et Euphrate");
-
-        this.afficherMenuDepart();
+		this.primaryStage.setTitle("Tigre et Euphrate");
+		
+		this.afficherMenuDepart();
 
 	}
 
 	/**
 	 * Fonction qui affiche le menu principal
 	 */
-	public void afficherMenuDepart()
-	{
+	public void afficherMenuDepart() {
 		try {
-	        FXMLLoader loader = new FXMLLoader();
-	        loader.setLocation(MainApp.class.getResource("MenuDepart.fxml"));
-	        rootLayout = (BorderPane) loader.load();
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("MenuDepart.fxml"));
+			rootLayout = (BorderPane) loader.load();
 
-	        ControleurCreationPartie controleur = loader.getController();
-	        controleur.setMainApp(this);
+			ControleurCreationPartie controleur = loader.getController();
+			controleur.setMainApp(this);
 
-	        Scene scene = new Scene(rootLayout);
+			Scene scene = new Scene(rootLayout);
 
-            primaryStage.setScene(scene);
+			primaryStage.setScene(scene);
 
-            primaryStage.show();
+			primaryStage.show();
 
-		}catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Fonction qui initialise le plateau de jeu et fait le lien entre la vue et le controleur
+	 * Fonction qui initialise le plateau de jeu et fait le lien entre la vue et
+	 * le controleur
 	 */
 	public void initRootLayout() {
-        try {
-        	try
-    		{
-        		popUpStage.hide();
-    			if(this.getListeJoueur().size() == 0)
-    			{
-    				this.afficherMenuDepart();
-    			} else {
-    				primaryStage = new Stage();
-    				primaryStage.setTitle("Tigre et Euphrate : vous êtes le joueur hébergeur");
-		            FXMLLoader loader = new FXMLLoader();
-		            loader.setLocation(MainApp.class.getResource("ApplicationPrincipale.fxml"));
-		            rootLayout = (BorderPane) loader.load();
+		try {
+			try {
+				popUpStage.hide();
+				if (this.getListeJoueur().size() == 0) {
+					this.afficherMenuDepart();
+				} else {
+					primaryStage = new Stage();
+					primaryStage.setTitle("Tigre et Euphrate : vous êtes le joueur hébergeur");
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(MainApp.class.getResource("ApplicationPrincipale.fxml"));
+					rootLayout = (BorderPane) loader.load();
 
-		            //Simuation d'un joueur pour vérifier l'affichage
-		    		TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-		    		TuileCivilisation tuile2 = new TuileCivilisation(TypeTuileCivilisation.Marché);
-		    		TuileCivilisation tuile3 = new TuileCivilisation(TypeTuileCivilisation.Population);
-		    		TuileCivilisation tuile4 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		    		TuileCivilisation tuile5 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-		    		TuileCivilisation tuile6 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-		    		DeckPrive deckPrive = new DeckPrive();
-		    		deckPrive.ajouter(tuile1);
-		    		deckPrive.ajouter(tuile2);
-		    		deckPrive.ajouter(tuile3);
-		    		deckPrive.ajouter(tuile4);
-		    		deckPrive.ajouter(tuile5);
-		    		deckPrive.ajouter(tuile6);
+					// Simuation d'un joueur pour vérifier l'affichage
+					TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
+					TuileCivilisation tuile2 = new TuileCivilisation(TypeTuileCivilisation.Marché);
+					TuileCivilisation tuile3 = new TuileCivilisation(TypeTuileCivilisation.Population);
+					TuileCivilisation tuile4 = new TuileCivilisation(TypeTuileCivilisation.Temple);
+					TuileCivilisation tuile5 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
+					TuileCivilisation tuile6 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
+					DeckPrive deckPrive = new DeckPrive();
+					deckPrive.ajouter(tuile1);
+					deckPrive.ajouter(tuile2);
+					deckPrive.ajouter(tuile3);
+					deckPrive.ajouter(tuile4);
+					deckPrive.ajouter(tuile5);
+					deckPrive.ajouter(tuile6);
 
-		    		Chef chefFermier = new Chef(TypeChef.Fermier);
-		    		Chef chefRoi = new Chef(TypeChef.Roi);
-		    		Chef chefMarchand = new Chef(TypeChef.Marchand);
-		    		Chef chefPretre = new Chef(TypeChef.Pretre);
-		    		DeckPublic deckPublic = new DeckPublic();
-		    		deckPublic.ajouter(chefFermier);
-		    		deckPublic.ajouter(chefRoi);
-		    		deckPublic.ajouter(chefMarchand);
-		    		deckPublic.ajouter(chefPretre);
+					Chef chefFermier = new Chef(TypeChef.Fermier);
+					Chef chefRoi = new Chef(TypeChef.Roi);
+					Chef chefMarchand = new Chef(TypeChef.Marchand);
+					Chef chefPretre = new Chef(TypeChef.Pretre);
+					DeckPublic deckPublic = new DeckPublic();
+					deckPublic.ajouter(chefFermier);
+					deckPublic.ajouter(chefRoi);
+					deckPublic.ajouter(chefMarchand);
+					deckPublic.ajouter(chefPretre);
 
-		    		Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
-		    		PartieInterface partie = (Partie) this.getListeJoueur().get(0);
-		    		partie.setJoueur(joueur);
-		    		this.joueurs.add(partie);
+					Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
+					PartieInterface partie = (Partie) this.getListeJoueur().get(0);
+					partie.setJoueur(joueur);
+					this.joueurs.add(partie);
 
+					ControleurPlateau controleurPlateau = loader.getController();
+					controleurPlateau.setMainApp(this);
 
-		    		ControleurPlateau controleurPlateau = loader.getController();
-		            controleurPlateau.setMainApp(this);
+					Scene scene = new Scene(rootLayout);
 
-		            Scene scene = new Scene(rootLayout);
-
-		            primaryStage.setScene(scene);
-		            primaryStage.show();
-    			}
-    		} catch(RemoteException exp)
-    		{
-    				exp.printStackTrace();
-    		}
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				}
+			} catch (RemoteException exp) {
+				exp.printStackTrace();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Fonction affiche la PopUp d'attente de connexion
 	 */
-	public void afficherPopUpAttente()
-	{
-		try
-		{
+	public void afficherPopUpAttente() {
+		try {
 			FXMLLoader loader = new FXMLLoader();
-	        loader.setLocation(MainApp.class.getResource("FenetreAttenteConnection.fxml"));
-	        rootLayout = (BorderPane) loader.load();
-	        System.out.println(this.getListeJoueur());
-	        Scene scene = new Scene(rootLayout);
+			loader.setLocation(MainApp.class.getResource("FenetreAttenteConnection.fxml"));
+			rootLayout = (BorderPane) loader.load();
+			System.out.println(this.getListeJoueur());
+			Scene scene = new Scene(rootLayout);
 
-	        popUpStage.setScene(scene);
-	        primaryStage.hide();
-	        popUpStage.show();
+			popUpStage.setScene(scene);
+			primaryStage.hide();
+			popUpStage.show();
 
-	        ControleurFenetreAttente controleur = loader.getController();
-	        controleur.setMainApp(this);
-	        System.out.println(controleur.getMainApp());
-		} catch(Exception e)
-		{
+			ControleurFenetreAttente controleur = loader.getController();
+			controleur.setMainApp(this);
+			System.out.println(controleur.getMainApp());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
 	 * getter de la liste des observables joueurs
+	 *
 	 * @return listeJoueur
 	 */
 	public ObservableList<PartieInterface> getListeJoueur() {
@@ -206,15 +215,16 @@ public class MainApp extends Application implements App {
 
 	/**
 	 * setter de la liste des joueur
+	 *
 	 * @param listeJoueur
 	 */
 	public void setListeJoueur(ObservableList<PartieInterface> listeJoueur) {
 		this.joueurs = listeJoueur;
 	}
 
-
 	/**
 	 * getter de la primaryStage
+	 *
 	 * @return primaryStage
 	 */
 	public Stage getPrimaryStage() {
@@ -223,6 +233,7 @@ public class MainApp extends Application implements App {
 
 	/**
 	 * setter de la primaryStage
+	 *
 	 * @param primaryStage
 	 */
 	public void setPrimaryStage(Stage primaryStage) {
@@ -231,6 +242,7 @@ public class MainApp extends Application implements App {
 
 	/**
 	 * Main qui lance le projet
+	 *
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -253,28 +265,29 @@ public class MainApp extends Application implements App {
 		this.client = client;
 	}
 
-	private Parent replaceSceneContent(String fxml) throws Exception
-	{
+	private Parent replaceSceneContent(String fxml) throws Exception {
 		FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource(fxml));
+		loader.setLocation(MainApp.class.getResource(fxml));
 
-		//FXMLLoader l = new FXMLLoader(getClass().getClassLoader().getResource(fxml));
+		// FXMLLoader l = new
+		// FXMLLoader(getClass().getClassLoader().getResource(fxml));
 		this.currentLoader = loader;
 		Parent page = loader.load();
 
-
-
-		//Parent page = (Parent) this.fxmLoader.load(getClass().getClassLoader().getResource(fxml), null, new JavaFXBuilderFactory());
+		// Parent page = (Parent)
+		// this.fxmLoader.load(getClass().getClassLoader().getResource(fxml),
+		// null, new JavaFXBuilderFactory());
 		Scene scene = this.primaryStage.getScene();
-
-		if(scene == null)
+		if(fxml.equals("Salleattente.fxml"))
 		{
-			scene = new Scene(page, 600,400);
+			ControleurSalleAttente controleur = loader.getController();
+			controleur.setMainApp(this);
+		}
+		if (scene == null) {
+			scene = new Scene(page, 600, 400);
 			scene.getStylesheets().add(App.class.getResource("application.css").toExternalForm());
 			this.primaryStage.setScene(scene);
-		}
-		else
-		{
+		} else {
 			scene.setRoot(page);
 		}
 
@@ -285,7 +298,6 @@ public class MainApp extends Application implements App {
 		try {
 			this.replaceSceneContent("CreerPartie.fxml");
 
-
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -293,7 +305,15 @@ public class MainApp extends Application implements App {
 
 	}
 
-	public void goToMenuPage(){
+	public ArrayList<Dynastie> getListeDynastie() {
+		return listeDynastieDispo;
+	}
+
+	public void setListeDynastie(ArrayList<Dynastie> listeDynastie) {
+		this.listeDynastieDispo = listeDynastie;
+	}
+
+	public void goToMenuPage() {
 		try {
 			this.replaceSceneContent("MenuDepart.fxml");
 		} catch (Exception e) {
@@ -312,5 +332,26 @@ public class MainApp extends Application implements App {
 
 	}
 
+	public void goToSalon() {
+		try {
+			this.replaceSceneContent("Salleattente.fxml");
+			
+			ControleurSalleAttente controler = (ControleurSalleAttente) this.currentLoader.getController();
+			this.client.addListener(controler);
+			this.currentControler = controler;
+			controler.majListeJoueur(this.client.getPartie());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+	public void afficherPlateau(){
+		try{
+			this.replaceSceneContent("ApplicationPrincipale.fxml");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }

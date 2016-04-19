@@ -4,9 +4,17 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
+
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.InterfaceServeurClient;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Serveur;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCatastrophe;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 
 /**
  * Classe representant une partie
@@ -211,11 +219,16 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 		this.serveur = pServeur;
 	}
 
+	public Serveur getServeur(){
+		return this.serveur;
+	}
+	
 	public void send(String string, int idClient) throws RemoteException {
 		System.out.println(idClient);
 		System.out.println(string);
 	}
 	
+
 	public ArrayList<Conflits> getConflits(){
 		return this.conflits;
 	}
@@ -226,5 +239,52 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	
 	public void retirerConflit(Conflits pConflit){
 		this.conflits.remove(pConflit);
+
+	/**
+	 * méthode d'initialisation de la partie une fois que tous les joueurs ont prets
+	 */
+	public void initialiserPartie(){
+		this.plateauJeu = new Plateau();
+		this.pioche = new Pioche();
+		
+		//on recupere les joueurs
+		ArrayList<InterfaceServeurClient> listeClients = this.serveur.getClients();
+		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
+		
+		for(InterfaceServeurClient client : listeClients){
+			try {
+				joueurs.add(client.getJoueur());
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		//////initialisation des decks de chaque joueur
+		for(Joueur joueur : joueurs){
+			
+			//attribution des chefs
+			Chef roi = new Chef(TypeChef.Roi, joueur);
+			Chef marchand = new Chef(TypeChef.Marchand, joueur);
+			Chef fermier = new Chef(TypeChef.Fermier, joueur);
+			Chef pretre = new Chef(TypeChef.Pretre, joueur);
+			
+			joueur.getDeckPublic().ajouter(roi);
+			joueur.getDeckPublic().ajouter(marchand);
+			joueur.getDeckPublic().ajouter(fermier);
+			joueur.getDeckPublic().ajouter(pretre);
+			
+			//attribution de 2 cartes cata
+			joueur.getDeckPublic().ajouter(new TuileCatastrophe());
+			joueur.getDeckPublic().ajouter(new TuileCatastrophe());
+			
+			//attribution au hasard de 6 tuile civilisation
+			for(int i = 0; i < 6; i++){
+				TuileCivilisation tuile = this.pioche.piocherTuile();
+				joueur.getDeckPrive().ajouter(tuile);
+			}
+		}
+		
+
 	}
 }
