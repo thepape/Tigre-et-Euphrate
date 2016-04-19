@@ -239,7 +239,8 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	
 	public void retirerConflit(Conflits pConflit){
 		this.conflits.remove(pConflit);
-
+	}
+	
 	/**
 	 * méthode d'initialisation de la partie une fois que tous les joueurs ont prets
 	 */
