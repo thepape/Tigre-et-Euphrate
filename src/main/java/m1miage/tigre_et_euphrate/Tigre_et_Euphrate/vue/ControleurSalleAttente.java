@@ -1,16 +1,24 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
+
+
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Client;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.InterfaceServeurClient;
 import javafx.collections.ListChangeListener;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.collections.*;
+import javafx.scene.control.ListView;
 
 /**
  * Controlleur de la salle d'attente
@@ -123,6 +131,9 @@ public class ControleurSalleAttente {
 	@FXML
 	private Button tyrell;
 
+	@FXML
+	private ListView<String> listeJoueur;
+
 
 	/**
 	 * Constructeur
@@ -172,6 +183,24 @@ public class ControleurSalleAttente {
 			client.getJoueur().setDynastie(dynastie);
 			System.out.println(client.getJoueur().getDynastie().getNom());
 		}
+	}
+
+	public void majListeJoueur(Partie p){
+		ObservableList<String> items = FXCollections.observableArrayList();
+		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
+
+		for(InterfaceServeurClient i: p.getServeur().getClients()){
+			try {
+				String n = i.getNomJoueur();
+				items.add(n);
+				System.out.println(n);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		this.listeJoueur.setItems(items);
 	}
 
 	@FXML
