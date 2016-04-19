@@ -63,6 +63,8 @@ public class MainApp extends Application implements App {
 	private InterfaceServeurClient client;
 
 	private FXMLLoader currentLoader;
+	
+	public Object currentControler;
 
 	ArrayList<Dynastie> listeDynastieDispo = new ArrayList<Dynastie>();
 
@@ -76,6 +78,8 @@ public class MainApp extends Application implements App {
 	public static MainApp getInstance() {
 		return MainApp.instance;
 	}
+	
+	
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -86,7 +90,7 @@ public class MainApp extends Application implements App {
 		MainApp.instance = this;
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Tigre et Euphrate");
-
+		
 		this.afficherMenuDepart();
 
 	}
@@ -331,6 +335,11 @@ public class MainApp extends Application implements App {
 	public void goToSalon() {
 		try {
 			this.replaceSceneContent("Salleattente.fxml");
+			
+			ControleurSalleAttente controler = (ControleurSalleAttente) this.currentLoader.getController();
+			this.client.addListener(controler);
+			this.currentControler = controler;
+			controler.majListeJoueur(this.client.getPartie());
 		}catch(Exception e){
 			e.printStackTrace();
 		}

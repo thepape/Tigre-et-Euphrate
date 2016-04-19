@@ -9,6 +9,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
@@ -286,6 +287,13 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		{
 			client.setIdObjetPartie(this.clients.size());
 			this.clients.add(client);
+			Joueur joueur = new Joueur();
+			joueur.setNom(client.getNomJoueur());
+			client.setJoueur(joueur);
+			
+			for(InterfaceServeurClient c : this.clients){
+				c.notifierChangement(joueur);
+			}
 		}
 	}
 
@@ -359,5 +367,30 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	public void setListeDynastie(ArrayList<Dynastie> liste) throws RemoteException {
 		this.listeDynastieDispo = liste;
 
+	}
+
+	public void setJoueur(Joueur j) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void notifierChangement() throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addListener(ChangeListener listener) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeListener(ChangeListener listener) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void notifierChangement(Object arg) throws RemoteException {
+		// TODO Auto-generated method stub
+		
 	}
 }

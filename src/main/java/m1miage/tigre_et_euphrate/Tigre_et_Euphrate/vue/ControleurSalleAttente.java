@@ -1,5 +1,6 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue;
 
+import java.lang.reflect.Method;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -9,6 +10,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Client;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.InterfaceServeurClient;
@@ -25,12 +27,14 @@ import javafx.scene.control.ListView;
  * @author
  *
  */
-public class ControleurSalleAttente {
+public class ControleurSalleAttente implements ChangeListener {
 
 	/**
 	 * Application gérer par ce controleur
 	 */
 	private MainApp mainApp;
+	
+	public ObservableList<Joueur> joueurs = FXCollections.observableArrayList();
 
 	public MainApp getMainApp() {
 		return mainApp;
@@ -104,6 +108,29 @@ public class ControleurSalleAttente {
 
 					}
 				);
+		
+		//ajout du listener pour l'observablelist de joueur
+		this.joueurs.addListener(
+				new ListChangeListener<Joueur>(){
+
+					public void onChanged(javafx.collections.ListChangeListener.Change<? extends Joueur> arg0) {
+						//ObservableList<Joueur> list = (ObservableList<Joueur>) arg0.getList();
+						try {
+							Platform.runLater(new Runnable() {
+								public void run(){
+									((ControleurSalleAttente) MainApp.getInstance().currentControler).changeListeJoueur();
+								}
+							});
+							//changeListeJoueur();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						
+						
+					}
+					
+				}
+				);
 	}
 
 	//Bouton des differentes dynasties
@@ -132,7 +159,7 @@ public class ControleurSalleAttente {
 	private Button tyrell;
 
 	@FXML
-	private ListView<String> listeJoueur;
+	private ListView listeJoueur;
 
 
 	/**
@@ -184,12 +211,56 @@ public class ControleurSalleAttente {
 			System.out.println(client.getJoueur().getDynastie().getNom());
 		}
 	}
+	
+	public void updateListeJoueurs() throws RemoteException{
+		InterfaceServeurClient serveur = MainApp.getInstance().getServeur();
+		ArrayList<InterfaceServeurClient> clients = serveur.getClients();
+		this.joueurs.clear();
+		
+		for(InterfaceServeurClient i: clients){
+			try {
+				Joueur j = i.getJoueur();
+				this.joueurs.add(j);
+				System.out.println(j.getNom());
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void ajouterJoueurDansListe(Joueur j){
+		this.joueurs.add(j);
+	}
+	
+	public void retirerJoueurDansListe(Joueur j){
+		this.joueurs.remove(j);
+	}
+	
+	public void changeListeJoueur(){
+		ObservableList<String> items = FXCollections.observableArrayList();
+		
+		for(Joueur j : this.joueurs){
+			String n = j.getNom();
+			
+			if(j.estPret()){
+				n += " [PRET]";
+			}
+			
+			items.add(n);
+		}
+		
+		this.listeJoueur.setItems(items);
+	}
 
-	public void majListeJoueur(Partie p){
+	public void majListeJoueur(Partie p) throws RemoteException{
 		ObservableList<String> items = FXCollections.observableArrayList();
 		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
+		InterfaceServeurClient client = MainApp.getInstance().getClient();
+		InterfaceServeurClient serveur = MainApp.getInstance().getServeur();
+		ArrayList<InterfaceServeurClient> clients = serveur.getClients();
 
-		for(InterfaceServeurClient i: p.getServeur().getClients()){
+		for(InterfaceServeurClient i: clients){
 			try {
 				String n = i.getNomJoueur();
 				items.add(n);
@@ -206,5 +277,24 @@ public class ControleurSalleAttente {
 	@FXML
 	public void afficherPlateau(){
 		MainApp.getInstance().afficherPlateau();
+	}
+
+
+	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+		
+			try {
+				this.updateListeJoueurs();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			/*
+			if(arg1 == null && arg2 instanceof Joueur){
+				this.ajouterJoueurDansListe((Joueur) arg2);
+			}
+			else if( arg1 instanceof Joueur && arg2 == null){
+				this.retirerJoueurDansListe((Joueur) arg1);
+			}*/
+		
 	}
 }
