@@ -24,7 +24,7 @@ public interface InterfaceServeurClient extends Remote {
 	public Joueur getJoueur() throws RemoteException; //Ligne en trop
 	public int getIdObjetPartie() throws RemoteException;
 	public void setIdObjetPartie(int idObjetPartie) throws RemoteException;
-	public void sendDynastieChoisi(Dynastie dynastie, int idClient) throws RemoteException;
+	public void sendDynastieChoisi(String dynastie, int idClient) throws RemoteException;
 	public ArrayList<Dynastie> getListeDynastie() throws RemoteException;
 	public void setListeDynastie(ArrayList<Dynastie> liste) throws RemoteException;
 	//test send

@@ -56,9 +56,9 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 * url du serveur
 	 */
 	private String url;
-	
+
 	ArrayList<Dynastie> listeDynastieDispo = new ArrayList<Dynastie>();
-	
+
 	private ObservableList<Dynastie> listeDynastie;
 
 
@@ -72,12 +72,12 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 		this.port = 42000;
 		this.namespace = "Tigre-et-euphrate";
-		
+
 		listeDynastieDispo.add(Dynastie.Lanister);
 		listeDynastieDispo.add(Dynastie.Stark);
 		listeDynastieDispo.add(Dynastie.Targaryen);
 		listeDynastieDispo.add(Dynastie.Tyrell);
-		
+
 		listeDynastie = FXCollections.observableArrayList(listeDynastieDispo);
 
 	}
@@ -334,19 +334,18 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		return null;
 	}
 
-	public void sendDynastieChoisi(Dynastie dynastie, int idClient) throws RemoteException {
-		System.out.println("J'ai recu la dynastie :" + dynastie.getNom() + " du client :" + idClient);
-		this.listeDynastie.add(Dynastie.Lanister);
+	public void sendDynastieChoisi(String dynastie, int idClient) throws RemoteException {
+		System.out.println("J'ai recu la dynastie :" + dynastie + " du client :" + idClient);
 		for(int i = 0 ; i < this.listeDynastie.size(); i++)
 		{
 			Dynastie dynastieTest = this.listeDynastie.get(i);
-			if(dynastieTest.equals(dynastie))
+			if(dynastieTest.getNom().equals(dynastie))
 			{
 				dynastieTest.setEstPrise(true);
 			}
-			
+
 		}
-		
+
 		for(int i = 0; i < this.clients.size(); i++)
 		{
 			InterfaceServeurClient client = this.clients.get(i);
@@ -357,9 +356,8 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		}
 	}
 
-	@Override
 	public void setListeDynastie(ArrayList<Dynastie> liste) throws RemoteException {
 		this.listeDynastieDispo = liste;
-		
+
 	}
 }

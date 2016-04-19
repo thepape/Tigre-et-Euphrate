@@ -57,8 +57,8 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	 * serveur auquel le client est connecté
 	 */
 	public InterfaceServeurClient serveur = null;
-	
-	private ArrayList<Dynastie> listeDynastie;
+
+	private ArrayList<Dynastie> listeDynastie = new ArrayList<Dynastie>();
 
 	/**
 	 * Constructeur du client
@@ -67,6 +67,11 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	 * @throws RemoteException
 	 */
 	public Client(String pIp, String pNomJoueur) throws RemoteException {
+		this.listeDynastie.add(Dynastie.Lanister);
+		this.listeDynastie.add(Dynastie.Stark);
+		this.listeDynastie.add(Dynastie.Targaryen);
+		this.listeDynastie.add(Dynastie.Tyrell);
+
 		this.nomJoueur = pNomJoueur;
 		this.ip = pIp;
 		this.port = 42000;
@@ -266,29 +271,31 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		this.idClientCourant = idObjetPartie;
 	}
 
-	public void sendDynastieChoisi(Dynastie dynastie, int idClient) throws RemoteException {
+	public void sendDynastieChoisi(String dynastie, int idClient) throws RemoteException {
+		Dynastie dynastieChoisi = null;
 		for(int i = 0; i < this.getListeDynastie().size(); i++)
 		{
-			Dynastie dynastieChoisi = this.getListeDynastie().get(i);
-			if(dynastieChoisi.equals(dynastie))
+			dynastieChoisi = this.getListeDynastie().get(i);
+			if(dynastieChoisi.getNom().equals(dynastie))
 			{
 				dynastieChoisi.setEstPrise(true);
 			}
-			
+
 		}
-		System.out.println(dynastie.getNom());
+
 	}
 
-	@Override
+	public void setJoueur(Joueur joueur) {
+		this.joueur = joueur;
+	}
+
 	public ArrayList<Dynastie> getListeDynastie() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.listeDynastie;
 	}
 
-	@Override
 	public void setListeDynastie(ArrayList<Dynastie> liste) throws RemoteException {
 		this.listeDynastie = liste;
-		
+
 	}
 
 }

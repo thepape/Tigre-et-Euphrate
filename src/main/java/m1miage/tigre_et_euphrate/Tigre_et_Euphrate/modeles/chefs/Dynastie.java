@@ -2,9 +2,12 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs;
 
 import java.io.Serializable;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 /**
  * Class représentant une Dynastie. une dynastie est unique à chaque joueur.
- * les dynasties sont : Lanister, Starks, Tyrell, Targaryens 
+ * les dynasties sont : Lanister, Starks, Tyrell, Targaryens
  * @author jerome
  *
  */
@@ -35,18 +38,18 @@ public class Dynastie implements Serializable {
 	 * Nom de la dynastie
 	 */
 	private String nom;
-	
+
 	/**
 	 * Lien vers l'image
 	 */
 	private String lien;
-	
+
 	/**
 	 * Booleen si la dynastie est prise
 	 */
-	private boolean estPrise;
+	public BooleanProperty estPrise = new SimpleBooleanProperty();
 
-	
+
 	/**
 	 * Constructeur d'une dynastie
 	 * @param pnom nom de la dynastie
@@ -56,16 +59,16 @@ public class Dynastie implements Serializable {
 		super();
 		this.nom = pnom;
 		this.lien = plien;
-		this.estPrise = false;
+		this.estPrise.setValue(false);
 	}
-	
+
 	/**
 	 * Constructeur vide
 	 */
 	public Dynastie(){
 		this.nom = "non defini";
 		this.lien = "non defini";
-		this.estPrise = false;
+		this.estPrise.setValue(false);;
 	}
 
 
@@ -86,13 +89,13 @@ public class Dynastie implements Serializable {
 		return lien;
 	}
 
-	
+
 	/**
 	 * indique si la dynastie est déja selectionne par un joueur
 	 * @return
 	 */
 	public boolean isEstPrise() {
-		return estPrise;
+		return this.estPrise.get();
 	}
 
 	/**
@@ -100,9 +103,9 @@ public class Dynastie implements Serializable {
 	 * @param estPrise
 	 */
 	public void setEstPrise(boolean estPrise) {
-		this.estPrise = estPrise;
+		this.estPrise.setValue(estPrise);;
 	}
 
-	
+
 
 }

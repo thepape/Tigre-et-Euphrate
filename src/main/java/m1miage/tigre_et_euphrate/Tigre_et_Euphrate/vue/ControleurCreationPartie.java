@@ -86,6 +86,8 @@ public class ControleurCreationPartie {
 		try
 		{
 			client = new Client("localhost", nomJoueur);
+			Joueur joueur = new Joueur();
+			client.setJoueur(joueur);
 		} catch(RemoteException e)
 		{
 			e.printStackTrace();
@@ -103,7 +105,10 @@ public class ControleurCreationPartie {
 		String ip = this.TFIP.getText();
 		try
 		{
+			Joueur joueur = new Joueur();
+			joueur.setNom(nomJoueur);
 			Client client = new Client(ip, nomJoueur);
+			client.setJoueur(joueur);
 			client.connect();
 			MainApp.getInstance().setServeur(client.getServeur());
 			MainApp.getInstance().setClient(client);
@@ -112,7 +117,7 @@ public class ControleurCreationPartie {
 		{
 			e.printStackTrace();
 		}
-		
+
 		this.goToSalon();
 	}
 
@@ -149,7 +154,7 @@ public class ControleurCreationPartie {
 	public void goToSalon(){
 		MainApp.getInstance().goToSalon();
 	}
-	
+
 	@FXML
 	public void initialize()
 	{
