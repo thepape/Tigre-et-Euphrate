@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import javafx.collections.ObservableList;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPrive;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPublic;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
@@ -24,6 +25,8 @@ public interface InterfaceServeurClient extends Remote {
 	public int getIdObjetPartie() throws RemoteException;
 	public void setIdObjetPartie(int idObjetPartie) throws RemoteException;
 	public void sendDynastieChoisi(Dynastie dynastie, int idClient) throws RemoteException;
+	public ArrayList<Dynastie> getListeDynastie() throws RemoteException;
+	public void setListeDynastie(ArrayList<Dynastie> liste) throws RemoteException;
 	//test send
 	public void send(String string, int idClient) throws RemoteException;
 

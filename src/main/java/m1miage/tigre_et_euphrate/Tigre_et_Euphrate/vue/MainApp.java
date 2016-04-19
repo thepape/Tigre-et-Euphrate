@@ -5,9 +5,11 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -60,6 +62,10 @@ public class MainApp extends Application implements App {
     private InterfaceServeurClient client;
 
     private FXMLLoader currentLoader;
+    
+	ArrayList<Dynastie> listeDynastieDispo = new ArrayList<Dynastie>();
+	
+	private ObservableList<Dynastie> listeDynastie;
     /**
      * retourne l'instance unique de l'application en cours d'execution
      * @return
@@ -71,6 +77,11 @@ public class MainApp extends Application implements App {
 
 	@Override
 	public void start(Stage primaryStage) {
+		/*listeDynastieDispo.add(Dynastie.Lanister);
+		listeDynastieDispo.add(Dynastie.Stark);
+		listeDynastieDispo.add(Dynastie.Targaryen);
+		listeDynastieDispo.add(Dynastie.Tyrell);*/
+		
 		MainApp.instance = this;
 		this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Tigre et Euphrate");
@@ -293,6 +304,14 @@ public class MainApp extends Application implements App {
 
 	}
 
+	public ObservableList<Dynastie> getListeDynastie() {
+		return listeDynastie;
+	}
+
+	public void setListeDynastie(ObservableList<Dynastie> listeDynastie) {
+		this.listeDynastie = listeDynastie;
+	}
+
 	public void goToMenuPage(){
 		try {
 			this.replaceSceneContent("MenuDepart.fxml");
@@ -315,6 +334,14 @@ public class MainApp extends Application implements App {
 	public void goToSalon(){
 		try{
 			this.replaceSceneContent("Salleattente.fxml");
+			listeDynastie = FXCollections.observableArrayList(this.getServeur().getListeDynastie());
+			MainApp.getInstance().getListeDynastie().addListener(new ListChangeListener<Dynastie>() {
+			      @Override
+			      public void onChanged(ListChangeListener.Change change) {
+			        System.out.println("change!");
+			      }
+			    });
+			this.client.setListeDynastie(this.getServeur().getListeDynastie());
 		}catch(Exception e){
 			e.printStackTrace();
 		}

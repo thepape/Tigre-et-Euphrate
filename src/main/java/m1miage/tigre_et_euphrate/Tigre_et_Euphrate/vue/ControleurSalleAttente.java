@@ -3,6 +3,7 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue;
 import java.rmi.RemoteException;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
+import javafx.collections.ListChangeListener;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -20,6 +21,15 @@ public class ControleurSalleAttente {
 	 */
 	private MainApp mainApp;
 	
+	public MainApp getMainApp() {
+		return mainApp;
+	}
+
+
+	public void setMainApp(MainApp mainApp) {
+		this.mainApp = mainApp;
+	}
+
 	//Bouton des differentes dynasties
 	/**
 	 * Bouton de la dynastie lanister
@@ -66,8 +76,8 @@ public class ControleurSalleAttente {
 	@FXML
 	public void dynastieChoisi(Event event) throws RemoteException {
 		Button pButton = (Button) event.getSource();
+
 		pButton.setDisable(true);
-		System.out.println(pButton.getId());
 		Dynastie dynastie = null;
 		if(pButton.getId().equals("lanister"))
 		{
@@ -75,6 +85,14 @@ public class ControleurSalleAttente {
 		}
 		
 		MainApp.getInstance().getServeur().sendDynastieChoisi(dynastie, MainApp.getInstance().getClient().getIdObjetPartie());
+		for(int i = 0; i < MainApp.getInstance().getListeDynastie().size(); i++)
+		{
+			if(MainApp.getInstance().getListeDynastie().get(i).equals(dynastie))
+				MainApp.getInstance().getListeDynastie().set(i, dynastie);
+		}
+		
+		/*MainApp.getInstance().getListeDynastie().remove(0, MainApp.getInstance().getListeDynastie().size()-1);
+		MainApp.getInstance().getListeDynastie().addAll(MainApp.getInstance().getServeur().getListeDynastie());*/
 		//TODO envoyer au serveur + passer la dynastie au joueur
 	}
 	

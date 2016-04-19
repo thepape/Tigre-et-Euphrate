@@ -9,6 +9,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javafx.collections.ObservableList;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
@@ -56,6 +57,8 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	 * serveur auquel le client est connecté
 	 */
 	public InterfaceServeurClient serveur = null;
+	
+	private ArrayList<Dynastie> listeDynastie;
 
 	/**
 	 * Constructeur du client
@@ -264,7 +267,28 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	}
 
 	public void sendDynastieChoisi(Dynastie dynastie, int idClient) throws RemoteException {
+		for(int i = 0; i < this.getListeDynastie().size(); i++)
+		{
+			Dynastie dynastieChoisi = this.getListeDynastie().get(i);
+			if(dynastieChoisi.equals(dynastie))
+			{
+				dynastieChoisi.setEstPrise(true);
+			}
+			
+		}
 		System.out.println(dynastie.getNom());
+	}
+
+	@Override
+	public ArrayList<Dynastie> getListeDynastie() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setListeDynastie(ArrayList<Dynastie> liste) throws RemoteException {
+		this.listeDynastie = liste;
+		
 	}
 
 }
