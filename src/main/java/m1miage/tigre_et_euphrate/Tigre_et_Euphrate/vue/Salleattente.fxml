@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue.ControleurSalleAttente">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue.ControleurSalleAttente">
   <children>
     <SplitPane dividerPositions="0.6872909698996655" layoutY="-3.0" prefHeight="406.0" prefWidth="600.0">
       <items>
@@ -17,7 +17,7 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="316.0" prefWidth="173.0">
                   <children>
                     <Text layoutX="32.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueur connectés :" />
-                    <TextArea fx:id="ListeJoueur" layoutX="30.0" layoutY="38.0" prefHeight="148.0" prefWidth="341.0" />
+                              <ListView fx:id="ListeJoueur" layoutX="31.0" layoutY="43.0" prefHeight="134.0" prefWidth="344.0" />
                   </children>
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -36,7 +36,7 @@
           <children>
             <Button layoutX="71.0" layoutY="304.0" mnemonicParsing="false" text="Prêt" />
             <Button layoutX="65.0" layoutY="343.0" mnemonicParsing="false" onMouseClicked="#retourAuMenu" text="Quiter" />
-            <Button fx:id="lanister" layoutX="19.0" layoutY="61.0" minHeight="61.0" minWidth="61.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="61.0" text="" onMouseClicked="#dynastieChoisi">
+            <Button fx:id="lanister" layoutX="19.0" layoutY="61.0" minHeight="61.0" minWidth="61.0" mnemonicParsing="false" onMouseClicked="#dynastieChoisi" prefHeight="61.0" prefWidth="61.0" text="">
               <graphic>
                 <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                   <image>

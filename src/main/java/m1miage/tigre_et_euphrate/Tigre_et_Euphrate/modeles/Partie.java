@@ -203,6 +203,10 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 		this.serveur = pServeur;
 	}
 
+	public Serveur getServeur(){
+		return this.serveur;
+	}
+	
 	public void send(String string, int idClient) throws RemoteException {
 		System.out.println(idClient);
 		System.out.println(string);

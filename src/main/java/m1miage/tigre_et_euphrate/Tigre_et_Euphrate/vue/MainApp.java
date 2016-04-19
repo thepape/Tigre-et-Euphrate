@@ -336,7 +336,6 @@ public class MainApp extends Application implements App {
 			this.replaceSceneContent("Salleattente.fxml");
 			listeDynastie = FXCollections.observableArrayList(this.getServeur().getListeDynastie());
 			MainApp.getInstance().getListeDynastie().addListener(new ListChangeListener<Dynastie>() {
-			      @Override
 			      public void onChanged(ListChangeListener.Change change) {
 			        System.out.println("change!");
 			      }
@@ -346,6 +345,7 @@ public class MainApp extends Application implements App {
 			e.printStackTrace();
 		}
 	}
+	
 	public void afficherPlateau(){
 		try{
 			this.replaceSceneContent("ApplicationPrincipale.fxml");
