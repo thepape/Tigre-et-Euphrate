@@ -144,6 +144,10 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		}
 
 	}
+	
+	public boolean deconnecter() throws RemoteException{
+		return this.serveur.retirerClient(this);
+	}
 
 	/**
 	 * getter du namespace
@@ -285,10 +289,20 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 			if(dynastieChoisi.getNom().equals(dynastie))
 			{
 				dynastieChoisi.setEstPrise(true);
+				
 			}
 
 		}
 
+	}
+	
+	public void switchJoueurPret() throws RemoteException{
+		if(this.joueur.estPret()){
+			this.joueur.setEstPret(false);
+		}
+		else{
+			this.joueur.setEstPret(true);
+		}
 	}
 
 	public void setJoueur(Joueur joueur) {
@@ -338,6 +352,16 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	public ArrayList<InterfaceServeurClient> getClients() throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public boolean retirerClient(InterfaceServeurClient client) throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void switchJoueurEstPret(InterfaceServeurClient client) throws RemoteException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -118,7 +118,12 @@ public class ControleurSalleAttente implements ChangeListener {
 						try {
 							Platform.runLater(new Runnable() {
 								public void run(){
-									((ControleurSalleAttente) MainApp.getInstance().currentControler).changeListeJoueur();
+									try {
+										((ControleurSalleAttente) MainApp.getInstance().currentControler).majListeJoueur();
+									} catch (RemoteException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									};
 								}
 							});
 							//changeListeJoueur();
@@ -168,12 +173,39 @@ public class ControleurSalleAttente implements ChangeListener {
 	public ControleurSalleAttente() {
 	}
 
+	private boolean deconnecterClient(){
+		//DECONNEXION
+				InterfaceServeurClient client = MainApp.getInstance().getClient();
+				boolean deconnexionOK = false;
+				try {
+					deconnexionOK = client.deconnecter();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				return deconnexionOK;
+	}
 
 	// Fonctions
 
 	@FXML
 	public void retourAuMenu(){
+		this.deconnecterClient();
+		
 		MainApp.getInstance().goToMenuPage();
+	}
+	
+	@FXML
+	public void handleBoutonPret(){
+		InterfaceServeurClient serveur =  this.mainApp.getServeur();
+		InterfaceServeurClient client = this.mainApp.getClient();
+		try {
+			serveur.switchJoueurEstPret(client);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -236,7 +268,7 @@ public class ControleurSalleAttente implements ChangeListener {
 	public void retirerJoueurDansListe(Joueur j){
 		this.joueurs.remove(j);
 	}
-	
+	/*
 	public void changeListeJoueur(){
 		ObservableList<String> items = FXCollections.observableArrayList();
 		
@@ -251,9 +283,9 @@ public class ControleurSalleAttente implements ChangeListener {
 		}
 		
 		this.listeJoueur.setItems(items);
-	}
+	}*/
 
-	public void majListeJoueur(Partie p) throws RemoteException{
+	public void majListeJoueur() throws RemoteException{
 		ObservableList<String> items = FXCollections.observableArrayList();
 		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
 		InterfaceServeurClient client = MainApp.getInstance().getClient();
@@ -262,7 +294,17 @@ public class ControleurSalleAttente implements ChangeListener {
 
 		for(InterfaceServeurClient i: clients){
 			try {
+				Joueur j = i.getJoueur();
+				boolean pret = j.estPret();
 				String n = i.getNomJoueur();
+				/*if(j.getDynastie() != null){
+					n += " - "+j.getDynastie().getNom();
+				}*/
+				
+				if(pret){
+					n = n + " [PRET]";
+				}
+				
 				items.add(n);
 				System.out.println(n);
 			} catch (RemoteException e) {

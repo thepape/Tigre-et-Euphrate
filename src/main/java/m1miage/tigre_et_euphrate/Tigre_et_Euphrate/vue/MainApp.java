@@ -339,7 +339,7 @@ public class MainApp extends Application implements App {
 			ControleurSalleAttente controler = (ControleurSalleAttente) this.currentLoader.getController();
 			this.client.addListener(controler);
 			this.currentControler = controler;
-			controler.majListeJoueur(this.client.getPartie());
+			controler.majListeJoueur();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
