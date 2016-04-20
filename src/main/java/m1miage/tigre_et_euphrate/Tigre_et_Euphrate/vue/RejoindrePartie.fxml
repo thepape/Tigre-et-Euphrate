@@ -14,5 +14,6 @@
       <Label layoutX="270.0" layoutY="175.0" text="Votre nom :" />
       <TextField fx:id="TFNomJoueur" layoutX="227.0" layoutY="200.0" />
       <Button mnemonicParsing="false" onMouseClicked="#testerSend" text="Test send" />
+      <Button layoutX="468.0" layoutY="76.0" mnemonicParsing="false" onMouseClicked="#afficherPlateau" text="Afficher Plateau " />
    </children>
 </Pane>

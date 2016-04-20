@@ -1,5 +1,6 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs;
 
+
 import java.io.Serializable;
 
 import javafx.beans.property.BooleanProperty;
@@ -49,7 +50,6 @@ public class Dynastie implements Serializable {
 	 */
 	public BooleanProperty estPrise = new SimpleBooleanProperty();
 
-
 	/**
 	 * Constructeur d'une dynastie
 	 * @param pnom nom de la dynastie
@@ -89,7 +89,6 @@ public class Dynastie implements Serializable {
 		return lien;
 	}
 
-
 	/**
 	 * indique si la dynastie est déja selectionne par un joueur
 	 * @return
@@ -105,7 +104,5 @@ public class Dynastie implements Serializable {
 	public void setEstPrise(boolean estPrise) {
 		this.estPrise.setValue(estPrise);;
 	}
-
-
 
 }

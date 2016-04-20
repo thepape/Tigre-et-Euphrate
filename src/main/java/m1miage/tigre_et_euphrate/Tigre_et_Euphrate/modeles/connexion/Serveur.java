@@ -8,13 +8,14 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
 
 public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceServeurClient, Serializable
 {
@@ -264,8 +265,9 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	/**
 	 * Fonction qui permet d'envoyer des données du serveur aux clients
 	 */
-	public void send(String string, int idClient) throws RemoteException {
-		System.out.println(string);
+	public void send(Action action, int idClient) throws RemoteException {
+		System.out.println("Action envoyée par le client " + idClient);
+		action.executer();
 		for(int i = 0; i < this.clients.size(); i++)
 		{
 			System.out.println("Client testé : " + this.getClients().get(i).getIdObjetPartie());
@@ -273,7 +275,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			if(this.getClients().get(i).getIdObjetPartie() != idClient)
 			{
 				System.out.println("J'envoie au client");
-				this.getClients().get(i).send(string, idClient);
+				this.getClients().get(i).send(action, idClient);
 			}
 		}
 	}
@@ -283,6 +285,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 * @param client
 	 */
 	public void ajouterClient(InterfaceServeurClient client) throws RemoteException {
+		System.out.println("on aJoute Un client");
 		if(this.clients.size() < 4)
 		{
 			client.setIdObjetPartie(this.clients.size());
@@ -290,20 +293,20 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			Joueur joueur = new Joueur();
 			joueur.setNom(client.getNomJoueur());
 			client.setJoueur(joueur);
-			
+
 			for(InterfaceServeurClient c : this.clients){
 				c.notifierChangement(joueur);
 			}
 		}
 	}
-	
+
 	public boolean retirerClient(InterfaceServeurClient client) throws RemoteException {
 		boolean trouve = this.clients.remove(client);
-		
+
 		for(InterfaceServeurClient c : this.clients){
 			c.notifierChangement(null);
 		}
-		
+
 		return trouve;
 	}
 
@@ -351,19 +354,19 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public void switchJoueurEstPret(InterfaceServeurClient client) throws RemoteException{
 		InterfaceServeurClient local = null;
-		
+
 		for(InterfaceServeurClient c : this.clients){
 			if(c.getIdObjetPartie() == client.getIdObjetPartie()){
 				local = c;
 				break;
 			}
 		}
-		
+
 		local.switchJoueurPret();
-		
+
 		for(InterfaceServeurClient c : this.clients){
 			c.notifierChangement(null);
 		}
@@ -400,38 +403,42 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	}
 
-	public void setJoueur(Joueur j) throws RemoteException {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void notifierChangement() throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void addListener(ChangeListener listener) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void removeListener(ChangeListener listener) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void notifierChangement(Object arg) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public boolean deconnecter() throws RemoteException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public void switchJoueurPret() throws RemoteException {
+	}
+
+	public void setJoueur(Joueur joueur) throws RemoteException {
+	}
+
+	public void setPartieCourante(Partie partie) throws RemoteException {
+		this.partie = partie;
+	}
+
+	public void send(String string, int idClient) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

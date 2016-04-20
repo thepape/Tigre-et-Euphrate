@@ -17,12 +17,13 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
 
 
 public class Client extends UnicastRemoteObject implements InterfaceServeurClient, ObservableValue {
 
 	private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
-	
+
 	/**
 	 * ip du joueur qui va se connecter
 	 */
@@ -137,14 +138,14 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		try
 		{
 			serveur.ajouterClient(this);
-			
+
 		} catch(RemoteException e)
 		{
 			e.printStackTrace();
 		}
 
 	}
-	
+
 	public boolean deconnecter() throws RemoteException{
 		return this.serveur.retirerClient(this);
 	}
@@ -229,9 +230,10 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	/**
 	 * Fonction qui permet d'envoyer des données entre serveur et client
 	 */
-	public void send(String string, int idClient) throws RemoteException {
-		System.out.println(idClient);
-		System.out.println(string);
+	public void send(Action action, int idClient) throws RemoteException {
+		System.out.println("idClient recu : " + idClient);
+		System.out.println("idClient courant : " + this.idClientCourant);
+		System.out.println("action envoyée");
 	}
 
 	/**
@@ -289,13 +291,13 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 			if(dynastieChoisi.getNom().equals(dynastie))
 			{
 				dynastieChoisi.setEstPrise(true);
-				
+
 			}
 
 		}
 
 	}
-	
+
 	public void switchJoueurPret() throws RemoteException{
 		if(this.joueur.estPret()){
 			this.joueur.setEstPret(false);
@@ -305,9 +307,6 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		}
 	}
 
-	public void setJoueur(Joueur joueur) {
-		this.joueur = joueur;
-	}
 
 	public ArrayList<Dynastie> getListeDynastie() throws RemoteException {
 		return this.listeDynastie;
@@ -320,12 +319,12 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 
 	public void addListener(InvalidationListener arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void removeListener(InvalidationListener arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void addListener(ChangeListener listener) {
@@ -342,7 +341,7 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		// TODO Auto-generated method stub
 		this.listeners.remove(listener);
 	}
-	
+
 	public void notifierChangement(Object arg){
 		for(ChangeListener listener : this.listeners){
 			listener.changed(this, null, arg);
@@ -361,7 +360,33 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 
 	public void switchJoueurEstPret(InterfaceServeurClient client) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
+
+	/**
+	 * getter de la partie
+	 * @return partie
+	 */
+	public Partie getPartieCourante() {
+		return partieCourante;
+	}
+
+	/**
+	 * setter du Joueur
+	 * @param joueur
+	 */
+	public void setJoueur(Joueur joueur) throws RemoteException {
+		this.joueur = joueur;
+	}
+
+	public void setPartieCourante(Partie partie) throws RemoteException {
+		this.partieCourante = partie;
+
+	}
+
+public void send(String string, int idClient) throws RemoteException {
+	// TODO Auto-generated method stub
+
+}
 
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -508,4 +509,7 @@
          </children>
       </GridPane>
    </bottom>
+   <left>
+      <Button fx:id="boutonFinTour" mnemonicParsing="false" onMouseClicked="#finirTour" text="Test Fin de tour" BorderPane.alignment="CENTER" />
+   </left>
 </BorderPane>

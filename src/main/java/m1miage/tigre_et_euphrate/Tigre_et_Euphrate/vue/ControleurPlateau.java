@@ -15,6 +15,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
@@ -43,6 +44,9 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivil
 
 public class ControleurPlateau {
 
+	/**
+	 * objet qui vérifie quel type d'objet est en drag
+	 */
 	private static Pane imageEnDragAndDropChef = null;
 	private static Pane imageEnDragAndDropTuile = null;
 
@@ -64,6 +68,11 @@ public class ControleurPlateau {
 	@FXML
 	private GridPane deckPrive;
 
+	/**
+	 * Bouton du fin de tour
+	 */
+	@FXML
+	private Button boutonFinTour;
 
 	/**
 	 * Application principale
@@ -91,7 +100,6 @@ public class ControleurPlateau {
 	 * @param mainApp
 	 */
 	public void setMainApp(MainApp mainApp) {
-
 		// Création aléatoire du deck privé du joueur
 		/*for(int i = 0; i < 6; i++)
 		{
@@ -101,7 +109,7 @@ public class ControleurPlateau {
 		// Initialisation de l'interface du deck privé
 		try
 		{
-
+			System.out.println("SET MAIN APP : " + mainApp.getClient().getIdObjetPartie());
 			for(int i = 0; i < mainApp.getListeJoueur().get(0).getDeckPrive().getDeckPrive().size(); i++)
 			{
 				Pane pane = (Pane) deckPrive.getChildren().get(i);
@@ -240,6 +248,16 @@ public class ControleurPlateau {
 				if(target.getChildren().size() == 0)
 				{
 					target.getChildren().add(image);
+					try
+					{
+						//System.out.println(MainApp.getInstance().getClient().getPartie() + "    Joueur : " + MainApp.getInstance().getClient().getJoueur());
+						Action action = new PlacerTuileCivilisation(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur());
+						this.listeActionTour.add(action);
+						//this.triAction();
+					} catch(RemoteException e)
+					{
+						e.printStackTrace();
+					}
 					event.setDropCompleted(true);
 				} else {
 
@@ -344,4 +362,34 @@ public class ControleurPlateau {
 			}
 		}
 	}
+
+	@FXML
+	private void finirTour(MouseEvent event) throws RemoteException
+	{
+		System.out.println("CLIENT COURANT : " + mainApp.getClient().getIdObjetPartie());
+		for(int i = 0; i < this.listeActionTour.size(); i++)
+		{
+
+			this.mainApp.getServeur().send(this.listeActionTour.get(i), MainApp.getInstance().getClient().getIdObjetPartie());
+		}
+	}
+
+	/**
+	 * Fonction qui permet de supprimer les actions et leur opposés si elles sont dans la même liste
+	 * par exemple si dans la même liste il y a placerChef(chefbleu) et retirerChef(chefbleu) elles seront supprimées de la liste d'actions à traiter
+	 */
+	/*private void triAction()
+	{
+		for(int i = 0; i < this.listeActionTour.size(); i++)
+		{
+			Class classAction = (this.listeActionTour.get(i).getClass();
+			if(classAction.getName().equals("class m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerChef"))
+			{
+				for(int j = 0; j < this.listeActionTour.size(); j++)
+				{
+
+				}
+			}
+		}
+	}*/
 }

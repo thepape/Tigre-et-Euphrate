@@ -93,6 +93,13 @@ public class ControleurCreationPartie {
 			e.printStackTrace();
 		}
 		client.attendreLancementServeur(serveur);
+		try
+		{
+			client.setIdObjetPartie(0);
+		} catch(RemoteException e)
+		{
+			e.printStackTrace();
+		}
 		MainApp.getInstance().setClient(client);
 		client.connect();
 		//client.rejoindrePartie();
@@ -111,7 +118,9 @@ public class ControleurCreationPartie {
 			client.setJoueur(joueur);
 			client.connect();
 			MainApp.getInstance().setServeur(client.getServeur());
+			System.out.println(client.getIdClientCourant());
 			MainApp.getInstance().setClient(client);
+			System.out.println("ID a la cReatIon : " + MainApp.getInstance().getClient().getIdObjetPartie());
 			//client.rejoindrePartie();
 		} catch(RemoteException e)
 		{
@@ -128,13 +137,18 @@ public class ControleurCreationPartie {
 		{
 			System.out.println(MainApp.getInstance().getClient().getNomJoueur());
 			System.out.println("Message du serveur");
-			MainApp.getInstance().getServeur().send("client envoie", MainApp.getInstance().getClient().getIdObjetPartie());
+			//MainApp.getInstance().getServeur().send("client envoie", MainApp.getInstance().getClient().getIdObjetPartie());
 		} catch(RemoteException e)
 		{
 			e.printStackTrace();
 		}
 	}
 
+	@FXML
+	public void afficherPlateau()
+	{
+		MainApp.getInstance().initRootLayout();
+	}
 	@FXML
 	public void goToHebergerPartie(){
 		MainApp.getInstance().goToHebergerPartiePage();

@@ -51,7 +51,7 @@ public class MainApp extends Application implements App {
 	/**
 	 * Liste des observables parties
 	 */
-	private ObservableList<PartieInterface> joueurs = FXCollections.observableArrayList();
+	private ObservableList<Partie> joueurs = FXCollections.observableArrayList();
 
 	/**
 	 * instance de l'application en cours d'execution
@@ -63,7 +63,7 @@ public class MainApp extends Application implements App {
 	private InterfaceServeurClient client;
 
 	private FXMLLoader currentLoader;
-	
+
 	public Object currentControler;
 
 	ArrayList<Dynastie> listeDynastieDispo = new ArrayList<Dynastie>();
@@ -73,13 +73,16 @@ public class MainApp extends Application implements App {
 	/**
 	 * retourne l'instance unique de l'application en cours d'execution
 	 *
+	/**
+	 * retourne l'instance unique de l'application en cours d'execution
+	 *
 	 * @return
 	 */
 	public static MainApp getInstance() {
 		return MainApp.instance;
 	}
-	
-	
+
+
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -90,8 +93,9 @@ public class MainApp extends Application implements App {
 		MainApp.instance = this;
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Tigre et Euphrate");
-		
+
 		this.afficherMenuDepart();
+		// this.initRootLayout();
 
 	}
 
@@ -123,18 +127,16 @@ public class MainApp extends Application implements App {
 	 * le controleur
 	 */
 	public void initRootLayout() {
-		try {
 			try {
-				popUpStage.hide();
-				if (this.getListeJoueur().size() == 0) {
-					this.afficherMenuDepart();
-				} else {
-					primaryStage = new Stage();
-					primaryStage.setTitle("Tigre et Euphrate : vous êtes le joueur hébergeur");
-					FXMLLoader loader = new FXMLLoader();
-					loader.setLocation(MainApp.class.getResource("ApplicationPrincipale.fxml"));
-					rootLayout = (BorderPane) loader.load();
-
+				/*
+				 * popUpStage.hide(); if(this.getListeJoueur().size() == 0) {
+				 * this.afficherMenuDepart(); } else {
+				 */
+				primaryStage = new Stage();
+				primaryStage.setTitle("Tigre et Euphrate : vous êtes le joueur hébergeur");
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(MainApp.class.getResource("ApplicationPrincipale.fxml"));
+				rootLayout = (BorderPane) loader.load();
 					// Simuation d'un joueur pour vérifier l'affichage
 					TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
 					TuileCivilisation tuile2 = new TuileCivilisation(TypeTuileCivilisation.Marché);
@@ -150,6 +152,7 @@ public class MainApp extends Application implements App {
 					deckPrive.ajouter(tuile5);
 					deckPrive.ajouter(tuile6);
 
+
 					Chef chefFermier = new Chef(TypeChef.Fermier);
 					Chef chefRoi = new Chef(TypeChef.Roi);
 					Chef chefMarchand = new Chef(TypeChef.Marchand);
@@ -159,26 +162,30 @@ public class MainApp extends Application implements App {
 					deckPublic.ajouter(chefRoi);
 					deckPublic.ajouter(chefMarchand);
 					deckPublic.ajouter(chefPretre);
-
-					Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
-					PartieInterface partie = (Partie) this.getListeJoueur().get(0);
-					partie.setJoueur(joueur);
-					this.joueurs.add(partie);
-
+				Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
+				// PartieInterface partie = (Partie)
+				// this.getListeJoueur().get(0);
 					ControleurPlateau controleurPlateau = loader.getController();
 					controleurPlateau.setMainApp(this);
+				// Client client = new Client("fffff", "joueur 1");
+				Partie partie = new Partie();
+				partie.setJoueur(joueur);
+				this.client.setPartieCourante(partie);
+				this.client.setJoueur(joueur);
+				this.joueurs.add(partie);
 
-					Scene scene = new Scene(rootLayout);
-
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				}
+				Scene scene = new Scene(rootLayout);
+				primaryStage.setScene(scene);
+				primaryStage.show();
+				// }
 			} catch (RemoteException exp) {
 				exp.printStackTrace();
+			} catch(IOException e)
+			{
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
+
 	}
 
 	/**
@@ -206,25 +213,22 @@ public class MainApp extends Application implements App {
 
 	/**
 	 * getter de la liste des observables joueurs
-	 *
 	 * @return listeJoueur
 	 */
-	public ObservableList<PartieInterface> getListeJoueur() {
+	public ObservableList<Partie> getListeJoueur() {
 		return joueurs;
 	}
 
 	/**
 	 * setter de la liste des joueur
-	 *
 	 * @param listeJoueur
 	 */
-	public void setListeJoueur(ObservableList<PartieInterface> listeJoueur) {
+	public void setListeJoueur(ObservableList<Partie> listeJoueur) {
 		this.joueurs = listeJoueur;
 	}
 
 	/**
 	 * getter de la primaryStage
-	 *
 	 * @return primaryStage
 	 */
 	public Stage getPrimaryStage() {
@@ -233,7 +237,6 @@ public class MainApp extends Application implements App {
 
 	/**
 	 * setter de la primaryStage
-	 *
 	 * @param primaryStage
 	 */
 	public void setPrimaryStage(Stage primaryStage) {
@@ -242,7 +245,6 @@ public class MainApp extends Application implements App {
 
 	/**
 	 * Main qui lance le projet
-	 *
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -283,6 +285,7 @@ public class MainApp extends Application implements App {
 			ControleurSalleAttente controleur = loader.getController();
 			controleur.setMainApp(this);
 		}
+
 		if (scene == null) {
 			scene = new Scene(page, 600, 400);
 			scene.getStylesheets().add(App.class.getResource("application.css").toExternalForm());
@@ -335,7 +338,7 @@ public class MainApp extends Application implements App {
 	public void goToSalon() {
 		try {
 			this.replaceSceneContent("Salleattente.fxml");
-			
+
 			ControleurSalleAttente controler = (ControleurSalleAttente) this.currentLoader.getController();
 			this.client.addListener(controler);
 			this.currentControler = controler;

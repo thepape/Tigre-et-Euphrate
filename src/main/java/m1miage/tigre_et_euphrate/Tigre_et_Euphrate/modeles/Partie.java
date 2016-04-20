@@ -1,5 +1,6 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisat
  * Classe representant une partie
  *
  */
-public class Partie extends UnicastRemoteObject implements PartieInterface{
+public class Partie implements Serializable {
 
 	private Serveur serveur;
 

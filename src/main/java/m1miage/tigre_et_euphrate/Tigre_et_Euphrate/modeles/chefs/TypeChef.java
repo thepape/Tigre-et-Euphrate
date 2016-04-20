@@ -1,5 +1,7 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs;
 
+import java.io.Serializable;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
 /**
@@ -7,7 +9,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivil
  * Classe représentant un type de chef
  *
  */
-public class TypeChef {
+public class TypeChef implements Serializable{
 
 	/**
 	 * Fournit une instance du type de chef "Roi"
