@@ -10,6 +10,10 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
  */
 public class Joueur implements Serializable{
 
+	private int id;
+	
+	private static int incId = 1;
+	
 	/**
 	 * Le nom du joueur
 	 */
@@ -62,6 +66,7 @@ public class Joueur implements Serializable{
 	 */
 	public Joueur() {
 		super();
+		this.id = incId++;
 	}
 
 	/**
@@ -77,6 +82,7 @@ public class Joueur implements Serializable{
 		this.deckPrive = pdeckPrive;
 		this.PointVictoire = 0;
 		this.PointTresor = 0;
+		this.id = incId++;
 	}
 
 	/**
@@ -199,8 +205,16 @@ public class Joueur implements Serializable{
 	public void jeSuisPret(){
 		this.pret = true;
 	}
+	
+	public void setEstPret(boolean pPret){
+		this.pret = pPret;
+	}
 
 	public boolean estPret(){
 		return this.pret;
+	}
+	
+	public int getId(){
+		return this.id;
 	}
 }

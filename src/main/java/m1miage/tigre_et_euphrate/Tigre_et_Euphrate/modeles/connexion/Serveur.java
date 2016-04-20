@@ -1,17 +1,20 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion;
 
+import java.awt.List;
 import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 
 public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceServeurClient, Serializable
 {
@@ -55,6 +58,11 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 */
 	private String url;
 
+	ArrayList<Dynastie> listeDynastieDispo = new ArrayList<Dynastie>();
+
+	private ObservableList<Dynastie> listeDynastie;
+
+
 	/**
 	 * constructeur du serveur
 	 * @throws RemoteException
@@ -66,6 +74,29 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		this.port = 42000;
 		this.namespace = "Tigre-et-euphrate";
 
+		listeDynastieDispo.add(Dynastie.Lanister);
+		listeDynastieDispo.add(Dynastie.Stark);
+		listeDynastieDispo.add(Dynastie.Targaryen);
+		listeDynastieDispo.add(Dynastie.Tyrell);
+
+		listeDynastie = FXCollections.observableArrayList(listeDynastieDispo);
+
+	}
+
+	public ArrayList<Dynastie> getListeDynastie() throws RemoteException {
+		return listeDynastieDispo;
+	}
+
+	public void setListeDynastie(ObservableList<Dynastie> listeDynastie) {
+		this.listeDynastie = listeDynastie;
+	}
+
+	public ArrayList<Dynastie> getListeDynastieDispo() throws RemoteException{
+		return listeDynastieDispo;
+	}
+
+	public void setListeDynastieDispo(ArrayList<Dynastie> listeDynastieDispo) {
+		this.listeDynastieDispo = listeDynastieDispo;
 	}
 
 	/**
@@ -256,7 +287,24 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		{
 			client.setIdObjetPartie(this.clients.size());
 			this.clients.add(client);
+			Joueur joueur = new Joueur();
+			joueur.setNom(client.getNomJoueur());
+			client.setJoueur(joueur);
+			
+			for(InterfaceServeurClient c : this.clients){
+				c.notifierChangement(joueur);
+			}
 		}
+	}
+	
+	public boolean retirerClient(InterfaceServeurClient client) throws RemoteException {
+		boolean trouve = this.clients.remove(client);
+		
+		for(InterfaceServeurClient c : this.clients){
+			c.notifierChangement(null);
+		}
+		
+		return trouve;
 	}
 
 	/**
@@ -297,5 +345,93 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 */
 	public void setIdObjetPartie(int idObjetPartie) throws RemoteException {
 		this.idServeur = idObjetPartie;
+	}
+
+	public Joueur getJoueur() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void switchJoueurEstPret(InterfaceServeurClient client) throws RemoteException{
+		InterfaceServeurClient local = null;
+		
+		for(InterfaceServeurClient c : this.clients){
+			if(c.getIdObjetPartie() == client.getIdObjetPartie()){
+				local = c;
+				break;
+			}
+		}
+		
+		local.switchJoueurPret();
+		
+		for(InterfaceServeurClient c : this.clients){
+			c.notifierChangement(null);
+		}
+	}
+
+	public void sendDynastieChoisi(String dynastie, int idClient) throws RemoteException {
+		System.out.println("J'ai recu la dynastie :" + dynastie + " du client :" + idClient);
+		for(int i = 0 ; i < this.listeDynastie.size(); i++)
+		{
+			Dynastie dynastieTest = this.listeDynastie.get(i);
+			if(dynastieTest.getNom().equals(dynastie))
+			{
+				dynastieTest.setEstPrise(true);
+			}
+
+		}
+
+		for(int i = 0; i < this.clients.size(); i++)
+		{
+			InterfaceServeurClient client = this.clients.get(i);
+			if(client.getIdObjetPartie() != idClient)
+			{
+				client.sendDynastieChoisi(dynastie, idClient);
+			}
+		}
+		/*
+		for(InterfaceServeurClient c : this.clients){
+			c.notifierChangement(null);
+		}*/
+	}
+
+	public void setListeDynastie(ArrayList<Dynastie> liste) throws RemoteException {
+		this.listeDynastieDispo = liste;
+
+	}
+
+	public void setJoueur(Joueur j) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void notifierChangement() throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addListener(ChangeListener listener) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeListener(ChangeListener listener) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void notifierChangement(Object arg) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean deconnecter() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void switchJoueurPret() throws RemoteException {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -1,7 +1,7 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
 /**
- * Classe abstraite representant un Deck.
+ * Classe abstraite representant un Deck.!
  */
 public abstract class Deck {
 
