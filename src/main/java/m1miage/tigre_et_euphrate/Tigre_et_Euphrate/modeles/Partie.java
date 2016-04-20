@@ -261,8 +261,19 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 			}
 		}
 		
-		//////initialisation des decks de chaque joueur
+		//attribution en dur des dynasties
+		ArrayList<Dynastie> dynasties = new ArrayList<Dynastie>();
+		dynasties.add(Dynastie.Lanister);
+		dynasties.add(Dynastie.Stark);
+		dynasties.add(Dynastie.Targaryen);
+		dynasties.add(Dynastie.Tyrell);
+		int it = 0;
+		
+		//////initialisation des decks de chaque joueur et de leurs dynasties
 		for(Joueur joueur : joueurs){
+			
+			joueur.setDynastie(dynasties.get(it));
+			it++;
 			
 			//attribution des chefs
 			Chef roi = new Chef(TypeChef.Roi, joueur);
