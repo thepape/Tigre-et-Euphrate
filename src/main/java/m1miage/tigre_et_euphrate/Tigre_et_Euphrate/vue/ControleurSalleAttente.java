@@ -146,6 +146,7 @@ public class ControleurSalleAttente implements ChangeListener {
 				);
 		*/
 		//ajout du listener pour l'observablelist de joueur
+		/*
 		this.joueurs.addListener(
 				new ListChangeListener<Joueur>(){
 
@@ -171,7 +172,7 @@ public class ControleurSalleAttente implements ChangeListener {
 					}
 					
 				}
-				);
+				);*/
 	}
 
 	
@@ -278,7 +279,7 @@ public class ControleurSalleAttente implements ChangeListener {
 			//System.out.println(client.getJoueur().getDynastie().getNom());
 		}
 	}
-	
+	/*
 	public void updateListeJoueurs() throws RemoteException{
 		InterfaceServeurClient serveur = MainApp.getInstance().getServeur();
 		ArrayList<InterfaceServeurClient> clients = serveur.getClients();
@@ -294,7 +295,7 @@ public class ControleurSalleAttente implements ChangeListener {
 				e.printStackTrace();
 			}
 		}
-	}
+	}*/
 	
 	public void ajouterJoueurDansListe(Joueur j){
 		this.joueurs.add(j);
@@ -319,6 +320,17 @@ public class ControleurSalleAttente implements ChangeListener {
 		
 		this.listeJoueur.setItems(items);
 	}*/
+	
+	public void majSalon(){
+		try {
+			this.majListeJoueur();
+			this.majListeDynasties();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 	public void majListeJoueur() throws RemoteException{
 		
@@ -358,7 +370,7 @@ public class ControleurSalleAttente implements ChangeListener {
 
 		this.listeJoueur.setItems(items);
 		
-		this.majListeDynasties();
+		//this.majListeDynasties();
 	}
 	
 	public void majListeDynasties(){
@@ -395,25 +407,22 @@ public class ControleurSalleAttente implements ChangeListener {
 
 	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
 		
-			try {
-				this.updateListeJoueurs();
-				/*
+			//try {
+				//this.updateListeJoueurs();
+				
 				Platform.runLater(new Runnable(){
 
 					public void run() {
-						try {
-							((ControleurSalleAttente) MainApp.getInstance().currentControler).majListeJoueur();
-						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+						
+							((ControleurSalleAttente) MainApp.getInstance().currentControler).majSalon();;
+						
 					}
 					
-				});*/
-			} catch (RemoteException e) {
+				});
+			/*} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 			/*
 			if(arg1 == null && arg2 instanceof Joueur){
 				this.ajouterJoueurDansListe((Joueur) arg2);
