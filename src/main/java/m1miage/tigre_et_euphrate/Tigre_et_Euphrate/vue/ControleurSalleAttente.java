@@ -37,7 +37,11 @@ public class ControleurSalleAttente implements ChangeListener {
 	
 	public ObservableList<Joueur> joueurs = FXCollections.observableArrayList();
 	
+	public ObservableList<String> nomJoueurs = FXCollections.observableArrayList();
+	
 	public HashMap<Dynastie, Button> boutonsDynastie = new HashMap<Dynastie, Button>();
+	
+	private ArrayList<Dynastie> dynastiesDispo = new ArrayList<Dynastie>();
 	
 	//Bouton des differentes dynasties
 		/**
@@ -368,16 +372,46 @@ public class ControleurSalleAttente implements ChangeListener {
 			}
 		}
 
-		this.listeJoueur.setItems(items);
+		this.nomJoueurs = items;
 		
-		//this.majListeDynasties();
+		Platform.runLater(new Runnable(){
+
+			public void run() {
+				
+					((ControleurSalleAttente) MainApp.getInstance().currentControler).majListeJoueurJAVAFX();
+				
+			}
+			
+		});
+	}
+	
+	public void majListeJoueurJAVAFX(){
+		this.listeJoueur.setItems(this.nomJoueurs);
 	}
 	
 	public void majListeDynasties(){
 		InterfaceServeurClient serveur = MainApp.getInstance().getServeur();
 		try {
-			ArrayList<Dynastie> dynastiesDispo = serveur.getListeDynastieDispo();
+			dynastiesDispo = serveur.getListeDynastieDispo();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//JAVAFX
+		Platform.runLater(new Runnable(){
+
+			public void run() {
+				
+					((ControleurSalleAttente) MainApp.getInstance().currentControler).majListeDynastiesJAVAFX();;
+				
+			}
 			
+		});
+	}
+	
+	public void majListeDynastiesJAVAFX(){
+		
 			Iterator<Entry<Dynastie, Button>> ite = this.boutonsDynastie.entrySet().iterator();
 			
 			while(ite.hasNext()){
@@ -392,11 +426,6 @@ public class ControleurSalleAttente implements ChangeListener {
 					bouton.setDisable(true);
 				}
 			}
-			
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	@FXML
@@ -410,15 +439,7 @@ public class ControleurSalleAttente implements ChangeListener {
 			//try {
 				//this.updateListeJoueurs();
 				
-				Platform.runLater(new Runnable(){
-
-					public void run() {
-						
-							((ControleurSalleAttente) MainApp.getInstance().currentControler).majSalon();;
-						
-					}
-					
-				});
+				this.majSalon();
 			/*} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
