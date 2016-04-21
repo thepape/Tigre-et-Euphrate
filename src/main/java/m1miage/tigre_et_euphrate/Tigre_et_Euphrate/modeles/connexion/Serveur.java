@@ -128,7 +128,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		//this.url = "rmi://localhost:"+this.port+"/"+this.namespace;
 		try {
 			//Naming.rebind(url, this);
-			Naming.rebind("rmi://127.0.0.1:42000/ABC", this);
+			Naming.rebind("rmi://127.0.0.1:"+this.port+"/"+this.namespace, this);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

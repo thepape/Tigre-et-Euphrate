@@ -116,7 +116,7 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	{
 		System.setSecurityManager(null);
 		System.setProperty("java.security.policy", "file:/security.policy");
-		System.setProperty("java.rmi.server.hostname", "127.0.0.1");
+		System.setProperty("java.rmi.server.hostname", this.ip);
 
 		/////////////// infos de connexion
 
@@ -125,7 +125,7 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 
 		try {
 			//serveur = (Serveur) Naming.lookup(url);
-			this.serveur = (InterfaceServeurClient) Naming.lookup("rmi://127.0.0.1:42000/ABC");
+			this.serveur = (InterfaceServeurClient) Naming.lookup("rmi://"+this.ip+":"+this.port+"/"+this.namespace);
 			//this.serveur = partie;
 		} catch (Exception e) {
 			e.printStackTrace();
