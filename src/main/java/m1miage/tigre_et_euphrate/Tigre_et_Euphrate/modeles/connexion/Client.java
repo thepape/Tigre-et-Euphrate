@@ -289,11 +289,15 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 			if(dynastieChoisi.getNom().equals(dynastie))
 			{
 				dynastieChoisi.setEstPrise(true);
-				
+				this.joueur.setDynastie(dynastieChoisi);
 			}
 
 		}
 
+	}
+	
+	public void setDynastie(Dynastie dynastie) throws RemoteException {
+		this.joueur.setDynastie(dynastie);
 	}
 	
 	public void switchJoueurPret() throws RemoteException{
@@ -360,6 +364,26 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	}
 
 	public void switchJoueurEstPret(InterfaceServeurClient client) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setDynastieOfClient(InterfaceServeurClient client) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean setDynastieOfClient(InterfaceServeurClient client, Dynastie dynastie) throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public ArrayList<Dynastie> getListeDynastieDispo() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void libererDynastie(Dynastie d) throws RemoteException {
 		// TODO Auto-generated method stub
 		
 	}

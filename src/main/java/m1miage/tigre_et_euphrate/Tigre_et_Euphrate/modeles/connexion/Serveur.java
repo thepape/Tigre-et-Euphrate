@@ -352,6 +352,23 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		return null;
 	}
 	
+	private InterfaceServeurClient getLocalClient(InterfaceServeurClient client) throws RemoteException{
+
+		for(InterfaceServeurClient c : this.clients){
+			if(c.getIdObjetPartie() == client.getIdObjetPartie()){
+				return c;
+			}
+		}
+		
+		return null;
+	}
+	
+	private void notifierClient() throws RemoteException{
+		for(InterfaceServeurClient c : this.clients){
+			c.notifierChangement(null);
+		}
+	}
+	
 	public void switchJoueurEstPret(InterfaceServeurClient client) throws RemoteException{
 		InterfaceServeurClient local = null;
 		
@@ -367,6 +384,37 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		for(InterfaceServeurClient c : this.clients){
 			c.notifierChangement(null);
 		}
+	}
+	
+	public void libererDynastie(Dynastie dynastie) throws RemoteException{
+		synchronized (this.listeDynastieDispo) {
+			
+				this.listeDynastieDispo.add(dynastie);
+			
+		}
+		
+		this.notifierClient();
+	}
+	
+	public boolean setDynastieOfClient(InterfaceServeurClient client, Dynastie dynastie) throws RemoteException {
+		InterfaceServeurClient local = this.getLocalClient(client);
+		boolean ok = false;
+		synchronized (this.listeDynastieDispo) {
+			if(this.listeDynastieDispo.contains(dynastie)){
+				ok = true;
+				this.listeDynastieDispo.remove(dynastie);
+			}
+		}
+		
+		if(!ok){
+			return false;
+		}
+		
+		local.setDynastie(dynastie);
+		
+		this.notifierClient();
+		
+		return true;
 	}
 
 	public void sendDynastieChoisi(String dynastie, int idClient) throws RemoteException {
@@ -434,4 +482,11 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void setDynastie(Dynastie d) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 }
