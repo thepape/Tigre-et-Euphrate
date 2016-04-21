@@ -409,7 +409,6 @@ public class ControleurPlateau {
 		    	  try
 		    	  {
 			    	Client client = (Client) mainApp.getClient();
-
 				    for(int i = 0; i < deckPrive.getChildren().size(); i++)
 				    {
 				    	Pane pane = (Pane) deckPrive.getChildren().get(i);
@@ -420,7 +419,7 @@ public class ControleurPlateau {
 							Image imageUrl = new Image(urlImage);
 							image.setImage(imageUrl);
 							image.setVisible(true);
-				    	}  else {
+				    	}  else if(i >= deckPriveJoueur.size() && i < 6) {
 				    		pane.setVisible(false);
 				    		image.setVisible(false);
 				    	}
