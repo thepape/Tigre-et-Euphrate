@@ -352,6 +352,43 @@ public class MainApp extends Application implements App {
 	public void afficherPlateau(){
 		try{
 			this.replaceSceneContent("ApplicationPrincipale.fxml");
+			TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
+			TuileCivilisation tuile2 = new TuileCivilisation(TypeTuileCivilisation.Marché);
+			TuileCivilisation tuile3 = new TuileCivilisation(TypeTuileCivilisation.Population);
+			TuileCivilisation tuile4 = new TuileCivilisation(TypeTuileCivilisation.Temple);
+			TuileCivilisation tuile5 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
+			TuileCivilisation tuile6 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
+			DeckPrive deckPrive = new DeckPrive();
+			deckPrive.ajouter(tuile1);
+			deckPrive.ajouter(tuile2);
+			deckPrive.ajouter(tuile3);
+			deckPrive.ajouter(tuile4);
+			deckPrive.ajouter(tuile5);
+			deckPrive.ajouter(tuile6);
+
+
+			Chef chefFermier = new Chef(TypeChef.Fermier);
+			Chef chefRoi = new Chef(TypeChef.Roi);
+			Chef chefMarchand = new Chef(TypeChef.Marchand);
+			Chef chefPretre = new Chef(TypeChef.Pretre);
+			DeckPublic deckPublic = new DeckPublic();
+			deckPublic.ajouter(chefFermier);
+			deckPublic.ajouter(chefRoi);
+			deckPublic.ajouter(chefMarchand);
+			deckPublic.ajouter(chefPretre);
+			Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
+			// PartieInterface partie = (Partie)
+			// this.getListeJoueur().get(0);
+			ControleurPlateau controleurPlateau = this.currentLoader.getController();
+
+			// Client client = new Client("fffff", "joueur 1");
+
+			Partie partie = new Partie();
+			partie.setJoueur(joueur);
+			this.client.setPartieCourante(partie);
+			this.client.setJoueur(joueur);
+			controleurPlateau.setDeckPriveJoueur(this.client.getJoueur().getDeckPrive().getDeckPrive());
+			controleurPlateau.setMainApp(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

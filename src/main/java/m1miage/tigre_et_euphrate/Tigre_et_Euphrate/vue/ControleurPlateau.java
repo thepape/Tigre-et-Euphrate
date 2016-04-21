@@ -10,6 +10,8 @@ import java.util.Arrays;
 import com.sun.prism.paint.Color;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -40,6 +42,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Client;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
 public class ControleurPlateau {
@@ -85,6 +88,9 @@ public class ControleurPlateau {
 	 */
 	private ArrayList<Action> listeActionTour = new ArrayList<Action>();
 
+	private ObservableList<TuileCivilisation> deckPriveJoueur = FXCollections.observableArrayList();
+
+	private int indice;
 
 
 	/**
@@ -109,23 +115,22 @@ public class ControleurPlateau {
 		// Initialisation de l'interface du deck privé
 		try
 		{
-			System.out.println("SET MAIN APP : " + mainApp.getClient().getIdObjetPartie());
-			for(int i = 0; i < mainApp.getListeJoueur().get(0).getDeckPrive().getDeckPrive().size(); i++)
+			for(int i = 0; i < mainApp.getClient().getJoueur().getDeckPrive().getDeckPrive().size(); i++)
 			{
 				Pane pane = (Pane) deckPrive.getChildren().get(i);
 				ImageView imageView = (ImageView) pane.getChildren().get(0);
-				String urlImage = getClass().getResource(mainApp.getListeJoueur().get(0).getDeckPrive().getDeckPrive().get(i).getType().getUrlImage()).toExternalForm();
+				String urlImage = getClass().getResource(mainApp.getClient().getJoueur().getDeckPrive().getDeckPrive().get(i).getType().getUrlImage()).toExternalForm();
 				Image image = new Image(urlImage);
 				imageView.setImage(image);
 			}
 
 			// Initialisation de l'interface du deck public
-			for(int i = 0; i < mainApp.getListeJoueur().get(0).getDeckPublic().getDeckPublic().size(); i++)
+			for(int i = 0; i < mainApp.getClient().getJoueur().getDeckPublic().getDeckPublic().size(); i++)
 			{
 				Pane pane = (Pane) deckPublic.getChildren().get(i);
 				ImageView imageView = (ImageView) pane.getChildren().get(0);
-				Chef chef = (Chef) mainApp.getListeJoueur().get(0).getDeckPublic().getDeckPublic().get(i);
-				String urlImage = getClass().getResource(mainApp.getListeJoueur().get(0).getDynastie().getNom().toLowerCase() + "_" + chef.getTypeChef().getFinUrlImage()).toExternalForm();
+				Chef chef = (Chef) mainApp.getClient().getJoueur().getDeckPublic().getDeckPublic().get(i);
+				String urlImage = getClass().getResource(mainApp.getClient().getJoueur().getDynastie().getNom().toLowerCase() + "_" + chef.getTypeChef().getFinUrlImage()).toExternalForm();
 				Image image = new Image(urlImage);
 				imageView.setImage(image);
 			}
@@ -271,7 +276,7 @@ public class ControleurPlateau {
 	 * @param event
 	 */
 	@FXML
-	private void dragDoneDecks(DragEvent event)
+	private void dragDoneDecks(DragEvent event) throws RemoteException
 	{
 		if(event.getTransferMode() == null)
 		{
@@ -281,7 +286,10 @@ public class ControleurPlateau {
 		{
 			ImageView image = (ImageView) event.getSource();
 			Pane pane = (Pane) image.getParent();
-			pane.getChildren().remove(0);
+			this.indice = GridPane.getColumnIndex(pane) - 2;
+			this.supprimerTuileDeckPrive(this.indice);
+			//pane.getChildren().get(0).setVisible(false);;
+
 		}
 	}
 
@@ -349,7 +357,7 @@ public class ControleurPlateau {
 					{
 						ImageView image = (ImageView) event.getSource();
 						Pane pane = (Pane) image.getParent();
-						pane.getChildren().remove(0);
+						pane.getChildren().get(0).setVisible(false);
 					}
 				} });
 			if((target.getChildren().size() == 0) && ((target.getAccessibleText().contains("Civilisation") && image.getAccessibleText().contains("Civilisation")) ||
@@ -392,4 +400,51 @@ public class ControleurPlateau {
 			}
 		}
 	}*/
+
+	public void setDeckPriveJoueur(ArrayList<TuileCivilisation> pDeckPrive)
+	{
+		this.deckPriveJoueur = FXCollections.observableArrayList(pDeckPrive);
+		deckPriveJoueur.addListener(new ListChangeListener<TuileCivilisation>() {
+		      public void onChanged(ListChangeListener.Change change) {
+		    	  try
+		    	  {
+			    	Client client = (Client) mainApp.getClient();
+
+				    for(int i = 0; i < deckPrive.getChildren().size(); i++)
+				    {
+				    	Pane pane = (Pane) deckPrive.getChildren().get(i);
+				    	ImageView image = (ImageView) pane.getChildren().get(0);
+				    	if(i < deckPriveJoueur.size())
+				    	{
+							String urlImage = getClass().getResource(mainApp.getClient().getJoueur().getDeckPrive().getDeckPrive().get(i).getType().getUrlImage()).toExternalForm();
+							Image imageUrl = new Image(urlImage);
+							image.setImage(imageUrl);
+							image.setVisible(true);
+				    	}  else {
+				    		pane.setVisible(false);
+				    		image.setVisible(false);
+				    	}
+				    }
+		    	  } catch(RemoteException e)
+		    	  {
+		    		  e.printStackTrace();
+		    	  }
+		      }
+		    });
+	}
+
+	public ObservableList<TuileCivilisation> getDeckPriveJoueur() {
+		return deckPriveJoueur;
+	}
+
+	public void setDeckPriveJoueur(ObservableList<TuileCivilisation> deckPriveJoueur) {
+		this.deckPriveJoueur = deckPriveJoueur;
+	}
+
+	private void supprimerTuileDeckPrive(int indice)
+	{
+		Client client = (Client) mainApp.getClient();
+		client.getJoueur().getDeckPrive().getDeckPrive().remove(indice);
+		this.deckPriveJoueur.remove(indice);
+	}
 }
