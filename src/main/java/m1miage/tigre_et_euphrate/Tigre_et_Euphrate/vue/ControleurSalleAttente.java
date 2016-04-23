@@ -430,16 +430,55 @@ public class ControleurSalleAttente implements ChangeListener {
 
 	@FXML
 	public void afficherPlateau(){
-		MainApp.getInstance().afficherPlateau();
+		Platform.runLater(new Runnable(){
+
+			public void run() {
+				// TODO Auto-generated method stub
+				MainApp.getInstance().afficherPlateau();
+			}
+			
+		});
+		
 	}
 
+	public boolean partieEstGeneree() throws RemoteException{
+		InterfaceServeurClient c = this.mainApp.getServeur();
+		Partie p = c.getPartie();
+		boolean ok = p.IsEstLancee();
+		if(ok){
+			return true;
+		}
+		return false;
+		/*if(this.mainApp.getServeur().getPartie().IsEstLancee()){
+			return true;
+		}
+		return false;*/
+	}
 
 	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
 		
 			//try {
 				//this.updateListeJoueurs();
+		//this.majSalon();
+		String arg = null;
+		
+		try{
+			arg = (String) arg2;
+		}catch(Exception e){
+			
+		}
+		
 				
-				this.majSalon();
+					if(arg != null && arg.equals("partieLancee")){
+						this.afficherPlateau();
+					}
+					else{
+						this.majSalon();
+					}
+					
+
+				
+				
 			/*} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

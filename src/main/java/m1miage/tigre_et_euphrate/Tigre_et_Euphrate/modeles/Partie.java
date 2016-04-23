@@ -53,6 +53,11 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	 * liste des conflits
 	 */
 	private ArrayList<Conflits> conflits;
+	
+	/**
+	 * boolean pour savoir si partie est lancee
+	 */
+	private boolean estLancee = false;
 
 	/**
 	 * Constructeur vide d'une partie
@@ -241,6 +246,11 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 		this.conflits.remove(pConflit);
 	}
 	
+	public boolean IsEstLancee(){
+		return this.estLancee;
+	}
+
+	
 	/**
 	 * méthode d'initialisation de la partie une fois que tous les joueurs ont prets
 	 */
@@ -281,6 +291,13 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 			Chef fermier = new Chef(TypeChef.Fermier, joueur);
 			Chef pretre = new Chef(TypeChef.Pretre, joueur);
 			
+			DeckPublic dpub = new DeckPublic();
+			DeckPrive dpriv = new DeckPrive();
+			
+			joueur.setDeckPublic(dpub);
+			joueur.setDeckPrive(dpriv);
+			
+			
 			joueur.getDeckPublic().ajouter(roi);
 			joueur.getDeckPublic().ajouter(marchand);
 			joueur.getDeckPublic().ajouter(fermier);
@@ -297,6 +314,7 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 			}
 		}
 		
+		this.estLancee=true;
 
 	}
 }
