@@ -24,6 +24,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPublic;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
@@ -123,105 +124,6 @@ public class MainApp extends Application implements App {
 	}
 
 	/**
-	 * Fonction qui initialise le plateau de jeu et fait le lien entre la vue et
-	 * le controleur
-	 */
-	public void initRootLayout() {
-			try {
-				/*
-				 * popUpStage.hide(); if(this.getListeJoueur().size() == 0) {
-				 * this.afficherMenuDepart(); } else {
-				 */
-				primaryStage = new Stage();
-				primaryStage.setTitle("Tigre et Euphrate : vous êtes le joueur hébergeur");
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(MainApp.class.getResource("ApplicationPrincipale.fxml"));
-				rootLayout = (BorderPane) loader.load();
-					// Simuation d'un joueur pour vérifier l'affichage
-					TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-					TuileCivilisation tuile2 = new TuileCivilisation(TypeTuileCivilisation.Marché);
-					TuileCivilisation tuile3 = new TuileCivilisation(TypeTuileCivilisation.Population);
-					TuileCivilisation tuile4 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-					TuileCivilisation tuile5 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-					TuileCivilisation tuile6 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-					DeckPrive deckPrive = new DeckPrive();
-					deckPrive.ajouter(tuile1);
-					deckPrive.ajouter(tuile2);
-					deckPrive.ajouter(tuile3);
-					deckPrive.ajouter(tuile4);
-					deckPrive.ajouter(tuile5);
-					deckPrive.ajouter(tuile6);
-
-
-					Chef chefFermier = new Chef(TypeChef.Fermier);
-					Chef chefRoi = new Chef(TypeChef.Roi);
-					Chef chefMarchand = new Chef(TypeChef.Marchand);
-					Chef chefPretre = new Chef(TypeChef.Pretre);
-					DeckPublic deckPublic = new DeckPublic();
-					deckPublic.ajouter(chefFermier);
-					deckPublic.ajouter(chefRoi);
-					deckPublic.ajouter(chefMarchand);
-<<<<<<< HEAD
-					deckPublic.ajouter(chefPretre);
-				Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
-				// PartieInterface partie = (Partie)
-				// this.getListeJoueur().get(0);
-=======
-					deckPublic.ajouter(chefPretre);
-
-					Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
-					//PartieInterface partie = (Partie) this.getListeJoueur().get(0);
-					//partie.setJoueur(joueur);
-					//this.joueurs.add(partie);
-
->>>>>>> master
-					ControleurPlateau controleurPlateau = loader.getController();
-					controleurPlateau.setMainApp(this);
-				// Client client = new Client("fffff", "joueur 1");
-				Partie partie = new Partie();
-				partie.setJoueur(joueur);
-				this.client.setPartieCourante(partie);
-				this.client.setJoueur(joueur);
-				this.joueurs.add(partie);
-
-				Scene scene = new Scene(rootLayout);
-				primaryStage.setScene(scene);
-				primaryStage.show();
-				// }
-			} catch (RemoteException exp) {
-				exp.printStackTrace();
-			} catch(IOException e)
-			{
-				e.printStackTrace();
-			}
-
-
-	}
-
-	/**
-	 * Fonction affiche la PopUp d'attente de connexion
-	 */
-	public void afficherPopUpAttente() {
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("FenetreAttenteConnection.fxml"));
-			rootLayout = (BorderPane) loader.load();
-			System.out.println(this.getListeJoueur());
-			Scene scene = new Scene(rootLayout);
-
-			popUpStage.setScene(scene);
-			primaryStage.hide();
-			popUpStage.show();
-
-			ControleurFenetreAttente controleur = loader.getController();
-			controleur.setMainApp(this);
-			System.out.println(controleur.getMainApp());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * getter de la liste des observables joueurs
 	 * @return listeJoueur
 	 */
@@ -261,22 +163,42 @@ public class MainApp extends Application implements App {
 		launch(args);
 	}
 
+	/**
+	 * Getter du serveur
+	 */
 	public InterfaceServeurClient getServeur() {
 		return serveur;
 	}
 
+	/**
+	 * Setter du serveur
+	 */
 	public void setServeur(InterfaceServeurClient serveur) {
 		this.serveur = serveur;
 	}
 
+	/**
+	 * Getter du client
+	 * @return
+	 */
 	public InterfaceServeurClient getClient() {
 		return client;
 	}
 
+	/**
+	 * Setter du client
+	 * @param client
+	 */
 	public void setClient(Client client) {
 		this.client = client;
 	}
 
+	/**
+	 * Fonction qui remplace le contenu de la fenetre principale
+	 * @param fxml
+	 * @return
+	 * @throws Exception
+	 */
 	private Parent replaceSceneContent(String fxml) throws Exception {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(MainApp.class.getResource(fxml));
@@ -307,6 +229,9 @@ public class MainApp extends Application implements App {
 		return page;
 	}
 
+	/**
+	 * Fonction qui affiche la page d'hebergement de partie
+	 */
 	public void goToHebergerPartiePage() {
 		try {
 			this.replaceSceneContent("CreerPartie.fxml");
@@ -318,14 +243,25 @@ public class MainApp extends Application implements App {
 
 	}
 
+	/**
+	 * Getter de la liste des dynasties
+	 * @return liste des dynasties
+	 */
 	public ArrayList<Dynastie> getListeDynastie() {
 		return listeDynastieDispo;
 	}
 
+	/**
+	 * Setter de la liste des dynasties
+	 * @param listeDynastie
+	 */
 	public void setListeDynastie(ArrayList<Dynastie> listeDynastie) {
 		this.listeDynastieDispo = listeDynastie;
 	}
 
+	/**
+	 * Fonction qui affiche le menu principal du jeu
+	 */
 	public void goToMenuPage() {
 		try {
 			this.replaceSceneContent("MenuDepart.fxml");
@@ -335,6 +271,9 @@ public class MainApp extends Application implements App {
 		}
 	}
 
+	/**
+	 * Fonction qui affiche la page de rejoindre une partie
+	 */
 	public void goToRejoindrePartiePage() {
 		try {
 			this.replaceSceneContent("RejoindrePartie.fxml");
@@ -345,6 +284,9 @@ public class MainApp extends Application implements App {
 
 	}
 
+	/**
+	 * Fonction qui affiche le salon
+	 */
 	public void goToSalon() {
 		try {
 			this.replaceSceneContent("Salleattente.fxml");
@@ -359,6 +301,9 @@ public class MainApp extends Application implements App {
 	}
 
 
+	/**
+	 * Fonctionq qui affiche le plateau
+	 */
 	public void afficherPlateau(){
 		try{
 			this.replaceSceneContent("ApplicationPrincipale.fxml");
@@ -394,6 +339,7 @@ public class MainApp extends Application implements App {
 			// Client client = new Client("fffff", "joueur 1");
 
 			Partie partie = new Partie();
+			partie.setPlateauJeu(new Plateau());
 			partie.setJoueur(joueur);
 			this.client.setPartieCourante(partie);
 			this.client.setJoueur(joueur);

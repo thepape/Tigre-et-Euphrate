@@ -5,6 +5,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Tuile;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
 /**
  *
@@ -55,7 +56,8 @@ public class PlacerTuileCivilisation extends Action {
 	 */
 	public PlacerTuileCivilisation(Partie partie, Joueur joueur, Position position, TuileCivilisation tuile) {
 		super(partie, joueur);
-		// TODO Auto-generated constructor stub
+		this.position = position;
+		this.tuile = tuile;
 	}
 
 	/**
@@ -64,7 +66,32 @@ public class PlacerTuileCivilisation extends Action {
 	 * @return vrai ou faux, selon le bon déroulement ou non de l'action
 	 */
 	public boolean executer(){
-		System.out.println("executer Action PlacerTuile");
-		return false;
+		boolean ok = false;
+
+		if(this.position.getX() > 11 || this.position.getY() > 16)
+		{
+			return false;
+		}
+
+		if(this.tuile.getType().equals(TypeTuileCivilisation.Ferme))
+		{
+			if(this.partie.getPlateauJeu().getPlateauTerrain()[this.position.getX()][this.position.getY()] == false
+					&& this.partie.getPlateauJeu().getPlateau()[this.getPosition().getX()][this.position.getY()] == null)
+			{
+				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.tuile;
+				ok = true;
+			} else {
+				ok = false;
+			}
+		} else {
+			if(this.partie.getPlateauJeu().getPlateau()[this.getPosition().getX()][this.position.getY()] != null)
+			{
+				ok = false;
+			} else {
+				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.tuile;
+				ok = true;
+			}
+		}
+		return ok;
 	}
 }

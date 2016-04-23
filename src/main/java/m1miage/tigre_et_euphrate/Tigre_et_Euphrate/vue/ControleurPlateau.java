@@ -230,50 +230,51 @@ public class ControleurPlateau {
 					image.setAccessibleText("tuileCivilisation");
 				}
 
-				image.setOnDragDetected(new EventHandler<MouseEvent>(){
+				if(ControleurPlateau.imageEnDragAndDropChef != null)
+				{
+					image.setOnDragDetected(new EventHandler<MouseEvent>(){
 
-					public void handle(MouseEvent event) {
-						ImageView imageTuile = (ImageView) event.getSource();
-						imageTuile.setVisible(false);
-						if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
-						{
-							ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
-							ControleurPlateau.imageEnDragAndDropChef = null;
-						} else if(imageTuile.getAccessibleText().equals("tuileChef"))
-						{
-							ControleurPlateau.imageEnDragAndDropTuile = null;
-							ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
-						}
-						Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
-						ClipboardContent content = new ClipboardContent();
-				        content.putImage(imageTuile.getImage());
-				        db.setContent(content);
-				        event.consume();
-					} });
+						public void handle(MouseEvent event) {
+							ImageView imageTuile = (ImageView) event.getSource();
+							imageTuile.setVisible(false);
+							if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
+							{
+								ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
+								ControleurPlateau.imageEnDragAndDropChef = null;
+							} else if(imageTuile.getAccessibleText().equals("tuileChef"))
+							{
+								ControleurPlateau.imageEnDragAndDropTuile = null;
+								ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
+							}
+							Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
+							ClipboardContent content = new ClipboardContent();
+					        content.putImage(imageTuile.getImage());
+					        db.setContent(content);
+					        event.consume();
+						} });
 
-				image.setOnDragDone(new EventHandler<DragEvent>(){
-					public void handle(DragEvent event) {
-						if(event.getTransferMode() == null)
-						{
-							ImageView image = (ImageView) event.getSource();
-							image.setVisible(true);
-						} else if(event.getTransferMode() == TransferMode.COPY)
-						{
-							ImageView image = (ImageView) event.getSource();
-							Pane pane = (Pane) image.getParent();
-							pane.getChildren().remove(0);
-						}
-					} });
+					image.setOnDragDone(new EventHandler<DragEvent>(){
+						public void handle(DragEvent event) {
+							if(event.getTransferMode() == null)
+							{
+								ImageView image = (ImageView) event.getSource();
+								image.setVisible(true);
+							} else if(event.getTransferMode() == TransferMode.COPY)
+							{
+								ImageView image = (ImageView) event.getSource();
+								Pane pane = (Pane) image.getParent();
+								pane.getChildren().remove(0);
+							}
+						} });
+				}
 				if(target.getChildren().size() == 0)
 				{
 					target.getChildren().add(image);
 					try
 					{
 						Position position = new Position(GridPane.getRowIndex((Pane)event.getSource()), GridPane.getColumnIndex((Pane)event.getSource()));
-						//System.out.println(MainApp.getInstance().getClient().getPartie() + "    Joueur : " + MainApp.getInstance().getClient().getJoueur());
 						Action action = new PlacerTuileCivilisation(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur(), position, (TuileCivilisation)this.tuileAction);
-						this.listeActionTour.add(action);
-						//this.triAction();
+						mainApp.getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
 					} catch(RemoteException e)
 					{
 						e.printStackTrace();
@@ -303,8 +304,6 @@ public class ControleurPlateau {
 			Pane pane = (Pane) image.getParent();
 			this.indice = GridPane.getColumnIndex(pane) - 2;
 			this.supprimerTuileDeckPrive(this.indice);
-			//pane.getChildren().get(0).setVisible(false);;
-
 		}
 	}
 
@@ -396,25 +395,6 @@ public class ControleurPlateau {
 			this.mainApp.getServeur().send(this.listeActionTour.get(i), MainApp.getInstance().getClient().getIdObjetPartie());
 		}
 	}
-
-	/**
-	 * Fonction qui permet de supprimer les actions et leur opposés si elles sont dans la même liste
-	 * par exemple si dans la même liste il y a placerChef(chefbleu) et retirerChef(chefbleu) elles seront supprimées de la liste d'actions à traiter
-	 */
-	/*private void triAction()
-	{
-		for(int i = 0; i < this.listeActionTour.size(); i++)
-		{
-			Class classAction = (this.listeActionTour.get(i).getClass();
-			if(classAction.getName().equals("class m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerChef"))
-			{
-				for(int j = 0; j < this.listeActionTour.size(); j++)
-				{
-
-				}
-			}
-		}
-	}*/
 
 	public void setDeckPriveJoueur(ArrayList<TuileCivilisation> pDeckPrive)
 	{

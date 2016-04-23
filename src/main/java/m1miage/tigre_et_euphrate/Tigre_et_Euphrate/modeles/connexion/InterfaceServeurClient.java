@@ -26,7 +26,6 @@ public interface InterfaceServeurClient extends Remote {
 	public String getNomJoueur() throws RemoteException;
 	public int getIdObjetPartie() throws RemoteException;
 	public void setIdObjetPartie(int idObjetPartie) throws RemoteException;
-	public void sendDynastieChoisi(String dynastie, int idClient) throws RemoteException;
 	public ArrayList<Dynastie> getListeDynastie() throws RemoteException;
 	public void setListeDynastie(ArrayList<Dynastie> liste) throws RemoteException;
 	public ArrayList<Dynastie> getListeDynastieDispo() throws RemoteException;
@@ -39,7 +38,6 @@ public interface InterfaceServeurClient extends Remote {
 	public void removeListener(ChangeListener listener) throws RemoteException;
 	public Joueur getJoueur() throws RemoteException;
 	public void setPartieCourante(Partie partie) throws RemoteException;
-	public void send(String string, int idClient) throws RemoteException;
 	public ArrayList<InterfaceServeurClient> getClients() throws RemoteException;
 	public void send(Action action, int idClient) throws RemoteException;
 

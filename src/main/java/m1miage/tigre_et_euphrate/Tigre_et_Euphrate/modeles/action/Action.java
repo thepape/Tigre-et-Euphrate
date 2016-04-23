@@ -12,6 +12,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
  */
 public abstract class Action implements Serializable {
 
+
 	/**
 	 * Partie sur laquelle l action est effectuee
 	 */
@@ -30,6 +31,22 @@ public abstract class Action implements Serializable {
 	public Action(Partie partie, Joueur joueur) {
 		super();
 		this.partie = partie;
+		this.joueur = joueur;
+	}
+
+	public Partie getPartie() {
+		return partie;
+	}
+
+	public void setPartie(Partie partie) {
+		this.partie = partie;
+	}
+
+	public Joueur getJoueur() {
+		return joueur;
+	}
+
+	public void setJoueur(Joueur joueur) {
 		this.joueur = joueur;
 	}
 
