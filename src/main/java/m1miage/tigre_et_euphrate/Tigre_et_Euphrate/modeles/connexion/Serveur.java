@@ -363,7 +363,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		return null;
 	}
 	
-	private void notifierClient() throws RemoteException{
+	private void notifierClient(Object arg) throws RemoteException{
 		for(InterfaceServeurClient c : this.clients){
 			c.notifierChangement(null);
 		}
@@ -380,9 +380,16 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		}
 		
 		local.switchJoueurPret();
+		String arg = null;
+		
+		if(this.tousPret()){
+			this.genererPartie();
+			System.out.println("Partie lancée");
+			arg="partieLancee";
+		}
 		
 		for(InterfaceServeurClient c : this.clients){
-			c.notifierChangement(null);
+			c.notifierChangement(arg);
 		}
 	}
 	
@@ -393,7 +400,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			
 		}
 		
-		this.notifierClient();
+		this.notifierClient(null);
 	}
 	
 	public boolean setDynastieOfClient(InterfaceServeurClient client, Dynastie dynastie) throws RemoteException {
@@ -412,7 +419,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		
 		local.setDynastie(dynastie);
 		
-		this.notifierClient();
+		this.notifierClient(null);
 		
 		return true;
 	}
@@ -486,6 +493,19 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	public void setDynastie(Dynastie d) throws RemoteException {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public boolean tousPret() throws RemoteException{
+		for(InterfaceServeurClient client : this.clients){
+			if(!client.getJoueur().estPret()){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public void genererPartie(){
+		this.partie.initialiserPartie();
 	}
 
 	
