@@ -20,7 +20,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisat
  * Classe representant une partie
  *
  */
-public class Partie extends UnicastRemoteObject implements PartieInterface{
+public class Partie extends UnicastRemoteObject{
 
 	private Serveur serveur;
 
@@ -32,7 +32,7 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	/**
 	 * La liste des joueurs jouant la partie
 	 */
-	private ArrayList<PartieInterface> listeJoueurs = new ArrayList<PartieInterface>();
+	private ArrayList<Joueur> listeJoueurs = new ArrayList<Joueur>();
 
 	/**
 	 * Un joueur plutot beau gosse (ou pas)
@@ -63,7 +63,7 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	 * Constructeur vide d'une partie
 	 */
 	public Partie() throws RemoteException{
-		this.listeJoueurs = new ArrayList<PartieInterface>();
+		this.listeJoueurs = new ArrayList<Joueur>();
 		this.pioche = new Pioche();
 		this.conflits = new ArrayList<Conflits>();
 	}
@@ -73,7 +73,7 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	 * @param pPlateauJeu plateau du jeu
 	 * @param plistejoueur liste des parties
 	 */
-	public Partie(Plateau pPlateauJeu, ArrayList<PartieInterface> pListeJoueurs, Pioche pPioche) throws RemoteException {
+	public Partie(Plateau pPlateauJeu, ArrayList<Joueur> pListeJoueurs, Pioche pPioche) throws RemoteException {
 		this.plateauJeu = pPlateauJeu;
 		this.listeJoueurs = pListeJoueurs;
 		this.pioche = pPioche;
@@ -100,7 +100,7 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	 * getter de la liste des parties de la game (désolé anglais)
 	 * @return
 	 */
-	public ArrayList<PartieInterface> getListeJoueurs() {
+	public ArrayList<Joueur> getListeJoueurs() {
 		return this.listeJoueurs;
 	}
 
@@ -164,18 +164,18 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 	 * @return nouveau joueur ajouté à la partie
 	 * @throws RemoteException
 	 */
-	public Joueur ajouterJoueur(PartieInterface pJoueur) throws RemoteException {
+	public Joueur ajouterJoueur(Joueur pJoueur) throws RemoteException {
 		Joueur j = null;
 
 		if(this.listeJoueurs.size() < 4)
 		{
 			j = new Joueur();
-			j.setNom(pJoueur.getNomJoueur());
+			j.setNom(pJoueur.getNom());
 
 			this.listeJoueurs.add(pJoueur);
 		}
 
-		System.out.println("Le joueur "+pJoueur.getNomJoueur()+" s'est connecté.");
+		System.out.println("Le joueur "+pJoueur.getNom()+" s'est connecté.");
 
 		return j;
 	}
@@ -203,17 +203,12 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 		return this.joueur.getDynastie();
 	}
 
-	public boolean tousLesJoueursPrets() {
+	public boolean tousLesJoueursPrets() throws RemoteException {
 		boolean res = true;
-		for(PartieInterface joueur : this.listeJoueurs){
-			try {
-				if(!joueur.getJoueur().estPret()){
-					res = false;
-					break;
-				}
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		for(Joueur joueur : this.listeJoueurs){
+			if(!joueur.estPret()){
+				res = false;
+				break;
 			}
 		}
 
@@ -317,4 +312,5 @@ public class Partie extends UnicastRemoteObject implements PartieInterface{
 		this.estLancee=true;
 
 	}
+
 }
