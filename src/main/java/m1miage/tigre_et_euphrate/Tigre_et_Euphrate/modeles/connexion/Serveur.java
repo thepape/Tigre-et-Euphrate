@@ -141,8 +141,9 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	/**
 	 * Fonction qui permet d'attendre des joueurs
+	 * @throws RemoteException 
 	 */
-	public void attendreJoueursPrets()
+	public void attendreJoueursPrets() throws RemoteException
 	{
 		while(!partie.tousLesJoueursPrets())
 		{
@@ -163,7 +164,12 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 		this.initialiser();
 
-		this.attendreJoueursPrets();
+		try {
+			this.attendreJoueursPrets();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 
 	}
