@@ -161,9 +161,9 @@ public class MainApp extends Application implements App {
 					deckPublic.ajouter(chefPretre);
 
 					Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
-					PartieInterface partie = (Partie) this.getListeJoueur().get(0);
-					partie.setJoueur(joueur);
-					this.joueurs.add(partie);
+					//PartieInterface partie = (Partie) this.getListeJoueur().get(0);
+					//partie.setJoueur(joueur);
+					//this.joueurs.add(partie);
 
 					ControleurPlateau controleurPlateau = loader.getController();
 					controleurPlateau.setMainApp(this);
