@@ -48,7 +48,7 @@ public class Dynastie implements Serializable {
 	/**
 	 * Booleen si la dynastie est prise
 	 */
-	public BooleanProperty estPrise = new SimpleBooleanProperty();
+	public boolean estPrise = false;
 
 	/**
 	 * Constructeur d'une dynastie
@@ -59,7 +59,7 @@ public class Dynastie implements Serializable {
 		super();
 		this.nom = pnom;
 		this.lien = plien;
-		this.estPrise.setValue(false);
+		this.estPrise = false;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class Dynastie implements Serializable {
 	public Dynastie(){
 		this.nom = "non defini";
 		this.lien = "non defini";
-		this.estPrise.setValue(false);;
+		this.estPrise = false;
 	}
 
 
@@ -94,7 +94,15 @@ public class Dynastie implements Serializable {
 	 * @return
 	 */
 	public boolean isEstPrise() {
-		return this.estPrise.get();
+		return this.estPrise;
+	}
+	
+	public boolean equals(Object o){
+		if(o instanceof Dynastie){
+			return this.nom.equals(((Dynastie) o).nom);
+		}
+		
+		return false;
 	}
 
 	/**
@@ -102,7 +110,7 @@ public class Dynastie implements Serializable {
 	 * @param estPrise
 	 */
 	public void setEstPrise(boolean estPrise) {
-		this.estPrise.setValue(estPrise);;
+		this.estPrise = estPrise;
 	}
 
 }
