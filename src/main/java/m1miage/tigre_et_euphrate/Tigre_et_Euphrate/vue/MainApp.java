@@ -161,10 +161,20 @@ public class MainApp extends Application implements App {
 					deckPublic.ajouter(chefFermier);
 					deckPublic.ajouter(chefRoi);
 					deckPublic.ajouter(chefMarchand);
+<<<<<<< HEAD
 					deckPublic.ajouter(chefPretre);
 				Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
 				// PartieInterface partie = (Partie)
 				// this.getListeJoueur().get(0);
+=======
+					deckPublic.ajouter(chefPretre);
+
+					Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
+					//PartieInterface partie = (Partie) this.getListeJoueur().get(0);
+					//partie.setJoueur(joueur);
+					//this.joueurs.add(partie);
+
+>>>>>>> master
 					ControleurPlateau controleurPlateau = loader.getController();
 					controleurPlateau.setMainApp(this);
 				// Client client = new Client("fffff", "joueur 1");
@@ -342,7 +352,7 @@ public class MainApp extends Application implements App {
 			ControleurSalleAttente controler = (ControleurSalleAttente) this.currentLoader.getController();
 			this.client.addListener(controler);
 			this.currentControler = controler;
-			controler.majListeJoueur();
+			controler.majSalon();
 		}catch(Exception e){
 			e.printStackTrace();
 		}

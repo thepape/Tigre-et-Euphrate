@@ -117,7 +117,7 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	{
 		System.setSecurityManager(null);
 		System.setProperty("java.security.policy", "file:/security.policy");
-		System.setProperty("java.rmi.server.hostname", "127.0.0.1");
+		System.setProperty("java.rmi.server.hostname", this.ip);
 
 		/////////////// infos de connexion
 
@@ -126,7 +126,7 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 
 		try {
 			//serveur = (Serveur) Naming.lookup(url);
-			this.serveur = (InterfaceServeurClient) Naming.lookup("rmi://127.0.0.1:42000/ABC");
+			this.serveur = (InterfaceServeurClient) Naming.lookup("rmi://"+this.ip+":"+this.port+"/"+this.namespace);
 			//this.serveur = partie;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -291,13 +291,25 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 			if(dynastieChoisi.getNom().equals(dynastie))
 			{
 				dynastieChoisi.setEstPrise(true);
+<<<<<<< HEAD
 
+=======
+				this.joueur.setDynastie(dynastieChoisi);
+>>>>>>> master
 			}
 
 		}
 
 	}
+<<<<<<< HEAD
 
+=======
+	
+	public void setDynastie(Dynastie dynastie) throws RemoteException {
+		this.joueur.setDynastie(dynastie);
+	}
+	
+>>>>>>> master
 	public void switchJoueurPret() throws RemoteException{
 		if(this.joueur.estPret()){
 			this.joueur.setEstPret(false);
@@ -384,9 +396,31 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 
 	}
 
+<<<<<<< HEAD
 public void send(String string, int idClient) throws RemoteException {
 	// TODO Auto-generated method stub
 
 }
+=======
+	public void setDynastieOfClient(InterfaceServeurClient client) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean setDynastieOfClient(InterfaceServeurClient client, Dynastie dynastie) throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public ArrayList<Dynastie> getListeDynastieDispo() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void libererDynastie(Dynastie d) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+>>>>>>> master
 
 }

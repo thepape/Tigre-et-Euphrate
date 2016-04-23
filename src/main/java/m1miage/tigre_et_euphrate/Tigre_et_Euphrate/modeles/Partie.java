@@ -21,7 +21,11 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisat
  * Classe representant une partie
  *
  */
+<<<<<<< HEAD
 public class Partie implements Serializable {
+=======
+public class Partie extends UnicastRemoteObject{
+>>>>>>> master
 
 	private Serveur serveur;
 
@@ -33,7 +37,7 @@ public class Partie implements Serializable {
 	/**
 	 * La liste des joueurs jouant la partie
 	 */
-	private ArrayList<PartieInterface> listeJoueurs = new ArrayList<PartieInterface>();
+	private ArrayList<Joueur> listeJoueurs = new ArrayList<Joueur>();
 
 	/**
 	 * Un joueur plutot beau gosse (ou pas)
@@ -54,12 +58,17 @@ public class Partie implements Serializable {
 	 * liste des conflits
 	 */
 	private ArrayList<Conflits> conflits;
+	
+	/**
+	 * boolean pour savoir si partie est lancee
+	 */
+	private boolean estLancee = false;
 
 	/**
 	 * Constructeur vide d'une partie
 	 */
 	public Partie() throws RemoteException{
-		this.listeJoueurs = new ArrayList<PartieInterface>();
+		this.listeJoueurs = new ArrayList<Joueur>();
 		this.pioche = new Pioche();
 		this.conflits = new ArrayList<Conflits>();
 	}
@@ -69,7 +78,7 @@ public class Partie implements Serializable {
 	 * @param pPlateauJeu plateau du jeu
 	 * @param plistejoueur liste des parties
 	 */
-	public Partie(Plateau pPlateauJeu, ArrayList<PartieInterface> pListeJoueurs, Pioche pPioche) throws RemoteException {
+	public Partie(Plateau pPlateauJeu, ArrayList<Joueur> pListeJoueurs, Pioche pPioche) throws RemoteException {
 		this.plateauJeu = pPlateauJeu;
 		this.listeJoueurs = pListeJoueurs;
 		this.pioche = pPioche;
@@ -96,7 +105,7 @@ public class Partie implements Serializable {
 	 * getter de la liste des parties de la game (désolé anglais)
 	 * @return
 	 */
-	public ArrayList<PartieInterface> getListeJoueurs() {
+	public ArrayList<Joueur> getListeJoueurs() {
 		return this.listeJoueurs;
 	}
 
@@ -160,18 +169,18 @@ public class Partie implements Serializable {
 	 * @return nouveau joueur ajouté à la partie
 	 * @throws RemoteException
 	 */
-	public Joueur ajouterJoueur(PartieInterface pJoueur) throws RemoteException {
+	public Joueur ajouterJoueur(Joueur pJoueur) throws RemoteException {
 		Joueur j = null;
 
 		if(this.listeJoueurs.size() < 4)
 		{
 			j = new Joueur();
-			j.setNom(pJoueur.getNomJoueur());
+			j.setNom(pJoueur.getNom());
 
 			this.listeJoueurs.add(pJoueur);
 		}
 
-		System.out.println("Le joueur "+pJoueur.getNomJoueur()+" s'est connecté.");
+		System.out.println("Le joueur "+pJoueur.getNom()+" s'est connecté.");
 
 		return j;
 	}
@@ -199,17 +208,12 @@ public class Partie implements Serializable {
 		return this.joueur.getDynastie();
 	}
 
-	public boolean tousLesJoueursPrets() {
+	public boolean tousLesJoueursPrets() throws RemoteException {
 		boolean res = true;
-		for(PartieInterface joueur : this.listeJoueurs){
-			try {
-				if(!joueur.getJoueur().estPret()){
-					res = false;
-					break;
-				}
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		for(Joueur joueur : this.listeJoueurs){
+			if(!joueur.estPret()){
+				res = false;
+				break;
 			}
 		}
 
@@ -241,6 +245,11 @@ public class Partie implements Serializable {
 	public void retirerConflit(Conflits pConflit){
 		this.conflits.remove(pConflit);
 	}
+	
+	public boolean IsEstLancee(){
+		return this.estLancee;
+	}
+
 	
 	/**
 	 * méthode d'initialisation de la partie une fois que tous les joueurs ont prets
@@ -282,6 +291,13 @@ public class Partie implements Serializable {
 			Chef fermier = new Chef(TypeChef.Fermier, joueur);
 			Chef pretre = new Chef(TypeChef.Pretre, joueur);
 			
+			DeckPublic dpub = new DeckPublic();
+			DeckPrive dpriv = new DeckPrive();
+			
+			joueur.setDeckPublic(dpub);
+			joueur.setDeckPrive(dpriv);
+			
+			
 			joueur.getDeckPublic().ajouter(roi);
 			joueur.getDeckPublic().ajouter(marchand);
 			joueur.getDeckPublic().ajouter(fermier);
@@ -298,6 +314,8 @@ public class Partie implements Serializable {
 			}
 		}
 		
+		this.estLancee=true;
 
 	}
+
 }
