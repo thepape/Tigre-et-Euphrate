@@ -4,6 +4,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Tuile;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 
 /**
  *
@@ -14,7 +15,7 @@ public class PlacerTuileCivilisation extends Action {
 
 	private Position position;
 
-	private Tuile tuile;
+	private TuileCivilisation tuile;
 
 	/**
 	 * getter de la position
@@ -44,7 +45,7 @@ public class PlacerTuileCivilisation extends Action {
 	 * setter de la tuile
 	 * @param tuile
 	 */
-	public void setTuile(Tuile tuile) {
+	public void setTuile(TuileCivilisation tuile) {
 		this.tuile = tuile;
 	}
 
@@ -52,7 +53,7 @@ public class PlacerTuileCivilisation extends Action {
 	 * @param partie
 	 * @param joueur
 	 */
-	public PlacerTuileCivilisation(Partie partie, Joueur joueur) {
+	public PlacerTuileCivilisation(Partie partie, Joueur joueur, Position position, TuileCivilisation tuile) {
 		super(partie, joueur);
 		// TODO Auto-generated constructor stub
 	}

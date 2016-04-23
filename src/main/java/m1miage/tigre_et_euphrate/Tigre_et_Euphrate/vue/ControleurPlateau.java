@@ -36,7 +36,9 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Pioche;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCivilisation;
@@ -88,10 +90,20 @@ public class ControleurPlateau {
 	 */
 	private ArrayList<Action> listeActionTour = new ArrayList<Action>();
 
+	/**
+	 * Liste des tuiles du deckPrive du joueur
+	 */
 	private ObservableList<TuileCivilisation> deckPriveJoueur = FXCollections.observableArrayList();
 
+	/**
+	 * indice de la carte déplacée dans les gridPane
+	 */
 	private int indice;
 
+	/**
+	 * tuile à conserver pour les actions
+	 */
+	private Placable tuileAction;
 
 	/**
 	 * getter de l'application
@@ -170,11 +182,13 @@ public class ControleurPlateau {
 		{
 			ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
 			ControleurPlateau.imageEnDragAndDropChef = null;
+			this.tuileAction = this.deckPriveJoueur.get(GridPane.getColumnIndex(imageTuile.getParent()) - 2);
 		} else if(imageTuile.getAccessibleText().equals("tuileChef"))
 		{
 			ControleurPlateau.imageEnDragAndDropTuile = null;
 			ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
 		}
+
 
 		Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
 		ClipboardContent content = new ClipboardContent();
@@ -255,8 +269,9 @@ public class ControleurPlateau {
 					target.getChildren().add(image);
 					try
 					{
+						Position position = new Position(GridPane.getRowIndex((Pane)event.getSource()), GridPane.getColumnIndex((Pane)event.getSource()));
 						//System.out.println(MainApp.getInstance().getClient().getPartie() + "    Joueur : " + MainApp.getInstance().getClient().getJoueur());
-						Action action = new PlacerTuileCivilisation(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur());
+						Action action = new PlacerTuileCivilisation(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur(), position, (TuileCivilisation)this.tuileAction);
 						this.listeActionTour.add(action);
 						//this.triAction();
 					} catch(RemoteException e)
