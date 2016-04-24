@@ -174,7 +174,7 @@ public class ControleurPlateau {
 	 * @param event
 	 */
 	@FXML
-	private void dragTuileDecks(MouseEvent event)
+	private void dragTuileDecks(MouseEvent event) throws RemoteException
 	{
 		ImageView imageTuile = (ImageView) event.getSource();
 		imageTuile.setVisible(false);
@@ -187,6 +187,7 @@ public class ControleurPlateau {
 		{
 			ControleurPlateau.imageEnDragAndDropTuile = null;
 			ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
+			this.tuileAction = MainApp.getInstance().getClient().getJoueur().getDeckPublic().getDeckPublic().get(GridPane.getRowIndex(imageTuile.getParent()));
 		}
 
 
@@ -269,17 +270,29 @@ public class ControleurPlateau {
 				}
 				if(target.getChildren().size() == 0)
 				{
-					target.getChildren().add(image);
+
 					try
 					{
 						Position position = new Position(GridPane.getRowIndex((Pane)event.getSource()), GridPane.getColumnIndex((Pane)event.getSource()));
-						Action action = new PlacerTuileCivilisation(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur(), position, (TuileCivilisation)this.tuileAction);
-						mainApp.getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
+						Action action = null;
+						if(ControleurPlateau.imageEnDragAndDropTuile != null) {
+							action = new PlacerTuileCivilisation(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur(), position, (TuileCivilisation)this.tuileAction);
+						} else if(ControleurPlateau.imageEnDragAndDropChef != null)
+						{
+							action = new PlacerChef(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur(), (Chef) this.tuileAction, position);
+						}
+						if(!action.executer())
+						{
+							event.setDropCompleted(false);
+						} else {
+							mainApp.getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
+							target.getChildren().add(image);
+							event.setDropCompleted(true);
+						}
 					} catch(RemoteException e)
 					{
 						e.printStackTrace();
 					}
-					event.setDropCompleted(true);
 				} else {
 
 					event.setDropCompleted(false);
@@ -302,8 +315,14 @@ public class ControleurPlateau {
 		{
 			ImageView image = (ImageView) event.getSource();
 			Pane pane = (Pane) image.getParent();
-			this.indice = GridPane.getColumnIndex(pane) - 2;
-			this.supprimerTuileDeckPrive(this.indice);
+			if(ControleurPlateau.imageEnDragAndDropTuile != null)
+			{
+				this.indice = GridPane.getColumnIndex(pane) - 2;
+				this.supprimerTuileDeckPrive(this.indice);
+			} else if(ControleurPlateau.imageEnDragAndDropChef != null)
+			{
+				this.indice = GridPane.getRowIndex(pane);
+			}
 		}
 	}
 

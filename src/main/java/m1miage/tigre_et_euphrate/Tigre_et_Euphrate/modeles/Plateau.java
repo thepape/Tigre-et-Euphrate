@@ -291,4 +291,34 @@ public class Plateau implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Fonction qui renvoie la liste des tuiles civilisation adjacentes
+	 * @param position
+	 * @return liste des tuiles adjacentes
+	 */
+	public ArrayList<TuileCivilisation> recupererListeTuileCivilisationAdjacente(Position position)
+	{
+		ArrayList<TuileCivilisation> listeAdjacente = new ArrayList<TuileCivilisation>();
+
+		if(position.getX() + 1 < 11 && this.getPlateau()[position.getX() + 1 ][position.getY()] instanceof TuileCivilisation)
+		{
+			TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX() + 1][position.getY()];
+			listeAdjacente.add(tuileAdjacente);
+		} else if(position.getX() - 1 > -1 && this.getPlateau()[position.getX() - 1][position.getY()] instanceof TuileCivilisation)
+		{
+			TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX() - 1][position.getY()];
+			listeAdjacente.add(tuileAdjacente);
+		} else if(position.getY() + 1 < 15 && this.getPlateau()[position.getX()][position.getY() + 1] instanceof TuileCivilisation)
+		{
+			TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX()][position.getY() + 1];
+			listeAdjacente.add(tuileAdjacente);
+		} else if(position.getY() - 1 > -1 && this.getPlateau()[position.getX() ][position.getY() - 1] instanceof TuileCivilisation)
+		{
+			TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX()][position.getY() - 1];
+			listeAdjacente.add(tuileAdjacente);
+		}
+		return listeAdjacente;
+	}
+
+
 }

@@ -62,13 +62,12 @@ public class PlacerTuileCivilisation extends Action {
 
 	/**
 	 * Execute l'action PlacerTuileCivilisation
-	 * Puis attribuer éventuellement un point de victoire (voir page 4)
 	 * @return vrai ou faux, selon le bon déroulement ou non de l'action
 	 */
 	public boolean executer(){
 		boolean ok = false;
 
-		if(this.position.getX() > 11 || this.position.getY() > 16)
+		if((this.position.getX() > 11 || this.position.getY() > 16) || (this.position.getY() < 0 || this.position.getX() < 0))
 		{
 			return false;
 		}

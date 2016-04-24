@@ -412,22 +412,22 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0">
+            <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
                <children>
                   <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0" />
                </children>
             </Pane>
-            <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+            <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
                <children>
                   <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0" />
                </children>
             </Pane>
-            <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+            <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
                <children>
                   <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0" />
                </children>
             </Pane>
-            <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+            <Pane accessibleText="paneTuileChef" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
                <children>
                   <ImageView accessibleText="tuileChef" fitHeight="75.0" fitWidth="75.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateY="25.0" />
                </children>

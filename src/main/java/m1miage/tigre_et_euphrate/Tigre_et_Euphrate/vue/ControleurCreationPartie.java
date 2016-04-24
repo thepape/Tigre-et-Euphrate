@@ -145,11 +145,6 @@ public class ControleurCreationPartie {
 	}
 
 	@FXML
-	public void afficherPlateau()
-	{
-		MainApp.getInstance().initRootLayout();
-	}
-	@FXML
 	public void goToHebergerPartie(){
 		MainApp.getInstance().goToHebergerPartiePage();
 	}

@@ -16,6 +16,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.InterfaceSe
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Serveur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCatastrophe;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
 /**
  * Classe representant une partie
@@ -75,7 +76,7 @@ public class Partie implements Serializable {
 	 * @param pPlateauJeu plateau du jeu
 	 * @param plistejoueur liste des parties
 	 */
-	public Partie(Plateau pPlateauJeu, ArrayList<Joueur> pListeJoueurs, Pioche pPioche) throws RemoteException {
+	public Partie(Plateau pPlateauJeu, ArrayList<Joueur> pListeJoueurs, Pioche pPioche) {
 		this.plateauJeu = pPlateauJeu;
 		this.listeJoueurs = pListeJoueurs;
 		this.pioche = pPioche;
@@ -246,7 +247,6 @@ public class Partie implements Serializable {
 	public boolean IsEstLancee(){
 		return this.estLancee;
 	}
-
 
 	/**
 	 * méthode d'initialisation de la partie une fois que tous les joueurs ont prets
