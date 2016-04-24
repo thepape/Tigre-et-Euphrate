@@ -66,8 +66,13 @@ public class PlacerTuileCivilisation extends Action {
 	 */
 	public boolean executer(){
 		boolean ok = false;
+		
+		ok = this.partie.getPlateauJeu().placerTuile(this.tuile, this.position);
 
-		if((this.position.getX() > 11 || this.position.getY() > 16) || (this.position.getY() < 0 || this.position.getX() < 0))
+		return ok;
+		
+
+		/*f((this.position.getX() > 11 || this.position.getY() > 16) || (this.position.getY() < 0 || this.position.getX() < 0))
 		{
 			return false;
 		}
@@ -91,6 +96,6 @@ public class PlacerTuileCivilisation extends Action {
 				ok = true;
 			}
 		}
-		return ok;
+		return ok;*/
 	}
 }
