@@ -1,6 +1,7 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue;
 
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -9,9 +10,13 @@ import java.util.Arrays;
 
 import com.sun.prism.paint.Color;
 
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -32,6 +37,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.Rectangle;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
@@ -43,11 +49,11 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Client;
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.*;
 
-public class ControleurPlateau {
+public class ControleurPlateau implements ChangeListener{
 
 	/**
 	 * objet qui vérifie quel type d'objet est en drag
@@ -104,6 +110,8 @@ public class ControleurPlateau {
 	 * tuile à conserver pour les actions
 	 */
 	private Placable tuileAction;
+	
+	private Partie partie;
 
 	/**
 	 * getter de l'application
@@ -288,6 +296,9 @@ public class ControleurPlateau {
 							mainApp.getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
 							target.getChildren().add(image);
 							event.setDropCompleted(true);
+							
+							//refresh du plateau du joueur qui a droppé
+							this.construirePlateau();
 						}
 					} catch(RemoteException e)
 					{
@@ -459,5 +470,290 @@ public class ControleurPlateau {
 		Client client = (Client) mainApp.getClient();
 		client.getJoueur().getDeckPrive().getDeckPrive().remove(indice);
 		this.deckPriveJoueur.remove(indice);
+	}
+	
+	public void construirePlateau(){
+		try {
+			//this.partie = MainApp.getInstance().getClient().getPartie();
+			this.partie = MainApp.getInstance().getServeur().getPartie();
+			Platform.runLater(new Runnable(){
+
+				public void run() {
+					ControleurPlateau controleur = (ControleurPlateau) MainApp.getInstance().currentControler;
+					controleur.construirePlateauJAVAFX();
+				}
+				
+			});
+			
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void construirePlateauJAVAFX(){
+		
+		/////////////////   affichage des tuiles ////////////////////
+		
+		for(int x = 0; x < 16; x++){
+			for(int y = 0; y < 11; y++){
+				Node child = this.getNode(x, y);
+				
+				if(child == null){
+					continue;
+				}
+				
+				if(child instanceof Pane){
+					Pane casePlateau = (Pane) child;
+					casePlateau.getChildren().clear();
+					
+					/////on recupere le placable a cette case////
+					Placable placable = null;
+					try{
+					placable = this.partie.getPlateauJeu().getPlacableAt(new Position(x,y));
+					}catch(Exception e){
+						continue;
+					}
+					if(placable != null){
+						if(placable instanceof TuileCivilisation){
+							TuileCivilisation tuileCiv = (TuileCivilisation) placable;
+							
+							String imgUrl = tuileCiv.getType().getUrlImage();
+							
+							if(tuileCiv.estTuileMonument()){
+								imgUrl = "tuile_base.png";
+							}
+							
+							ImageView imgView = new ImageView();
+							URL file = this.getClass().getResource(imgUrl);
+							Image img = new Image(file.toString());
+							imgView.setImage(img);
+							imgView.getProperties().put("url", imgUrl);
+							
+							
+							casePlateau.getChildren().add(imgView);
+						}
+						else if(placable instanceof TuileCatastrophe){
+							TuileCatastrophe tuile = (TuileCatastrophe) placable;
+							
+							String imgUrl = "tuile_catastrophe.png";
+							
+							ImageView imgView = new ImageView();
+							URL file = this.getClass().getResource(imgUrl);
+							Image img = new Image(file.toString());
+							imgView.setImage(img);
+							imgView.getProperties().put("url", imgUrl);
+							
+							
+							casePlateau.getChildren().add(imgView);
+						}
+						else if(placable instanceof Chef){
+							Chef chef = (Chef) placable;
+							String dyn = chef.getDynastie().getNom().toLowerCase();
+							String coul = chef.getTypeChef().getFinUrlImage();
+							String imgUrl = dyn+"_"+coul;
+							
+							ImageView imgView = new ImageView();
+							URL file = this.getClass().getResource(imgUrl);
+							Image img = new Image(file.toString());
+							imgView.setImage(img);
+							imgView.getProperties().put("url", imgUrl);
+							
+							
+							casePlateau.getChildren().add(imgView);
+						}
+					}
+				}
+			}
+		}
+		
+		////////////////   affichage des monuments  /////////////////
+		
+		for(int x = 0; x < 16; x++){
+			for(int y = 0; y < 11; y++){
+				Node child = this.getNode(x, y);
+				
+				if(child == null){
+					continue;
+				}
+				
+				if(child instanceof Pane){
+					Pane casePlateau = (Pane) child;
+					
+					/////on recupere le placable a cette case////
+					Placable placable = null;
+					try{
+					placable = this.partie.getPlateauJeu().getPlacableAt(new Position(x,y));
+					}catch(Exception e){
+						continue;
+					}
+					if(placable != null){
+						if(placable instanceof TuileCivilisation){
+							TuileCivilisation tuileCiv = (TuileCivilisation) placable;
+							
+							//si la tuile est une tuile de base monument Nord Ouest
+							if(tuileCiv.estTuileMonument() && tuileCiv.getId() == tuileCiv.getMonument().getTuileNO().getId()){
+								Monument m = tuileCiv.getMonument();
+								//affichage de l'arche
+								String arche = "monument_arche_"+m.getCouleurArche()+".png";
+								String stairs = "monument_stairs_"+m.getCouleurEscaliers()+".png";
+								
+								ImageView imgView = new ImageView();
+								URL file = this.getClass().getResource(arche);
+								Image img = new Image(file.toString());
+								imgView.setImage(img);
+								
+								casePlateau.getChildren().add(imgView);
+								
+								imgView = new ImageView();
+								file = this.getClass().getResource(stairs);
+								img = new Image(file.toString());
+								imgView.setImage(img);
+								
+								casePlateau.getChildren().add(imgView);
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		
+		
+////////////////affichage des tresor  /////////////////
+		
+for(int x = 0; x < 16; x++){
+	for(int y = 0; y < 11; y++){
+		Node child = this.getNode(x, y);
+		
+		if(child == null){
+			continue;
+		}
+		
+		if(child instanceof Pane){
+			Pane casePlateau = (Pane) child;
+			
+			/////on recupere le placable a cette case////
+			Placable placable = null;
+			try{
+			placable = this.partie.getPlateauJeu().getPlacableAt(new Position(x,y));
+			}catch(Exception e){
+				continue;
+			}
+			if(placable != null){
+				if(placable instanceof TuileCivilisation){
+					TuileCivilisation tuileCiv = (TuileCivilisation) placable;
+					
+					if(tuileCiv.aTresor()){
+						String url = "tresor.png";
+						ImageView imgView = new ImageView();
+						URL file = this.getClass().getResource(url);
+						Image img = new Image(file.toString());
+						imgView.setImage(img);
+						
+						casePlateau.getChildren().add(imgView);
+					}
+				}
+			}
+		}
+	}
+}
+		
+	}
+	
+	private Node getNode(int x, int y){
+		for(Node child : this.plateau.getChildren()){
+			int nx, ny = 0;
+			try{
+			nx = GridPane.getColumnIndex(child);
+			ny = GridPane.getRowIndex(child);
+			}catch(Exception e){
+				continue;
+			}
+			
+			if(x == nx && y == ny){
+				return child;
+			}
+		}
+		
+		return null;
+	}
+	
+	public void construirePlateauJAVAFX2(){
+		ObservableList<Node> children = this.plateau.getChildren();
+		
+		
+		//this.plateau.add(child, columnIndex, rowIndex);
+		
+		for(Node child : children){
+			
+			if(child instanceof Pane){
+				Pane casePlateau = (Pane) child;
+				int x, y = 0;
+				casePlateau.getChildren().clear();
+				
+				try{
+				x = GridPane.getColumnIndex(casePlateau);
+				y = GridPane.getRowIndex(casePlateau);
+				}catch(Exception e){
+					break;
+				}
+				
+				/////on recupere le placable a cette case////
+				Placable placable = null;
+				try{
+				placable = this.partie.getPlateauJeu().getPlacableAt(new Position(x,y));
+				}catch(Exception e){
+					continue;
+				}
+				if(placable != null){
+					if(placable instanceof TuileCivilisation){
+						TuileCivilisation tuileCiv = (TuileCivilisation) placable;
+						
+						String imgUrl = tuileCiv.getType().getUrlImage();
+						
+						ImageView imgView = new ImageView();
+						URL file = this.getClass().getResource(imgUrl);
+						Image img = new Image(file.toString());
+						imgView.setImage(img);
+						imgView.getProperties().put("url", imgUrl);
+						
+						
+						casePlateau.getChildren().add(imgView);
+						
+						if(tuileCiv.recupererTresor() != null){
+							imgUrl = "tresor.png";
+							imgView = new ImageView();
+							file = this.getClass().getResource(imgUrl);
+							img = new Image(file.toString());
+							imgView.setImage(img);
+							imgView.getProperties().put("url", imgUrl);
+							
+							casePlateau.getChildren().add(imgView);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Methode appelée par le client ou le serveur pour indiquer au controleur de rafraichir sa vue
+	 */
+	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+		// TODO Auto-generated method stub
+		if(arg2 == null || !(arg2 instanceof String)){
+			return;
+		}
+		String[] vues = ((String) arg2).split("-");
+		
+		for(int i = 0; i < vues.length; i++){
+			String vue = vues[i].toLowerCase();
+			
+			if(vue.equals("plateau")){
+				//rafraichir le plateau
+				this.construirePlateau();
+			}
+		}
 	}
 }

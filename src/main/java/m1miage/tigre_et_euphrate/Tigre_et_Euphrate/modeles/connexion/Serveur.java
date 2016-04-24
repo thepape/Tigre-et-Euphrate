@@ -521,5 +521,10 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	}
 
+	public void clearListeners() throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 

@@ -133,7 +133,7 @@ public class Plateau implements Serializable {
 	 * @return
 	 */
 	public Placable getPlacableAt(Position pPos){
-		return this.plateau[pPos.getX()][pPos.getY()];
+		return this.plateau[pPos.getY()][pPos.getX()];
 	}
 
 	/**

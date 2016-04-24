@@ -36,6 +36,7 @@ public interface InterfaceServeurClient extends Remote {
 	public void notifierChangement(Object arg) throws RemoteException;
 	public void addListener(ChangeListener listener) throws RemoteException;
 	public void removeListener(ChangeListener listener) throws RemoteException;
+	public void clearListeners() throws RemoteException;
 	public Joueur getJoueur() throws RemoteException;
 	public void setPartieCourante(Partie partie) throws RemoteException;
 	public ArrayList<InterfaceServeurClient> getClients() throws RemoteException;

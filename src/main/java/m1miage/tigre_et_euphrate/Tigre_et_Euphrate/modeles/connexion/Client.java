@@ -205,6 +205,8 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	public void send(Action action, int idClient) throws RemoteException {
 		action.setPartie(this.getPartie());
 		action.executer();
+		
+		this.notifierChangement("plateau");
 	}
 
 	/**
@@ -321,6 +323,13 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	 */
 	public void removeListener(ChangeListener listener) {
 		this.listeners.remove(listener);
+	}
+	
+	/**
+	 * fonction qui supprime tous les ChangeListeners du client
+	 */
+	public void clearListeners(){
+		this.listeners.clear();
 	}
 
 	/**
