@@ -47,4 +47,5 @@ public interface InterfaceServeurClient extends Remote {
 	public boolean setDynastieOfClient(InterfaceServeurClient client, Dynastie dynastie) throws RemoteException;
 	public void setDynastie(Dynastie d) throws RemoteException;
 	public void libererDynastie(Dynastie d) throws RemoteException;
+	public int getUniqueId() throws RemoteException;
 }

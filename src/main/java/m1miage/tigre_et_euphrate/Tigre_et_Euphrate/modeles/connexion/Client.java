@@ -206,7 +206,7 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		action.setPartie(this.getPartie());
 		action.executer();
 		
-		this.notifierChangement("plateau");
+		//this.notifierChangement("plateau");
 	}
 
 	/**
@@ -402,6 +402,11 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	public void switchJoueurEstPret(InterfaceServeurClient client) throws RemoteException {
 		// TODO Auto-generated method stub
 
+	}
+
+	public int getUniqueId() throws RemoteException {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

@@ -298,7 +298,7 @@ public class ControleurPlateau implements ChangeListener{
 							event.setDropCompleted(true);
 							
 							//refresh du plateau du joueur qui a droppé
-							this.construirePlateau();
+							//this.construirePlateau();
 						}
 					} catch(RemoteException e)
 					{
@@ -505,7 +505,9 @@ public class ControleurPlateau implements ChangeListener{
 				
 				if(child instanceof Pane){
 					Pane casePlateau = (Pane) child;
-					casePlateau.getChildren().clear();
+					
+					boolean caseNettoyee = false;
+					
 					
 					/////on recupere le placable a cette case////
 					Placable placable = null;
@@ -516,6 +518,8 @@ public class ControleurPlateau implements ChangeListener{
 					}
 					if(placable != null){
 						if(placable instanceof TuileCivilisation){
+							
+							
 							TuileCivilisation tuileCiv = (TuileCivilisation) placable;
 							
 							String imgUrl = tuileCiv.getType().getUrlImage();
@@ -530,7 +534,8 @@ public class ControleurPlateau implements ChangeListener{
 							imgView.setImage(img);
 							imgView.getProperties().put("url", imgUrl);
 							
-							
+							casePlateau.getChildren().clear();
+							caseNettoyee = true;
 							casePlateau.getChildren().add(imgView);
 						}
 						else if(placable instanceof TuileCatastrophe){
@@ -544,24 +549,46 @@ public class ControleurPlateau implements ChangeListener{
 							imgView.setImage(img);
 							imgView.getProperties().put("url", imgUrl);
 							
-							
+							casePlateau.getChildren().clear();
+							caseNettoyee = true;
 							casePlateau.getChildren().add(imgView);
 						}
 						else if(placable instanceof Chef){
+							
 							Chef chef = (Chef) placable;
-							String dyn = chef.getDynastie().getNom().toLowerCase();
-							String coul = chef.getTypeChef().getFinUrlImage();
-							String imgUrl = dyn+"_"+coul;
+							Client client = (Client) MainApp.getInstance().getClient();
+							Joueur joueur = client.getJoueur();
 							
-							ImageView imgView = new ImageView();
-							URL file = this.getClass().getResource(imgUrl);
-							Image img = new Image(file.toString());
-							imgView.setImage(img);
-							imgView.getProperties().put("url", imgUrl);
-							
-							
-							casePlateau.getChildren().add(imgView);
+							//si le chef present dans cette case appartient au client là, on y touche pas
+							//pour garder le drag and drop
+							if(joueur.getId() == chef.getJoueur().getId()){
+								caseNettoyee = true;
+							}
+							else{
+								//sinon, on met a jour l'affichage
+								String dyn = chef.getDynastie().getNom().toLowerCase();
+								String coul = chef.getTypeChef().getFinUrlImage();
+								String imgUrl = dyn+"_"+coul;
+								
+								ImageView imgView = new ImageView();
+								URL file = this.getClass().getResource(imgUrl);
+								Image img = new Image(file.toString());
+								imgView.setImage(img);
+								imgView.getProperties().put("url", imgUrl);
+								
+								casePlateau.getChildren().clear();
+								caseNettoyee = true;
+								casePlateau.getChildren().add(imgView);
+							}
 						}
+						
+						
+					}
+					
+					
+					if(!caseNettoyee){
+						casePlateau.getChildren().clear();
+						caseNettoyee = true;
 					}
 				}
 			}
@@ -609,6 +636,7 @@ public class ControleurPlateau implements ChangeListener{
 								file = this.getClass().getResource(stairs);
 								img = new Image(file.toString());
 								imgView.setImage(img);
+								
 								
 								casePlateau.getChildren().add(imgView);
 							}

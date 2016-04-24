@@ -336,7 +336,10 @@ public class MainApp extends Application implements App {
 
 			DeckPublic deckPublic = new DeckPublic();
 			Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
-
+			//on force un id de joueur unique en attendant
+			int id = this.serveur.getUniqueId();
+			joueur.setId(id);
+			
 			Chef chefFermier = new Chef(TypeChef.Fermier,joueur);
 			Chef chefRoi = new Chef(TypeChef.Roi,joueur);
 			Chef chefMarchand = new Chef(TypeChef.Marchand,joueur);
