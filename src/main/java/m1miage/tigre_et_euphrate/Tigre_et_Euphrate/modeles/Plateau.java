@@ -112,7 +112,7 @@ public class Plateau implements Serializable {
 		pplateau[2][5] = new TuileCivilisation(new Tresor());
 		pplateau[4][13] = new TuileCivilisation(new Tresor());
 		pplateau[6][8] = new TuileCivilisation(new Tresor());
-		pplateau[7][1] = new TuileCivilisation(new Tresor());
+		pplateau[1][7] = new TuileCivilisation(new Tresor());
 		pplateau[8][14] = new TuileCivilisation(new Tresor());
 		pplateau[9][5] = new TuileCivilisation(new Tresor());
 		pplateau[10][10] = new TuileCivilisation(new Tresor());

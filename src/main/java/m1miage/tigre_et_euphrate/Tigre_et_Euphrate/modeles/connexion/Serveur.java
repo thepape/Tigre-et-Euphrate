@@ -473,6 +473,8 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		this.partie.initialiserPartie();
 	}
 
+	
+	
 	/**********************************************************************************
 	 * 						FONCTIONS QUE LE SERVEUR N'UTILISE PAS
 	 **********************************************************************************/
