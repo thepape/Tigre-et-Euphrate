@@ -112,7 +112,7 @@ public class Plateau implements Serializable {
 		pplateau[2][5] = new TuileCivilisation(new Tresor());
 		pplateau[4][13] = new TuileCivilisation(new Tresor());
 		pplateau[6][8] = new TuileCivilisation(new Tresor());
-		pplateau[1][7] = new TuileCivilisation(new Tresor());
+		pplateau[7][1] = new TuileCivilisation(new Tresor());
 		pplateau[8][14] = new TuileCivilisation(new Tresor());
 		pplateau[9][5] = new TuileCivilisation(new Tresor());
 		pplateau[10][10] = new TuileCivilisation(new Tresor());
@@ -244,7 +244,6 @@ public class Plateau implements Serializable {
 			return false;
 		}
 
-		this.plateau[x][y] = pchef;
 		return true;
 	}
 
@@ -258,33 +257,33 @@ public class Plateau implements Serializable {
 		int y = ppos.getY();
 		TuileCivilisation tuileCivilisation;
 
-		if(x-1>=0 && x-1<=11){
+		if(x-1>=0 && x-1<=10){
 			if(this.plateau[x-1][y] instanceof TuileCivilisation){
-				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
-				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
+				tuileCivilisation = (TuileCivilisation)this.plateau[x-1][y];
+				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple))
 					return true;
 			}
 		}
 
-		if(x+1<=11 && x+1>=0){
+		if(x+1<=10 && x+1>=0){
 			if(this.plateau[x+1][y] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
-				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
+				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple))
 					return true;
 			}
 		}
-		if(y-1>=0 && y-1<=16){
+		if(y-1>=0 && y-1<=15){
 			if(this.plateau[x][y-1] instanceof TuileCivilisation){
-				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
-				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
+				tuileCivilisation = (TuileCivilisation)this.plateau[x][y-1];
+				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple))
 					return true;
 			}
 		}
 
-		if(y+1<=16 && y+1>=0){
+		if(y+1<=15 && y+1>=0){
 			if(this.plateau[x][y+1] instanceof TuileCivilisation){
-				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
-				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
+				tuileCivilisation = (TuileCivilisation)this.plateau[x][y+1];
+				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple))
 					return true;
 			}
 		}

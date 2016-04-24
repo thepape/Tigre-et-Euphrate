@@ -36,7 +36,12 @@ public class Partie implements Serializable {
 	 * La liste des joueurs jouant la partie
 	 */
 	private ArrayList<Joueur> listeJoueurs = new ArrayList<Joueur>();
-
+	
+	/**
+	 * La liste des tours de joueur
+	 */
+	private ArrayList<Joueur> listeTours = new ArrayList<Joueur>();
+	
 	/**
 	 * Un joueur plutot beau gosse (ou pas)
 	 */
@@ -265,10 +270,12 @@ public class Partie implements Serializable {
 			e.printStackTrace();
 		}
 		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
+		ArrayList<Joueur> tours = new ArrayList<Joueur>();
 
 		for(InterfaceServeurClient client : listeClients){
 			try {
 				joueurs.add(client.getJoueur());
+				tours.add(client.getJoueur());
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
