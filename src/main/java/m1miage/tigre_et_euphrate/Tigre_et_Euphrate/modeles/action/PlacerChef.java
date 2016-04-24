@@ -47,8 +47,21 @@ public class PlacerChef extends Action {
 	 */
 	public boolean executer(){
 		boolean ok = false;
+		
+		ok =  this.partie.getPlateauJeu().placerChef(this.chef, this.position);
+		if(ok){
+			System.out.println("Temple trouvé");
+			this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
+			this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
+			System.out.println("chef ajouté");
+		}else{
+			System.out.println("Temple pas trouvé");
+		}
+		
+		return ok;
+		
 
-		if((this.position.getX() > 11 || this.position.getY() > 16) || (this.position.getY() < 0 || this.position.getX() < 0))
+		/*if((this.position.getX() > 11 || this.position.getY() > 16) || (this.position.getY() < 0 || this.position.getX() < 0))
 		{
 			return false;
 		}
@@ -73,7 +86,7 @@ public class PlacerChef extends Action {
 			this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
 			this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
 		}
-		return ok;
+		return ok;*/
 	}
 
 }
