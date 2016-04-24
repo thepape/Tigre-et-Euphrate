@@ -34,8 +34,8 @@ public class Plateau implements Serializable {
 	 * Constructeur d'un plateau avec son initialisation
 	 */
 	public Plateau(){
-		this.plateau = new Placable[16][11];
-		this.plateauTerrain = new boolean[16][11];
+		this.plateau = new Placable[11][16];
+		this.plateauTerrain = new boolean[11][16];
 		this.listeTerritoire = new ArrayList<Territoire>();
 		genererTerrain(this.plateauTerrain);
 		genererSphynx(this.plateau);
@@ -55,47 +55,47 @@ public class Plateau implements Serializable {
 		/*
 		 * Le bon code en dur comme on l'aime
 		 */
-		pplateauTerrain[0][3] = false;
-		pplateauTerrain[1][3] = false;
-		pplateauTerrain[2][3] = false;
-		pplateauTerrain[3][3] = false;
+		pplateauTerrain[3][0] = false;
+		pplateauTerrain[3][1] = false;
 		pplateauTerrain[3][2] = false;
-		pplateauTerrain[4][2] = false;
-		pplateauTerrain[4][1] = false;
-		pplateauTerrain[4][0] = false;
-		pplateauTerrain[5][0] = false;
-		pplateauTerrain[6][0] = false;
-		pplateauTerrain[7][0] = false;
-		pplateauTerrain[8][0] = false;
-		pplateauTerrain[12][0] = false;
-		pplateauTerrain[12][1] = false;
-		pplateauTerrain[12][2] = false;
-		pplateauTerrain[13][2] = false;
-		pplateauTerrain[13][3] = false;
-		pplateauTerrain[14][3] = false;
-		pplateauTerrain[15][3] = false;
-		pplateauTerrain[14][4] = false;
-		pplateauTerrain[15][4] = false;
-		pplateauTerrain[14][5] = false;
-		pplateauTerrain[14][6] = false;
-		pplateauTerrain[13][6] = false;
-		pplateauTerrain[12][6] = false;
-		pplateauTerrain[12][7] = false;
-		pplateauTerrain[12][8] = false;
-		pplateauTerrain[11][8] = false;
-		pplateauTerrain[10][8] = false;
-		pplateauTerrain[9][8] = false;
-		pplateauTerrain[8][8] = false;
-		pplateauTerrain[7][8] = false;
-		pplateauTerrain[6][8] = false;
-		pplateauTerrain[6][7] = false;
-		pplateauTerrain[5][7] = false;
-		pplateauTerrain[4][7] = false;
-		pplateauTerrain[3][7] = false;
-		pplateauTerrain[3][6] = false;
-		pplateauTerrain[2][6] = false;
-		pplateauTerrain[1][6] = false;
+		pplateauTerrain[3][3] = false;
+		pplateauTerrain[2][3] = false;
+		pplateauTerrain[2][4] = false;
+		pplateauTerrain[1][4] = false;
+		pplateauTerrain[0][4] = false;
+		pplateauTerrain[0][5] = false;
 		pplateauTerrain[0][6] = false;
+		pplateauTerrain[0][7] = false;
+		pplateauTerrain[0][8] = false;
+		pplateauTerrain[0][12] = false;
+		pplateauTerrain[1][12] = false;
+		pplateauTerrain[2][12] = false;
+		pplateauTerrain[2][13] = false;
+		pplateauTerrain[3][13] = false;
+		pplateauTerrain[3][14] = false;
+		pplateauTerrain[3][15] = false;
+		pplateauTerrain[4][14] = false;
+		pplateauTerrain[4][15] = false;
+		pplateauTerrain[5][14] = false;
+		pplateauTerrain[6][14] = false;
+		pplateauTerrain[6][13] = false;
+		pplateauTerrain[6][12] = false;
+		pplateauTerrain[7][12] = false;
+		pplateauTerrain[8][12] = false;
+		pplateauTerrain[8][11] = false;
+		pplateauTerrain[8][10] = false;
+		pplateauTerrain[8][9] = false;
+		pplateauTerrain[8][8] = false;
+		pplateauTerrain[8][7] = false;
+		pplateauTerrain[8][6] = false;
+		pplateauTerrain[7][6] = false;
+		pplateauTerrain[7][5] = false;
+		pplateauTerrain[7][4] = false;
+		pplateauTerrain[7][3] = false;
+		pplateauTerrain[6][3] = false;
+		pplateauTerrain[6][2] = false;
+		pplateauTerrain[6][1] = false;
+		pplateauTerrain[6][0] = false;
 	}
 
 	public void genererSphynx(Placable[][] pplateau){
@@ -107,14 +107,14 @@ public class Plateau implements Serializable {
 
 		//Les 10 sphinx et les tresors
 		pplateau[1][1] = new TuileCivilisation(new Tresor());
-		pplateau[10][0] = new TuileCivilisation(new Tresor());
-		pplateau[15][1] = new TuileCivilisation(new Tresor());
-		pplateau[5][2] = new TuileCivilisation(new Tresor());
-		pplateau[13][4] = new TuileCivilisation(new Tresor());
-		pplateau[8][6] = new TuileCivilisation(new Tresor());
-		pplateau[7][1] = new TuileCivilisation(new Tresor());
-		pplateau[14][8] = new TuileCivilisation(new Tresor());
-		pplateau[5][9] = new TuileCivilisation(new Tresor());
+		pplateau[0][10] = new TuileCivilisation(new Tresor());
+		pplateau[1][15] = new TuileCivilisation(new Tresor());
+		pplateau[2][5] = new TuileCivilisation(new Tresor());
+		pplateau[4][13] = new TuileCivilisation(new Tresor());
+		pplateau[6][8] = new TuileCivilisation(new Tresor());
+		pplateau[1][7] = new TuileCivilisation(new Tresor());
+		pplateau[8][14] = new TuileCivilisation(new Tresor());
+		pplateau[9][5] = new TuileCivilisation(new Tresor());
 		pplateau[10][10] = new TuileCivilisation(new Tresor());
 
 	}
@@ -258,7 +258,7 @@ public class Plateau implements Serializable {
 		int y = ppos.getY();
 		TuileCivilisation tuileCivilisation;
 
-		if(x-1>=0 && x-1<=15){
+		if(x-1>=0 && x-1<=11){
 			if(this.plateau[x-1][y] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
 				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
@@ -266,14 +266,14 @@ public class Plateau implements Serializable {
 			}
 		}
 
-		if(x+1<=15 && x+1>=0){
+		if(x+1<=11 && x+1>=0){
 			if(this.plateau[x+1][y] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
 				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
 					return true;
 			}
 		}
-		if(y-1>=0 && y-1<=11){
+		if(y-1>=0 && y-1<=16){
 			if(this.plateau[x][y-1] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
 				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
@@ -281,7 +281,7 @@ public class Plateau implements Serializable {
 			}
 		}
 
-		if(y+1<=11 && y+1>=0){
+		if(y+1<=16 && y+1>=0){
 			if(this.plateau[x][y+1] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
 				if(tuileCivilisation.getType().equals(new TypeTuileCivilisation("rouge","Temple")))
