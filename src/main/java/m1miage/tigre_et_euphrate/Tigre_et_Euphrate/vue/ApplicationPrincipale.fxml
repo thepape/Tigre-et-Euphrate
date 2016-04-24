@@ -374,10 +374,11 @@
             <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="9" />
             <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="10" />
             <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="0" />
-            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="12" GridPane.rowIndex="0"/>
-            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="13" GridPane.rowIndex="0"/>
-            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="14" GridPane.rowIndex="0"/>
-            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="0"/>
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="12" GridPane.rowIndex="0" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="13" GridPane.rowIndex="0" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="14" GridPane.rowIndex="0" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="15" GridPane.rowIndex="0" />
+            <Pane onDragDropped="#dropTuileDeckPriveTableau" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
          </children>
       </GridPane>
    </center>

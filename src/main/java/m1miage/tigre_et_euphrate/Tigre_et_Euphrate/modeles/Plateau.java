@@ -257,32 +257,32 @@ public class Plateau implements Serializable {
 		int y = ppos.getY();
 		TuileCivilisation tuileCivilisation;
 
-		if(x-1>=0 && x-1<=11){
+		if(x-1>=0 && x-1<=10){
 			if(this.plateau[x-1][y] instanceof TuileCivilisation){
-				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
+				tuileCivilisation = (TuileCivilisation)this.plateau[x-1][y];
 				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple))
 					return true;
 			}
 		}
 
-		if(x+1<=11 && x+1>=0){
+		if(x+1<=10 && x+1>=0){
 			if(this.plateau[x+1][y] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
 				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple))
 					return true;
 			}
 		}
-		if(y-1>=0 && y-1<=16){
+		if(y-1>=0 && y-1<=15){
 			if(this.plateau[x][y-1] instanceof TuileCivilisation){
-				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
+				tuileCivilisation = (TuileCivilisation)this.plateau[x][y-1];
 				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple))
 					return true;
 			}
 		}
 
-		if(y+1<=16 && y+1>=0){
+		if(y+1<=15 && y+1>=0){
 			if(this.plateau[x][y+1] instanceof TuileCivilisation){
-				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
+				tuileCivilisation = (TuileCivilisation)this.plateau[x][y+1];
 				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple))
 					return true;
 			}
