@@ -42,6 +42,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCivilisation;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.RetirerChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Client;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
@@ -104,6 +105,11 @@ public class ControleurPlateau {
 	 * tuile à conserver pour les actions
 	 */
 	private Placable tuileAction;
+
+	/**
+	 * Position antérieure au retrait du chef
+	 */
+	private Position positionChefRetire;
 
 	/**
 	 * getter de l'application
@@ -251,6 +257,9 @@ public class ControleurPlateau {
 							ClipboardContent content = new ClipboardContent();
 					        content.putImage(imageTuile.getImage());
 					        db.setContent(content);
+					        ImageView imageView = (ImageView) event.getSource();
+					        Pane pane = (Pane) imageView.getParent();
+					        positionChefRetire = new Position(GridPane.getRowIndex(pane), GridPane.getColumnIndex(pane));
 					        event.consume();
 						} });
 
@@ -311,7 +320,7 @@ public class ControleurPlateau {
 		{
 			ImageView image = (ImageView) event.getSource();
 			image.setVisible(true);
-		} else if(event.getTransferMode() == TransferMode.COPY)
+		} else if(event.getTransferMode() == TransferMode.MOVE)
 		{
 			ImageView image = (ImageView) event.getSource();
 			Pane pane = (Pane) image.getParent();
@@ -326,19 +335,34 @@ public class ControleurPlateau {
 		}
 	}
 
+	@FXML
+	private void dragDonePlateau(DragEvent event) throws RemoteException
+	{
+		Pane pane = (Pane) event.getSource();
+		System.out.println(event.getTransferMode());
+		if(event.getTransferMode() == null)
+		{
+			Pane image = (Pane) event.getSource();
+			System.out.println("DRAG DONE PLATEAU");
+			image.setVisible(true);
+		} else if(event.getTransferMode() == TransferMode.COPY)
+		{
+		}
+	}
+
 	/**
 	 * Fonction générale pour toutes les tuiles des decks. Cette fonction permet de drop sur le deck une tuile que l'on a drag depuis le plateau. Elle dimensionne
 	 * la visualition des tuiles en fonction des tuiles et du deck dans lequel l'utilisateur drop.
 	 * @param DragEvent event
 	 */
 	@FXML
-	private void dropTuileDecks(DragEvent event)
+	private void dropTuileDecks(DragEvent event) throws RemoteException
 	{
 		Dragboard db = event.getDragboard();
 		Pane target = (Pane)event.getSource();
 
 		if (db.hasImage()) {
-			ImageView image = new ImageView(db.getImage());
+			ImageView image = (ImageView) target.getChildren().get(0);
 			if(ControleurPlateau.imageEnDragAndDropChef != null)
 			{
 				image.setAccessibleText("tuileChef");
@@ -348,6 +372,7 @@ public class ControleurPlateau {
 			}
 			if(target.getAccessibleText().equals("paneTuileChef"))
 			{
+
 				image.setFitHeight(75);
 				image.setFitWidth(75);
 				image.setTranslateY(25);
@@ -361,22 +386,32 @@ public class ControleurPlateau {
 			image.setOnDragDetected(
 				new EventHandler<MouseEvent>(){
 					public void handle(MouseEvent event) {
-						ImageView imageTuile = (ImageView) event.getSource();
-						imageTuile.setVisible(false);
-						if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
+						try
 						{
-							ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
-							ControleurPlateau.imageEnDragAndDropChef = null;
-						} else if(imageTuile.getAccessibleText().equals("tuileChef"))
+							ImageView imageTuile = (ImageView) event.getSource();
+							imageTuile.setVisible(false);
+							if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
+							{
+								ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
+								ControleurPlateau.imageEnDragAndDropChef = null;
+								tuileAction = deckPriveJoueur.get(GridPane.getColumnIndex(imageTuile.getParent()) - 2);
+							} else if(imageTuile.getAccessibleText().equals("tuileChef"))
+							{
+								ControleurPlateau.imageEnDragAndDropTuile = null;
+								ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
+								tuileAction = mainApp.getClient().getJoueur().getDeckPublic().getDeckPublic().get(GridPane.getRowIndex(imageTuile.getParent()));
+							}
+
+
+							Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
+							ClipboardContent content = new ClipboardContent();
+					        content.putImage(imageTuile.getImage());
+					        db.setContent(content);
+					        event.consume();
+						} catch(RemoteException e)
 						{
-							ControleurPlateau.imageEnDragAndDropTuile = null;
-							ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
+							e.printStackTrace();
 						}
-						Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
-						ClipboardContent content = new ClipboardContent();
-				        content.putImage(imageTuile.getImage());
-				        db.setContent(content);
-				        event.consume();
 					}
 				}
 			);
@@ -386,17 +421,27 @@ public class ControleurPlateau {
 					{
 						ImageView image = (ImageView) event.getSource();
 						image.setVisible(true);
-					} else if(event.getTransferMode() == TransferMode.COPY)
+					} else if(event.getTransferMode() == TransferMode.MOVE)
 					{
 						ImageView image = (ImageView) event.getSource();
 						Pane pane = (Pane) image.getParent();
-						pane.getChildren().get(0).setVisible(false);
+						if(ControleurPlateau.imageEnDragAndDropTuile != null)
+						{
+							indice = GridPane.getColumnIndex(pane) - 2;
+							supprimerTuileDeckPrive(indice);
+						} else if(ControleurPlateau.imageEnDragAndDropChef != null)
+						{
+							indice = GridPane.getRowIndex(pane);
+						}
 					}
 				} });
-			if((target.getChildren().size() == 0) && ((target.getAccessibleText().contains("Civilisation") && image.getAccessibleText().contains("Civilisation")) ||
-					(target.getAccessibleText().contains("Chef") && image.getAccessibleText().contains("Chef"))))
+			if((target.getAccessibleText().contains("Chef") && image.getAccessibleText().contains("Chef")))
 			{
-				target.getChildren().add(image);
+
+				Chef chefRetrait = (Chef) MainApp.getInstance().getClient().getPartie().getPlateauJeu().getPlateau()[GridPane.getRowIndex(target)][GridPane.getColumnIndex(target)];
+				Action action = new RetirerChef(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur(), chefRetrait, GridPane.getRowIndex(target), this.positionChefRetire);
+				action.executer();
+				image.setVisible(true);
 				event.setDropCompleted(true);
 			} else {
 				event.setDropCompleted(false);
