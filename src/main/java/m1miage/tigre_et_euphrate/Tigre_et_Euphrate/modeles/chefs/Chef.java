@@ -1,5 +1,7 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs;
 
+import java.io.Serializable;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
@@ -10,7 +12,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
  * @author jerome
  *
  */
-public class Chef extends Placable{
+public class Chef extends Placable implements Serializable{
 
 	/**
 	 * Type du chef

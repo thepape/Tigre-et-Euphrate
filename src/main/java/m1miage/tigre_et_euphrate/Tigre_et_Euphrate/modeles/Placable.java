@@ -1,11 +1,13 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
+import java.io.Serializable;
+
 /**
  *
  * Classe représentant un objet placable sur une case de plateau. Deux placables ou plus ne peuvent pas être empilées sur une même case.
  *
  */
-public abstract class Placable {
+public abstract class Placable implements Serializable {
 
 	/**
 	 * Incrément de l'id des objets placables.

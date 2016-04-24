@@ -1,5 +1,6 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
@@ -9,23 +10,23 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivil
  * Classe representant la pioche
  *
  */
-public class Pioche {
-	
+public class Pioche implements Serializable{
+
 	/**
 	 *  Decrement : nombre de tuiles population restantes
-	 */  
+	 */
 	private static int nbTuilesPopulation = 30;
-	
+
 	/**
 	 *  Decrement : nombre de tuiles temple restantes
 	 */
 	private static int nbTuilesTemple = 57;
-	
+
 	/**
 	 *  Decrement : nombre de tuiles ferme restantes
 	 */
 	private static int nbTuilesFerme = 36;
-	
+
 	/**
 	 *  Decrement : nombre de tuiles marche restantes
 	 */
@@ -35,9 +36,9 @@ public class Pioche {
 	 * Contructeur vide de la Pioche
 	 */
 	public Pioche() {
-		
+
 	}
-	
+
 	/**
 	 * Fonction permettant de piocher une tuile civilisation aléatoirement dans la pioche
 	 * A REFAIRE pcq ca marche mais c est un peu a vomir
@@ -51,7 +52,7 @@ public class Pioche {
 		Random random = new Random();
 		int val = random.nextInt(total)+1;
 		TuileCivilisation tuilePiochee;
-		if(val <= Pioche.nbTuilesFerme){	
+		if(val <= Pioche.nbTuilesFerme){
 			tuilePiochee = new TuileCivilisation(new TypeTuileCivilisation("bleu","Ferme"));
 			Pioche.nbTuilesFerme--;
 		}else{
@@ -70,13 +71,13 @@ public class Pioche {
 		}
 		return tuilePiochee;
 	}
-	
+
 	/**
 	 * Fonction permettant de savoir si la pioche est vide ou non
 	 * @return vrai ou faux
 	 */
 	public boolean estVide(){
-		return (Pioche.nbTuilesFerme == 0 && Pioche.nbTuilesMarche == 0 && Pioche.nbTuilesPopulation == 0 && Pioche.nbTuilesTemple == 0);	
+		return (Pioche.nbTuilesFerme == 0 && Pioche.nbTuilesMarche == 0 && Pioche.nbTuilesPopulation == 0 && Pioche.nbTuilesTemple == 0);
 	}
 
 }

@@ -14,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 
 public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceServeurClient, Serializable
@@ -103,13 +104,8 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 * Fonction qui initialiser le serveur
 	 */
 	public void initialiser(){
-		try {
-			partie = new Partie();
-			partie.setServeur(this);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		partie = new Partie();
+		partie.setServeur(this);
 
 		//lancement du registre
 		try {
@@ -141,7 +137,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	/**
 	 * Fonction qui permet d'attendre des joueurs
-	 * @throws RemoteException 
+	 * @throws RemoteException
 	 */
 	public void attendreJoueursPrets() throws RemoteException
 	{
@@ -270,16 +266,14 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	/**
 	 * Fonction qui permet d'envoyer des données du serveur aux clients
 	 */
-	public void send(String string, int idClient) throws RemoteException {
-		System.out.println(string);
+	public void send(Action action, int idClient) throws RemoteException {
+		action.setPartie(this.getPartie());
+		action.executer();
 		for(int i = 0; i < this.clients.size(); i++)
 		{
-			System.out.println("Client testé : " + this.getClients().get(i).getIdObjetPartie());
-			System.out.println("idClient envoyé : " + idClient);
-			if(this.getClients().get(i).getIdObjetPartie() != idClient)
+			if(idClient != this.clients.get(i).getIdObjetPartie())
 			{
-				System.out.println("J'envoie au client");
-				this.getClients().get(i).send(string, idClient);
+				this.clients.get(i).send(action, idClient);
 			}
 		}
 	}
@@ -296,20 +290,23 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			Joueur joueur = new Joueur();
 			joueur.setNom(client.getNomJoueur());
 			client.setJoueur(joueur);
-			
+
 			for(InterfaceServeurClient c : this.clients){
 				c.notifierChangement(joueur);
 			}
 		}
 	}
-	
+
+	/**
+	 * Fonction qui retire un joueur de la liste des clients
+	 */
 	public boolean retirerClient(InterfaceServeurClient client) throws RemoteException {
 		boolean trouve = this.clients.remove(client);
-		
+
 		for(InterfaceServeurClient c : this.clients){
 			c.notifierChangement(null);
 		}
-		
+
 		return trouve;
 	}
 
@@ -357,7 +354,13 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
+	/**
+	 * Fonction qui retourne le client qui heberge la partie
+	 * @param client
+	 * @return localClient
+	 * @throws RemoteException
+	 */
 	private InterfaceServeurClient getLocalClient(InterfaceServeurClient client) throws RemoteException{
 
 		for(InterfaceServeurClient c : this.clients){
@@ -365,50 +368,61 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 				return c;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
+	/**
+	 * Fonction qui notife le client d'un changement
+	 * @param arg
+	 * @throws RemoteException
+	 */
 	private void notifierClient(Object arg) throws RemoteException{
 		for(InterfaceServeurClient c : this.clients){
 			c.notifierChangement(null);
 		}
 	}
-	
+
+	/**
+	 * Fonction qui change l'etat d'un joueur en fonction de l'envoie de ce dernier
+	 */
 	public void switchJoueurEstPret(InterfaceServeurClient client) throws RemoteException{
 		InterfaceServeurClient local = null;
-		
+
 		for(InterfaceServeurClient c : this.clients){
 			if(c.getIdObjetPartie() == client.getIdObjetPartie()){
 				local = c;
 				break;
 			}
 		}
-		
+
 		local.switchJoueurPret();
 		String arg = null;
-		
+
 		if(this.tousPret()){
 			this.genererPartie();
 			System.out.println("Partie lancée");
 			arg="partieLancee";
 		}
-		
+
 		for(InterfaceServeurClient c : this.clients){
 			c.notifierChangement(arg);
 		}
 	}
-	
+
 	public void libererDynastie(Dynastie dynastie) throws RemoteException{
 		synchronized (this.listeDynastieDispo) {
-			
+
 				this.listeDynastieDispo.add(dynastie);
-			
+
 		}
-		
+
 		this.notifierClient(null);
 	}
-	
+
+	/**
+	 * Fonction qui change la dynastie d'un client de serveur
+	 */
 	public boolean setDynastieOfClient(InterfaceServeurClient client, Dynastie dynastie) throws RemoteException {
 		InterfaceServeurClient local = this.getLocalClient(client);
 		boolean ok = false;
@@ -418,72 +432,73 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 				this.listeDynastieDispo.remove(dynastie);
 			}
 		}
-		
+
 		if(!ok){
 			return false;
 		}
-		
+
 		local.setDynastie(dynastie);
-		
+
 		this.notifierClient(null);
-		
+
 		return true;
 	}
 
-	public void sendDynastieChoisi(String dynastie, int idClient) throws RemoteException {
-		System.out.println("J'ai recu la dynastie :" + dynastie + " du client :" + idClient);
-		for(int i = 0 ; i < this.listeDynastie.size(); i++)
-		{
-			Dynastie dynastieTest = this.listeDynastie.get(i);
-			if(dynastieTest.getNom().equals(dynastie))
-			{
-				dynastieTest.setEstPrise(true);
-			}
-
-		}
-
-		for(int i = 0; i < this.clients.size(); i++)
-		{
-			InterfaceServeurClient client = this.clients.get(i);
-			if(client.getIdObjetPartie() != idClient)
-			{
-				client.sendDynastieChoisi(dynastie, idClient);
-			}
-		}
-		/*
-		for(InterfaceServeurClient c : this.clients){
-			c.notifierChangement(null);
-		}*/
-	}
-
+	/**
+	 * Setter de la liste de dynastie
+	 */
 	public void setListeDynastie(ArrayList<Dynastie> liste) throws RemoteException {
 		this.listeDynastieDispo = liste;
 
 	}
 
+	/**
+	 * Fonction qui vérifie que tous les joueurs sont prêts
+	 * @return pret
+	 * @throws RemoteException
+	 */
+	public boolean tousPret() throws RemoteException{
+		for(InterfaceServeurClient client : this.clients){
+			if(!client.getJoueur().estPret()){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Fonction qui génére partie
+	 */
+	public void genererPartie(){
+		this.partie.initialiserPartie();
+	}
+
+	/**********************************************************************************
+	 * 						FONCTIONS QUE LE SERVEUR N'UTILISE PAS
+	 **********************************************************************************/
 	public void setJoueur(Joueur j) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void notifierChangement() throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void addListener(ChangeListener listener) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void removeListener(ChangeListener listener) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void notifierChangement(Object arg) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public boolean deconnecter() throws RemoteException {
@@ -493,26 +508,18 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	public void switchJoueurPret() throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void setDynastie(Dynastie d) throws RemoteException {
 		// TODO Auto-generated method stub
-		
-	}
-	
-	public boolean tousPret() throws RemoteException{
-		for(InterfaceServeurClient client : this.clients){
-			if(!client.getJoueur().estPret()){
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	public void genererPartie(){
-		this.partie.initialiserPartie();
+
 	}
 
-	
+	public void setPartieCourante(Partie partie) throws RemoteException {
+		// TODO Auto-generated method stub
+
+	}
+
 }
+
