@@ -315,7 +315,7 @@ public class MainApp extends Application implements App {
 			this.client.clearListeners();
 			
 			this.replaceSceneContent("ApplicationPrincipale.fxml");
-			
+			/*
 			Monument m = new Monument("bleu","jaune");
 			
 			TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
@@ -359,6 +359,12 @@ public class MainApp extends Application implements App {
 			Partie partie = new Partie();
 			partie.setPlateauJeu(new Plateau());
 			partie.setJoueur(joueur);
+			*/
+			
+			ControleurPlateau controleurPlateau = this.currentLoader.getController();
+			Partie partie = this.serveur.getPartie();
+			Joueur joueur = this.client.getJoueur();
+			
 			this.client.setPartieCourante(partie);
 			this.client.setJoueur(joueur);
 			controleurPlateau.setDeckPriveJoueur(this.client.getJoueur().getDeckPrive().getDeckPrive());

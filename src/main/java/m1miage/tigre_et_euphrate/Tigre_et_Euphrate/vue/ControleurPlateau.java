@@ -145,7 +145,9 @@ public class ControleurPlateau implements ChangeListener{
 			}
 
 			// Initialisation de l'interface du deck public
-			for(int i = 0; i < mainApp.getClient().getJoueur().getDeckPublic().getDeckPublic().size(); i++)
+			//int size = mainApp.getClient().getJoueur().getDeckPublic().getDeckPublic().size();
+			int size = 4;
+			for(int i = 0; i < size; i++)
 			{
 				Pane pane = (Pane) deckPublic.getChildren().get(i);
 				ImageView imageView = (ImageView) pane.getChildren().get(0);
@@ -190,12 +192,14 @@ public class ControleurPlateau implements ChangeListener{
 		{
 			ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
 			ControleurPlateau.imageEnDragAndDropChef = null;
-			this.tuileAction = this.deckPriveJoueur.get(GridPane.getColumnIndex(imageTuile.getParent()) - 2);
+			int gridPanColIndex = GridPane.getColumnIndex(imageTuile.getParent());
+			this.tuileAction = this.deckPriveJoueur.get( gridPanColIndex - 2);
 		} else if(imageTuile.getAccessibleText().equals("tuileChef"))
 		{
 			ControleurPlateau.imageEnDragAndDropTuile = null;
 			ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
-			this.tuileAction = MainApp.getInstance().getClient().getJoueur().getDeckPublic().getDeckPublic().get(GridPane.getRowIndex(imageTuile.getParent()));
+			int gridPanRowIndex = GridPane.getRowIndex(imageTuile.getParent());
+			this.tuileAction = MainApp.getInstance().getClient().getJoueur().getDeckPublic().getDeckPublic().get(gridPanRowIndex);
 		}
 
 
