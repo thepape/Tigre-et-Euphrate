@@ -484,6 +484,8 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		return this.increment;
 	}
 
+	
+	
 	/**********************************************************************************
 	 * 						FONCTIONS QUE LE SERVEUR N'UTILISE PAS
 	 **********************************************************************************/

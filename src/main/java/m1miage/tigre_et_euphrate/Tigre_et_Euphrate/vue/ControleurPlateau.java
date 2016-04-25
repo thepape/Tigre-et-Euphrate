@@ -419,16 +419,6 @@ public class ControleurPlateau implements ChangeListener{
 		}
 	}
 
-	@FXML
-	private void finirTour(MouseEvent event) throws RemoteException
-	{
-		System.out.println("CLIENT COURANT : " + mainApp.getClient().getIdObjetPartie());
-		for(int i = 0; i < this.listeActionTour.size(); i++)
-		{
-
-			this.mainApp.getServeur().send(this.listeActionTour.get(i), MainApp.getInstance().getClient().getIdObjetPartie());
-		}
-	}
 
 	public void setDeckPriveJoueur(ArrayList<TuileCivilisation> pDeckPrive)
 	{
@@ -693,6 +683,21 @@ for(int x = 0; x < 16; x++){
 		
 	}
 	
+	@FXML
+	private void finirTour(MouseEvent event) throws RemoteException
+	{
+		boolean finpartie;
+		System.out.println("Le joueur a finit son tour. " + mainApp.getClient().getNomJoueur() +" "+ mainApp.getClient().getIdObjetPartie());
+		finpartie = mainApp.getServeur().getPartie().piocheCartesManquantes(mainApp.getClient().getJoueur());
+		
+		if(!finpartie){
+			mainApp.getServeur().getPartie().passerTour();
+		}else{
+			System.out.println("Compter le nombre de point LOL");
+		}
+	
+	}
+	
 	private Node getNode(int x, int y){
 		for(Node child : this.plateau.getChildren()){
 			int nx, ny = 0;
@@ -789,3 +794,4 @@ for(int x = 0; x < 16; x++){
 		}
 	}
 }
+
