@@ -491,6 +491,12 @@ public class ControleurPlateau implements ChangeListener{
 		}
 	}
 	
+// Gestion des tuiles Catastrophes
+	
+public void placerTuile(MouseEvent event) throws RemoteException{
+
+}
+
 	public void construirePlateauJAVAFX(){
 		
 		/////////////////   affichage des tuiles ////////////////////
@@ -618,7 +624,8 @@ public class ControleurPlateau implements ChangeListener{
 			}
 		}
 		
-		
+
+
 		
 ////////////////affichage des tresor  /////////////////
 		
