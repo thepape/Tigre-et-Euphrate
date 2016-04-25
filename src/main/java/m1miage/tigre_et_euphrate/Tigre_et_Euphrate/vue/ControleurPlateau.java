@@ -186,6 +186,7 @@ public class ControleurPlateau implements ChangeListener{
 	@FXML
 	private void dragTuileDecks(MouseEvent event) throws RemoteException
 	{
+		if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()){
 		ImageView imageTuile = (ImageView) event.getSource();
 		imageTuile.setVisible(false);
 		if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
@@ -208,6 +209,7 @@ public class ControleurPlateau implements ChangeListener{
         content.putImage(imageTuile.getImage());
         db.setContent(content);
         event.consume();
+		}
 	}
 
 	/**
@@ -248,23 +250,29 @@ public class ControleurPlateau implements ChangeListener{
 					image.setOnDragDetected(new EventHandler<MouseEvent>(){
 
 						public void handle(MouseEvent event) {
-							ImageView imageTuile = (ImageView) event.getSource();
-							imageTuile.setVisible(false);
-							if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
-							{
-								ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
-								ControleurPlateau.imageEnDragAndDropChef = null;
-							} else if(imageTuile.getAccessibleText().equals("tuileChef"))
-							{
-								ControleurPlateau.imageEnDragAndDropTuile = null;
-								ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
-							}
-							Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
-							ClipboardContent content = new ClipboardContent();
-					        content.putImage(imageTuile.getImage());
-					        db.setContent(content);
-					        event.consume();
-						} });
+							try {
+								if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()){
+								ImageView imageTuile = (ImageView) event.getSource();
+								imageTuile.setVisible(false);
+								if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
+								{
+									ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
+									ControleurPlateau.imageEnDragAndDropChef = null;
+								} else if(imageTuile.getAccessibleText().equals("tuileChef"))
+								{
+									ControleurPlateau.imageEnDragAndDropTuile = null;
+									ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
+								}
+								Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
+								ClipboardContent content = new ClipboardContent();
+								content.putImage(imageTuile.getImage());
+								db.setContent(content);
+								event.consume();
+								}
+							} catch (RemoteException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}} });
 
 					image.setOnDragDone(new EventHandler<DragEvent>(){
 						public void handle(DragEvent event) {
