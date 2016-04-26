@@ -201,6 +201,58 @@ public class Territoire {
 	}
 
 
+	public boolean contientTuileCivilisation(TuileCivilisation tuile){
+		for(TuileCivilisation t : this.tuilesCivilisation){
+			if(t.getId() == tuile.getId()){
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean contientChef(Chef chef){
+		for(Chef t : this.chefs){
+			if(t.getId() == chef.getId()){
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
-
+	public boolean comparerTuilesEtChef(Territoire t){
+		if(this.tuilesCivilisation.size() != t.tuilesCivilisation.size()){
+			return false;
+		}
+		
+		if(this.chefs.size() != t.chefs.size()){
+			return false;
+		}
+		
+		if(this.tuilesCivilisation.size() == 0){
+			return false;
+		}
+		
+		for(TuileCivilisation tuile : this.tuilesCivilisation){
+			if(!t.contientTuileCivilisation(tuile)){
+				return false;
+			}
+		}
+		
+		for(Chef chef : this.chefs){
+			if(!t.contientChef(chef)){
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	public boolean equals(Object o){
+		if(o instanceof Territoire){
+			return this.idTerritoire == ((Territoire) o).idTerritoire;
+		}
+		return false;
+	}
 }
