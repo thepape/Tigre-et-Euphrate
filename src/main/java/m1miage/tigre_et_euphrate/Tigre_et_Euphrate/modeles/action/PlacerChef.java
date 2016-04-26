@@ -30,6 +30,18 @@ public class PlacerChef extends Action {
 	private Position position;
 
 	/**
+	 * Booleen qui permet de tester les conflit
+	 */
+	private boolean conflit = false;
+	public boolean isConflit() {
+		return conflit;
+	}
+
+	public void setConflit(boolean conflit) {
+		this.conflit = conflit;
+	}
+
+	/**
 	 * @param ppartie
 	 * @param pjoueur
 	 * @param pchef
@@ -69,44 +81,42 @@ public class PlacerChef extends Action {
 		boolean ok = false;
 
 		ok =  this.partie.getPlateauJeu().placerChef(this.chef, this.position);
+		ArrayList<TuileCivilisation> listeAdjacente = this.partie.getPlateauJeu().recupererListeTuileCivilisationAdjacente(position);
 
-		if(ok){
-			this.retirerChef();
-
-			this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
-
-			this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
-		}
-
-		return ok;
-
-
-		/*if((this.position.getX() > 11 || this.position.getY() > 16) || (this.position.getY() < 0 || this.position.getX() < 0))
-		{
-			return false;
-		}
-
-		if(this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] != null)
-		{
-			ok = false;
-		} else {
-
-			ArrayList<TuileCivilisation> listeAdjacente = this.getPartie().getPlateauJeu().recupererListeTuileCivilisationAdjacente(this.position);
-			for(int i = 0; i < listeAdjacente.size(); i++)
+		if(ok) {
+			for(int i = 0; i < listeAdjacente.size() - 1; i++)
 			{
-				if(listeAdjacente.get(i).getType().equals(TypeTuileCivilisation.Temple))
+				for(int j = 1 ; j < listeAdjacente.size(); j++)
 				{
-					ok = true;
+					if(!listeAdjacente.get(i).getTerritoire().equals(listeAdjacente.get(j).getTerritoire()))
+					{
+						ok = false;
+					}
+				}
+			}
+
+			if(ok)
+			{
+				this.retirerChef();
+				this.chef.setTerritoire(listeAdjacente.get(0).getTerritoire());
+				listeAdjacente.get(0).getTerritoire().addChefs(this.chef);
+				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
+				this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
+				for(int i = 0; i < this.chef.getTerritoire().getChefs().size() - 1;i++)
+				{
+					for(int j = 1; j < this.chef.getTerritoire().getChefs().size();j++)
+					{
+						if(this.chef.getTerritoire().getChefs().get(i).getTypeChef().equals(this.chef.getTerritoire().getChefs().get(j).getTypeChef()))
+						{
+							//TODO conflit
+							conflit = true;
+						}
+					}
 				}
 			}
 		}
 
-		if(ok)
-		{
-			this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
-			this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
-		}
-		return ok;*/
+		return ok;
 	}
 
 }
