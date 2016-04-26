@@ -42,17 +42,17 @@ public class TestCissionRoyaume {
 		TuileCivilisation t3 = new TuileCivilisation(TypeTuileCivilisation.Temple);
 		t3.setTerritoire(terr1);
 		
-		this.plateau.placerTuile(t1, 0, 4);
-		this.plateau.placerTuile(t2, 1, 4);
-		this.plateau.placerTuile(t3, 2, 4);
+		this.plateau.placerTuile(t1, 4, 0);
+		this.plateau.placerTuile(t2, 4, 1);
+		this.plateau.placerTuile(t3, 4, 2);
 		
 		System.out.println("avant cission :");
 		System.out.println(this.printTerritoiresPlateau());
 		
 		TuileCatastrophe tcata = new TuileCatastrophe();
-		tcata.setPosition(new Position(1,4));
+		tcata.setPosition(new Position(4,1));
 		this.plateau.getPlateau()[4][1] = tcata;
-		this.plateau.reconstruireTerritoires(new Position(1,4));
+		this.plateau.reconstruireTerritoires(new Position(4,1));
 		
 		System.out.println("après cission :");
 		System.out.println(this.printTerritoiresPlateau());
@@ -85,15 +85,15 @@ public class TestCissionRoyaume {
 		t33.setTerritoire(terr1);
 		
 		this.plateau.placerTuile(t11, 4, 4);
-		this.plateau.placerTuile(t21, 5, 4);
-		this.plateau.placerTuile(t31, 6, 4);
+		this.plateau.placerTuile(t21, 4, 5);
+		this.plateau.placerTuile(t31, 4, 6);
 		
-		this.plateau.placerTuile(t12, 4, 5);
+		this.plateau.placerTuile(t12, 5, 4);
 		this.plateau.placerTuile(t22, 5, 5);
-		this.plateau.placerTuile(t32, 6, 5);
+		this.plateau.placerTuile(t32, 5, 6);
 		
-		this.plateau.placerTuile(t13, 4, 6);
-		this.plateau.placerTuile(t23, 5, 6);
+		this.plateau.placerTuile(t13, 6, 4);
+		this.plateau.placerTuile(t23, 6, 5);
 		this.plateau.placerTuile(t33, 6, 6);
 		
 		System.out.println("avant cission :");
@@ -127,10 +127,10 @@ public class TestCissionRoyaume {
 		tc.setTerritoire(terr1);
 		
 		
-		this.plateau.placerTuile(tn, 5, 4);
-		this.plateau.placerTuile(te, 6, 5);
-		this.plateau.placerTuile(ts, 5, 6);
-		this.plateau.placerTuile(to, 4, 5);
+		this.plateau.placerTuile(tn, 4, 5);
+		this.plateau.placerTuile(te, 5, 6);
+		this.plateau.placerTuile(ts, 6, 5);
+		this.plateau.placerTuile(to, 5, 4);
 		this.plateau.placerTuile(tc, 5, 5);
 		
 		System.out.println("avant cission :");
@@ -166,11 +166,11 @@ public class TestCissionRoyaume {
 		tne.setTerritoire(terr1);
 		
 		
-		this.plateau.placerTuile(tn, 5, 4);
-		this.plateau.placerTuile(tne, 6, 4);
-		this.plateau.placerTuile(te, 6, 5);
-		this.plateau.placerTuile(ts, 5, 6);
-		this.plateau.placerTuile(to, 4, 5);
+		this.plateau.placerTuile(tn, 4, 5);
+		this.plateau.placerTuile(tne, 4, 6);
+		this.plateau.placerTuile(te, 5, 6);
+		this.plateau.placerTuile(ts, 6, 5);
+		this.plateau.placerTuile(to, 5, 4);
 		this.plateau.placerTuile(tc, 5, 5);
 		
 		System.out.println("avant cission :");
@@ -208,12 +208,12 @@ public class TestCissionRoyaume {
 		tnee.setTerritoire(terr1);
 		
 		
-		this.plateau.placerTuile(tn, 5, 4);
-		this.plateau.placerTuile(tne, 6, 4);
-		this.plateau.placerTuile(tnee, 7, 4);
-		this.plateau.placerTuile(te, 6, 5);
-		this.plateau.placerTuile(ts, 5, 6);
-		this.plateau.placerTuile(to, 4, 5);
+		this.plateau.placerTuile(tn, 4, 5);
+		this.plateau.placerTuile(tne, 4, 6);
+		this.plateau.placerTuile(tnee, 4, 7);
+		this.plateau.placerTuile(te, 5, 6);
+		this.plateau.placerTuile(ts, 6, 5);
+		this.plateau.placerTuile(to, 5, 4);
 		this.plateau.placerTuile(tc, 5, 5);
 		
 		System.out.println("avant cission :");
