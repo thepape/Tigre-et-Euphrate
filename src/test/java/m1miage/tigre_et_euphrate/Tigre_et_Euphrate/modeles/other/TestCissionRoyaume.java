@@ -234,7 +234,7 @@ public class TestCissionRoyaume {
 		tcata2.setPosition(new Position(6,4));
 		this.plateau.getPlateau()[4][6] = tcata2;
 		
-		this.plateau.reconstruireTerritoires(new Position(6,4));
+		this.plateau.reconstruireTerritoires(new Position(4,6));
 		
 		System.out.println("après cission 2:");
 		System.out.println(this.printTerritoiresPlateau());

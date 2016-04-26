@@ -392,10 +392,10 @@ public class Plateau implements Serializable {
 		Territoire tOuest = new Territoire();
 		
 		//construction de 4 territoires en partant des 4 voisins
-		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX(), pDepart.getY()-1), tNord);
-		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX()+1, pDepart.getY()), tEst);
-		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX(), pDepart.getY()+1), tSud);
-		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX()-1, pDepart.getY()), tOuest);
+		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX()-1, pDepart.getY()), tNord);
+		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX(), pDepart.getY()+1), tEst);
+		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX()+1, pDepart.getY()), tSud);
+		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX(), pDepart.getY()-1), tOuest);
 		
 		//on élimine les territoires identiques pour ne garder que les territoires differents
 		ArrayList<Territoire> territoires = new ArrayList<Territoire>();
@@ -441,16 +441,16 @@ public class Plateau implements Serializable {
 	}
 
 	public void reconstruireTerritoiresRecurs(Position pDepart, Territoire territoire){
-		Placable pNord = this.getPlacableAt(new Position(pDepart.getX(), pDepart.getY()-1));
+		Placable pNord = this.getPlacableAt(new Position(pDepart.getX()-1, pDepart.getY()));
 		this.gererTuileDansReconstruction(pNord, territoire);
 		
-		Placable pEst = this.getPlacableAt(new Position(pDepart.getX()+1, pDepart.getY()));
+		Placable pEst = this.getPlacableAt(new Position(pDepart.getX(), pDepart.getY()+1));
 		this.gererTuileDansReconstruction(pEst, territoire);
 		
-		Placable pSud = this.getPlacableAt(new Position(pDepart.getX(), pDepart.getY()+1));
+		Placable pSud = this.getPlacableAt(new Position(pDepart.getX()+1, pDepart.getY()));
 		this.gererTuileDansReconstruction(pSud, territoire);
 		
-		Placable pOuest = this.getPlacableAt(new Position(pDepart.getX()-1, pDepart.getY()));
+		Placable pOuest = this.getPlacableAt(new Position(pDepart.getX(), pDepart.getY()-1));
 		this.gererTuileDansReconstruction(pOuest, territoire);
 		
 		//on ajoute finallement cette tuile
