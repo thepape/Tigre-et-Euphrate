@@ -182,4 +182,8 @@ public class TuileCivilisation extends Tuile {
 
 		return false;
 	}
+	
+	public boolean aTresor(){
+		return this.tresor != null;
+	}
 }

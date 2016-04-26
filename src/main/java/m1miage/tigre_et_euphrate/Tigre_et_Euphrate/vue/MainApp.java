@@ -30,6 +30,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.*;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Monument;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
@@ -208,7 +209,7 @@ public class MainApp extends Application implements App {
 		// FXMLLoader(getClass().getClassLoader().getResource(fxml));
 		this.currentLoader = loader;
 		Parent page = loader.load();
-
+		this.currentControler = this.currentLoader.getController();
 		// Parent page = (Parent)
 		// this.fxmLoader.load(getClass().getClassLoader().getResource(fxml),
 		// null, new JavaFXBuilderFactory());
@@ -310,8 +311,16 @@ public class MainApp extends Application implements App {
 	 */
 	public void afficherPlateau(){
 		try{
+			//on supprime le controleurSalon des listeners du client
+			this.client.clearListeners();
+			
 			this.replaceSceneContent("ApplicationPrincipale.fxml");
+			/*
+			Monument m = new Monument("bleu","jaune");
+			
 			TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
+			tuile1.setMonument(m);
+			m.setTuileNO(tuile1);
 			TuileCivilisation tuile2 = new TuileCivilisation(TypeTuileCivilisation.Marché);
 			TuileCivilisation tuile3 = new TuileCivilisation(TypeTuileCivilisation.Population);
 			TuileCivilisation tuile4 = new TuileCivilisation(TypeTuileCivilisation.Temple);
@@ -325,17 +334,22 @@ public class MainApp extends Application implements App {
 			deckPrive.ajouter(tuile5);
 			deckPrive.ajouter(tuile6);
 
-
-			Chef chefFermier = new Chef(TypeChef.Fermier);
-			Chef chefRoi = new Chef(TypeChef.Roi);
-			Chef chefMarchand = new Chef(TypeChef.Marchand);
-			Chef chefPretre = new Chef(TypeChef.Pretre);
 			DeckPublic deckPublic = new DeckPublic();
+			Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
+			//on force un id de joueur unique en attendant
+			int id = this.serveur.getUniqueId();
+			joueur.setId(id);
+			
+			Chef chefFermier = new Chef(TypeChef.Fermier,joueur);
+			Chef chefRoi = new Chef(TypeChef.Roi,joueur);
+			Chef chefMarchand = new Chef(TypeChef.Marchand,joueur);
+			Chef chefPretre = new Chef(TypeChef.Pretre,joueur);
+			
 			deckPublic.ajouter(chefFermier);
 			deckPublic.ajouter(chefRoi);
 			deckPublic.ajouter(chefMarchand);
 			deckPublic.ajouter(chefPretre);
-			Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
+			
 			// PartieInterface partie = (Partie)
 			// this.getListeJoueur().get(0);
 			ControleurPlateau controleurPlateau = this.currentLoader.getController();
@@ -345,10 +359,20 @@ public class MainApp extends Application implements App {
 			Partie partie = new Partie();
 			partie.setPlateauJeu(new Plateau());
 			partie.setJoueur(joueur);
+			*/
+			
+			ControleurPlateau controleurPlateau = this.currentLoader.getController();
+			Partie partie = this.serveur.getPartie();
+			Joueur joueur = this.client.getJoueur();
+			
 			this.client.setPartieCourante(partie);
 			this.client.setJoueur(joueur);
 			controleurPlateau.setDeckPriveJoueur(this.client.getJoueur().getDeckPrive().getDeckPrive());
 			controleurPlateau.setMainApp(this);
+			
+			//on ajoute le controleurPlateau comme listener de ce client
+			this.client.addListener(controleurPlateau);
+			controleurPlateau.construirePlateau();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

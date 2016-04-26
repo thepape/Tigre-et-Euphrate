@@ -5,6 +5,7 @@ import java.util.ListIterator;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
@@ -39,6 +40,25 @@ public class PlacerChef extends Action {
 		this.chef = pchef;
 		this.position = ppos;
 	}
+	
+	private void retirerChef(){
+		for(int x = 0; x < 16; x++){
+			for(int y = 0; y < 11;y++){
+				Placable placable = this.partie.getPlateauJeu().getPlateau()[y][x];
+				
+				if(placable != null && placable instanceof Chef){
+					Chef chefc = (Chef) placable;
+					boolean memeDynastie = chefc.getDynastie().getNom().equals(this.chef.getDynastie().getNom());
+					boolean memeCouleur = chefc.getTypeChef().getCouleur().equals(this.chef.getTypeChef().getCouleur());
+					
+					if(memeDynastie && memeCouleur){
+						this.partie.getPlateauJeu().getPlateau()[y][x] = null;
+						return;
+					}
+				}
+			}
+		}
+	}
 
 	/**
 	 * Execute l'action PlacerChef
@@ -51,7 +71,14 @@ public class PlacerChef extends Action {
 		ok =  this.partie.getPlateauJeu().placerChef(this.chef, this.position);
 
 		if(ok){
+<<<<<<< HEAD
+=======
+			System.out.println("Temple trouvé");
+			this.retirerChef();
+			
+>>>>>>> master
 			this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
+			
 			this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
 		}
 

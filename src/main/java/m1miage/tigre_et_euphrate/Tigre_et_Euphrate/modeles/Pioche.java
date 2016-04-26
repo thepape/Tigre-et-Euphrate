@@ -53,18 +53,18 @@ public class Pioche implements Serializable{
 		int val = random.nextInt(total)+1;
 		TuileCivilisation tuilePiochee;
 		if(val <= Pioche.nbTuilesFerme){
-			tuilePiochee = new TuileCivilisation(new TypeTuileCivilisation("bleu","Ferme"));
+			tuilePiochee = new TuileCivilisation(TypeTuileCivilisation.Ferme);
 			Pioche.nbTuilesFerme--;
 		}else{
 			if(val > Pioche.nbTuilesFerme && val <= (Pioche.nbTuilesFerme+Pioche.nbTuilesMarche)){
-				tuilePiochee = new TuileCivilisation(new TypeTuileCivilisation("vert","Marché"));
+				tuilePiochee = new TuileCivilisation(TypeTuileCivilisation.Marché);
 				Pioche.nbTuilesMarche--;
 			}else{
 				if(val > (Pioche.nbTuilesFerme+Pioche.nbTuilesMarche) && val <= (Pioche.nbTuilesFerme+Pioche.nbTuilesMarche+Pioche.nbTuilesPopulation)){
-					tuilePiochee = new TuileCivilisation(new TypeTuileCivilisation("jaune","Population"));
+					tuilePiochee = new TuileCivilisation(TypeTuileCivilisation.Population);
 					Pioche.nbTuilesPopulation--;
 				}else{
-					tuilePiochee = new TuileCivilisation(new TypeTuileCivilisation("rouge","Temple"));
+					tuilePiochee = new TuileCivilisation(TypeTuileCivilisation.Temple);
 					Pioche.nbTuilesTemple--;
 				}
 			}
@@ -78,6 +78,10 @@ public class Pioche implements Serializable{
 	 */
 	public boolean estVide(){
 		return (Pioche.nbTuilesFerme == 0 && Pioche.nbTuilesMarche == 0 && Pioche.nbTuilesPopulation == 0 && Pioche.nbTuilesTemple == 0);
+	}
+	
+	public int getTotalCarte(){
+		return nbTuilesPopulation + nbTuilesFerme + nbTuilesTemple + nbTuilesMarche;
 	}
 
 }
