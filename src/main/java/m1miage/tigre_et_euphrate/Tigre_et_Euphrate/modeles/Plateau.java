@@ -28,6 +28,11 @@ public class Plateau implements Serializable {
 	 * Liste des differents royaumes présent sur le plateau
 	 */
 	private ArrayList<Territoire> listeTerritoire;
+	
+	/**
+	 * Le nombre de trésors présents sur le plateau
+	 */
+	private static int nombreTresors = 10;
 
 
 	/**
@@ -107,16 +112,49 @@ public class Plateau implements Serializable {
 
 		//Les 10 sphinx et les tresors
 		pplateau[1][1] = new TuileCivilisation(new Tresor());
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[1][1]));
 		pplateau[0][10] = new TuileCivilisation(new Tresor());
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[0][10]));
 		pplateau[1][15] = new TuileCivilisation(new Tresor());
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[1][15]));
 		pplateau[2][5] = new TuileCivilisation(new Tresor());
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[2][5]));
 		pplateau[4][13] = new TuileCivilisation(new Tresor());
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[4][13]));
 		pplateau[6][8] = new TuileCivilisation(new Tresor());
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[6][8]));
 		pplateau[7][1] = new TuileCivilisation(new Tresor());
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[7][1]));
 		pplateau[8][14] = new TuileCivilisation(new Tresor());
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[8][14]));
 		pplateau[9][5] = new TuileCivilisation(new Tresor());
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[9][5]));
 		pplateau[10][10] = new TuileCivilisation(new Tresor());
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[10][10]));
 
+	}
+
+	/**
+	 * Fonction retournant le nombre de trésors restants sur le plateau
+	 * @return le nombreTresors
+	 */
+	public static int getNombreTresors() {
+		return nombreTresors;
+	}
+	
+	/**
+	 * Fonction permettant de décrémenter le nombre de trésors
+	 */
+	public static void decrementerNombreTresors(){
+		if(nombreTresors > 0)
+			nombreTresors--;
+	}
+
+	/**
+	 * @param nombreTresors the nombreTresors to set
+	 */
+	public static void setNombreTresors(int nombreTresors) {
+		Plateau.nombreTresors = nombreTresors;
 	}
 
 	/**
@@ -213,19 +251,25 @@ public class Plateau implements Serializable {
 		int x = ppos.getX();
 		int y = ppos.getY();
 
-		if(this.plateau[y][x] != null){
+		if(x < 0 || y < 0 || x > 10 || y > 15)
+		{
 			return false;
-		}
-		if(!this.plateauTerrain[y][x] && !ptuile.estTuileEau()){
-			return false;
-		}
-		if(this.plateauTerrain[y][x] && ptuile.estTuileEau()){
-			return false;
-		}
+		} else {
+			if(this.plateau[x][y] != null){
+				return false;
+			}
+			if(!this.plateauTerrain[x][y] && !ptuile.estTuileEau()){
+				return false;
+			}
+			if(this.plateauTerrain[x][y] && ptuile.estTuileEau()){
+				return false;
+			}
 
-		this.plateau[y][x] = ptuile;
-		ptuile.placer(ppos);
-		return true;
+			this.plateau[x][y] = ptuile;
+			ptuile.placer(ppos);
+			return true;
+
+		}
 	}
 
 
@@ -239,6 +283,10 @@ public class Plateau implements Serializable {
 		int x = ppos.getX();
 		int y = ppos.getY();
 
+		if(x > 10 || y > 15 || x < 0 || y < 0)
+		{
+			return false;
+		}
 		if(this.plateau[x][y] != null){
 			return false;
 		}
@@ -307,22 +355,32 @@ public class Plateau implements Serializable {
 	{
 		ArrayList<TuileCivilisation> listeAdjacente = new ArrayList<TuileCivilisation>();
 
-		if(position.getX() + 1 < 11 && this.getPlateau()[position.getX() + 1 ][position.getY()] instanceof TuileCivilisation)
+		if(position.getX() < 10 && position.getY() < 15 && position.getX() > -1 && position.getY() > -1)
 		{
-			TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX() + 1][position.getY()];
-			listeAdjacente.add(tuileAdjacente);
-		} else if(position.getX() - 1 > -1 && this.getPlateau()[position.getX() - 1][position.getY()] instanceof TuileCivilisation)
-		{
-			TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX() - 1][position.getY()];
-			listeAdjacente.add(tuileAdjacente);
-		} else if(position.getY() + 1 < 15 && this.getPlateau()[position.getX()][position.getY() + 1] instanceof TuileCivilisation)
-		{
-			TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX()][position.getY() + 1];
-			listeAdjacente.add(tuileAdjacente);
-		} else if(position.getY() - 1 > -1 && this.getPlateau()[position.getX() ][position.getY() - 1] instanceof TuileCivilisation)
-		{
-			TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX()][position.getY() - 1];
-			listeAdjacente.add(tuileAdjacente);
+			if(position.getX() + 1 < 10 && this.getPlateau()[position.getX() + 1 ][position.getY()] instanceof TuileCivilisation)
+			{
+				TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX() + 1][position.getY()];
+				listeAdjacente.add(tuileAdjacente);
+			}
+
+			if(position.getX() - 1 > -1 && this.getPlateau()[position.getX() - 1][position.getY()] instanceof TuileCivilisation)
+			{
+				TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX() - 1][position.getY()];
+				listeAdjacente.add(tuileAdjacente);
+			}
+
+			if(position.getY() + 1 < 16 && this.getPlateau()[position.getX()][position.getY() + 1] instanceof TuileCivilisation)
+			{
+				TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX()][position.getY() + 1];
+				listeAdjacente.add(tuileAdjacente);
+			}
+
+			if(position.getY() - 1 > -1 && this.getPlateau()[position.getX()][position.getY() - 1] instanceof TuileCivilisation)
+			{
+				System.out.println("Y - 1");
+				TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX()][position.getY() - 1];
+				listeAdjacente.add(tuileAdjacente);
+			}
 		}
 		return listeAdjacente;
 	}
