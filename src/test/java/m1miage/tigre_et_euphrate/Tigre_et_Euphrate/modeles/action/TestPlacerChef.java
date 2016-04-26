@@ -70,33 +70,37 @@ public class TestPlacerChef {
 	public void testPlacerChefHorsLimite() {
 		Position position = new Position(17,18);
 
-		Action action = new PlacerChef(partie, joueur, (Chef) this.joueur.getDeckPublic().getDeckPublic().get(1), position);
+		PlacerChef action = new PlacerChef(partie, joueur, (Chef) this.joueur.getDeckPublic().getDeckPublic().get(1), position);
 		assertFalse(action.executer());
+		assertFalse(action.isConflit());
 	}
 
 	@Test
 	public void testPlacerChefHorsLimite2() {
 		Position position = new Position(-4,0);
 
-		Action action = new PlacerChef(partie, joueur, (Chef) this.joueur.getDeckPublic().getDeckPublic().get(1), position);
+		PlacerChef action = new PlacerChef(partie, joueur, (Chef) this.joueur.getDeckPublic().getDeckPublic().get(1), position);
 		assertFalse(action.executer());
+		assertFalse(action.isConflit());
 	}
 
 	@Test
 	public void testPlacerChefCaseNonVide() {
 		Position position = new Position(9,0);
-		Action action = new PlacerChef(this.partie, this.joueur, (Chef) this.joueur.getDeckPublic().getDeckPublic().get(1), position);
+		PlacerChef action = new PlacerChef(this.partie, this.joueur, (Chef) this.joueur.getDeckPublic().getDeckPublic().get(1), position);
 		action.executer();
 		assertFalse(action.executer());
+		assertFalse(action.isConflit());
 	}
 
 	@Test
 	public void testTerritoireChef() {
 		Position position = new Position(0,1);
-		Action action = new PlacerChef(this.partie, this.joueur, (Chef) this.joueur.getDeckPublic().getDeckPublic().get(1), position);
+		PlacerChef action = new PlacerChef(this.partie, this.joueur, (Chef) this.joueur.getDeckPublic().getDeckPublic().get(1), position);
 		action.executer();
 		Chef chef = (Chef)this.partie.getPlateauJeu().getPlateau()[0][1];
 		assertEquals(chef.getTerritoire(), this.partie.getPlateauJeu().getListeRoyaume().get(0));
+		assertFalse(action.isConflit());
 	}
 
 	@Test
@@ -105,8 +109,9 @@ public class TestPlacerChef {
 		Territoire teritoire = new Territoire(tuile);
 		this.partie.getPlateauJeu().getPlateau()[0][0] = tuile;
 		Position position = new Position(0,1);
-		Action action = new PlacerChef(this.partie, this.joueur, (Chef) this.joueur.getDeckPublic().getDeckPublic().get(1), position);
+		PlacerChef action = new PlacerChef(this.partie, this.joueur, (Chef) this.joueur.getDeckPublic().getDeckPublic().get(1), position);
 		assertFalse(action.executer());
+		assertFalse(action.isConflit());
 	}
 
 	@Test
