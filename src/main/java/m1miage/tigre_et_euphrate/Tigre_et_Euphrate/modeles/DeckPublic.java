@@ -9,16 +9,22 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCatastrop
 public class DeckPublic extends Deck implements Serializable {
 
 	/**
+	 * Liste des chefs contenu dans le deck : Deck Public
+	 */
+	private ArrayList<Chef> deckPublic;
+	
+	/**
 	 * Liste des chefs et des tuiles catastrophes contenu dans le deck : Deck Public
 	 */
-	private ArrayList<Placable> deckPublic;
+	private ArrayList<Placable> listeTuileCatastrophe;
 
 	/**
 	 *
 	 */
 	public DeckPublic() {
 		super();
-		this.deckPublic = new ArrayList<Placable>();
+		this.deckPublic = new ArrayList<Chef>();
+		this.listeTuileCatastrophe = new ArrayList<Placable>();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -26,57 +32,67 @@ public class DeckPublic extends Deck implements Serializable {
 	 * @param pjoueur le joueur
 	 * @param pdeckPublic la liste
 	 */
-	public DeckPublic(Joueur pjoueur, ArrayList<Placable> pdeckPublic) {
+	public DeckPublic(Joueur pjoueur, ArrayList<Chef> plisteChef,  ArrayList<Placable> plisteTuile) {
 		super(pjoueur);
-		this.deckPublic = pdeckPublic;
+		this.deckPublic = plisteChef;
+		this.listeTuileCatastrophe = plisteTuile;
 	}
 
-	/**
-	 * getter du deck public
-	 * @return deckPublic
-	 */
-	public ArrayList<Placable> getDeckPublic() {
+//Getter & Settter
+
+	public ArrayList<Chef> getdeckPublic() {
 		return deckPublic;
 	}
 
+	public void setdeckPublic(ArrayList<Chef> listeChef) {
+		this.deckPublic = listeChef;
+	}
+
+	public ArrayList<Placable> getListeTuileCatastrophe() {
+		return listeTuileCatastrophe;
+	}
+
+	public void setListeTuileCatastrophe(ArrayList<Placable> listeTuileCatastrophe) {
+		this.listeTuileCatastrophe = listeTuileCatastrophe;
+	}
+
+	
 	/**
-	 * setter du deck public
-	 * @param deckPublic
+	 * Méthode pour ajouter un chef dans le deckPublic
+	 * @param pchef
+	 * @return
 	 */
-	public void setDeckPublic(ArrayList<Placable> pDeckPublic) {
-		this.deckPublic = pDeckPublic;
+	public boolean ajouterChef(Chef pchef){
+			return this.deckPublic.add(pchef);
+	}
+	
+	
+	/**
+	 * Méthode pour ajouter une tuile catastrophe dans le deckPublic
+	 * @param pchef
+	 * @return
+	 */
+	public boolean ajouterCatastrophe(Placable pcata){
+			return this.listeTuileCatastrophe.add(pcata);
 	}
 
 	/**
-	 * Méthode pour ajouter un chef ou une tuile catastrophe dans le deckPublic
-	 * @param l'objet placable
+	 * Méthode pour supprimer un chef du deck public
+	 * @param l'objet chef
 	 * @return vrai ou faux
 	 */
-	public boolean ajouter(Placable pobj){
-		if(pobj instanceof Chef)
-			return this.deckPublic.add((Chef)pobj);
-		if(pobj instanceof TuileCatastrophe)
-			return this.deckPublic.add((TuileCatastrophe)pobj);
-		return false;
+	public boolean supprimerChef(Chef pchef){
+			return this.deckPublic.remove(pchef);
 	}
-
+	
 	/**
 	 * Méthode pour supprimer un chef ou une tuile catastrophe du deck public
 	 * @param l'objet placable
 	 * @return vrai ou faux
 	 */
-	public boolean supprimer(Placable pobj){
-		if(pobj instanceof Chef)
-			return this.deckPublic.remove((Chef)pobj);
-		if(pobj instanceof TuileCatastrophe)
-			return this.deckPublic.remove((Chef)pobj);
-		return false;
+	public boolean supprimerCatastrohe(Placable pcata){
+		return this.listeTuileCatastrophe.remove(pcata);
 	}
-
-	/*public static void main(String[] args) {
-		DeckPublic deck = new DeckPublic();
-		System.out.println(deck.ajouter(new TuileCatastrophe()));
-	}*/
 
 
 }
