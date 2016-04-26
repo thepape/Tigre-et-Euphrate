@@ -70,8 +70,8 @@ public class TestDeck {
 		deckpublic.ajouterChef(chef2);
 		deckpublic.ajouterChef(chef3);
 		
-		assertTrue(deckpublic.getdeckPublic().contains(chef2));
-		assertEquals(deckpublic.getdeckPublic().size(),3);
+		assertTrue(deckpublic.getDeckPublic().contains(chef2));
+		assertEquals(deckpublic.getDeckPublic().size(),3);
 	}
 	
 	/**
@@ -90,8 +90,8 @@ public class TestDeck {
 		
 		deckpublic.supprimerChef(chef1);
 		
-		assertEquals(deckpublic.getdeckPublic().size(),2);
-		assertFalse(deckpublic.getdeckPublic().contains(chef1));
+		assertEquals(deckpublic.getDeckPublic().size(),2);
+		assertFalse(deckpublic.getDeckPublic().contains(chef1));
 	}
 
 }

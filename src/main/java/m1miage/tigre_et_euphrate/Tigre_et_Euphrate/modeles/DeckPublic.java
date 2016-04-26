@@ -40,11 +40,11 @@ public class DeckPublic extends Deck implements Serializable {
 
 //Getter & Settter
 
-	public ArrayList<Chef> getdeckPublic() {
+	public ArrayList<Chef> getDeckPublic() {
 		return deckPublic;
 	}
 
-	public void setdeckPublic(ArrayList<Chef> listeChef) {
+	public void setDeckPublic(ArrayList<Chef> listeChef) {
 		this.deckPublic = listeChef;
 	}
 
