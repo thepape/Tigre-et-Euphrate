@@ -197,28 +197,28 @@ public class ControleurPlateau implements ChangeListener{
 	private void dragTuileDecks(MouseEvent event) throws RemoteException
 	{
 		if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()){
-		ImageView imageTuile = (ImageView) event.getSource();
-		imageTuile.setVisible(false);
-		if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
-		{
-			ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
-			ControleurPlateau.imageEnDragAndDropChef = null;
-			int gridPanColIndex = GridPane.getColumnIndex(imageTuile.getParent());
-			this.tuileAction = this.deckPriveJoueur.get( gridPanColIndex - 2);
-		} else if(imageTuile.getAccessibleText().equals("tuileChef"))
-		{
-			ControleurPlateau.imageEnDragAndDropTuile = null;
-			ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
-			int gridPanRowIndex = GridPane.getRowIndex(imageTuile.getParent());
-			this.tuileAction = MainApp.getInstance().getClient().getJoueur().getDeckPublic().getDeckPublic().get(gridPanRowIndex);
-		}
+			ImageView imageTuile = (ImageView) event.getSource();
+			imageTuile.setVisible(false);
+			if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
+			{
+				ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
+				ControleurPlateau.imageEnDragAndDropChef = null;
+				int gridPanColIndex = GridPane.getColumnIndex(imageTuile.getParent());
+				this.tuileAction = this.deckPriveJoueur.get( gridPanColIndex - 2);
+			} else if(imageTuile.getAccessibleText().equals("tuileChef"))
+			{
+				ControleurPlateau.imageEnDragAndDropTuile = null;
+				ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
+				int gridPanRowIndex = GridPane.getRowIndex(imageTuile.getParent());
+				this.tuileAction = MainApp.getInstance().getClient().getJoueur().getDeckPublic().getDeckPublic().get(gridPanRowIndex);
+			}
 
 
-		Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
-		ClipboardContent content = new ClipboardContent();
-        content.putImage(imageTuile.getImage());
-        db.setContent(content);
-        event.consume();
+			Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
+			ClipboardContent content = new ClipboardContent();
+	        content.putImage(imageTuile.getImage());
+	        db.setContent(content);
+	        event.consume();
 		}
 	}
 
@@ -261,6 +261,7 @@ public class ControleurPlateau implements ChangeListener{
 
 						public void handle(MouseEvent event) {
 							try {
+								ImageView pane = (ImageView) event.getSource();
 								if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()) {
 									ImageView imageTuile = (ImageView) event.getSource();
 									imageTuile.setVisible(false);
@@ -274,6 +275,7 @@ public class ControleurPlateau implements ChangeListener{
 										ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
 									}
 									Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
+									positionChefRetire = new Position(GridPane.getRowIndex(pane.getParent()), GridPane.getColumnIndex(pane.getParent()));
 									ClipboardContent content = new ClipboardContent();
 									content.putImage(imageTuile.getImage());
 									db.setContent(content);
@@ -294,7 +296,7 @@ public class ControleurPlateau implements ChangeListener{
 							{
 								ImageView image = (ImageView) event.getSource();
 								Pane pane = (Pane) image.getParent();
-								pane.getChildren().remove(0);
+								//pane.getChildren().remove(0);
 							}
 						} });
 				}
@@ -353,7 +355,7 @@ public class ControleurPlateau implements ChangeListener{
 		{
 			ImageView image = (ImageView) event.getSource();
 			image.setVisible(true);
-		} else if(event.getTransferMode() == TransferMode.MOVE)
+		} else if(event.getTransferMode() == TransferMode.COPY)
 		{
 			ImageView image = (ImageView) event.getSource();
 			Pane pane = (Pane) image.getParent();
@@ -394,7 +396,7 @@ public class ControleurPlateau implements ChangeListener{
 		Pane target = (Pane)event.getSource();
 
 		if (db.hasImage()) {
-			ImageView image = (ImageView) target.getChildren().get(0);
+			ImageView image = new ImageView();
 			if(ControleurPlateau.imageEnDragAndDropChef != null)
 			{
 				image.setAccessibleText("tuileChef");
@@ -470,11 +472,20 @@ public class ControleurPlateau implements ChangeListener{
 			if((target.getAccessibleText().contains("Chef") && image.getAccessibleText().contains("Chef")))
 			{
 
-				Chef chefRetrait = (Chef) MainApp.getInstance().getClient().getPartie().getPlateauJeu().getPlateau()[GridPane.getRowIndex(target)][GridPane.getColumnIndex(target)];
+				Chef chefRetrait = (Chef) MainApp.getInstance().getClient().getPartie().getPlateauJeu().getPlateau()[this.positionChefRetire.getX()][this.positionChefRetire.getY()];
+				String url = getClass().getResource(mainApp.getClient().getJoueur().getDynastie().getNom().toLowerCase() + "_" + chefRetrait.getTypeChef().getFinUrlImage()).toExternalForm();
+				Image imageSrc = new Image(url);
+				image.setImage(imageSrc);
 				Action action = new RetirerChef(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur(), chefRetrait, GridPane.getRowIndex(target), this.positionChefRetire);
-				action.executer();
-				image.setVisible(true);
-				event.setDropCompleted(true);
+				if(!action.executer())
+				{
+					event.setDropCompleted(false);
+				} else {
+					target.getChildren().remove(0);
+					target.getChildren().add(image);
+					event.setDropCompleted(true);
+					MainApp.getInstance().getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
+				}
 			} else {
 				event.setDropCompleted(false);
 			}
@@ -866,27 +877,12 @@ for(int x = 0; x < 16; x++){
 			imageView.setImage(image);
 			imageView.setVisible(true);
 		}
-			/*ImageView imageView = (ImageView) pane.getChildren().get(0);
-			imageView.setVisible(false);*/
-			Platform.runLater(new Runnable(){
-
-				public void run() {
-					try
-					{
-						for(int i = mainApp.getClient().getJoueur().getDeckPublic().getDeckPublic().size(); i < deckPublic.getChildren().size(); i++)
-						{
-
-							Pane pane = (Pane) deckPublic.getChildren().get(i);
-							pane.getChildren().remove(0);
-						}
-					} catch(RemoteException e)
-					{
-						e.printStackTrace();
-					}
-				}
-
-			});
-
+		for(int i = mainApp.getClient().getJoueur().getDeckPublic().getDeckPublic().size() ; i < deckPublic.getChildren().size(); i++)
+		{
+			Pane pane = (Pane) deckPublic.getChildren().get(i);
+			ImageView imageView = (ImageView) pane.getChildren().get(0);
+			imageView.setVisible(false);
+		}
 	}
 	/**
 	 * Methode appelée par le client ou le serveur pour indiquer au controleur de rafraichir sa vue

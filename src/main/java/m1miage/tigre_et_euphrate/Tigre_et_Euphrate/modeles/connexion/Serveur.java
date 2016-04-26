@@ -269,8 +269,8 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 * Fonction qui permet d'envoyer des données du serveur aux clients
 	 */
 	public void send(Action action, int idClient) throws RemoteException {
-		action.setPartie(this.getPartie());
-		action.executer();
+		//action.setPartie(this.getPartie());
+		//action.executer();
 		for(int i = 0; i < this.clients.size(); i++)
 		{
 			if(idClient != this.clients.get(i).getIdObjetPartie())
