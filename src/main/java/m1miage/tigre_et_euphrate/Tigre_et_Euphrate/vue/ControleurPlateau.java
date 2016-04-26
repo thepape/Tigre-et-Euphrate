@@ -691,6 +691,13 @@ for(int x = 0; x < 16; x++){
 		
 	}
 	
+	/**
+	 * Fonction terminant un tour.
+	 * Elle vérifie si il reste des cartes dans la pioche
+	 * et si il reste des trésors sur le plateau
+	 * @param event
+	 * @throws RemoteException
+	 */
 	@FXML
 	private void finirTour(MouseEvent event) throws RemoteException
 	{
@@ -698,7 +705,7 @@ for(int x = 0; x < 16; x++){
 		System.out.println("Le joueur a finit son tour. " + mainApp.getClient().getNomJoueur() +" "+ mainApp.getClient().getIdObjetPartie());
 		finpartie = mainApp.getServeur().getPartie().piocheCartesManquantes(mainApp.getClient().getJoueur());
 		
-		if(!finpartie){
+		if(!finpartie && mainApp.getServeur().getPartie().getPlateauJeu().getNombreTresors() > 2){
 			mainApp.getServeur().getPartie().passerTour();
 		}else{
 			System.out.println("Compter le nombre de point LOL");
