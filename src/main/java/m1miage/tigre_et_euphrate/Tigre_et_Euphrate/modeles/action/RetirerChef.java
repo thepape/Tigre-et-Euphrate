@@ -19,6 +19,9 @@ public class RetirerChef extends Action {
 
 	private int indice;
 
+	/**
+	 * Position du chef
+	 */
 	private Position position;
 
 	/**
@@ -46,6 +49,7 @@ public class RetirerChef extends Action {
 		/*if(this.chef.getDynastie() != this.joueur.getDynastie())
 			return false;
 		this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = null;
+<<<<<<< HEAD
 		this.joueur.getDeckPublic().ajouter(this.chef);
 		return true;*/
 		this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = null;

@@ -62,7 +62,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	ArrayList<Dynastie> listeDynastieDispo = new ArrayList<Dynastie>();
 
 	private ObservableList<Dynastie> listeDynastie;
-	
+
 	private int increment = 0;
 
 
@@ -278,9 +278,9 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 				this.clients.get(i).send(action, idClient);
 			}
 		}
-		
+
 		for(InterfaceServeurClient c : this.clients){
-			c.notifierChangement("plateau");
+			c.notifierChangement("plateau-deckPrive-deckPublic");
 		}
 	}
 
@@ -478,14 +478,14 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	public void genererPartie(){
 		this.partie.initialiserPartie();
 	}
-	
+
 	public int getUniqueId() throws RemoteException{
 		this.increment++;
 		return this.increment;
 	}
 
-	
-	
+
+
 	/**********************************************************************************
 	 * 						FONCTIONS QUE LE SERVEUR N'UTILISE PAS
 	 **********************************************************************************/
@@ -536,7 +536,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	public void clearListeners() throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

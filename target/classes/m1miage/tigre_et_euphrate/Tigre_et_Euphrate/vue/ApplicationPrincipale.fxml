@@ -475,7 +475,7 @@
             </Pane>
             <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10">
                <children>
-                  <ImageView accessibleText="tuileCatastrophe" fitHeight="125.0" fitWidth="80.0" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
+                  <ImageView accessibleText="tuileCatastrophe" fitHeight="125.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
                      <image>
                         <Image url="@tuile_catastrophe.png" />
                      </image>
@@ -484,7 +484,7 @@
             </Pane>
             <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11">
                <children>
-                  <ImageView accessibleText="tuileCatastrophe" fitHeight="125.0" fitWidth="80.0" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
+                  <ImageView accessibleText="tuileCatastrophe" fitHeight="125.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
                      <image>
                         <Image url="@tuile_catastrophe.png" />
                      </image>
