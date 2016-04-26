@@ -1,5 +1,6 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
@@ -11,7 +12,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisat
  *
  */
 
-public class Territoire {
+public class Territoire implements Serializable{
 
 	/**
 	 * Boolean pour savoir si le territoire est un royaume
@@ -207,17 +208,17 @@ public class Territoire {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public boolean contientChef(Chef chef){
 		for(Chef t : this.chefs){
 			if(t.getId() == chef.getId()){
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -225,30 +226,30 @@ public class Territoire {
 		if(this.tuilesCivilisation.size() != t.tuilesCivilisation.size()){
 			return false;
 		}
-		
+
 		if(this.chefs.size() != t.chefs.size()){
 			return false;
 		}
-		
+
 		if(this.tuilesCivilisation.size() == 0){
 			return false;
 		}
-		
+
 		for(TuileCivilisation tuile : this.tuilesCivilisation){
 			if(!t.contientTuileCivilisation(tuile)){
 				return false;
 			}
 		}
-		
+
 		for(Chef chef : this.chefs){
 			if(!t.contientChef(chef)){
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	public boolean equals(Object o){
 		if(o instanceof Territoire){
 			return this.idTerritoire == ((Territoire) o).idTerritoire;

@@ -28,7 +28,7 @@ public class Plateau implements Serializable {
 	 * Liste des differents royaumes présent sur le plateau
 	 */
 	private ArrayList<Territoire> listeTerritoire;
-	
+
 	/**
 	 * Le nombre de trésors présents sur le plateau
 	 */
@@ -141,7 +141,7 @@ public class Plateau implements Serializable {
 	public static int getNombreTresors() {
 		return nombreTresors;
 	}
-	
+
 	/**
 	 * Fonction permettant de décrémenter le nombre de trésors
 	 */
@@ -174,8 +174,10 @@ public class Plateau implements Serializable {
 		if(pPos.getX() < 0 || pPos.getX() > 15 || pPos.getY() < 0 || pPos.getY() > 10){
 			return null;
 		}
-		
+
+
 		return this.plateau[pPos.getX()][pPos.getY()];
+
 	}
 
 	/**
@@ -237,7 +239,7 @@ public class Plateau implements Serializable {
 	public void supprRoyaume(Territoire proyaume){
 		this.listeTerritoire.remove(proyaume);
 	}
-	
+
 	public boolean placerTuile(TuileCivilisation pTuile, int x, int y){
 		return this.placerTuile(pTuile, new Position(x,y));
 	}
@@ -354,10 +356,10 @@ public class Plateau implements Serializable {
 	public ArrayList<TuileCivilisation> recupererListeTuileCivilisationAdjacente(Position position)
 	{
 		ArrayList<TuileCivilisation> listeAdjacente = new ArrayList<TuileCivilisation>();
-
-		if(position.getX() < 10 && position.getY() < 15 && position.getX() > -1 && position.getY() > -1)
+		if(position.getX() < 11 && position.getY() < 16 && position.getX() > -1 && position.getY() > -1)
 		{
-			if(position.getX() + 1 < 10 && this.getPlateau()[position.getX() + 1 ][position.getY()] instanceof TuileCivilisation)
+
+			if(position.getX() + 1 < 11 && this.getPlateau()[position.getX() + 1 ][position.getY()] instanceof TuileCivilisation)
 			{
 				TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX() + 1][position.getY()];
 				listeAdjacente.add(tuileAdjacente);
@@ -365,6 +367,7 @@ public class Plateau implements Serializable {
 
 			if(position.getX() - 1 > -1 && this.getPlateau()[position.getX() - 1][position.getY()] instanceof TuileCivilisation)
 			{
+				System.out.println("X - 1");
 				TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX() - 1][position.getY()];
 				listeAdjacente.add(tuileAdjacente);
 			}
@@ -377,20 +380,19 @@ public class Plateau implements Serializable {
 
 			if(position.getY() - 1 > -1 && this.getPlateau()[position.getX()][position.getY() - 1] instanceof TuileCivilisation)
 			{
-				System.out.println("Y - 1");
 				TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX()][position.getY() - 1];
 				listeAdjacente.add(tuileAdjacente);
 			}
 		}
 		return listeAdjacente;
 	}
-	
+
 	public void reconstruireTerritoires(Position pDepart){
 		Territoire tNord = new Territoire();
 		Territoire tEst = new Territoire();
 		Territoire tSud = new Territoire();
 		Territoire tOuest = new Territoire();
-		
+
 		//construction de 4 territoires en partant des 4 voisins
 		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX()-1, pDepart.getY()), tNord);
 		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX(), pDepart.getY()+1), tEst);
@@ -399,7 +401,7 @@ public class Plateau implements Serializable {
 		
 		//on élimine les territoires identiques pour ne garder que les territoires differents
 		ArrayList<Territoire> territoires = new ArrayList<Territoire>();
-		
+
 		if(tNord.getTuilesCivilisation().size() > 0)
 			territoires.add(tNord);
 		if(tEst.getTuilesCivilisation().size() > 0)
@@ -408,32 +410,32 @@ public class Plateau implements Serializable {
 			territoires.add(tSud);
 		if(tOuest.getTuilesCivilisation().size() > 0)
 			territoires.add(tOuest);
-		
+
 		for(int i = 0; i < territoires.size(); i ++){
 			for(int j = i+1;j < territoires.size(); j++){
 				Territoire t1 = territoires.get(i);
 				Territoire t2 = territoires.get(j);
 				boolean same = t1.comparerTuilesEtChef(t2);
-				
+
 				if(same){
 					territoires.remove(j);
 					j--;
 				}
 			}
 		}
-		
+
 		//on applique les nouveaux territoires aux tuiles
 		for(Territoire t : territoires){
 			Territoire oldTerritoire = t.getTuilesCivilisation().get(0).getTerritoire();
-			
+
 			for(TuileCivilisation tuile : t.getTuilesCivilisation()){
 				tuile.setTerritoire(t);
 			}
-			
+
 			for(Chef chef : t.getChefs()){
 				chef.setTerritoire(t);
 			}
-			
+
 			//on supprime l'ancien territoire on et on ajoute le nouveau
 			this.listeTerritoire.remove(oldTerritoire);
 			this.listeTerritoire.add(t);
@@ -452,36 +454,36 @@ public class Plateau implements Serializable {
 		
 		Placable pOuest = this.getPlacableAt(new Position(pDepart.getX(), pDepart.getY()-1));
 		this.gererTuileDansReconstruction(pOuest, territoire);
-		
+
 		//on ajoute finallement cette tuile
 		Placable centre = this.getPlacableAt(pDepart);
 		this.gererTuileDansReconstruction(centre, territoire);
 	}
-	
+
 	private void gererTuileDansReconstruction(Placable placable, Territoire territoire){
 		//on verifie que la case Nord est une tuile civ
 				if(placable != null && placable instanceof TuileCivilisation){
 					TuileCivilisation tuile = (TuileCivilisation) placable;
-					
+
 					//on verifie si elle est n'est pas deja dans la liste
 					if(!territoire.contientTuileCivilisation(tuile)){
 						territoire.addTuile(tuile);
-						
+
 						//appel recursif
 						this.reconstruireTerritoiresRecurs(tuile.getPosition(), territoire);
 					}
 				}else if(placable != null && placable instanceof Chef){
 					Chef chef = (Chef) placable;
-					
+
 					//on verifie si elle est n'est pas deja dans la liste
 					if(!territoire.contientChef(chef)){
 						territoire.addChefs(chef);
-						
+
 						//appel recursif
 						this.reconstruireTerritoiresRecurs(chef.getPosition(), territoire);
 					}
 				}
 	}
-	
-	
+
+
 }
