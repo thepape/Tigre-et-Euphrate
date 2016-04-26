@@ -175,7 +175,9 @@ public class Plateau implements Serializable {
 			return null;
 		}
 
-		return this.plateau[pPos.getY()][pPos.getX()];
+
+		return this.plateau[pPos.getX()][pPos.getY()];
+
 	}
 
 	/**
