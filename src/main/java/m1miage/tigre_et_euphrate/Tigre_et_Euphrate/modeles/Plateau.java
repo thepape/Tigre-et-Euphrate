@@ -318,6 +318,7 @@ public class Plateau implements Serializable {
 	public ArrayList<TuileCivilisation> recupererListeTuileCivilisationAdjacente(Position position)
 	{
 		ArrayList<TuileCivilisation> listeAdjacente = new ArrayList<TuileCivilisation>();
+
 		if(position.getX() < 10 && position.getY() < 15 && position.getX() > -1 && position.getY() > -1)
 		{
 			if(position.getX() + 1 < 10 && this.getPlateau()[position.getX() + 1 ][position.getY()] instanceof TuileCivilisation)
@@ -325,18 +326,22 @@ public class Plateau implements Serializable {
 				TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX() + 1][position.getY()];
 				listeAdjacente.add(tuileAdjacente);
 			}
+
 			if(position.getX() - 1 > -1 && this.getPlateau()[position.getX() - 1][position.getY()] instanceof TuileCivilisation)
 			{
 				TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX() - 1][position.getY()];
 				listeAdjacente.add(tuileAdjacente);
 			}
-			if(position.getY() + 1 < 15 && this.getPlateau()[position.getX()][position.getY() + 1] instanceof TuileCivilisation)
+
+			if(position.getY() + 1 < 16 && this.getPlateau()[position.getX()][position.getY() + 1] instanceof TuileCivilisation)
 			{
 				TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX()][position.getY() + 1];
 				listeAdjacente.add(tuileAdjacente);
 			}
+
 			if(position.getY() - 1 > -1 && this.getPlateau()[position.getX()][position.getY() - 1] instanceof TuileCivilisation)
 			{
+				System.out.println("Y - 1");
 				TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX()][position.getY() - 1];
 				listeAdjacente.add(tuileAdjacente);
 			}
