@@ -7,13 +7,11 @@ import java.util.ArrayList;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
-
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
-
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.InterfaceServeurClient;
-
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Serveur;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Monument;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCatastrophe;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
@@ -42,6 +40,8 @@ public class Partie implements Serializable {
 	 */
 	private ArrayList<Joueur> listeTours = new ArrayList<Joueur>();
 	
+	
+	
 	/**
 	 * Un joueur plutot beau gosse (ou pas)
 	 */
@@ -66,6 +66,8 @@ public class Partie implements Serializable {
 	 * boolean pour savoir si partie est lancee
 	 */
 	private boolean estLancee = false;
+	
+	private ArrayList<Monument> monuments = new ArrayList<Monument>();
 
 	/**
 	 * Constructeur vide d'une partie
@@ -252,6 +254,10 @@ public class Partie implements Serializable {
 	public boolean IsEstLancee(){
 		return this.estLancee;
 	}
+	
+	public ArrayList<Monument> getListeMonuments(){
+		return this.monuments;
+	}
 
 	/**
 	 * méthode d'initialisation de la partie une fois que tous les joueurs ont prets
@@ -274,14 +280,61 @@ public class Partie implements Serializable {
 
 		for(InterfaceServeurClient client : listeClients){
 			try {
-				joueurs.add(client.getJoueur());
+				Joueur joueur = client.getJoueur();
+				joueurs.add(joueur);
 				tours.add(client.getJoueur());
+				
+				//attribution des chefs
+				Chef roi = new Chef(TypeChef.Roi, joueur);
+				Chef marchand = new Chef(TypeChef.Marchand, joueur);
+				Chef fermier = new Chef(TypeChef.Fermier, joueur);
+				Chef pretre = new Chef(TypeChef.Pretre, joueur);
+
+				DeckPublic dpub = new DeckPublic();
+				DeckPrive dpriv = new DeckPrive();
+
+				joueur.setDeckPublic(dpub);
+				joueur.setDeckPrive(dpriv);
+
+
+				joueur.getDeckPublic().ajouter(roi);
+				joueur.getDeckPublic().ajouter(marchand);
+				joueur.getDeckPublic().ajouter(fermier);
+				joueur.getDeckPublic().ajouter(pretre);
+
+				//attribution de 2 cartes cata
+				joueur.getDeckPublic().ajouter(new TuileCatastrophe());
+				joueur.getDeckPublic().ajouter(new TuileCatastrophe());
+
+				//attribution au hasard de 6 tuile civilisation
+				for(int i = 0; i < 6; i++){
+					TuileCivilisation tuile = this.pioche.piocherTuile();
+					joueur.getDeckPrive().ajouter(tuile);
+				}
+				
+				//on renvoie le joueur au client
+				client.setJoueur(joueur);
+				joueurs.add(client.getJoueur());
+				this.listeTours.add(client.getJoueur());
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 
+		//construction des monuments
+		Monument mrb = new Monument("rouge","bleu");
+		Monument mrv = new Monument("rouge","vert");
+		Monument mrj = new Monument("rouge","jaune");
+		Monument mbv = new Monument("bleu","vert");
+		Monument mbj = new Monument("bleu","jaune");
+		Monument mvj = new Monument("vert","jaune");
+		this.monuments.add(mrb);
+		this.monuments.add(mrv);
+		this.monuments.add(mrj);
+		this.monuments.add(mbv);
+		this.monuments.add(mbj);
+		this.monuments.add(mvj);
 		//attribution en dur des dynasties
 		ArrayList<Dynastie> dynasties = new ArrayList<Dynastie>();
 		dynasties.add(Dynastie.Lanister);
@@ -326,7 +379,48 @@ public class Partie implements Serializable {
 		}
 
 		this.estLancee=true;
+		
 
+	}
+	
+	/**
+	 * Methode qui permet de retourner le joueur qui a le tour
+	 * @return
+	 */
+	public Joueur getJoueurTour(){
+		return this.listeTours.get(0);
+	}
+	
+	/**
+	 * Methode qui permet de passer le tour du joueur et de donner place au prochain
+	 */
+	public void passerTour(){
+		Joueur temp = this.getJoueurTour();
+		this.listeTours.remove(0);
+		this.listeTours.add(temp);
+		System.out.println("C'est le tour de "+this.listeTours.get(0).getNom());
+	}
+	
+	/**
+	 * methode permettant de piocher les cartes manquante a la fin du tour
+	 * @param j1
+	 * @return boolean true = fin de game
+	 */
+	public boolean piocheCartesManquantes(Joueur j1){
+		
+		int nbTuiles = j1.getDeckPrive().getDeckPrive().size();
+		if(nbTuiles != 6){
+			if(pioche.getTotalCarte() >= 6-nbTuiles ){
+				for(int j = 0; j<6-nbTuiles;j++){
+					TuileCivilisation tuile = this.pioche.piocherTuile();
+					j1.getDeckPrive().ajouter(tuile);
+					return false;
+				}
+			}else{
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

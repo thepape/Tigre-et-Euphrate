@@ -315,7 +315,7 @@ public class MainApp extends Application implements App {
 			this.client.clearListeners();
 			
 			this.replaceSceneContent("ApplicationPrincipale.fxml");
-			
+			/*
 			Monument m = new Monument("bleu","jaune");
 			
 			TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
@@ -336,7 +336,10 @@ public class MainApp extends Application implements App {
 
 			DeckPublic deckPublic = new DeckPublic();
 			Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
-
+			//on force un id de joueur unique en attendant
+			int id = this.serveur.getUniqueId();
+			joueur.setId(id);
+			
 			Chef chefFermier = new Chef(TypeChef.Fermier,joueur);
 			Chef chefRoi = new Chef(TypeChef.Roi,joueur);
 			Chef chefMarchand = new Chef(TypeChef.Marchand,joueur);
@@ -356,6 +359,12 @@ public class MainApp extends Application implements App {
 			Partie partie = new Partie();
 			partie.setPlateauJeu(new Plateau());
 			partie.setJoueur(joueur);
+			*/
+			
+			ControleurPlateau controleurPlateau = this.currentLoader.getController();
+			Partie partie = this.serveur.getPartie();
+			Joueur joueur = this.client.getJoueur();
+			
 			this.client.setPartieCourante(partie);
 			this.client.setJoueur(joueur);
 			controleurPlateau.setDeckPriveJoueur(this.client.getJoueur().getDeckPrive().getDeckPrive());
