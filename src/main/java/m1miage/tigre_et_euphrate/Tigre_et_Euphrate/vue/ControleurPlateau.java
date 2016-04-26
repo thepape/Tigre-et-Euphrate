@@ -702,15 +702,19 @@ for(int x = 0; x < 16; x++){
 	private void finirTour(MouseEvent event) throws RemoteException
 	{
 		boolean finpartie;
-		System.out.println("Le joueur a finit son tour. " + mainApp.getClient().getNomJoueur() +" "+ mainApp.getClient().getIdObjetPartie());
 		finpartie = mainApp.getServeur().getPartie().piocheCartesManquantes(mainApp.getClient().getJoueur());
 		
-		if(!finpartie && mainApp.getServeur().getPartie().getPlateauJeu().getNombreTresors() > 2){
-			mainApp.getServeur().getPartie().passerTour();
-		}else{
-			System.out.println("Compter le nombre de point LOL");
+		System.out.println(mainApp.getServeur().getPartie().getJoueurTour().getNom());
+		System.out.println(mainApp.getClient().getPartie().getJoueurTour().getNom());
+		
+		if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()){
+			if(!finpartie && mainApp.getServeur().getPartie().getPlateauJeu().getNombreTresors() > 2){
+				System.out.println("Le joueur a finit son tour. " + mainApp.getClient().getNomJoueur());
+				mainApp.getServeur().passerTour();
+			}else{
+				System.out.println("Compter le nombre de point LOL");
+			}
 		}
-	
 	}
 	
 	private Node getNode(int x, int y){
@@ -805,6 +809,16 @@ for(int x = 0; x < 16; x++){
 			if(vue.equals("plateau")){
 				//rafraichir le plateau
 				this.construirePlateau();
+			}
+			if(vue.equals("passertour")){
+				Joueur j1 = null;
+				try {
+					j1 = this.mainApp.getServeur().getPartie().getJoueurTour();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println("COUILLE"+j1.getNom());
 			}
 		}
 	}

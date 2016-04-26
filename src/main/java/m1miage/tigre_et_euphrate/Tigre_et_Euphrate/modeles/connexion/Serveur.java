@@ -385,7 +385,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 */
 	private void notifierClient(Object arg) throws RemoteException{
 		for(InterfaceServeurClient c : this.clients){
-			c.notifierChangement(null);
+			c.notifierChangement(arg);
 		}
 	}
 
@@ -456,6 +456,14 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	public void setListeDynastie(ArrayList<Dynastie> liste) throws RemoteException {
 		this.listeDynastieDispo = liste;
 
+	}
+	
+	public void passerTour() throws RemoteException{
+		this.partie.passerTour();
+		/*for(InterfaceServeurClient client: this.clients){
+			client.passerTour();
+		}*/
+		this.notifierClient("passertour");
 	}
 
 	/**

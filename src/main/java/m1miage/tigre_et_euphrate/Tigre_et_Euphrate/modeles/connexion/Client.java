@@ -364,6 +364,11 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		this.partieCourante = partie;
 
 	}
+	
+	public void passerTour() throws RemoteException{
+		this.partieCourante.passerTour();
+		System.out.println("CLIENT MIS A JOUR");
+	}
 
 
 	/********************************************************************************************************************
