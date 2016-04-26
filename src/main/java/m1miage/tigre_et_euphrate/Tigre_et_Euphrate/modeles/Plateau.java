@@ -28,6 +28,11 @@ public class Plateau implements Serializable {
 	 * Liste des differents royaumes présent sur le plateau
 	 */
 	private ArrayList<Territoire> listeTerritoire;
+	
+	/**
+	 * Le nombre de trésors présents sur le plateau
+	 */
+	private static int nombreTresors = 10;
 
 
 	/**
@@ -117,6 +122,29 @@ public class Plateau implements Serializable {
 		pplateau[9][5] = new TuileCivilisation(new Tresor());
 		pplateau[10][10] = new TuileCivilisation(new Tresor());
 
+	}
+
+	/**
+	 * Fonction retournant le nombre de trésors restants sur le plateau
+	 * @return le nombreTresors
+	 */
+	public static int getNombreTresors() {
+		return nombreTresors;
+	}
+	
+	/**
+	 * Fonction permettant de décrémenter le nombre de trésors
+	 */
+	public static void decrementerNombreTresors(){
+		if(nombreTresors > 0)
+			nombreTresors--;
+	}
+
+	/**
+	 * @param nombreTresors the nombreTresors to set
+	 */
+	public static void setNombreTresors(int nombreTresors) {
+		Plateau.nombreTresors = nombreTresors;
 	}
 
 	/**
