@@ -40,17 +40,17 @@ public class PlacerChef extends Action {
 		this.chef = pchef;
 		this.position = ppos;
 	}
-	
+
 	private void retirerChef(){
 		for(int x = 0; x < 16; x++){
 			for(int y = 0; y < 11;y++){
 				Placable placable = this.partie.getPlateauJeu().getPlateau()[y][x];
-				
+
 				if(placable != null && placable instanceof Chef){
 					Chef chefc = (Chef) placable;
 					boolean memeDynastie = chefc.getDynastie().getNom().equals(this.chef.getDynastie().getNom());
 					boolean memeCouleur = chefc.getTypeChef().getCouleur().equals(this.chef.getTypeChef().getCouleur());
-					
+
 					if(memeDynastie && memeCouleur){
 						this.partie.getPlateauJeu().getPlateau()[y][x] = null;
 						return;
@@ -71,14 +71,11 @@ public class PlacerChef extends Action {
 		ok =  this.partie.getPlateauJeu().placerChef(this.chef, this.position);
 
 		if(ok){
-<<<<<<< HEAD
-=======
 			System.out.println("Temple trouvé");
 			this.retirerChef();
-			
->>>>>>> master
+
 			this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
-			
+
 			this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
 		}
 
