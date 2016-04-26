@@ -126,6 +126,7 @@ public class ControleurPlateau implements ChangeListener{
 	 * @param mainApp
 	 */
 	public void setMainApp(MainApp mainApp) {
+		this.mainApp = mainApp;
 		// Création aléatoire du deck privé du joueur
 		/*for(int i = 0; i < 6; i++)
 		{
@@ -135,18 +136,20 @@ public class ControleurPlateau implements ChangeListener{
 		// Initialisation de l'interface du deck privé
 		try
 		{
-			for(int i = 0; i < mainApp.getClient().getJoueur().getDeckPrive().getDeckPrive().size(); i++)
+			/*for(int i = 0; i < mainApp.getClient().getJoueur().getDeckPrive().getDeckPrive().size(); i++)
 			{
 				Pane pane = (Pane) deckPrive.getChildren().get(i);
 				ImageView imageView = (ImageView) pane.getChildren().get(0);
 				String urlImage = getClass().getResource(mainApp.getClient().getJoueur().getDeckPrive().getDeckPrive().get(i).getType().getUrlImage()).toExternalForm();
 				Image image = new Image(urlImage);
 				imageView.setImage(image);
-			}
+			}*/
+
+			this.construireDeckPrivee();
 
 			// Initialisation de l'interface du deck public
 			//int size = mainApp.getClient().getJoueur().getDeckPublic().getDeckPublic().size();
-			int size = 4;
+			/*int size = 4;
 			for(int i = 0; i < size; i++)
 			{
 				Pane pane = (Pane) deckPublic.getChildren().get(i);
@@ -155,12 +158,13 @@ public class ControleurPlateau implements ChangeListener{
 				String urlImage = getClass().getResource(mainApp.getClient().getJoueur().getDynastie().getNom().toLowerCase() + "_" + chef.getTypeChef().getFinUrlImage()).toExternalForm();
 				Image image = new Image(urlImage);
 				imageView.setImage(image);
-			}
+			}*/
+			this.construireDeckPublic();
 		} catch(RemoteException e)
 		{
 			e.printStackTrace();
 		}
-		this.mainApp = mainApp;
+		//this.mainApp = mainApp;
 	}
 
 	/**
@@ -713,6 +717,7 @@ for(int x = 0; x < 16; x++){
 
 		if(!finpartie){
 			mainApp.getServeur().getPartie().passerTour();
+			this.construireDeckPrivee();
 		}else{
 			System.out.println("Compter le nombre de point LOL");
 		}
@@ -795,6 +800,52 @@ for(int x = 0; x < 16; x++){
 		}
 	}
 
+	private void construireDeckPrivee() throws RemoteException
+	{
+			for(int i = 0; i < mainApp.getClient().getJoueur().getDeckPrive().getDeckPrive().size(); i++)
+			{
+				Pane pane = (Pane) deckPrive.getChildren().get(i);
+				ImageView imageView = (ImageView) pane.getChildren().get(0);
+				String urlImage = getClass().getResource(mainApp.getClient().getJoueur().getDeckPrive().getDeckPrive().get(i).getType().getUrlImage()).toExternalForm();
+				Image image = new Image(urlImage);
+				imageView.setImage(image);
+			}
+	}
+
+	private void construireDeckPublic() throws RemoteException
+	{
+		for(int i = 0; i < mainApp.getClient().getJoueur().getDeckPublic().getDeckPublic().size(); i++)
+		{
+			Pane pane = (Pane) deckPublic.getChildren().get(i);
+			ImageView imageView = (ImageView) pane.getChildren().get(0);
+			Chef chef = (Chef) mainApp.getClient().getJoueur().getDeckPublic().getDeckPublic().get(i);
+			String urlImage = getClass().getResource(mainApp.getClient().getJoueur().getDynastie().getNom().toLowerCase() + "_" + chef.getTypeChef().getFinUrlImage()).toExternalForm();
+			Image image = new Image(urlImage);
+			imageView.setImage(image);
+			imageView.setVisible(true);
+		}
+			/*ImageView imageView = (ImageView) pane.getChildren().get(0);
+			imageView.setVisible(false);*/
+			Platform.runLater(new Runnable(){
+
+				public void run() {
+					try
+					{
+						for(int i = mainApp.getClient().getJoueur().getDeckPublic().getDeckPublic().size(); i < deckPublic.getChildren().size(); i++)
+						{
+
+							Pane pane = (Pane) deckPublic.getChildren().get(i);
+							pane.getChildren().remove(0);
+						}
+					} catch(RemoteException e)
+					{
+						e.printStackTrace();
+					}
+				}
+
+			});
+
+	}
 	/**
 	 * Methode appelée par le client ou le serveur pour indiquer au controleur de rafraichir sa vue
 	 */
@@ -803,14 +854,34 @@ for(int x = 0; x < 16; x++){
 		if(arg2 == null || !(arg2 instanceof String)){
 			return;
 		}
+
 		String[] vues = ((String) arg2).split("-");
 
 		for(int i = 0; i < vues.length; i++){
 			String vue = vues[i].toLowerCase();
 
+
 			if(vue.equals("plateau")){
 				//rafraichir le plateau
 				this.construirePlateau();
+			} else if(vue.equals("deckpublic"))
+			{
+				try
+				{
+					this.construireDeckPublic();
+				} catch(RemoteException e)
+				{
+					e.printStackTrace();
+				}
+			} else if(vue.equals("deckprive"))
+			{
+				try
+				{
+					this.construireDeckPrivee();
+				} catch(RemoteException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 	}

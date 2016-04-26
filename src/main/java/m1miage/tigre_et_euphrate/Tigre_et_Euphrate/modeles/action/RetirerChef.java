@@ -6,22 +6,22 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 
 /**
- * 
+ *
  * Classe hérite de la classe Action et permet de retirer un chef
  *
  */
 public class RetirerChef extends Action {
 
 	/**
-	 * Chef 
+	 * Chef
 	 */
 	private Chef chef;
-	
+
 	/**
 	 * Position du chef
 	 */
 	private Position position;
-	
+
 	/**
 	 * @param ppartie
 	 * @param pjoueur
@@ -46,7 +46,7 @@ public class RetirerChef extends Action {
 		if(this.chef.getDynastie() != this.joueur.getDynastie())
 			return false;
 		this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = null;
-		this.joueur.getDeckPublic().ajouter(this.chef);
+		this.joueur.getDeckPublic().ajouterChef(this.chef);
 		return true;
 	}
 }

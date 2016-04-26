@@ -36,10 +36,10 @@ public class TestPlacerChef {
 		Chef chefRoi = new Chef(TypeChef.Roi);
 		Chef chefMarchand = new Chef(TypeChef.Marchand);
 		Chef chefPretre = new Chef(TypeChef.Pretre);
-		deckpublic.ajouter(chefFermier);
-		deckpublic.ajouter(chefRoi);
-		deckpublic.ajouter(chefMarchand);
-		deckpublic.ajouter(chefPretre);
+		deckpublic.ajouterChef(chefFermier);
+		deckpublic.ajouterChef(chefRoi);
+		deckpublic.ajouterChef(chefMarchand);
+		deckpublic.ajouterChef(chefPretre);
 		this.joueur.setDeckPublic(deckpublic);
 	}
 
