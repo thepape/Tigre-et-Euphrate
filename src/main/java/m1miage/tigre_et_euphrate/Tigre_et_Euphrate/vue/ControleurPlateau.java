@@ -256,28 +256,6 @@ public class ControleurPlateau implements ChangeListener{
 					image.setOnDragDetected(new EventHandler<MouseEvent>(){
 
 						public void handle(MouseEvent event) {
-<<<<<<< HEAD
-							ImageView imageTuile = (ImageView) event.getSource();
-							imageTuile.setVisible(false);
-							if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
-							{
-								ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
-								ControleurPlateau.imageEnDragAndDropChef = null;
-							} else if(imageTuile.getAccessibleText().equals("tuileChef"))
-							{
-								ControleurPlateau.imageEnDragAndDropTuile = null;
-								ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
-							}
-							Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
-							ClipboardContent content = new ClipboardContent();
-					        content.putImage(imageTuile.getImage());
-					        db.setContent(content);
-					        ImageView imageView = (ImageView) event.getSource();
-					        Pane pane = (Pane) imageView.getParent();
-					        positionChefRetire = new Position(GridPane.getRowIndex(pane), GridPane.getColumnIndex(pane));
-					        event.consume();
-						} });
-=======
 							try {
 								if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()){
 								ImageView imageTuile = (ImageView) event.getSource();
@@ -301,7 +279,7 @@ public class ControleurPlateau implements ChangeListener{
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}} });
->>>>>>> master
+
 
 					image.setOnDragDone(new EventHandler<DragEvent>(){
 						public void handle(DragEvent event) {

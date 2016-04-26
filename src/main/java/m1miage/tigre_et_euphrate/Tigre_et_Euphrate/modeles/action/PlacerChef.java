@@ -71,12 +71,11 @@ public class PlacerChef extends Action {
 		ok =  this.partie.getPlateauJeu().placerChef(this.chef, this.position);
 
 		if(ok){
-<<<<<<< HEAD
-=======
+
+
 			System.out.println("Temple trouvé");
 			this.retirerChef();
 			
->>>>>>> master
 			this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
 			
 			this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
