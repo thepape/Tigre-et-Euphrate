@@ -1,8 +1,11 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action;
 
+import java.util.ArrayList;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Tuile;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
@@ -17,6 +20,11 @@ public class PlacerTuileCivilisation extends Action {
 	private Position position;
 
 	private TuileCivilisation tuile;
+
+	/**
+	 * boolean pour tester les conflits
+	 */
+	private boolean conflit;
 
 	/**
 	 * getter de la position
@@ -66,36 +74,43 @@ public class PlacerTuileCivilisation extends Action {
 	 */
 	public boolean executer(){
 		boolean ok = false;
-		
+
+		ArrayList<TuileCivilisation> listeAdjacente = this.partie.getPlateauJeu().recupererListeTuileCivilisationAdjacente(position);
+		conflit = false;
+		if(listeAdjacente.size() > 0)
+		{
+
+			for(int i = 0; i < listeAdjacente.size()-1; i++)
+			{
+				for(int j = 1; j < listeAdjacente.size(); j++)
+				{
+					if(!listeAdjacente.get(i).getTerritoire().equals(listeAdjacente.get(j).getTerritoire()))
+					{
+						//TODO conflits
+						conflit = true;
+					}
+				}
+			}
+
+			if(!conflit)
+			{
+				tuile.setTerritoire(listeAdjacente.get(0).getTerritoire());
+			}
+		}  else {
+			tuile.setTerritoire(new Territoire());
+		}
+
+
 		ok = this.partie.getPlateauJeu().placerTuile(this.tuile, this.position);
 
 		return ok;
-		
+	}
 
-		/*f((this.position.getX() > 11 || this.position.getY() > 16) || (this.position.getY() < 0 || this.position.getX() < 0))
-		{
-			return false;
-		}
+	public boolean isConflit() {
+		return conflit;
+	}
 
-		if(this.tuile.getType().equals(TypeTuileCivilisation.Ferme))
-		{
-			if(this.partie.getPlateauJeu().getPlateauTerrain()[this.position.getX()][this.position.getY()] == false
-					&& this.partie.getPlateauJeu().getPlateau()[this.getPosition().getX()][this.position.getY()] == null)
-			{
-				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.tuile;
-				ok = true;
-			} else {
-				ok = false;
-			}
-		} else {
-			if(this.partie.getPlateauJeu().getPlateau()[this.getPosition().getX()][this.position.getY()] != null)
-			{
-				ok = false;
-			} else {
-				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.tuile;
-				ok = true;
-			}
-		}
-		return ok;*/
+	public void setConflit(boolean conflit) {
+		this.conflit = conflit;
 	}
 }
