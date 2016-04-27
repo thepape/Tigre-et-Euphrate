@@ -125,6 +125,8 @@ public class ControleurPlateau implements ChangeListener{
 	 * Position antérieure au retrait du chef
 	 */
 	private Position positionChefRetire;
+	
+	private String actionTemporaire;
 
 	/**
 	 * getter de l'application
@@ -141,6 +143,7 @@ public class ControleurPlateau implements ChangeListener{
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 		this.texteAction.setEditable(false);
+		this.texteAction.setWrapText(true);
 		// Création aléatoire du deck privé du joueur
 		/*for(int i = 0; i < 6; i++)
 		{
@@ -904,51 +907,73 @@ for(int x = 0; x < 16; x++){
 			imageView.setVisible(false);
 		}
 	}
+	
+	public void afficherAction(){
+		this.texteAction.appendText("\n"+this.actionTemporaire);
+	}
+	
 	/**
 	 * Methode appelée par le client ou le serveur pour indiquer au controleur de rafraichir sa vue
 	 */
 	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
 		// TODO Auto-generated method stub
-		if(arg2 == null || !(arg2 instanceof String)){
+		if(arg2 == null || !(arg2 instanceof ArrayList)){
 			return;
 		}
+		
+		ArrayList<Object> params = (ArrayList<Object>) arg2;
 
-		String[] vues = ((String) arg2).split("-");
+		for(int i = 0; i < params.size(); i++){
+			
+			if(params.get(i) instanceof String){
 
-		for(int i = 0; i < vues.length; i++){
-			String vue = vues[i].toLowerCase();
+				String param = (String) params.get(i);
+				
+				if(param.equals("plateau")){
+					//rafraichir le plateau
+					this.construirePlateau();
+				} else if(param.equals("deckPublic"))
+				{
+					try
+					{
+						this.construireDeckPublic();
+					} catch(RemoteException e)
+					{
+						e.printStackTrace();
+					}
+				} else if(param.equals("deckPrive"))
+				{
+					try
+					{
+						this.construireDeckPrivee();
+					} catch(RemoteException e)
+					{
+						e.printStackTrace();
+					}
+				}
+				if(param.equals("passerTour")){
+					Joueur j1 = null;
+					try {
+						j1 = this.mainApp.getServeur().getPartie().getJoueurTour();
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println("COUILLE"+j1.getNom());
+				}
+				if(param.contains("message:")){
+					
+					this.actionTemporaire = param.split(":")[1];
+					System.out.println(param);
+					
+					Platform.runLater(new Runnable(){
 
-			if(vue.equals("plateau")){
-				//rafraichir le plateau
-				this.construirePlateau();
-			} else if(vue.equals("deckpublic"))
-			{
-				try
-				{
-					this.construireDeckPublic();
-				} catch(RemoteException e)
-				{
-					e.printStackTrace();
+						public void run() {
+							((ControleurPlateau)MainApp.getInstance().currentControler).afficherAction();
+						}
+						
+					});
 				}
-			} else if(vue.equals("deckprive"))
-			{
-				try
-				{
-					this.construireDeckPrivee();
-				} catch(RemoteException e)
-				{
-					e.printStackTrace();
-				}
-			}
-			if(vue.equals("passertour")){
-				Joueur j1 = null;
-				try {
-					j1 = this.mainApp.getServeur().getPartie().getJoueurTour();
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				System.out.println("COUILLE"+j1.getNom());
 			}
 		}
 	}

@@ -335,9 +335,9 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	/**
 	 * Fonction qui notifie le changement du modele à la vue
 	 */
-	public void notifierChangement(Object arg){
+	public void notifierChangement(ArrayList<Object> args){
 		for(ChangeListener listener : this.listeners){
-			listener.changed(this, null, arg);
+			listener.changed(this, null, args);
 		}
 	}
 

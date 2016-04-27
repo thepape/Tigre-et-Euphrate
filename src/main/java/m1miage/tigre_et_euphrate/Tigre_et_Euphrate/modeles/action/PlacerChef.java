@@ -118,5 +118,9 @@ public class PlacerChef extends Action {
 
 		return ok;
 	}
+	
+	public String toString(){
+		return this.joueur.getNom()+" a placé son chef "+this.chef.getTypeChef().getNom()+" à la ligne "+this.position.getX()+", colonne "+this.position.getY();
+	}
 
 }
