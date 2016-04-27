@@ -8,6 +8,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
@@ -65,6 +66,8 @@ public class PlacerChef extends Action {
 
 					if(memeDynastie && memeCouleur){
 						this.partie.getPlateauJeu().getPlateau()[y][x] = null;
+						Territoire t = this.chef.getTerritoire();
+						t.deletChef(chef);
 						return;
 					}
 				}
@@ -104,7 +107,7 @@ public class PlacerChef extends Action {
 				this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
 				for(int i = 0; i < this.chef.getTerritoire().getChefs().size() - 1;i++)
 				{
-					for(int j = 1; j < this.chef.getTerritoire().getChefs().size();j++)
+					for(int j = i; j < this.chef.getTerritoire().getChefs().size();j++)
 					{
 						if(this.chef.getTerritoire().getChefs().get(i).getTypeChef().equals(this.chef.getTerritoire().getChefs().get(j).getTypeChef()))
 						{
