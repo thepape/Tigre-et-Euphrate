@@ -126,7 +126,7 @@ public class ControleurPlateau implements ChangeListener{
 	 */
 	private Position positionChefRetire;
 	
-	private String actionTemporaire;
+	private String messageTemporaire;
 
 	/**
 	 * getter de l'application
@@ -908,9 +908,22 @@ for(int x = 0; x < 16; x++){
 		}
 	}
 	
-	public void afficherAction(){
-		this.texteAction.appendText("\n"+this.actionTemporaire);
+	public void afficherMessageJAVAFX(){
+		this.texteAction.appendText("\n"+this.messageTemporaire);
 	}
+	
+	public void afficherMessage(String message){
+		this.messageTemporaire = message;
+		Platform.runLater(new Runnable(){
+
+			public void run() {
+				((ControleurPlateau)MainApp.getInstance().currentControler).afficherMessageJAVAFX();
+			}
+			
+		});
+	}
+	
+	
 	
 	/**
 	 * Methode appelée par le client ou le serveur pour indiquer au controleur de rafraichir sa vue
@@ -955,6 +968,8 @@ for(int x = 0; x < 16; x++){
 					Joueur j1 = null;
 					try {
 						j1 = this.mainApp.getServeur().getPartie().getJoueurTour();
+						
+						this.afficherMessage("C'est au tour de "+j1.getNom());
 					} catch (RemoteException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -963,16 +978,9 @@ for(int x = 0; x < 16; x++){
 				}
 				if(param.contains("message:")){
 					
-					this.actionTemporaire = param.split(":")[1];
+					String message = param.split(":")[1];
+					this.afficherMessage(message);
 					System.out.println(param);
-					
-					Platform.runLater(new Runnable(){
-
-						public void run() {
-							((ControleurPlateau)MainApp.getInstance().currentControler).afficherAction();
-						}
-						
-					});
 				}
 			}
 		}

@@ -314,7 +314,7 @@ public class Partie implements Serializable {
 
 				//on renvoie le joueur au client
 				client.setJoueur(joueur);
-				joueurs.add(client.getJoueur());
+				//joueurs.add(client.getJoueur()); DEJA FAIT
 				this.listeTours.add(client.getJoueur());
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
