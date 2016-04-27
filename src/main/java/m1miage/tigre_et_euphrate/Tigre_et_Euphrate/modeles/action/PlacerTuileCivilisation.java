@@ -113,4 +113,8 @@ public class PlacerTuileCivilisation extends Action {
 	public void setConflit(boolean conflit) {
 		this.conflit = conflit;
 	}
+	
+	public String toString(){
+		return this.joueur.getNom()+" a placé une tuile "+this.tuile.getType().getNom()+" à la ligne "+this.position.getX()+", colonne "+this.position.getY();
+	}
 }

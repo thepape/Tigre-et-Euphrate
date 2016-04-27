@@ -51,4 +51,8 @@ public class RetirerChef extends Action {
 
 		return ok;
 	}
+	
+	public String toString(){
+		return this.joueur.getNom()+" a retiré son chef "+this.chef.getTypeChef().getNom();
+	}
 }

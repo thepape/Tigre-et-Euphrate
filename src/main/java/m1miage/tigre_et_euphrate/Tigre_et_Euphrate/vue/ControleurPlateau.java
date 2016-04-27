@@ -25,6 +25,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -38,6 +39,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
@@ -87,6 +89,11 @@ public class ControleurPlateau implements ChangeListener{
 	private Button boutonFinTour;
 
 	/**
+	 * Texte area qui affiche toutes les actions de la partie
+	 */
+	@FXML
+	private TextArea texteAction;
+	/**
 	 * Application principale
 	 */
 
@@ -118,6 +125,8 @@ public class ControleurPlateau implements ChangeListener{
 	 * Position antérieure au retrait du chef
 	 */
 	private Position positionChefRetire;
+	
+	private String messageTemporaire;
 
 	/**
 	 * getter de l'application
@@ -133,6 +142,8 @@ public class ControleurPlateau implements ChangeListener{
 	 */
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
+		this.texteAction.setEditable(false);
+		this.texteAction.setWrapText(true);
 		// Création aléatoire du deck privé du joueur
 		/*for(int i = 0; i < 6; i++)
 		{
@@ -570,7 +581,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 
 		for(int x = 0; x < 16; x++){
 			for(int y = 0; y < 11; y++){
-				Node child = this.getNode(x, y);
+				Node child = this.getNode(y, x);
 
 				if(child == null){
 					continue;
@@ -671,7 +682,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 
 		for(int x = 0; x < 16; x++){
 			for(int y = 0; y < 11; y++){
-				Node child = this.getNode(x, y);
+				Node child = this.getNode(y, x);
 
 				if(child == null){
 					continue;
@@ -724,7 +735,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 
 for(int x = 0; x < 16; x++){
 	for(int y = 0; y < 11; y++){
-		Node child = this.getNode(x, y);
+		Node child = this.getNode(y, x);
 
 		if(child == null){
 			continue;
@@ -761,7 +772,7 @@ for(int x = 0; x < 16; x++){
 
 	}
 
-	
+
 	/**
 	 * Fonction terminant un tour.
 	 * Elle vérifie si il reste des cartes dans la pioche
@@ -775,10 +786,10 @@ for(int x = 0; x < 16; x++){
 	{
 		boolean finpartie;
 		finpartie = mainApp.getServeur().getPartie().piocheCartesManquantes(mainApp.getClient().getJoueur());
-		
+
 		System.out.println(mainApp.getServeur().getPartie().getJoueurTour().getNom());
 		System.out.println(mainApp.getClient().getPartie().getJoueurTour().getNom());
-		
+
 		if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()){
 			if(!finpartie && mainApp.getServeur().getPartie().getPlateauJeu().getNombreTresors() > 2){
 				System.out.println("Le joueur a finit son tour. " + mainApp.getClient().getNomJoueur());
@@ -896,51 +907,81 @@ for(int x = 0; x < 16; x++){
 			imageView.setVisible(false);
 		}
 	}
+	
+	public void afficherMessageJAVAFX(){
+		this.texteAction.appendText("\n"+this.messageTemporaire);
+	}
+	
+	public void afficherMessage(String message){
+		this.messageTemporaire = message;
+		Platform.runLater(new Runnable(){
+
+			public void run() {
+				((ControleurPlateau)MainApp.getInstance().currentControler).afficherMessageJAVAFX();
+			}
+			
+		});
+	}
+	
+	
+	
 	/**
 	 * Methode appelée par le client ou le serveur pour indiquer au controleur de rafraichir sa vue
 	 */
 	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
 		// TODO Auto-generated method stub
-		if(arg2 == null || !(arg2 instanceof String)){
+		if(arg2 == null || !(arg2 instanceof ArrayList)){
 			return;
 		}
+		
+		ArrayList<Object> params = (ArrayList<Object>) arg2;
 
-		String[] vues = ((String) arg2).split("-");
+		for(int i = 0; i < params.size(); i++){
+			
+			if(params.get(i) instanceof String){
 
-		for(int i = 0; i < vues.length; i++){
-			String vue = vues[i].toLowerCase();
-
-			if(vue.equals("plateau")){
-				//rafraichir le plateau
-				this.construirePlateau();
-			} else if(vue.equals("deckpublic"))
-			{
-				try
+				String param = (String) params.get(i);
+				
+				if(param.equals("plateau")){
+					//rafraichir le plateau
+					this.construirePlateau();
+				} else if(param.equals("deckPublic"))
 				{
-					this.construireDeckPublic();
-				} catch(RemoteException e)
+					try
+					{
+						this.construireDeckPublic();
+					} catch(RemoteException e)
+					{
+						e.printStackTrace();
+					}
+				} else if(param.equals("deckPrive"))
 				{
-					e.printStackTrace();
+					try
+					{
+						this.construireDeckPrivee();
+					} catch(RemoteException e)
+					{
+						e.printStackTrace();
+					}
 				}
-			} else if(vue.equals("deckprive"))
-			{
-				try
-				{
-					this.construireDeckPrivee();
-				} catch(RemoteException e)
-				{
-					e.printStackTrace();
+				if(param.equals("passerTour")){
+					Joueur j1 = null;
+					try {
+						j1 = this.mainApp.getServeur().getPartie().getJoueurTour();
+						
+						this.afficherMessage("C'est au tour de "+j1.getNom());
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println("COUILLE"+j1.getNom());
 				}
-			}
-			if(vue.equals("passertour")){
-				Joueur j1 = null;
-				try {
-					j1 = this.mainApp.getServeur().getPartie().getJoueurTour();
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if(param.contains("message:")){
+					
+					String message = param.split(":")[1];
+					this.afficherMessage(message);
+					System.out.println(param);
 				}
-				System.out.println("COUILLE"+j1.getNom());
 			}
 		}
 	}

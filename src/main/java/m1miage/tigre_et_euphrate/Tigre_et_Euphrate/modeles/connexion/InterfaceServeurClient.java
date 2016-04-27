@@ -33,7 +33,7 @@ public interface InterfaceServeurClient extends Remote {
 
 	public boolean deconnecter() throws RemoteException;
 
-	public void notifierChangement(Object arg) throws RemoteException;
+	public void notifierChangement(ArrayList<Object> args) throws RemoteException;
 	public void addListener(ChangeListener listener) throws RemoteException;
 	public void removeListener(ChangeListener listener) throws RemoteException;
 	public void clearListeners() throws RemoteException;
