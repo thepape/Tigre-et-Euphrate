@@ -77,6 +77,9 @@ public class PlacerTuileCatastrophe extends Action {
 		{
 			ok = this.VerifierCase();
 			ok = this.VerifierTeritoire();
+			if(ok){
+				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()]=this.tuileCatastrophe;
+			}
 		}
 		return ok;
 	}
