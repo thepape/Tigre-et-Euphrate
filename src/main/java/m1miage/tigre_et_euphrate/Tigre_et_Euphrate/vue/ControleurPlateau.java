@@ -25,6 +25,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -38,6 +39,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
@@ -87,6 +89,11 @@ public class ControleurPlateau implements ChangeListener{
 	private Button boutonFinTour;
 
 	/**
+	 * Texte area qui affiche toutes les actions de la partie
+	 */
+	@FXML
+	private TextArea texteAction;
+	/**
 	 * Application principale
 	 */
 
@@ -133,6 +140,7 @@ public class ControleurPlateau implements ChangeListener{
 	 */
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
+		this.texteAction.setEditable(false);
 		// Création aléatoire du deck privé du joueur
 		/*for(int i = 0; i < 6; i++)
 		{
@@ -570,7 +578,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 
 		for(int x = 0; x < 16; x++){
 			for(int y = 0; y < 11; y++){
-				Node child = this.getNode(x, y);
+				Node child = this.getNode(y, x);
 
 				if(child == null){
 					continue;
@@ -671,7 +679,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 
 		for(int x = 0; x < 16; x++){
 			for(int y = 0; y < 11; y++){
-				Node child = this.getNode(x, y);
+				Node child = this.getNode(y, x);
 
 				if(child == null){
 					continue;
@@ -724,7 +732,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 
 for(int x = 0; x < 16; x++){
 	for(int y = 0; y < 11; y++){
-		Node child = this.getNode(x, y);
+		Node child = this.getNode(y, x);
 
 		if(child == null){
 			continue;
@@ -761,7 +769,7 @@ for(int x = 0; x < 16; x++){
 
 	}
 
-	
+
 	/**
 	 * Fonction terminant un tour.
 	 * Elle vérifie si il reste des cartes dans la pioche
@@ -775,10 +783,10 @@ for(int x = 0; x < 16; x++){
 	{
 		boolean finpartie;
 		finpartie = mainApp.getServeur().getPartie().piocheCartesManquantes(mainApp.getClient().getJoueur());
-		
+
 		System.out.println(mainApp.getServeur().getPartie().getJoueurTour().getNom());
 		System.out.println(mainApp.getClient().getPartie().getJoueurTour().getNom());
-		
+
 		if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()){
 			if(!finpartie && mainApp.getServeur().getPartie().getPlateauJeu().getNombreTresors() > 2){
 				System.out.println("Le joueur a finit son tour. " + mainApp.getClient().getNomJoueur());
