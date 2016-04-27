@@ -53,6 +53,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCiv
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.RetirerChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Client;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.*;
 
@@ -119,6 +120,8 @@ public class ControleurPlateau implements ChangeListener{
 	 */
 	private Placable tuileAction;
 
+	private boolean conflitInterne;
+	
 	private Partie partie;
 
 	/**
@@ -333,6 +336,10 @@ public class ControleurPlateau implements ChangeListener{
 								mainApp.getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
 								target.getChildren().add(image);
 								event.setDropCompleted(true);
+								
+								if(action instanceof PlacerChef && ((PlacerChef) action).isConflit()){
+									this.conflitInterne = true;
+								}
 
 								//refresh du plateau du joueur qui a droppé
 								//this.construirePlateau();
@@ -784,19 +791,28 @@ for(int x = 0; x < 16; x++){
 	@FXML
 	private void finirTour(MouseEvent event) throws RemoteException
 	{
+		
 		boolean finpartie;
-		finpartie = mainApp.getServeur().getPartie().piocheCartesManquantes(mainApp.getClient().getJoueur());
-
-		System.out.println(mainApp.getServeur().getPartie().getJoueurTour().getNom());
-		System.out.println(mainApp.getClient().getPartie().getJoueurTour().getNom());
-
-		if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()){
-			if(!finpartie && mainApp.getServeur().getPartie().getPlateauJeu().getNombreTresors() > 2){
-				System.out.println("Le joueur a finit son tour. " + mainApp.getClient().getNomJoueur());
-				mainApp.getServeur().passerTour();
-			}else{
-				System.out.println("Compter le nombre de point LOL");
+		//On teste si l'action placerChef nous a retourner un conflit ou non
+		if(!this.conflitInterne){
+			finpartie = mainApp.getServeur().getPartie().piocheCartesManquantes(mainApp.getClient().getJoueur());
+	
+			System.out.println(mainApp.getServeur().getPartie().getJoueurTour().getNom());
+			System.out.println(mainApp.getClient().getPartie().getJoueurTour().getNom());
+	
+			//On test si la personne qui a cliquer sur passer tour est la même qui a le tour de jeu
+			if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()){
+				//On teste si il y a une condition de fin de partie avant de donner la main
+				if(!finpartie && mainApp.getServeur().getPartie().getPlateauJeu().getNombreTresors() > 2){
+					System.out.println("Le joueur a finit son tour. " + mainApp.getClient().getNomJoueur());
+					mainApp.getServeur().passerTour();
+				}else{
+					System.out.println("Compter le nombre de point LOL");
+				}
 			}
+			//Si le chef placé est en conflit (interne)
+		}else{
+			Conflits interne = new Conflits();
 		}
 	}
 

@@ -9,6 +9,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
@@ -33,6 +34,7 @@ public class PlacerChef extends Action {
 	 * Booleen qui permet de tester les conflit
 	 */
 	private boolean conflit = false;
+	
 	public boolean isConflit() {
 		return conflit;
 	}
@@ -108,7 +110,7 @@ public class PlacerChef extends Action {
 					{
 						if(this.chef.getTerritoire().getChefs().get(i).getTypeChef().equals(this.chef.getTerritoire().getChefs().get(j).getTypeChef()))
 						{
-							//TODO conflit
+							//TODO conflit						
 							conflit = true;
 						}
 					}

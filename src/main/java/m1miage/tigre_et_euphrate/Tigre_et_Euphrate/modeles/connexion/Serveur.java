@@ -483,6 +483,10 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		params.add("passerTour");
 		this.notifierClient(params);
 	}
+	
+	public void passerTourConflit() throws RemoteException{
+		this.partie.passerTourConflit();
+	}
 
 	/**
 	 * Fonction qui vérifie que tous les joueurs sont prêts
