@@ -41,7 +41,7 @@ public class PlacerTuileCatastrophe extends Action {
 		int x = this.position.getX();
 		int y = this.position.getY();
 		//getClass().isInstance(TuileCivilisation.class)
-		//|| this.partie.getPlateauJeu().getPlateau()[x][y].equals(TuileCivilisation.class)
+		//TODO tester avec instanceof
 		if(this.partie.getPlateauJeu().getPlateau()[x][y]==null ||
 				this.partie.getPlateauJeu().getPlateau()[x][y].equals(new TuileCivilisation(TypeTuileCivilisation.Marché)) || 
 				this.partie.getPlateauJeu().getPlateau()[x][y].equals(new TuileCivilisation(TypeTuileCivilisation.Ferme)) || 
@@ -71,7 +71,6 @@ public class PlacerTuileCatastrophe extends Action {
 		if((this.position.getX() > 11 || this.position.getY() > 16) || (this.position.getY() < 0 || this.position.getX() < 0))
 		{
 			ok = false;
-			System.out.println("Hors Plateau !!");
 		}
 		else
 		{
