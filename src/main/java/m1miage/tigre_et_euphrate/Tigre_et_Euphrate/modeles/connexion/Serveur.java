@@ -378,6 +378,8 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		params.add("message:Le joueur "+gagnant.getJoueur().getNom()+" a gagné le conflit !");
 		this.notifierClient(params);
 		
+		this.partie.getConflits().remove(conflit);
+		
 		return gagnant;
 	}
 

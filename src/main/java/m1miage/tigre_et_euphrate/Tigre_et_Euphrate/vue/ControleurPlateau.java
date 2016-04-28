@@ -252,7 +252,7 @@ public class ControleurPlateau implements ChangeListener{
 		else{
 			//sinon on l'ajoute en renfort et on la met en "surbrillance"
 			this.tuilesRenfort.add(renfort);
-			imageTuile.setFitHeight(140);
+			imageTuile.setFitHeight(70);
 			imageTuile.setFitWidth(70);
 			imageTuile.setTranslateX(20);
 			imageTuile.setTranslateY(30);
@@ -309,7 +309,7 @@ public class ControleurPlateau implements ChangeListener{
 		//si le client clique sur une tuile qui est deja en echange, on la retire
 		if(this.listeTuileChange.contains(echange)){
 			this.listeTuileChange.remove(echange);
-			imageTuile.setFitHeight(150);
+			imageTuile.setFitHeight(80);
 			imageTuile.setFitWidth(80);
 			imageTuile.setTranslateX(15);
 			imageTuile.setTranslateY(25);
@@ -324,7 +324,7 @@ public class ControleurPlateau implements ChangeListener{
 		else{
 			//sinon on l'ajoute en renfort et on la met en "surbrillance"
 			this.listeTuileChange.add(echange);
-			imageTuile.setFitHeight(140);
+			imageTuile.setFitHeight(70);
 			imageTuile.setFitWidth(70);
 			imageTuile.setTranslateX(20);
 			imageTuile.setTranslateY(30);
@@ -363,6 +363,11 @@ public class ControleurPlateau implements ChangeListener{
 		
 		//on verifie si le client est en conflit
 		if(this.conflitInterne){
+			return;
+		}
+		
+		//verifie si le client a déjà fait 2 actions où si il est en echange de tuile
+		if((listeActionTour.size() >= 2) || echangeCarte){
 			return;
 		}
 		
