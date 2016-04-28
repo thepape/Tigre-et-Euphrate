@@ -377,9 +377,11 @@ public class ControleurSalleAttente implements ChangeListener {
 		Platform.runLater(new Runnable(){
 
 			public void run() {
-				
+				if(MainApp.getInstance().currentControler instanceof ControleurSalleAttente){
 					((ControleurSalleAttente) MainApp.getInstance().currentControler).majListeJoueurJAVAFX();
-				
+					
+				}
+					
 			}
 			
 		});
@@ -402,8 +404,10 @@ public class ControleurSalleAttente implements ChangeListener {
 		Platform.runLater(new Runnable(){
 
 			public void run() {
-				
-					((ControleurSalleAttente) MainApp.getInstance().currentControler).majListeDynastiesJAVAFX();;
+				if(MainApp.getInstance().currentControler instanceof ControleurSalleAttente){
+					((ControleurSalleAttente) MainApp.getInstance().currentControler).majListeDynastiesJAVAFX();
+				}
+					
 				
 			}
 			

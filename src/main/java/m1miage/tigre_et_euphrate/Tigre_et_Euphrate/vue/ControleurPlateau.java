@@ -237,7 +237,7 @@ public class ControleurPlateau implements ChangeListener{
 		//si le client clique sur une tuile qui est deja en renfort, on la retire
 		if(this.tuilesRenfort.contains(renfort)){
 			this.tuilesRenfort.remove(renfort);
-			imageTuile.setFitHeight(150);
+			imageTuile.setFitHeight(80);
 			imageTuile.setFitWidth(80);
 			imageTuile.setTranslateX(15);
 			imageTuile.setTranslateY(25);
@@ -410,7 +410,7 @@ public class ControleurPlateau implements ChangeListener{
 					ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
 					ControleurPlateau.imageEnDragAndDropChef = null;
 					int gridPanColIndex = GridPane.getColumnIndex(imageTuile.getParent());
-					this.tuileAction = this.deckPriveJoueur.get( gridPanColIndex - 2);
+					this.tuileAction = ((Client) mainApp.getInstance().getClient()).getJoueur().getDeckPrive().getDeckPrive().get(gridPanColIndex-2);
 				} else if(imageTuile.getAccessibleText().equals("tuileChef"))
 				{
 					ControleurPlateau.imageEnDragAndDropTuile = null;
@@ -578,12 +578,14 @@ public class ControleurPlateau implements ChangeListener{
 			if(ControleurPlateau.imageEnDragAndDropTuile != null)
 			{
 				this.indice = GridPane.getColumnIndex(pane) - 2;
-				this.supprimerTuileDeckPrive(this.indice);
+				//this.supprimerTuileDeckPrive(this.indice);
 			} else if(ControleurPlateau.imageEnDragAndDropChef != null)
 			{
 				this.indice = GridPane.getRowIndex(pane);
 			}
 		}
+		
+		
 	}
 
 	@FXML
@@ -1028,7 +1030,11 @@ for(int x = 0; x < 16; x++){
 		boolean finpartie;
 		//On teste si l'action placerChef nous a retourner un conflit ou non
 		if(!this.conflitInterne){
-			finpartie = mainApp.getServeur().getPartie().piocheCartesManquantes(mainApp.getClient().getJoueur());
+			//finpartie = mainApp.getServeur().getPartie().piocheCartesManquantes(mainApp.getClient().getJoueur());
+			finpartie = mainApp.getServeur().piocherCartesManquantes(mainApp.getClient().getJoueur());
+			
+			//mise a jour du deck privé
+			this.construireDeckPrivee();
 	
 			System.out.println(mainApp.getServeur().getPartie().getJoueurTour().getNom());
 			System.out.println(mainApp.getClient().getPartie().getJoueurTour().getNom());
