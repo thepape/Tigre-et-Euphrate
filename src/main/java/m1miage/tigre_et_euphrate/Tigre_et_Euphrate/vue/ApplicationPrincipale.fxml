@@ -508,6 +508,7 @@
          <children>
             <TextArea fx:id="texteAction" prefHeight="657.0" prefWidth="356.0" GridPane.rowIndex="1" />
             <Button fx:id="boutonFinTour" mnemonicParsing="false" onMouseClicked="#finirTour" text="Test Fin de tour" />
+            <Button mnemonicParsing="false" text="Echanger ses tuiles" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </left>
