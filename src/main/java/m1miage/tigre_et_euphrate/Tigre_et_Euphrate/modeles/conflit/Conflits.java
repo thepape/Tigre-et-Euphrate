@@ -365,11 +365,11 @@ public class Conflits implements Serializable{
 		}
 	}
 
-	public boolean ajoutRenfort(ArrayList<TuileRenfort> listeTuileRenfort, TuileRenfort tuileRenfort)
+	public boolean ajoutRenfort(ArrayList<TuileCivilisation> listeTuileRenfort, TuileCivilisation tuileRenfort)
 	{
 		if(this.typeConflit.equals("E"))
 		{
-			if(tuileRenfort.getTuileCorrespondante().getType().getCouleur().equals(this.chefAttaquant.getTypeChef().getCouleur()))
+			if(tuileRenfort.getType().getCouleur().equals(this.chefAttaquant.getTypeChef().getCouleur()))
 			{
 				listeTuileRenfort.add(tuileRenfort);
 				return true;
@@ -378,7 +378,7 @@ public class Conflits implements Serializable{
 			}
 		} else
 		{
-			if(tuileRenfort.getTuileCorrespondante().getType().equals(TypeTuileCivilisation.Temple))
+			if(tuileRenfort.getType().equals(TypeTuileCivilisation.Temple))
 			{
 				listeTuileRenfort.add(tuileRenfort);
 				return true;
