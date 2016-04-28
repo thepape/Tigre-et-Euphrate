@@ -75,6 +75,7 @@ public class TestEncodeurJSON {
 		joueurs.add(joueur1);
 		joueurs.add(joueur2);
 		this.partie = new Partie(new Plateau(), joueurs, new Pioche());
+		this.partie.setListeTours(joueurs);
 	}
 
 	@Test
@@ -87,11 +88,11 @@ public class TestEncodeurJSON {
 
 	@Test
 	public void testEncodeToPartie() throws IOException {
-		File file = new File("partieEnCours");
+		File file = new File("partieEnCours.json");
 
 		EncoderJSON e = new EncoderJSON(this.partie);
-		this.partie = e.convertToPartie(file);
-
+		Partie partieSauv = e.convertToPartie(file);
+		assertEquals(this.partie.getListeJoueurs().get(0).getNom(), partieSauv.getListeJoueurs().get(0).getNom());
 	}
 
 }

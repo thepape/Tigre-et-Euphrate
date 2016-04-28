@@ -42,6 +42,13 @@ public class TuileCivilisation extends Tuile {
 	//private Territoire territoire;
 
 	/**
+	 * Constructeur vide pour JSON
+	 */
+	public TuileCivilisation() {
+
+	}
+
+	/**
 	 * Constructeur d'une tuile civilisation.
 	 * @param pType type de la tuile civilisation.
 	 */

@@ -45,6 +45,13 @@ public class TypeChef implements Serializable{
 	 * fin de l'url de l'image de la couleur du chef
 	 */
 	private String finUrlImage;
+
+	/**
+	 * Constructeur vide pour JSON
+	 */
+	private TypeChef() {
+
+	}
 	/**
 	 * Constructeur d'un type de chef.
 	 * @param pCouleur nom de la couleur du type de chef.
