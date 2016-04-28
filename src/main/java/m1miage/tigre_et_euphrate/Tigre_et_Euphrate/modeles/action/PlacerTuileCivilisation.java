@@ -74,6 +74,10 @@ public class PlacerTuileCivilisation extends Action {
 	 */
 	public boolean executer(){
 		boolean ok = false;
+		
+		if(!this.verifier()){
+			return false;
+		}
 
 		ArrayList<TuileCivilisation> listeAdjacente = this.partie.getPlateauJeu().recupererListeTuileCivilisationAdjacente(position);
 		conflit = false;
@@ -125,5 +129,11 @@ public class PlacerTuileCivilisation extends Action {
 
 	public String toString(){
 		return this.joueur.getNom()+" a placé une tuile "+this.tuile.getType().getNom()+" à la ligne "+this.position.getX()+", colonne "+this.position.getY();
+	}
+
+	@Override
+	public boolean verifier() {
+		// TODO Auto-generated method stub
+		return this.partie.getPlateauJeu().verifierPlacerTuile(tuile, position);
 	}
 }

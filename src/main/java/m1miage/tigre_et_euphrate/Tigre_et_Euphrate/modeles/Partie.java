@@ -5,6 +5,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
@@ -40,7 +42,10 @@ public class Partie implements Serializable {
 	 */
 	private ArrayList<Joueur> listeTours = new ArrayList<Joueur>();
 
-
+	/**
+	 * La liste des tours des conflits
+	 */
+	private ArrayList<Joueur> listeToursConflits = new ArrayList<Joueur>();
 
 	/**
 	 * Un joueur plutot beau gosse (ou pas)
@@ -110,10 +115,21 @@ public class Partie implements Serializable {
 	 * getter de la liste des parties de la game (désolé anglais)
 	 * @return
 	 */
-	public ArrayList<Joueur> getListeJoueurs() {
-		return this.listeJoueurs;
+	public ArrayList<Joueur> getListeTours() {
+		return listeTours;
 	}
 
+	public ArrayList<Joueur> getListeJoueurs() {
+		return listeJoueurs;
+	}
+
+	public void setListeJoueurs(ArrayList<Joueur> listeJoueurs) {
+		this.listeJoueurs = listeJoueurs;
+	}
+
+	public void setListeTours(ArrayList<Joueur> listeTours) {
+		this.listeTours = listeTours;
+	}
 
 	/**
 	 * @return la pioche
@@ -132,6 +148,7 @@ public class Partie implements Serializable {
 	/**
 	 * getter du nom de l'objet joueur de la partie
 	 */
+	@JsonIgnore
 	public String getName()  {
 		return joueur.getNom();
 	}
@@ -139,6 +156,7 @@ public class Partie implements Serializable {
 	/**
 	 * getter du nom de joueur de la partie
 	 */
+	@JsonIgnore
 	public String getNomJoueur()  {
 		return this.nomJoueur;
 	}
@@ -150,6 +168,7 @@ public class Partie implements Serializable {
 	/**
 	 * getter du nombre de point tresor du joueur de la partie
 	 */
+	@JsonIgnore
 	public int getPointTresor()  {
 		return joueur.getPointTresor();
 	}
@@ -157,6 +176,7 @@ public class Partie implements Serializable {
 	/**
 	 * getter du point victoire du joueur de la partie
 	 */
+	@JsonIgnore
 	public int getPointVictoire()  {
 		return joueur.getPointVictoire();
 	}
@@ -164,6 +184,7 @@ public class Partie implements Serializable {
 	/**
 	 * getter du deck public du joueur de la partie
 	 */
+	@JsonIgnore
 	public DeckPublic getDeckPublic()  {
 		return joueur.getDeckPublic();
 	}
@@ -193,6 +214,7 @@ public class Partie implements Serializable {
 	/**
 	 * getter du joueur
 	 */
+	@JsonIgnore
 	public Joueur getJoueur()
 	{
 		return this.joueur;
@@ -205,10 +227,12 @@ public class Partie implements Serializable {
 		this.joueur = joueur;
 	}
 
+	@JsonIgnore
 	public DeckPrive getDeckPrive()  {
 		return this.joueur.getDeckPrive();
 	}
 
+	@JsonIgnore
 	public Dynastie getDynastie()  {
 		return this.joueur.getDynastie();
 	}
@@ -387,6 +411,7 @@ public class Partie implements Serializable {
 	 * Methode qui permet de retourner le joueur qui a le tour
 	 * @return
 	 */
+	@JsonIgnore
 	public Joueur getJoueurTour(){
 		return this.listeTours.get(0);
 	}
@@ -399,6 +424,20 @@ public class Partie implements Serializable {
 		this.listeTours.remove(0);
 		this.listeTours.add(temp);
 		System.out.println("C'est le tour de "+this.listeTours.get(0).getNom());
+	}
+	
+	/**
+	 * Methode qui va faire passer le tour du joueur en conflit
+	 */
+	public void passerTourConflit(){
+		this.listeToursConflits.remove(0);
+	}
+	
+	/**
+	 * Methode permettant d'ajouter un joueur dans la liste des conflits
+	 */
+	public void addJoueurConflit(Joueur j){
+		this.listeToursConflits.add(j);
 	}
 
 	/**
@@ -423,4 +462,29 @@ public class Partie implements Serializable {
 		return false;
 	}
 
+	public ArrayList<Joueur> getListeToursConflits(){
+		return this.listeToursConflits;
+	}
+	
+	public void setListeToursConflits(ArrayList<Joueur> joueurs){
+		this.listeToursConflits = joueurs;
+	}
+	
+	public boolean ajouterTourConflit(Joueur joueur){
+		if(this.listeToursConflits.contains(joueur)){
+			return false;
+		}
+		
+		this.listeToursConflits.add(joueur);
+		return true;
+	}
+	
+	public boolean retirerTourConflit(Joueur joueur){
+		if(!this.listeToursConflits.contains(joueur)){
+			return false;
+		}
+		
+		this.listeToursConflits.remove(joueur);
+		return true;
+	}
 }
