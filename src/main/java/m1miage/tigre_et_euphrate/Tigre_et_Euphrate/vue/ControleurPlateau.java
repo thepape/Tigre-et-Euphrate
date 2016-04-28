@@ -319,28 +319,30 @@ public class ControleurPlateau implements ChangeListener{
 	private void dragTuileDecks(MouseEvent event) throws RemoteException
 	{
 		if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()){
-			ImageView imageTuile = (ImageView) event.getSource();
-			imageTuile.setVisible(false);
-			if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
-			{
-				ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
-				ControleurPlateau.imageEnDragAndDropChef = null;
-				int gridPanColIndex = GridPane.getColumnIndex(imageTuile.getParent());
-				this.tuileAction = this.deckPriveJoueur.get( gridPanColIndex - 2);
-			} else if(imageTuile.getAccessibleText().equals("tuileChef"))
-			{
-				ControleurPlateau.imageEnDragAndDropTuile = null;
-				ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
-				int gridPanRowIndex = GridPane.getRowIndex(imageTuile.getParent());
-				this.tuileAction = MainApp.getInstance().getClient().getJoueur().getDeckPublic().getDeckPublic().get(gridPanRowIndex);
+			if(this.listeActionTour.size() <2){
+				ImageView imageTuile = (ImageView) event.getSource();
+				imageTuile.setVisible(false);
+				if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
+				{
+					ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
+					ControleurPlateau.imageEnDragAndDropChef = null;
+					int gridPanColIndex = GridPane.getColumnIndex(imageTuile.getParent());
+					this.tuileAction = this.deckPriveJoueur.get( gridPanColIndex - 2);
+				} else if(imageTuile.getAccessibleText().equals("tuileChef"))
+				{
+					ControleurPlateau.imageEnDragAndDropTuile = null;
+					ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
+					int gridPanRowIndex = GridPane.getRowIndex(imageTuile.getParent());
+					this.tuileAction = MainApp.getInstance().getClient().getJoueur().getDeckPublic().getDeckPublic().get(gridPanRowIndex);
+				}
+	
+	
+				Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
+				ClipboardContent content = new ClipboardContent();
+		        content.putImage(imageTuile.getImage());
+		        db.setContent(content);
+		        event.consume();
 			}
-
-
-			Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
-			ClipboardContent content = new ClipboardContent();
-	        content.putImage(imageTuile.getImage());
-	        db.setContent(content);
-	        event.consume();
 		}
 	}
 
@@ -383,25 +385,27 @@ public class ControleurPlateau implements ChangeListener{
 
 						public void handle(MouseEvent event) {
 							try {
-								ImageView pane = (ImageView) event.getSource();
+								ImageView pane = (ImageView) event.getSource();		
 								if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()) {
-									ImageView imageTuile = (ImageView) event.getSource();
-									imageTuile.setVisible(false);
-									if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
-									{
-										ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
-										ControleurPlateau.imageEnDragAndDropChef = null;
-									} else if(imageTuile.getAccessibleText().equals("tuileChef"))
-									{
-										ControleurPlateau.imageEnDragAndDropTuile = null;
-										ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
+									if(listeActionTour.size() <2){
+										ImageView imageTuile = (ImageView) event.getSource();
+										imageTuile.setVisible(false);
+										if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
+										{
+											ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
+											ControleurPlateau.imageEnDragAndDropChef = null;
+										} else if(imageTuile.getAccessibleText().equals("tuileChef"))
+										{
+											ControleurPlateau.imageEnDragAndDropTuile = null;
+											ControleurPlateau.imageEnDragAndDropChef = (Pane) imageTuile.getParent();
+										}
+										Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
+										positionChefRetire = new Position(GridPane.getRowIndex(pane.getParent()), GridPane.getColumnIndex(pane.getParent()));
+										ClipboardContent content = new ClipboardContent();
+										content.putImage(imageTuile.getImage());
+										db.setContent(content);
+										event.consume();
 									}
-									Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
-									positionChefRetire = new Position(GridPane.getRowIndex(pane.getParent()), GridPane.getColumnIndex(pane.getParent()));
-									ClipboardContent content = new ClipboardContent();
-									content.putImage(imageTuile.getImage());
-									db.setContent(content);
-									event.consume();
 								}
 							} catch (RemoteException e) {
 								// TODO Auto-generated catch block
@@ -445,6 +449,8 @@ public class ControleurPlateau implements ChangeListener{
 								mainApp.getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
 								target.getChildren().add(image);
 								event.setDropCompleted(true);
+								
+								this.listeActionTour.add(action);
 								
 								if(action instanceof PlacerChef && ((PlacerChef) action).isConflit()){
 									this.conflitInterne = true;
@@ -611,6 +617,7 @@ public class ControleurPlateau implements ChangeListener{
 					target.getChildren().remove(0);
 					target.getChildren().add(image);
 					event.setDropCompleted(true);
+					this.listeActionTour.add(action);
 					MainApp.getInstance().getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
 				}
 			} else {
@@ -944,6 +951,7 @@ for(int x = 0; x < 16; x++){
 				//On teste si il y a une condition de fin de partie avant de donner la main
 				if(!finpartie && mainApp.getServeur().getPartie().getPlateauJeu().getNombreTresors() > 2){
 					System.out.println("Le joueur a finit son tour. " + mainApp.getClient().getNomJoueur());
+					this.viderListeAction();
 					mainApp.getServeur().passerTour();
 				}else{
 					System.out.println("Compter le nombre de point LOL");
@@ -953,6 +961,11 @@ for(int x = 0; x < 16; x++){
 		}else{
 			Conflits interne = new Conflits();
 		}
+	}
+	
+	//Permet de vider la liste d'action du joueur qui joue
+	public void viderListeAction(){
+		this.listeActionTour.clear();
 	}
 
 	private Node getNode(int x, int y){
