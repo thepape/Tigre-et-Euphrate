@@ -5,8 +5,10 @@ import java.util.ListIterator;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
@@ -29,6 +31,18 @@ public class PlacerChef extends Action {
 	private Position position;
 
 	/**
+	 * Booleen qui permet de tester les conflit
+	 */
+	private boolean conflit = false;
+	public boolean isConflit() {
+		return conflit;
+	}
+
+	public void setConflit(boolean conflit) {
+		this.conflit = conflit;
+	}
+
+	/**
 	 * @param ppartie
 	 * @param pjoueur
 	 * @param pchef
@@ -40,6 +54,27 @@ public class PlacerChef extends Action {
 		this.position = ppos;
 	}
 
+	private void retirerChef(){
+		for(int x = 0; x < 16; x++){
+			for(int y = 0; y < 11;y++){
+				Placable placable = this.partie.getPlateauJeu().getPlateau()[y][x];
+
+				if(placable != null && placable instanceof Chef){
+					Chef chefc = (Chef) placable;
+					boolean memeDynastie = chefc.getDynastie().getNom().equals(this.chef.getDynastie().getNom());
+					boolean memeCouleur = chefc.getTypeChef().getCouleur().equals(this.chef.getTypeChef().getCouleur());
+
+					if(memeDynastie && memeCouleur){
+						this.partie.getPlateauJeu().getPlateau()[y][x] = null;
+						Territoire t = this.chef.getTerritoire();
+						t.deletChef(chef);
+						return;
+					}
+				}
+			}
+		}
+	}
+
 	/**
 	 * Execute l'action PlacerChef
 	 * On place le chef dans la case du tableau
@@ -47,46 +82,48 @@ public class PlacerChef extends Action {
 	 */
 	public boolean executer(){
 		boolean ok = false;
-		
+
 		ok =  this.partie.getPlateauJeu().placerChef(this.chef, this.position);
-		if(ok){
-			System.out.println("Temple trouvé");
-			this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
-			this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
-			System.out.println("chef ajouté");
-		}else{
-			System.out.println("Temple pas trouvé");
-		}
-		
-		return ok;
-		
+		ArrayList<TuileCivilisation> listeAdjacente = this.partie.getPlateauJeu().recupererListeTuileCivilisationAdjacente(position);
 
-		/*if((this.position.getX() > 11 || this.position.getY() > 16) || (this.position.getY() < 0 || this.position.getX() < 0))
-		{
-			return false;
-		}
-
-		if(this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] != null)
-		{
-			ok = false;
-		} else {
-
-			ArrayList<TuileCivilisation> listeAdjacente = this.getPartie().getPlateauJeu().recupererListeTuileCivilisationAdjacente(this.position);
-			for(int i = 0; i < listeAdjacente.size(); i++)
+		if(ok) {
+			for(int i = 0; i < listeAdjacente.size() - 1; i++)
 			{
-				if(listeAdjacente.get(i).getType().equals(TypeTuileCivilisation.Temple))
+				for(int j = 1 ; j < listeAdjacente.size(); j++)
 				{
-					ok = true;
+					if(!listeAdjacente.get(i).getTerritoire().equals(listeAdjacente.get(j).getTerritoire()))
+					{
+						ok = false;
+					}
+				}
+			}
+
+			if(ok)
+			{
+				this.retirerChef();
+				this.chef.setTerritoire(listeAdjacente.get(0).getTerritoire());
+				listeAdjacente.get(0).getTerritoire().addChefs(this.chef);
+				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
+				this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
+				for(int i = 0; i < this.chef.getTerritoire().getChefs().size() - 1;i++)
+				{
+					for(int j = i; j < this.chef.getTerritoire().getChefs().size();j++)
+					{
+						if(this.chef.getTerritoire().getChefs().get(i).getTypeChef().equals(this.chef.getTerritoire().getChefs().get(j).getTypeChef()))
+						{
+							//TODO conflit
+							conflit = true;
+						}
+					}
 				}
 			}
 		}
 
-		if(ok)
-		{
-			this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
-			this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
-		}
-		return ok;*/
+		return ok;
+	}
+	
+	public String toString(){
+		return this.joueur.getNom()+" a placé son chef "+this.chef.getTypeChef().getNom()+" à la ligne "+this.position.getX()+", colonne "+this.position.getY();
 	}
 
 }

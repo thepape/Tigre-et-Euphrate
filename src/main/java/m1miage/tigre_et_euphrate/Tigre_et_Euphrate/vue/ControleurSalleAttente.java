@@ -462,21 +462,39 @@ public class ControleurSalleAttente implements ChangeListener {
 		//this.majSalon();
 		String arg = null;
 		
+		if(arg2 == null || !(arg2 instanceof ArrayList)){
+			return;
+		}
+		
+		ArrayList<Object> params = (ArrayList<Object>) arg2;
+		/*
 		try{
 			arg = (String) arg2;
 		}catch(Exception e){
 			
-		}
+		}*/
 		
-				
+				/*
 					if(arg != null && arg.equals("partieLancee")){
 						this.afficherPlateau();
 					}
 					else{
-						this.majSalon();
-					}
+						
+					}*/
 					
-
+					for(int i = 0; i < params.size(); i++){
+						Object param = params.get(i);
+						
+						if(param != null && param instanceof String){
+							if(param.equals("partieLancee")){
+								this.afficherPlateau();
+							}
+							if(param.equals("refreshSalon")){
+								this.majSalon();
+							}
+						}
+						
+					}
 				
 				
 			/*} catch (RemoteException e) {

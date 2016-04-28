@@ -33,17 +33,20 @@ public interface InterfaceServeurClient extends Remote {
 
 	public boolean deconnecter() throws RemoteException;
 
-	public void notifierChangement(Object arg) throws RemoteException;
+	public void notifierChangement(ArrayList<Object> args) throws RemoteException;
 	public void addListener(ChangeListener listener) throws RemoteException;
 	public void removeListener(ChangeListener listener) throws RemoteException;
+	public void clearListeners() throws RemoteException;
 	public Joueur getJoueur() throws RemoteException;
 	public void setPartieCourante(Partie partie) throws RemoteException;
 	public ArrayList<InterfaceServeurClient> getClients() throws RemoteException;
 	public void send(Action action, int idClient) throws RemoteException;
+	public void passerTour() throws RemoteException;
 
 	public void switchJoueurEstPret(InterfaceServeurClient client) throws RemoteException;
 	public void switchJoueurPret() throws RemoteException;
 	public boolean setDynastieOfClient(InterfaceServeurClient client, Dynastie dynastie) throws RemoteException;
 	public void setDynastie(Dynastie d) throws RemoteException;
 	public void libererDynastie(Dynastie d) throws RemoteException;
+	public int getUniqueId() throws RemoteException;
 }

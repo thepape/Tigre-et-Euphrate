@@ -146,12 +146,19 @@ public class Joueur implements Serializable{
 		return this.PointVictoire;
 	}
 
+	public void ajouterPointsVictoire(int points){
+		this.PointVictoire += points;
+	}
 	/**
 	 * getter des points tresor du joueur
 	 * @return points tresor du joueur
 	 */
 	public int getPointTresor(){
 		return this.PointTresor;
+	}
+	
+	public void ajouterPointsTresor(int points){
+		this.PointTresor += points;
 	}
 
 	/**
@@ -216,5 +223,13 @@ public class Joueur implements Serializable{
 	
 	public int getId(){
 		return this.id;
+	}
+	
+	/**
+	 * FOR TEST PURPOSE
+	 * @param id
+	 */
+	public void setId(int id){
+		this.id = id;
 	}
 }

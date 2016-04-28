@@ -205,6 +205,8 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	public void send(Action action, int idClient) throws RemoteException {
 		action.setPartie(this.getPartie());
 		action.executer();
+		
+		//this.notifierChangement("plateau");
 	}
 
 	/**
@@ -322,13 +324,20 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	public void removeListener(ChangeListener listener) {
 		this.listeners.remove(listener);
 	}
+	
+	/**
+	 * fonction qui supprime tous les ChangeListeners du client
+	 */
+	public void clearListeners(){
+		this.listeners.clear();
+	}
 
 	/**
 	 * Fonction qui notifie le changement du modele à la vue
 	 */
-	public void notifierChangement(Object arg){
+	public void notifierChangement(ArrayList<Object> args){
 		for(ChangeListener listener : this.listeners){
-			listener.changed(this, null, arg);
+			listener.changed(this, null, args);
 		}
 	}
 
@@ -354,6 +363,11 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	public void setPartieCourante(Partie partie) throws RemoteException {
 		this.partieCourante = partie;
 
+	}
+	
+	public void passerTour() throws RemoteException{
+		this.partieCourante.passerTour();
+		System.out.println("CLIENT MIS A JOUR");
 	}
 
 
@@ -393,6 +407,11 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	public void switchJoueurEstPret(InterfaceServeurClient client) throws RemoteException {
 		// TODO Auto-generated method stub
 
+	}
+
+	public int getUniqueId() throws RemoteException {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

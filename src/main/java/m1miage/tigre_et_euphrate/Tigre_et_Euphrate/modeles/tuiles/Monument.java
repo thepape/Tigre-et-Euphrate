@@ -1,11 +1,13 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles;
 
+import java.io.Serializable;
+
 /**
  * 
  * Classe représentant un monument.
  *
  */
-public class Monument {
+public class Monument implements Serializable{
 	
 	/**
 	 * couleur de l'arche (couleur 1).
@@ -27,6 +29,14 @@ public class Monument {
 	 */
 	private TuileCivilisation tuileNO;
 	
+	public String getCouleurArche() {
+		return couleurArche;
+	}
+
+	public String getCouleurEscaliers() {
+		return couleurEscaliers;
+	}
+
 	/**
 	 * tuile nord est sur laquelle est placée le monument
 	 */
@@ -57,6 +67,33 @@ public class Monument {
 		this.tuileSE = null;
 		this.tuileSO = null;
 	}
+	
+	public TuileCivilisation getTuileNO() {
+		return tuileNO;
+	}
+
+	/**
+	 * FOR TEST PURPOSE
+	 * @param tuile
+	 */
+	public void setTuileNO(TuileCivilisation tuile){
+		this.tuileNO = tuile;
+	}
+	
+	public TuileCivilisation getTuileNE() {
+		return tuileNE;
+	}
+
+
+	public TuileCivilisation getTuileSO() {
+		return tuileSO;
+	}
+
+	
+	public TuileCivilisation getTuileSE() {
+		return tuileSE;
+	}
+
 	
 	/**
 	 * Place le monument sur les 4 tuiles civilisation en paramètre.
@@ -97,6 +134,11 @@ public class Monument {
 		boolean couleursIdentiques = pTuileNO.estDeMemeType(pTuileNE) && pTuileNO.estDeMemeType(pTuileSO) && pTuileNO.estDeMemeType(pTuileSE);
 		//verifie que les 4 tuiles ont la meme couleur
 		if(!couleursIdentiques){
+			return false;
+		}
+		
+		//verifie qu'un monument ne repose pas deja sur la tuile
+		if(pTuileNO.estTuileMonument() || pTuileNE.estTuileMonument() || pTuileSO.estTuileMonument() || pTuileSE.estTuileMonument()){
 			return false;
 		}
 		

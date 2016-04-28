@@ -63,6 +63,8 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	private ObservableList<Dynastie> listeDynastie;
 
+	private int increment = 0;
+
 
 	/**
 	 * constructeur du serveur
@@ -267,14 +269,23 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 * Fonction qui permet d'envoyer des données du serveur aux clients
 	 */
 	public void send(Action action, int idClient) throws RemoteException {
-		action.setPartie(this.getPartie());
-		action.executer();
+		//action.setPartie(this.getPartie());
+		//action.executer();
 		for(int i = 0; i < this.clients.size(); i++)
 		{
 			if(idClient != this.clients.get(i).getIdObjetPartie())
 			{
 				this.clients.get(i).send(action, idClient);
 			}
+		}
+
+		for(InterfaceServeurClient c : this.clients){
+			ArrayList<Object> params = new ArrayList<Object>();
+			params.add("plateau");
+			params.add("deckPrive");
+			params.add("deckPublic");
+			params.add("message:"+action.toString()+".");
+			c.notifierChangement(params);
 		}
 	}
 
@@ -292,7 +303,9 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			client.setJoueur(joueur);
 
 			for(InterfaceServeurClient c : this.clients){
-				c.notifierChangement(joueur);
+				ArrayList<Object> params = new ArrayList<Object>();
+				params.add(joueur);
+				c.notifierChangement(params);
 			}
 		}
 	}
@@ -377,9 +390,10 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 * @param arg
 	 * @throws RemoteException
 	 */
-	private void notifierClient(Object arg) throws RemoteException{
+	private void notifierClient(ArrayList<Object> args) throws RemoteException{
 		for(InterfaceServeurClient c : this.clients){
-			c.notifierChangement(null);
+			
+			c.notifierChangement(args);
 		}
 	}
 
@@ -397,16 +411,20 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		}
 
 		local.switchJoueurPret();
-		String arg = null;
+		String arg = "refreshSalon";
 
+		//si tous les joueurs sont prets, on change l'affichage plutot
 		if(this.tousPret()){
 			this.genererPartie();
 			System.out.println("Partie lancée");
 			arg="partieLancee";
 		}
+		
 
 		for(InterfaceServeurClient c : this.clients){
-			c.notifierChangement(arg);
+			ArrayList<Object> params = new ArrayList<Object>();
+			params.add(arg);
+			c.notifierChangement(params);
 		}
 	}
 
@@ -417,7 +435,9 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 		}
 
-		this.notifierClient(null);
+		ArrayList<Object> params = new ArrayList<Object>();
+		params.add("refreshSalon");
+		this.notifierClient(params);
 	}
 
 	/**
@@ -439,7 +459,9 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 		local.setDynastie(dynastie);
 
-		this.notifierClient(null);
+		ArrayList<Object> params = new ArrayList<Object>();
+		params.add("refreshSalon");
+		this.notifierClient(params);
 
 		return true;
 	}
@@ -450,6 +472,16 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	public void setListeDynastie(ArrayList<Dynastie> liste) throws RemoteException {
 		this.listeDynastieDispo = liste;
 
+	}
+	
+	public void passerTour() throws RemoteException{
+		this.partie.passerTour();
+		/*for(InterfaceServeurClient client: this.clients){
+			client.passerTour();
+		}*/
+		ArrayList<Object> params = new ArrayList<Object>();
+		params.add("passerTour");
+		this.notifierClient(params);
 	}
 
 	/**
@@ -473,8 +505,13 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		this.partie.initialiserPartie();
 	}
 
-	
-	
+	public int getUniqueId() throws RemoteException{
+		this.increment++;
+		return this.increment;
+	}
+
+
+
 	/**********************************************************************************
 	 * 						FONCTIONS QUE LE SERVEUR N'UTILISE PAS
 	 **********************************************************************************/
@@ -498,11 +535,6 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	}
 
-	public void notifierChangement(Object arg) throws RemoteException {
-		// TODO Auto-generated method stub
-
-	}
-
 	public boolean deconnecter() throws RemoteException {
 		// TODO Auto-generated method stub
 		return false;
@@ -521,6 +553,16 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	public void setPartieCourante(Partie partie) throws RemoteException {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void clearListeners() throws RemoteException {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void notifierChangement(ArrayList<Object> args) throws RemoteException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
