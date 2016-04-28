@@ -44,12 +44,18 @@ public class RetirerChef extends Action {
 	 * @return vrai ou faux, selon le bon déroulement ou non de l'action
 	 */
 	public boolean executer(){
-		boolean ok = true;
+		if(!this.verifier()){
+			return false;
+		}
 		this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = null;
 		this.joueur.getDeckPublic().getDeckPublic().add(chef);
 
 
-		return ok;
+		return true;
+	}
+	
+	public boolean verifier(){
+		return true;
 	}
 	
 	public String toString(){

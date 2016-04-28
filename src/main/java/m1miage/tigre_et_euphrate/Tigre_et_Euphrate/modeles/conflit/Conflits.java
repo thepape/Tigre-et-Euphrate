@@ -1,13 +1,17 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
-public class Conflits {
+public class Conflits implements Serializable{
 
 	private static int idIncrementConflit = 0;
 	/**
@@ -42,17 +46,27 @@ public class Conflits {
 	/**
 	 * Liste des tuiles ajoutées en renforts par l'attaquant
 	 */
-	private ArrayList<TuileRenfort> listeTuileRenfortAttaquant;
+	private ArrayList<TuileCivilisation> listeTuileRenfortAttaquant = null;
 
 	/**
 	 * Liste des tuiles ajoutées en renforts par le défenseur
 	 */
-	private ArrayList<TuileRenfort> listeTuileRenfortDefenseur;
+	private ArrayList<TuileCivilisation> listeTuileRenfortDefenseur = null;
 
 	/**
 	 * Type du conflit "E" ou "I"
 	 */
 	private String typeConflit;
+	
+	private Partie partie;
+
+	public Partie getPartie() {
+		return partie;
+	}
+
+	public void setPartie(Partie partie) {
+		this.partie = partie;
+	}
 
 	/**
 	 * Constructeur vide
@@ -169,7 +183,7 @@ public class Conflits {
 	/**
 	 * @return liste des tuiles ajoutées en renforts par l'attaquant
 	 */
-	public ArrayList<TuileRenfort> getListeTuileRenfortAttaquant() {
+	public ArrayList<TuileCivilisation> getListeTuileRenfortAttaquant() {
 		return listeTuileRenfortAttaquant;
 	}
 
@@ -177,14 +191,14 @@ public class Conflits {
 	 * setter de listeTuileRenfortAttaquant
 	 * @param listeTuileRenfortAttaquant
 	 */
-	public void setListeTuileRenfortAttaquant(ArrayList<TuileRenfort> listeTuileRenfortAttaquant) {
+	public void setListeTuileRenfortAttaquant(ArrayList<TuileCivilisation> listeTuileRenfortAttaquant) {
 		this.listeTuileRenfortAttaquant = listeTuileRenfortAttaquant;
 	}
 
 	/**
 	 * @return liste des tuiles ajoutées en renforts par le défenseur
 	 */
-	public ArrayList<TuileRenfort> getListeTuileRenfortDefenseur() {
+	public ArrayList<TuileCivilisation> getListeTuileRenfortDefenseur() {
 		return listeTuileRenfortDefenseur;
 	}
 
@@ -192,7 +206,7 @@ public class Conflits {
 	 * setter de listeTuileRenfortDefenseur
 	 * @param listeTuileRenfortDefenseur
 	 */
-	public void setListeTuileRenfortDefenseur(ArrayList<TuileRenfort> listeTuileRenfortDefenseur) {
+	public void setListeTuileRenfortDefenseur(ArrayList<TuileCivilisation> listeTuileRenfortDefenseur) {
 		this.listeTuileRenfortDefenseur = listeTuileRenfortDefenseur;
 	}
 
@@ -289,11 +303,64 @@ public class Conflits {
 		if(nbTuileCivilisationDefenseur >= nbTuileCivilisationAttaquant)
 		{
 			this.setEstResolu(true);
+			
+			//retrait du chef perdant
+			Plateau plateau = this.partie.getPlateauJeu();
+			int x = this.chefAttaquant.getPosition().getX();
+			int y = this.chefAttaquant.getPosition().getY();
+			
+			plateau.getPlateau()[x][y] = null;
+			Joueur perdant = this.chefAttaquant.getJoueur();
+			Territoire territoire = plateau.getTerritoireOfChef(chefAttaquant);
+			if(territoire != null)
+				territoire.deletChef(chefAttaquant);
+			perdant.getDeckPublic().ajouterChef(chefAttaquant);
+			
 			this.getChefAttaquant().setRetiree(true);
+			
+			//retrait des tuiles renforts pour les deux joueurs
+			for(TuileCivilisation renfort : this.listeTuileRenfortAttaquant){
+				if(this.chefAttaquant.getJoueur().getDeckPrive().getDeckPrive().contains(renfort)){
+					this.chefAttaquant.getJoueur().getDeckPrive().getDeckPrive().remove(renfort);
+				}
+			}
+			for(TuileCivilisation renfort : this.listeTuileRenfortDefenseur){
+				if(this.chefDefenseur.getJoueur().getDeckPrive().getDeckPrive().contains(renfort)){
+					this.chefDefenseur.getJoueur().getDeckPrive().getDeckPrive().remove(renfort);
+				}
+			}
+			
+			this.getChefDefenseur().getJoueur().ajouterPointVictoire(1);
 			return this.getChefDefenseur();
 		} else {
 			this.setEstResolu(true);
+			
+			Plateau plateau = this.partie.getPlateauJeu();
+			int x = this.chefDefenseur.getPosition().getX();
+			int y = this.chefDefenseur.getPosition().getY();
+			
+			plateau.getPlateau()[x][y] = null;
+			Joueur perdant = this.chefDefenseur.getJoueur();
+			Territoire territoire = plateau.getTerritoireOfChef(chefDefenseur);
+			if(territoire != null)
+				territoire.deletChef(chefDefenseur);
+			perdant.getDeckPublic().ajouterChef(chefDefenseur);
+			
 			this.getChefDefenseur().setRetiree(true);
+			
+			//retrait des tuiles renforts pour les deux joueurs
+			for(TuileCivilisation renfort : this.listeTuileRenfortAttaquant){
+				if(this.chefAttaquant.getJoueur().getDeckPrive().getDeckPrive().contains(renfort)){
+					this.chefAttaquant.getJoueur().getDeckPrive().getDeckPrive().remove(renfort);
+				}
+			}
+			for(TuileCivilisation renfort : this.listeTuileRenfortDefenseur){
+				if(this.chefDefenseur.getJoueur().getDeckPrive().getDeckPrive().contains(renfort)){
+					this.chefDefenseur.getJoueur().getDeckPrive().getDeckPrive().remove(renfort);
+				}
+			}
+			
+			this.getChefAttaquant().getJoueur().ajouterPointVictoire(1);
 			return this.getChefAttaquant();
 		}
 	}

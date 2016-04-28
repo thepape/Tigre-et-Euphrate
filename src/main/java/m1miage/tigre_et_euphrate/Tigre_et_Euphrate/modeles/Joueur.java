@@ -225,4 +225,20 @@ public class Joueur implements Serializable{
 	public void setId(int id){
 		this.id = id;
 	}
+	
+	public boolean equals(Object o){
+		if(o instanceof Joueur){
+			return this.id == ((Joueur) o).getId();
+		}
+		
+		return false;
+	}
+	
+	public void ajouterPointVictoire(int points){
+		this.PointVictoire += points;
+	}
+	
+	public void ajouterPointTresor(int points){
+		this.PointTresor += points;
+	}
 }

@@ -112,24 +112,34 @@ public class Plateau implements Serializable {
 
 		//Les 10 sphinx et les tresors
 		pplateau[1][1] = new TuileCivilisation(new Tresor());
+		pplateau[1][1].setPosition(new Position(1,1));
 		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[1][1]));
 		pplateau[0][10] = new TuileCivilisation(new Tresor());
+		pplateau[0][10].setPosition(new Position(0,10));
 		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[0][10]));
 		pplateau[1][15] = new TuileCivilisation(new Tresor());
+		pplateau[1][15].setPosition(new Position(1,15));
 		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[1][15]));
 		pplateau[2][5] = new TuileCivilisation(new Tresor());
+		pplateau[2][5].setPosition(new Position(2,5));
 		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[2][5]));
 		pplateau[4][13] = new TuileCivilisation(new Tresor());
+		pplateau[4][13].setPosition(new Position(4,13));
 		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[4][13]));
 		pplateau[6][8] = new TuileCivilisation(new Tresor());
+		pplateau[6][8].setPosition(new Position(6,8));
 		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[6][8]));
 		pplateau[7][1] = new TuileCivilisation(new Tresor());
+		pplateau[7][1].setPosition(new Position(7,1));
 		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[7][1]));
 		pplateau[8][14] = new TuileCivilisation(new Tresor());
+		pplateau[8][14].setPosition(new Position(8,14));
 		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[8][14]));
 		pplateau[9][5] = new TuileCivilisation(new Tresor());
+		pplateau[9][5].setPosition(new Position(9,5));
 		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[9][5]));
 		pplateau[10][10] = new TuileCivilisation(new Tresor());
+		pplateau[10][10].setPosition(new Position(10,10));
 		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[10][10]));
 
 	}
@@ -243,6 +253,28 @@ public class Plateau implements Serializable {
 	public boolean placerTuile(TuileCivilisation pTuile, int x, int y){
 		return this.placerTuile(pTuile, new Position(x,y));
 	}
+	
+	public boolean verifierPlacerTuile(TuileCivilisation ptuile, Position ppos){
+		int x = ppos.getX();
+		int y = ppos.getY();
+
+		if(x < 0 || y < 0 || x > 10 || y > 15)
+		{
+			return false;
+		} else {
+			if(this.plateau[x][y] != null){
+				return false;
+			}
+			if(!this.plateauTerrain[x][y] && !ptuile.estTuileEau()){
+				return false;
+			}
+			if(this.plateauTerrain[x][y] && ptuile.estTuileEau()){
+				return false;
+			}
+			return true;
+
+		}
+	}
 
 	/**
 	 * Permet de placer une tuile civilisation sur le plateau
@@ -282,6 +314,16 @@ public class Plateau implements Serializable {
 	 * @return true si placer sinon false
 	 */
 	public boolean placerChef(Chef pchef, Position ppos){
+		if(!this.verifierPlacerChef(pchef, ppos)){
+			return false;
+		}
+		
+		this.plateau[ppos.getX()][ppos.getY()] = pchef;
+		
+		return true;
+	}
+	
+	public boolean verifierPlacerChef(Chef pchef, Position ppos){
 		int x = ppos.getX();
 		int y = ppos.getY();
 
@@ -486,4 +528,13 @@ public class Plateau implements Serializable {
 	}
 
 
+	public Territoire getTerritoireOfChef(Chef pchef){
+		for(Territoire t : this.listeTerritoire){
+			if(t.getChefs().contains(pchef)){
+				return t;
+			}
+		}
+		
+		return null;
+	}
 }

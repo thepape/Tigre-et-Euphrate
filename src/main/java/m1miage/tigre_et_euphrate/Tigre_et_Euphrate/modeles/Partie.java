@@ -440,4 +440,29 @@ public class Partie implements Serializable {
 		return false;
 	}
 
+	public ArrayList<Joueur> getListeToursConflits(){
+		return this.listeToursConflits;
+	}
+	
+	public void setListeToursConflits(ArrayList<Joueur> joueurs){
+		this.listeToursConflits = joueurs;
+	}
+	
+	public boolean ajouterTourConflit(Joueur joueur){
+		if(this.listeToursConflits.contains(joueur)){
+			return false;
+		}
+		
+		this.listeToursConflits.add(joueur);
+		return true;
+	}
+	
+	public boolean retirerTourConflit(Joueur joueur){
+		if(!this.listeToursConflits.contains(joueur)){
+			return false;
+		}
+		
+		this.listeToursConflits.remove(joueur);
+		return true;
+	}
 }
