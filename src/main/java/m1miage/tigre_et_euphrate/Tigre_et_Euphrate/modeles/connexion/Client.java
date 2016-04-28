@@ -17,6 +17,8 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCivilisation;
 
@@ -369,6 +371,11 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		this.partieCourante.passerTour();
 		System.out.println("CLIENT MIS A JOUR");
 	}
+	
+	public void envoyerNouveauConflit(Conflits conflit, int idSender) throws RemoteException {
+		this.partieCourante.ajouterConflit(conflit);
+		
+	}
 
 
 	/********************************************************************************************************************
@@ -413,5 +420,12 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	public void envoyerRenforts(ArrayList<TuileCivilisation> renforts, Joueur joueur) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 
 }

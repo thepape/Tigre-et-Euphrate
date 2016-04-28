@@ -3,6 +3,8 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 import java.io.Serializable;
 import java.util.Random;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
@@ -32,6 +34,8 @@ public class Pioche implements Serializable{
 	 */
 	private static int nbTuilesMarche = 30;
 
+	@JsonProperty("totalCarte")
+	private int totalCarte;
 	/**
 	 * Contructeur vide de la Pioche
 	 */
@@ -79,9 +83,11 @@ public class Pioche implements Serializable{
 	public boolean estVide(){
 		return (Pioche.nbTuilesFerme == 0 && Pioche.nbTuilesMarche == 0 && Pioche.nbTuilesPopulation == 0 && Pioche.nbTuilesTemple == 0);
 	}
-	
+
+	@JsonProperty("totalCarte")
 	public int getTotalCarte(){
-		return nbTuilesPopulation + nbTuilesFerme + nbTuilesTemple + nbTuilesMarche;
+		this.totalCarte = nbTuilesPopulation + nbTuilesFerme + nbTuilesTemple + nbTuilesMarche;
+		return totalCarte;
 	}
 
 }

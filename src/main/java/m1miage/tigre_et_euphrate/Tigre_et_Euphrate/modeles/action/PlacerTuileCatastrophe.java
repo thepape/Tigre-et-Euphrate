@@ -26,4 +26,8 @@ public class PlacerTuileCatastrophe extends Action {
 	public boolean executer(){
 		return false;
 	}
+	
+	public boolean verifier(){
+		return false;
+	}
 }

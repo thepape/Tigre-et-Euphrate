@@ -13,6 +13,8 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 
 public interface InterfaceServeurClient extends Remote {
 
@@ -49,4 +51,7 @@ public interface InterfaceServeurClient extends Remote {
 	public void setDynastie(Dynastie d) throws RemoteException;
 	public void libererDynastie(Dynastie d) throws RemoteException;
 	public int getUniqueId() throws RemoteException;
+	
+	public void envoyerNouveauConflit(Conflits conflit, int idClient) throws RemoteException;
+	public void envoyerRenforts(ArrayList<TuileCivilisation> renforts, Joueur joueur) throws RemoteException;
 }

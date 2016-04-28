@@ -42,6 +42,13 @@ public class TuileCivilisation extends Tuile {
 	//private Territoire territoire;
 
 	/**
+	 * Constructeur vide pour JSON
+	 */
+	public TuileCivilisation() {
+
+	}
+
+	/**
 	 * Constructeur d'une tuile civilisation.
 	 * @param pType type de la tuile civilisation.
 	 */
@@ -172,16 +179,6 @@ public class TuileCivilisation extends Tuile {
 		this.territoire = pTerritoire;
 	}*/
 
-	/**
-	 * Une tuilecivilisation est identique à une autre si elles ont le même type.
-	 */
-	public boolean equals(Object pO){
-		if(pO instanceof TuileCivilisation){
-			return this.estDeMemeType((TuileCivilisation) pO);
-		}
-
-		return false;
-	}
 
 	public boolean aTresor(){
 		return this.tresor != null;

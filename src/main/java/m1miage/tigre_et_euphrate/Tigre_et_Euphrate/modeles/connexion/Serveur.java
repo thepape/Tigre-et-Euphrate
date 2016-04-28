@@ -15,7 +15,11 @@ import javafx.collections.ObservableList;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerChef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 
 public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceServeurClient, Serializable
 {
@@ -61,7 +65,6 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	ArrayList<Dynastie> listeDynastieDispo = new ArrayList<Dynastie>();
 
-	private ObservableList<Dynastie> listeDynastie;
 
 	private int increment = 0;
 
@@ -82,16 +85,11 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		listeDynastieDispo.add(Dynastie.Targaryen);
 		listeDynastieDispo.add(Dynastie.Tyrell);
 
-		listeDynastie = FXCollections.observableArrayList(listeDynastieDispo);
 
 	}
 
 	public ArrayList<Dynastie> getListeDynastie() throws RemoteException {
 		return listeDynastieDispo;
-	}
-
-	public void setListeDynastie(ObservableList<Dynastie> listeDynastie) {
-		this.listeDynastie = listeDynastie;
 	}
 
 	public ArrayList<Dynastie> getListeDynastieDispo() throws RemoteException{
@@ -269,22 +267,34 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 * Fonction qui permet d'envoyer des données du serveur aux clients
 	 */
 	public void send(Action action, int idClient) throws RemoteException {
-		//action.setPartie(this.getPartie());
-		//action.executer();
+		action.setPartie(this.partie);
+		action.executer();
+		
 		for(int i = 0; i < this.clients.size(); i++)
 		{
-			if(idClient != this.clients.get(i).getIdObjetPartie())
+			Joueur joueurConcerne = this.clients.get(i).getJoueur();
+			if(joueurConcerne.getId() == action.getJoueur().getId())
 			{
-				this.clients.get(i).send(action, idClient);
+				this.clients.get(i).setJoueur(action.getJoueur());
 			}
 		}
 
 		for(InterfaceServeurClient c : this.clients){
 			ArrayList<Object> params = new ArrayList<Object>();
+			params.add("partie");
 			params.add("plateau");
 			params.add("deckPrive");
 			params.add("deckPublic");
 			params.add("message:"+action.toString()+".");
+			
+			if(action instanceof PlacerChef && ((PlacerChef) action).isConflit()){
+				PlacerChef pc = ((PlacerChef) action);
+				Conflits conflit = pc.getConflit();
+				
+				params.add("conflitInterne");
+				params.add("message:Conflit entre "+conflit.getChefAttaquant().getJoueur().getNom()+" et "+conflit.getChefDefenseur().getJoueur().getNom());
+			}
+			
 			c.notifierChangement(params);
 		}
 	}
@@ -304,7 +314,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 			for(InterfaceServeurClient c : this.clients){
 				ArrayList<Object> params = new ArrayList<Object>();
-				params.add(joueur);
+				params.add("refreshSalon");
 				c.notifierChangement(params);
 			}
 		}
@@ -321,6 +331,54 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		}
 
 		return trouve;
+	}
+	
+	public void envoyerRenforts(ArrayList<TuileCivilisation> renforts, Joueur joueur) throws RemoteException{
+		Conflits conflit = this.partie.getConflits().get(0);
+		
+		//si le joueur est l'attaquant
+		if(joueur.getId() == conflit.getChefAttaquant().getJoueur().getId()){
+			conflit.setListeTuileRenfortAttaquant(renforts);
+		}
+		else if(joueur.getId() == conflit.getChefDefenseur().getJoueur().getId()){
+			conflit.setListeTuileRenfortDefenseur(renforts);
+		}
+		
+		//on regarde si les deux joueurs ont donné leurs renforts pour résoudre le conflit
+		if(conflit.getListeTuileRenfortAttaquant() != null && conflit.getListeTuileRenfortDefenseur() != null){
+			if(conflit.getTypeConflit().equals("I")){
+				conflit.setPartie(this.partie);
+				this.resoudreConflitInterne(conflit);
+				
+			}
+		}
+	}
+	
+	public Chef resoudreConflitInterne(Conflits conflit) throws RemoteException{
+		Chef gagnant = conflit.definirChefGagnant();
+		
+		//on met à jour less joueurs des clients concernés par le conflit
+		for(InterfaceServeurClient client : this.getClients()){
+			Joueur joueurCli = client.getJoueur();
+			
+			if(joueurCli.getId() == conflit.getChefAttaquant().getJoueur().getId()){
+				client.setJoueur(conflit.getChefAttaquant().getJoueur());
+			}
+			else if(joueurCli.getId() == conflit.getChefDefenseur().getJoueur().getId()){
+				client.setJoueur(conflit.getChefDefenseur().getJoueur());
+			}
+		}
+		
+		ArrayList<Object> params = new ArrayList<Object>();
+		params.add("partie");
+		params.add("plateau");
+		params.add("deckPrive");
+		params.add("deckPublic");
+		params.add("conflitInterneResolu");
+		params.add("message:Le joueur "+gagnant.getJoueur().getNom()+" a gagné le conflit !");
+		this.notifierClient(params);
+		
+		return gagnant;
 	}
 
 	/**
@@ -392,7 +450,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 */
 	private void notifierClient(ArrayList<Object> args) throws RemoteException{
 		for(InterfaceServeurClient c : this.clients){
-			
+
 			c.notifierChangement(args);
 		}
 	}
@@ -419,7 +477,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			System.out.println("Partie lancée");
 			arg="partieLancee";
 		}
-		
+
 
 		for(InterfaceServeurClient c : this.clients){
 			ArrayList<Object> params = new ArrayList<Object>();
@@ -473,15 +531,21 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		this.listeDynastieDispo = liste;
 
 	}
-	
+
 	public void passerTour() throws RemoteException{
 		this.partie.passerTour();
 		/*for(InterfaceServeurClient client: this.clients){
 			client.passerTour();
 		}*/
 		ArrayList<Object> params = new ArrayList<Object>();
+		params.add("partie");
 		params.add("passerTour");
+		
 		this.notifierClient(params);
+	}
+	
+	public void passerTourConflit() throws RemoteException{
+		this.partie.passerTourConflit();
 	}
 
 	/**
@@ -508,6 +572,18 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	public int getUniqueId() throws RemoteException{
 		this.increment++;
 		return this.increment;
+	}
+	
+	public void envoyerNouveauConflit(Conflits conflit, int idClientSender) throws RemoteException{
+		
+		//propagation du conflit chez les partie des autres
+		for(InterfaceServeurClient client : this.clients){
+			if(client.getIdObjetPartie() != idClientSender){
+				client.envoyerNouveauConflit(conflit, idClientSender);
+			}
+		}
+		
+		
 	}
 
 
@@ -562,7 +638,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	public void notifierChangement(ArrayList<Object> args) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
