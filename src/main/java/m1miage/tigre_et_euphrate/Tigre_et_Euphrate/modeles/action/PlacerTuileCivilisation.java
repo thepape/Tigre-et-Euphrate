@@ -73,6 +73,7 @@ public class PlacerTuileCivilisation extends Action {
 		//if(this.tuile.getType().equals(TypeTuileCivilisation.Ferme))	
 	}
 	
+	
 	/**
 	 * Fonction pour attribuer un territoire à
 	 * une nouvelle tuile
@@ -130,7 +131,7 @@ public class PlacerTuileCivilisation extends Action {
 		}
 		if((ok4=true) && ( this.partie.getPlateauJeu().getPlateau()[pos4.getX()][pos4.getY()]!=null)){
 			nb+=1;
-			listparam.add(pos3);
+			listparam.add(pos3); 	
 		}
 		
 		
@@ -192,7 +193,22 @@ public class PlacerTuileCivilisation extends Action {
 	 * @param p
 	 */
 	public void gererDeuxTerritoire(ArrayList<Position> p){
-		//TODO completer 
+		//Pour la premiere position
+		if ( this.partie.getPlateauJeu().getPlateau()[p.get(0).getX()][p.get(0).getY()] instanceof Chef ){
+			Chef chef1 = (Chef) this.partie.getPlateauJeu().getPlateau()[p.get(0).getX()][p.get(0).getY()];
+			if ( this.partie.getPlateauJeu().getPlateau()[p.get(1).getX()][p.get(1).getY()] instanceof Chef ){
+			
+			}
+		}
+		
+	}
+	
+	/**
+	 * Fonction qui return true si l'action peut etre executer
+	 * @return
+	 */
+	public boolean verifier(){
+		return true;
 	}
 
 	/**
