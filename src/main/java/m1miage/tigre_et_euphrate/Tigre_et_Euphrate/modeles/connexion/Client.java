@@ -426,6 +426,11 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		
 	}
 
+	public boolean piocherCartesManquantes(Joueur j) throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	
 
 }

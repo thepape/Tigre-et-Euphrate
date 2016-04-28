@@ -115,7 +115,10 @@ public class PlacerTuileCivilisation extends Action {
 
 
 		ok = this.partie.getPlateauJeu().placerTuile(this.tuile, this.position);
-
+		
+		// on retire cette tuile du deck privé du joueur
+		this.joueur.getDeckPrive().getDeckPrive().remove(this.tuile);
+		
 		return ok;
 	}
 

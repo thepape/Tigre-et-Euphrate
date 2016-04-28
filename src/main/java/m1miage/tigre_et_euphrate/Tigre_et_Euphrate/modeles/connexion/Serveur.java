@@ -547,6 +547,19 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	public void passerTourConflit() throws RemoteException{
 		this.partie.passerTourConflit();
 	}
+	
+	public boolean piocherCartesManquantes(Joueur joueur) throws RemoteException {
+		boolean res = this.partie.piocheCartesManquantes(joueur);
+		
+		for(InterfaceServeurClient client : this.clients){
+			if(client.getJoueur().getId() == joueur.getId()){
+				client.setJoueur(joueur);
+				break;
+			}
+		}
+		
+		return res;
+	}
 
 	/**
 	 * Fonction qui vérifie que tous les joueurs sont prêts

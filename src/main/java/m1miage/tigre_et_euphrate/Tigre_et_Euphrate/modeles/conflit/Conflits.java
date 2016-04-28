@@ -330,6 +330,10 @@ public class Conflits implements Serializable{
 				}
 			}
 			
+			//pioche des nouvelles tuiles pour les deux joueurs
+			this.partie.piocheCartesManquantes(this.chefAttaquant.getJoueur());
+			this.partie.piocheCartesManquantes(this.chefDefenseur.getJoueur());
+			
 			this.getChefDefenseur().getJoueur().ajouterPointVictoire(1);
 			return this.getChefDefenseur();
 		} else {
@@ -359,6 +363,10 @@ public class Conflits implements Serializable{
 					this.chefDefenseur.getJoueur().getDeckPrive().getDeckPrive().remove(renfort);
 				}
 			}
+			
+			//pioche des nouvelles tuiles pour les deux joueurs
+			this.partie.piocheCartesManquantes(this.chefAttaquant.getJoueur());
+			this.partie.piocheCartesManquantes(this.chefDefenseur.getJoueur());
 			
 			this.getChefAttaquant().getJoueur().ajouterPointVictoire(1);
 			return this.getChefAttaquant();
