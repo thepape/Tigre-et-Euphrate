@@ -84,20 +84,29 @@ public class PlacerTuileCivilisation extends Action {
 			{
 				for(int j = 1; j < listeAdjacente.size(); j++)
 				{
-					if(!listeAdjacente.get(i).getTerritoire().equals(listeAdjacente.get(j).getTerritoire()))
+					/*if(!listeAdjacente.get(i).getTerritoire().equals(listeAdjacente.get(j).getTerritoire()))
 					{
 						//TODO conflits
 						conflit = true;
+					}*/
+
+					if(!this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(i)).equals(this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(j))))
+					{
+						conflit = true;
+						System.out.println(conflit);
 					}
 				}
 			}
 
 			if(!conflit)
 			{
-				tuile.setTerritoire(listeAdjacente.get(0).getTerritoire());
+				this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(0)).addTuile(tuile);
 			}
 		}  else {
-			tuile.setTerritoire(new Territoire());
+			//tuile.setTerritoire(new Territoire());
+			Territoire territoire = new Territoire();
+			territoire.addTuile(tuile);
+			this.partie.getPlateauJeu().getListeRoyaume().add(territoire);
 		}
 
 
@@ -113,7 +122,7 @@ public class PlacerTuileCivilisation extends Action {
 	public void setConflit(boolean conflit) {
 		this.conflit = conflit;
 	}
-	
+
 	public String toString(){
 		return this.joueur.getNom()+" a placé une tuile "+this.tuile.getType().getNom()+" à la ligne "+this.position.getX()+", colonne "+this.position.getY();
 	}
