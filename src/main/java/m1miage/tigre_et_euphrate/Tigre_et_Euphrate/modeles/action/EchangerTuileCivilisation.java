@@ -31,12 +31,19 @@ public class EchangerTuileCivilisation extends Action {
 	 * @return vrai ou faux, selon le bon déroulement ou non de l'action
 	 */
 	public boolean executer(){
-		if(this.partie.getPioche().estVide())
+		if(!this.verifier())
 			return false;
 		TuileCivilisation tuilePiochee = this.partie.getPioche().piocherTuile();
 		this.joueur.getDeckPrive().supprimer(this.tuileAEchanger);
 		this.joueur.getDeckPrive().ajouter(tuilePiochee);
 		this.tuileAEchanger.retirer();
+		return true;
+	}
+	
+	public boolean verifier(){
+		if(this.partie.getPioche().estVide())
+			return false;
+		
 		return true;
 	}
 }

@@ -55,5 +55,11 @@ public abstract class Action implements Serializable {
 	 * @return vrai ou faux, selon le bon déroulement ou non de l'action
 	 */
 	public abstract boolean executer();
+	
+	/**
+	 * verifie toutes les conditions pour executer l'action
+	 * @return
+	 */
+	public abstract boolean verifier();
 
 }

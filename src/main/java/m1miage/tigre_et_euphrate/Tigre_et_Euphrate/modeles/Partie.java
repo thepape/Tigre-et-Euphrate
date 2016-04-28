@@ -42,7 +42,10 @@ public class Partie implements Serializable {
 	 */
 	private ArrayList<Joueur> listeTours = new ArrayList<Joueur>();
 
-
+	/**
+	 * La liste des tours des conflits
+	 */
+	private ArrayList<Joueur> listeToursConflits = new ArrayList<Joueur>();
 
 	/**
 	 * Un joueur plutot beau gosse (ou pas)
@@ -422,6 +425,20 @@ public class Partie implements Serializable {
 		this.listeTours.add(temp);
 		System.out.println("C'est le tour de "+this.listeTours.get(0).getNom());
 	}
+	
+	/**
+	 * Methode qui va faire passer le tour du joueur en conflit
+	 */
+	public void passerTourConflit(){
+		this.listeToursConflits.remove(0);
+	}
+	
+	/**
+	 * Methode permettant d'ajouter un joueur dans la liste des conflits
+	 */
+	public void addJoueurConflit(Joueur j){
+		this.listeToursConflits.add(j);
+	}
 
 	/**
 	 * methode permettant de piocher les cartes manquante a la fin du tour
@@ -445,6 +462,29 @@ public class Partie implements Serializable {
 		return false;
 	}
 
-
-
+	public ArrayList<Joueur> getListeToursConflits(){
+		return this.listeToursConflits;
+	}
+	
+	public void setListeToursConflits(ArrayList<Joueur> joueurs){
+		this.listeToursConflits = joueurs;
+	}
+	
+	public boolean ajouterTourConflit(Joueur joueur){
+		if(this.listeToursConflits.contains(joueur)){
+			return false;
+		}
+		
+		this.listeToursConflits.add(joueur);
+		return true;
+	}
+	
+	public boolean retirerTourConflit(Joueur joueur){
+		if(!this.listeToursConflits.contains(joueur)){
+			return false;
+		}
+		
+		this.listeToursConflits.remove(joueur);
+		return true;
+	}
 }
