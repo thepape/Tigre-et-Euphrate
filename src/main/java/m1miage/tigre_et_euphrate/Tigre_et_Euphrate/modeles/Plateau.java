@@ -440,7 +440,7 @@ public class Plateau implements Serializable {
 		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX(), pDepart.getY()+1), tEst);
 		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX()+1, pDepart.getY()), tSud);
 		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX(), pDepart.getY()-1), tOuest);
-		
+
 		//on élimine les territoires identiques pour ne garder que les territoires differents
 		ArrayList<Territoire> territoires = new ArrayList<Territoire>();
 
@@ -468,15 +468,15 @@ public class Plateau implements Serializable {
 
 		//on applique les nouveaux territoires aux tuiles
 		for(Territoire t : territoires){
-			Territoire oldTerritoire = t.getTuilesCivilisation().get(0).getTerritoire();
+			//Territoire oldTerritoire = t.getTuilesCivilisation().get(0).getTerritoire();
+			Territoire oldTerritoire = this.recupererTerritoireTuile(t.getTuilesCivilisation().get(0));
+			/*for(TuileCivilisation tuile : t.getTuilesCivilisation()){
+				//tuile.setTerritoire(t);
+			}*/
 
-			for(TuileCivilisation tuile : t.getTuilesCivilisation()){
-				tuile.setTerritoire(t);
-			}
-
-			for(Chef chef : t.getChefs()){
+			/*for(Chef chef : t.getChefs()){
 				chef.setTerritoire(t);
-			}
+			}*/
 
 			//on supprime l'ancien territoire on et on ajoute le nouveau
 			this.listeTerritoire.remove(oldTerritoire);
@@ -487,13 +487,13 @@ public class Plateau implements Serializable {
 	public void reconstruireTerritoiresRecurs(Position pDepart, Territoire territoire){
 		Placable pNord = this.getPlacableAt(new Position(pDepart.getX()-1, pDepart.getY()));
 		this.gererTuileDansReconstruction(pNord, territoire);
-		
+
 		Placable pEst = this.getPlacableAt(new Position(pDepart.getX(), pDepart.getY()+1));
 		this.gererTuileDansReconstruction(pEst, territoire);
-		
+
 		Placable pSud = this.getPlacableAt(new Position(pDepart.getX()+1, pDepart.getY()));
 		this.gererTuileDansReconstruction(pSud, territoire);
-		
+
 		Placable pOuest = this.getPlacableAt(new Position(pDepart.getX(), pDepart.getY()-1));
 		this.gererTuileDansReconstruction(pOuest, territoire);
 
@@ -528,13 +528,33 @@ public class Plateau implements Serializable {
 	}
 
 
-	public Territoire getTerritoireOfChef(Chef pchef){
-		for(Territoire t : this.listeTerritoire){
-			if(t.getChefs().contains(pchef)){
-				return t;
+
+	public Territoire recupererTerritoireTuile(Placable tuile) {
+		Territoire territoire = null;
+
+		for(int i = 0; i < this.listeTerritoire.size(); i++)
+		{
+			Territoire t = this.listeTerritoire.get(i);
+			if(tuile instanceof TuileCivilisation)
+			{
+				for(int j = 0; j < t.getTuilesCivilisation().size(); j++)
+				{
+					if(t.getTuilesCivilisation().get(j).getId() == tuile.getId())
+					{
+						territoire = t;
+					}
+				}
+			} else if(tuile instanceof Chef) {
+				for(int j = 0; j < t.getChefs().size(); j++)
+				{
+					if(t.getChefs().get(j).getId() == tuile.getId())
+					{
+						territoire = t;
+					}
+				}
 			}
+
 		}
-		
-		return null;
+		return territoire;
 	}
 }

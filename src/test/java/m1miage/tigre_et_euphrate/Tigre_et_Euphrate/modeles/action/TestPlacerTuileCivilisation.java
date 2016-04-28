@@ -72,7 +72,7 @@ public class TestPlacerTuileCivilisation {
 		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(0,1), tuile);
 		action.executer();
 		TuileCivilisation tuileTemple = (TuileCivilisation) this.partie.getPlateauJeu().getPlateau()[1][1];
-		assertEquals(tuile.getTerritoire(), tuileTemple.getTerritoire());
+		assertEquals(partie.getPlateauJeu().recupererTerritoireTuile(tuile), partie.getPlateauJeu().recupererTerritoireTuile(tuileTemple));
 	}
 
 

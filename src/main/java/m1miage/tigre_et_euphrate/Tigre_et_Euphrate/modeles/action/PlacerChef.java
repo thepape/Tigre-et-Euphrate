@@ -69,14 +69,10 @@ public class PlacerChef extends Action {
 					boolean memeCouleur = chefc.getTypeChef().getCouleur().equals(this.chef.getTypeChef().getCouleur());
 
 					if(memeDynastie && memeCouleur){
+						
 						this.partie.getPlateauJeu().getPlateau()[x][y] = null;
-						Territoire territoire = this.chef.getTerritoire();
-						
-						if(territoire != null){
-							territoire.deletChef(chef);
-							this.chef.setTerritoire(null);
-						}
-						
+						Territoire t = this.partie.getPlateauJeu().recupererTerritoireTuile(this.chef);
+						t.deletChef(chef);
 						return;
 					}
 				}
@@ -104,7 +100,11 @@ public class PlacerChef extends Action {
 			{
 				for(int j = 1 ; j < listeAdjacente.size(); j++)
 				{
-					if(!listeAdjacente.get(i).getTerritoire().equals(listeAdjacente.get(j).getTerritoire()))
+					/*if(!listeAdjacente.get(i).getTerritoire().equals(listeAdjacente.get(j).getTerritoire()))
+					{
+						ok = false;
+					}*/
+					if(!this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(i)).equals(this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(j))))
 					{
 						ok = false;
 					}
@@ -114,17 +114,18 @@ public class PlacerChef extends Action {
 			if(ok)
 			{
 				this.retirerChef();
-				Territoire territoire = listeAdjacente.get(0).getTerritoire();
-				this.chef.setTerritoire(territoire);
-				territoire.addChefs(this.chef);
+				//this.chef.setTerritoire(this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(0)));
+				//listeAdjacente.get(0).getTerritoire().addChefs(this.chef);
+				this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(0)).addChefs(this.chef);
+
+				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
 				this.chef.setPosition(new Position(this.position.getX(), this.position.getY()));
 				
-				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
-				
 				this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
+
 				
-				for(int i = 0; i < this.chef.getTerritoire().getChefs().size();i++){
-					Chef autreChef = this.chef.getTerritoire().getChefs().get(i);
+				for(int i = 0; i < this.partie.getPlateauJeu().recupererTerritoireTuile(this.chef).getChefs().size();i++){
+					Chef autreChef = this.partie.getPlateauJeu().recupererTerritoireTuile(this.chef).getChefs().get(i);
 					
 					if(chef.getTypeChef().equals(autreChef.getTypeChef()) && chef.getId() != autreChef.getId())
 					{
@@ -133,7 +134,7 @@ public class PlacerChef extends Action {
 						Chef attaquant = this.chef;
 						Chef defenseur = autreChef;
 						
-						Conflits conflit = new Conflits(attaquant, defenseur, defenseur.getTerritoire(), null);
+						Conflits conflit = new Conflits(attaquant, defenseur, this.partie.getPlateauJeu().recupererTerritoireTuile(defenseur), null);
 						conflit.setTypeConflit("I");
 						this.partie.ajouterConflit(conflit);
 						this.partie.ajouterTourConflit(attaquant.getJoueur());
@@ -150,9 +151,11 @@ public class PlacerChef extends Action {
 						Chef chefj = this.chef.getTerritoire().getChefs().get(j);
 						
 						if(chefi.getTypeChef().equals(chefj.getTypeChef()) && chefi.getId() != chefj.getId())
+
 						{
 							//TODO conflit						
 							conflit = true;
+
 							Chef attaquant = this.chef.getTerritoire().getChefs().get(i);
 							Chef defenseur = this.chef.getTerritoire().getChefs().get(j);
 							Conflits conflit = new Conflits(attaquant, defenseur, defenseur.getTerritoire(), null);
@@ -160,6 +163,7 @@ public class PlacerChef extends Action {
 							conflit.setChefDefenseur(defenseur);
 							
 							this.partie.ajouterConflit(conflit);
+
 						}
 					}
 				}*/
@@ -168,6 +172,7 @@ public class PlacerChef extends Action {
 
 		return ok;
 	}
+
 	
 	public Conflits getConflit(){
 		return this.instanceConflit;

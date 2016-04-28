@@ -311,7 +311,7 @@ public class Conflits implements Serializable{
 			
 			plateau.getPlateau()[x][y] = null;
 			Joueur perdant = this.chefAttaquant.getJoueur();
-			Territoire territoire = plateau.getTerritoireOfChef(chefAttaquant);
+			Territoire territoire = plateau.recupererTerritoireTuile(chefAttaquant);
 			if(territoire != null)
 				territoire.deletChef(chefAttaquant);
 			perdant.getDeckPublic().ajouterChef(chefAttaquant);
@@ -341,7 +341,7 @@ public class Conflits implements Serializable{
 			
 			plateau.getPlateau()[x][y] = null;
 			Joueur perdant = this.chefDefenseur.getJoueur();
-			Territoire territoire = plateau.getTerritoireOfChef(chefDefenseur);
+			Territoire territoire = plateau.recupererTerritoireTuile(chefDefenseur);
 			if(territoire != null)
 				territoire.deletChef(chefDefenseur);
 			perdant.getDeckPublic().ajouterChef(chefDefenseur);

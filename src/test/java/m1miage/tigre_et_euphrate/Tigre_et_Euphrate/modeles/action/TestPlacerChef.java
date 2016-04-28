@@ -99,7 +99,7 @@ public class TestPlacerChef {
 		PlacerChef action = new PlacerChef(this.partie, this.joueur, (Chef) this.joueur.getDeckPublic().getDeckPublic().get(1), position);
 		action.executer();
 		Chef chef = (Chef)this.partie.getPlateauJeu().getPlateau()[0][1];
-		assertEquals(chef.getTerritoire(), this.partie.getPlateauJeu().getListeRoyaume().get(0));
+		assertEquals(this.partie.getPlateauJeu().recupererTerritoireTuile(chef), this.partie.getPlateauJeu().getListeRoyaume().get(0));
 		assertFalse(action.isConflit());
 	}
 

@@ -2,6 +2,8 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 
 /**
@@ -10,43 +12,51 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
  */
 public class Joueur implements Serializable{
 
+	@JsonProperty("id")
 	private int id;
-	
+
 	private static int incId = 1;
-	
+
 	/**
 	 * Le nom du joueur
 	 */
+	@JsonProperty("nom")
 	private String nom;
 
 	/**
 	 * Dynastie du joueur
 	 */
+	@JsonProperty("dynastie")
 	private Dynastie dynastie;
 
 	/**
 	 * Le deck public du joueur
 	 */
+	@JsonProperty("deckPublic")
 	private DeckPublic deckPublic;
 
 	/**
 	 * Nombre de point victoire du joueur
 	 */
+	@JsonProperty("PointVictoire")
 	private int PointVictoire;
 
 	/**
 	 * Nombre de point tresor du joueur
 	 */
+	@JsonProperty("PointTresor")
 	private int PointTresor;
 
 	/**
 	 * Le deck public du joueur
 	 */
+	@JsonProperty("deckPrive")
 	private DeckPrive deckPrive;
 
 	/**
 	 * boolean pour savoir si c'est le tour du joueur ou non
 	 */
+	@JsonProperty("tour")
 	private boolean tour;
 
 	/**
@@ -89,6 +99,7 @@ public class Joueur implements Serializable{
 	 * retourne la dynastie du joueur
 	 * @return
 	 */
+	@JsonProperty("dynastie")
 	public Dynastie getDynastie() {
 		return dynastie;
 	}
@@ -105,6 +116,7 @@ public class Joueur implements Serializable{
 	/**
 	 * @return the deckPublic
 	 */
+	@JsonProperty("deckPublic")
 	public DeckPublic getDeckPublic() {
 		return deckPublic;
 	}
@@ -119,6 +131,7 @@ public class Joueur implements Serializable{
 	/**
 	 * @return the deckPrive
 	 */
+	@JsonProperty("deckPrive")
 	public DeckPrive getDeckPrive() {
 		return deckPrive;
 	}
@@ -134,6 +147,7 @@ public class Joueur implements Serializable{
 	 * getter du nom du joueur
 	 * @return le nom
 	 */
+	@JsonProperty("nom")
 	public String getNom(){
 		return this.nom;
 	}
@@ -142,16 +156,25 @@ public class Joueur implements Serializable{
 	 * getter des points victoire du joueur
 	 * @return points victoire du joueur
 	 */
+	@JsonProperty("PointVictoire")
 	public int getPointVictoire(){
 		return this.PointVictoire;
 	}
 
+	public void ajouterPointsVictoire(int points){
+		this.PointVictoire += points;
+	}
 	/**
 	 * getter des points tresor du joueur
 	 * @return points tresor du joueur
 	 */
+	@JsonProperty("PointTresor")
 	public int getPointTresor(){
 		return this.PointTresor;
+	}
+
+	public void ajouterPointsTresor(int points){
+		this.PointTresor += points;
 	}
 
 	/**
@@ -205,7 +228,7 @@ public class Joueur implements Serializable{
 	public void jeSuisPret(){
 		this.pret = true;
 	}
-	
+
 	public void setEstPret(boolean pPret){
 		this.pret = pPret;
 	}
@@ -213,15 +236,16 @@ public class Joueur implements Serializable{
 	public boolean estPret(){
 		return this.pret;
 	}
-	
+
 	public int getId(){
 		return this.id;
 	}
-	
+
 	/**
 	 * FOR TEST PURPOSE
 	 * @param id
 	 */
+	@JsonProperty("id")
 	public void setId(int id){
 		this.id = id;
 	}

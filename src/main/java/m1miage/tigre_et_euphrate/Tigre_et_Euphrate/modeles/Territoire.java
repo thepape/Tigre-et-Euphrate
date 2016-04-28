@@ -62,7 +62,7 @@ public class Territoire implements Serializable{
 		this.estRoyaume = false;
 		this.tuilesCivilisation = new ArrayList<TuileCivilisation>();
 		this.tuilesCivilisation.add(pTuileInit);
-		pTuileInit.setTerritoire(this);
+		//pTuileInit.setTerritoire(this);
 		this.chefs = new ArrayList<Chef>();
 		this.idTerritoire = Territoire.idIncrementTerritoire;
 		Territoire.idIncrementTerritoire++;

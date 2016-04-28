@@ -65,7 +65,6 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	ArrayList<Dynastie> listeDynastieDispo = new ArrayList<Dynastie>();
 
-	private ObservableList<Dynastie> listeDynastie;
 
 	private int increment = 0;
 
@@ -86,16 +85,11 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		listeDynastieDispo.add(Dynastie.Targaryen);
 		listeDynastieDispo.add(Dynastie.Tyrell);
 
-		listeDynastie = FXCollections.observableArrayList(listeDynastieDispo);
 
 	}
 
 	public ArrayList<Dynastie> getListeDynastie() throws RemoteException {
 		return listeDynastieDispo;
-	}
-
-	public void setListeDynastie(ObservableList<Dynastie> listeDynastie) {
-		this.listeDynastie = listeDynastie;
 	}
 
 	public ArrayList<Dynastie> getListeDynastieDispo() throws RemoteException{
@@ -456,7 +450,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 */
 	private void notifierClient(ArrayList<Object> args) throws RemoteException{
 		for(InterfaceServeurClient c : this.clients){
-			
+
 			c.notifierChangement(args);
 		}
 	}
@@ -483,7 +477,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			System.out.println("Partie lancée");
 			arg="partieLancee";
 		}
-		
+
 
 		for(InterfaceServeurClient c : this.clients){
 			ArrayList<Object> params = new ArrayList<Object>();
@@ -537,7 +531,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		this.listeDynastieDispo = liste;
 
 	}
-	
+
 	public void passerTour() throws RemoteException{
 		this.partie.passerTour();
 		/*for(InterfaceServeurClient client: this.clients){
@@ -644,7 +638,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	public void notifierChangement(ArrayList<Object> args) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
