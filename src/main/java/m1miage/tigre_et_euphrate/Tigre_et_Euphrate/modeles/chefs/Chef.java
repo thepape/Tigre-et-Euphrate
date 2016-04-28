@@ -46,7 +46,7 @@ public class Chef extends Placable implements Serializable{
 	/**
 	 * Territoire dans lequel le chef se trouve
 	 */
-	private Territoire territoire;
+	//private Territoire territoire;
 
 	/**
 	 * Constructeur d'un chef
@@ -60,7 +60,7 @@ public class Chef extends Placable implements Serializable{
 		this.dynastie = pjoueur.getDynastie();
 		this.puissance = 0;
 		this.retiree = true;
-		this.territoire = null;
+		//this.territoire = null;
 		this.id = Placable.idIncrement++;
 	}
 
@@ -84,7 +84,7 @@ public class Chef extends Placable implements Serializable{
 		this.dynastie = null;
 		this.puissance = 0;
 		this.retiree = true;
-		this.territoire = null;
+		//this.territoire = null;
 		this.id = Placable.idIncrement++;
 	}
 
@@ -156,16 +156,16 @@ public class Chef extends Placable implements Serializable{
 	/**
 	 * @return the territoire
 	 */
-	public Territoire getTerritoire() {
+	/*public Territoire getTerritoire() {
 		return territoire;
-	}
+	}*/
 
 	/**
 	 * @param pterritoire the territoire to set
 	 */
-	public void setTerritoire(Territoire pterritoire) {
+	/*public void setTerritoire(Territoire pterritoire) {
 		this.territoire = pterritoire;
-	}
+	}*/
 
 
 

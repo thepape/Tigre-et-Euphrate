@@ -39,7 +39,7 @@ public class TuileCivilisation extends Tuile {
 	/**
 	 * Référence vers le territoire dans lequel se trouve la tuile.
 	 */
-	private Territoire territoire;
+	//private Territoire territoire;
 
 	/**
 	 * Constructeur d'une tuile civilisation.
@@ -50,7 +50,7 @@ public class TuileCivilisation extends Tuile {
 		this.type = pType;	//clone pour eviter le couplage au maximum entre les objets.
 		this.monument = null;
 		this.id = Placable.idIncrement++;
-		this.territoire = null;
+		//this.territoire = null;
 
 		//on définit si la tuile est dde type eau
 		if(this.type.equals(TypeTuileCivilisation.Ferme)){
@@ -71,7 +71,7 @@ public class TuileCivilisation extends Tuile {
 		this.monument = null;
 		this.tuileEau = false;
 		this.id = Placable.idIncrement++;
-		this.territoire = null;
+		//this.territoire = null;
 	}
 
 	/**
@@ -164,13 +164,13 @@ public class TuileCivilisation extends Tuile {
 		return this.type.equals(pTuile.type);
 	}
 
-	public Territoire getTerritoire(){
+	/*public Territoire getTerritoire(){
 		return this.territoire;
 	}
 
 	public void setTerritoire(Territoire pTerritoire){
 		this.territoire = pTerritoire;
-	}
+	}*/
 
 	/**
 	 * Une tuilecivilisation est identique à une autre si elles ont le même type.
@@ -182,7 +182,7 @@ public class TuileCivilisation extends Tuile {
 
 		return false;
 	}
-	
+
 	public boolean aTresor(){
 		return this.tresor != null;
 	}

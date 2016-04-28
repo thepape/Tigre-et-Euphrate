@@ -66,7 +66,7 @@ public class PlacerChef extends Action {
 
 					if(memeDynastie && memeCouleur){
 						this.partie.getPlateauJeu().getPlateau()[y][x] = null;
-						Territoire t = this.chef.getTerritoire();
+						Territoire t = this.partie.getPlateauJeu().recupererTerritoireTuile(this.chef);
 						t.deletChef(chef);
 						return;
 					}
@@ -91,7 +91,11 @@ public class PlacerChef extends Action {
 			{
 				for(int j = 1 ; j < listeAdjacente.size(); j++)
 				{
-					if(!listeAdjacente.get(i).getTerritoire().equals(listeAdjacente.get(j).getTerritoire()))
+					/*if(!listeAdjacente.get(i).getTerritoire().equals(listeAdjacente.get(j).getTerritoire()))
+					{
+						ok = false;
+					}*/
+					if(!this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(i)).equals(this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(j))))
 					{
 						ok = false;
 					}
@@ -101,18 +105,20 @@ public class PlacerChef extends Action {
 			if(ok)
 			{
 				this.retirerChef();
-				this.chef.setTerritoire(listeAdjacente.get(0).getTerritoire());
-				listeAdjacente.get(0).getTerritoire().addChefs(this.chef);
+				//this.chef.setTerritoire(this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(0)));
+				//listeAdjacente.get(0).getTerritoire().addChefs(this.chef);
+				this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(0)).addChefs(this.chef);
 				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
 				this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
-				for(int i = 0; i < this.chef.getTerritoire().getChefs().size() - 1;i++)
+				for(int i = 0; i < this.partie.getPlateauJeu().recupererTerritoireTuile(this.chef).getChefs().size() - 1;i++)
 				{
-					for(int j = i; j < this.chef.getTerritoire().getChefs().size();j++)
+					for(int j = i; j < this.partie.getPlateauJeu().recupererTerritoireTuile(this.chef).getChefs().size();j++)
 					{
-						if(this.chef.getTerritoire().getChefs().get(i).getTypeChef().equals(this.chef.getTerritoire().getChefs().get(j).getTypeChef()))
+						if(this.partie.getPlateauJeu().recupererTerritoireTuile(this.chef).getChefs().get(i).getTypeChef().equals(this.partie.getPlateauJeu().recupererTerritoireTuile(this.chef).getChefs().get(j).getTypeChef()))
 						{
 							//TODO conflit
 							conflit = true;
+							System.out.println(conflit);
 						}
 					}
 				}
@@ -121,7 +127,7 @@ public class PlacerChef extends Action {
 
 		return ok;
 	}
-	
+
 	public String toString(){
 		return this.joueur.getNom()+" a placé son chef "+this.chef.getTypeChef().getNom()+" à la ligne "+this.position.getX()+", colonne "+this.position.getY();
 	}
