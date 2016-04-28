@@ -1,8 +1,12 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action;
 
+import java.util.ArrayList;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Client;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue.MainApp;
 
 /**
  * 
@@ -14,13 +18,13 @@ public class EchangerTuileCivilisation extends Action {
 	/**
 	 * Tuile Civilisation a echanger
 	 */
-	private TuileCivilisation tuileAEchanger;
+	private ArrayList<TuileCivilisation> tuileAEchanger;
 	
 	/**
 	 * @param partie
 	 * @param joueur
 	 */
-	public EchangerTuileCivilisation(Partie ppartie, Joueur pjoueur, TuileCivilisation ptuile) {
+	public EchangerTuileCivilisation(Partie ppartie, Joueur pjoueur, ArrayList<TuileCivilisation> ptuile) {
 		super(ppartie, pjoueur);
 		this.tuileAEchanger = ptuile;
 	}
@@ -33,10 +37,14 @@ public class EchangerTuileCivilisation extends Action {
 	public boolean executer(){
 		if(!this.verifier())
 			return false;
-		TuileCivilisation tuilePiochee = this.partie.getPioche().piocherTuile();
-		this.joueur.getDeckPrive().supprimer(this.tuileAEchanger);
-		this.joueur.getDeckPrive().ajouter(tuilePiochee);
-		this.tuileAEchanger.retirer();
+		
+		
+		for(TuileCivilisation tuile : this.tuileAEchanger){
+			Joueur joueur = ((Client) MainApp.getInstance().getClient()).getJoueur();
+			joueur.getDeckPrive().getDeckPrive().remove(tuile);
+			System.out.println("Suppression dune carte");
+		}
+		this.partie.piocheCartesManquantes(this.getJoueur());
 		return true;
 	}
 	
@@ -45,5 +53,9 @@ public class EchangerTuileCivilisation extends Action {
 			return false;
 		
 		return true;
+	}
+	
+	public String toString(){
+		return "Le joueur "+this.joueur.getNom()+" a echangé ses tuiles.";
 	}
 }

@@ -48,6 +48,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.EchangerTuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.RetirerChef;
@@ -110,6 +111,16 @@ public class ControleurPlateau implements ChangeListener{
 	 */
 	private ObservableList<TuileCivilisation> deckPriveJoueur = FXCollections.observableArrayList();
 
+	/**
+	 * Liste des tuiles que le joueur veut changer
+	 */
+	private ArrayList<TuileCivilisation> listeTuileChange = new ArrayList<TuileCivilisation>();
+	
+	/**
+	 * Boolean pour savoir si le joueur est en echange de cartes
+	 */
+	private boolean echangeCarte;
+	
 	/**
 	 * indice de la carte déplacée dans les gridPane
 	 */
@@ -263,6 +274,78 @@ public class ControleurPlateau implements ChangeListener{
 		
 	}
 	
+	
+	public void echangeTuile() throws RemoteException{
+		if(this.echangeCarte){
+			//supprime les cartes dans le deck prive
+			EchangerTuileCivilisation action = new EchangerTuileCivilisation(this.partie,MainApp.getInstance().getClient().getJoueur(),this.listeTuileChange);
+			this.mainApp.getServeur().send(action, this.mainApp.getClient().getIdObjetPartie());
+			this.listeActionTour.add(action);
+			this.echangeCarte = false;
+		}else{
+			if(this.listeActionTour.size() <2){
+				this.echangeCarte = true;
+			}
+		}
+	}
+	
+	/**
+	 * Parametre qui permet au joueur de choisir ses tuiles a echanger
+	 * @param event
+	 */
+	public void selectionnerTuileAEchanger(MouseEvent event){
+		if(!this.echangeCarte){
+			return;
+		}
+		
+		ImageView imageTuile = (ImageView) event.getSource();
+		Pane pane = (Pane) imageTuile.getParent();
+		
+		//recupere l'index de la tuile dans le deck prive
+		int index = GridPane.getColumnIndex(pane);
+		Joueur joueur = ((Client) MainApp.getInstance().getClient()).getJoueur();
+		TuileCivilisation echange = joueur.getDeckPrive().getDeckPrive().get(index-2);
+		
+		//si le client clique sur une tuile qui est deja en echange, on la retire
+		if(this.listeTuileChange.contains(echange)){
+			this.listeTuileChange.remove(echange);
+			imageTuile.setFitHeight(150);
+			imageTuile.setFitWidth(80);
+			imageTuile.setTranslateX(15);
+			imageTuile.setTranslateY(25);
+			
+			for(Node n : pane.getChildren()){
+				if(n instanceof ImageView && ((ImageView) n).getAccessibleText().equals("background")){
+					pane.getChildren().remove(n);
+					break;
+				}
+			}
+		}
+		else{
+			//sinon on l'ajoute en renfort et on la met en "surbrillance"
+			this.listeTuileChange.add(echange);
+			imageTuile.setFitHeight(140);
+			imageTuile.setFitWidth(70);
+			imageTuile.setTranslateX(20);
+			imageTuile.setTranslateY(30);
+			
+			ImageView highLight = new ImageView();
+			highLight.setAccessibleText("background");
+			
+			URL file = this.getClass().getResource("echangeBG.png");
+			Image img = new Image(file.toString());
+			highLight.setImage(img);
+			highLight.setFitHeight(80);
+			highLight.setFitWidth(80);
+			highLight.setTranslateX(15);
+			highLight.setTranslateY(25);
+			
+			pane.getChildren().add(highLight);
+			imageTuile.toFront();
+		}
+		
+	}
+	
 	/**
 	 * fonction qui permetre le drag sur les chefs deja placés sur le plateau
 	 * @param event
@@ -319,7 +402,7 @@ public class ControleurPlateau implements ChangeListener{
 	private void dragTuileDecks(MouseEvent event) throws RemoteException
 	{
 		if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()){
-			if(this.listeActionTour.size() <2){
+			if((listeActionTour.size() <2) && !echangeCarte){
 				ImageView imageTuile = (ImageView) event.getSource();
 				imageTuile.setVisible(false);
 				if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
@@ -387,7 +470,7 @@ public class ControleurPlateau implements ChangeListener{
 							try {
 								ImageView pane = (ImageView) event.getSource();		
 								if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()) {
-									if(listeActionTour.size() <2){
+									if((listeActionTour.size() <2) && !echangeCarte){
 										ImageView imageTuile = (ImageView) event.getSource();
 										imageTuile.setVisible(false);
 										if(imageTuile.getAccessibleText().equals("tuileCivilisation"))
@@ -938,6 +1021,10 @@ for(int x = 0; x < 16; x++){
 			});
 		}
 		
+		if(this.echangeCarte){
+			//Le joueur ne peut pas passer son tour
+		}
+		
 		boolean finpartie;
 		//On teste si l'action placerChef nous a retourner un conflit ou non
 		if(!this.conflitInterne){
@@ -1031,6 +1118,7 @@ for(int x = 0; x < 16; x++){
 
 					public void handle(MouseEvent arg0) {
 						selectionnerTuileRenfortConflitInterne(arg0);
+						selectionnerTuileAEchanger(arg0);
 					}
 					
 				});

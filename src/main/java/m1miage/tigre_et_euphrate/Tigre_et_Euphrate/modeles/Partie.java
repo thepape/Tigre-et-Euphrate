@@ -453,7 +453,7 @@ public class Partie implements Serializable {
 				for(int j = 0; j<6-nbTuiles;j++){
 					TuileCivilisation tuile = this.pioche.piocherTuile();
 					j1.getDeckPrive().ajouter(tuile);
-					return false;
+					System.out.println("Carte piochée");
 				}
 			}else{
 				return true;
