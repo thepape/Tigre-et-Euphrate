@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue.ControleurAttributionTresors">
+   <children>
+      <ImageView fitHeight="52.0" fitWidth="57.0" layoutX="487.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@tresor.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="52.0" fitWidth="57.0" layoutX="195.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@tresor.png" />
+         </image>
+      </ImageView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#6ab7ff" height="38.0" layoutX="109.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="368.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="38.0" layoutX="252.0" layoutY="71.0" stroke="BLACK" strokeType="INSIDE" width="82.0" />
+      <Text layoutX="171.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Attribution des Trésors">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="66.0" fitWidth="63.0" layoutX="51.0" layoutY="154.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@tuile_ferme.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="63.0" fitWidth="63.0" layoutX="196.0" layoutY="154.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@tuile_marche.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="63.0" fitWidth="63.0" layoutX="345.0" layoutY="154.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@tuile_population.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="69.0" fitWidth="63.0" layoutX="485.0" layoutY="154.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@tuile_temple.png" />
+         </image>
+      </ImageView>
+      <Text layoutX="63.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ferme" textAlignment="CENTER">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Text layoutX="201.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Marché">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Text layoutX="339.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Population">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Text layoutX="490.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Temple">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Separator layoutX="151.0" layoutY="135.0" orientation="VERTICAL" prefHeight="178.0" prefWidth="6.0" />
+      <ImageView fitHeight="52.0" fitWidth="57.0" layoutX="53.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@tresor.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="52.0" fitWidth="57.0" layoutX="280.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@tresor.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="nbTresorsTotal" layoutX="260.0" layoutY="79.0" style="-fx-font-size: 1.5em;" text="0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Button fx:id="plusFerme" disable="true" layoutX="110.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#incrementerTresorFerme" prefHeight="4.0" prefWidth="6.0" text="+" />
+      <Button fx:id="moinsFerme" disable="true" layoutX="29.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#decrementerTresorFerme" text="-" />
+      <Label fx:id="nbTresorsFerme" layoutX="57.0" layoutY="272.0" style="-fx-font-weight: bold;" text="0" />
+      <Label fx:id="nbTresorsMarche" layoutX="199.0" layoutY="272.0" style="-fx-font-weight: bold;" text="0" />
+      <Button fx:id="moinsMarche" disable="true" layoutX="171.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#decrementerTresorMarche" text="-" />
+      <Button fx:id="plusMarche" disable="true" layoutX="252.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#incrementerTresorMarche" prefHeight="4.0" prefWidth="6.0" text="+" />
+      <ImageView fitHeight="52.0" fitWidth="57.0" layoutX="352.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@tresor.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="plusPopulation" disable="true" layoutX="409.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#incrementerTresorPopulation" prefHeight="4.0" prefWidth="6.0" text="+" />
+      <Button fx:id="moinsPopulation" disable="true" layoutX="328.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#decrementerTresorPopulation" text="-" />
+      <Label fx:id="nbTresorsPopulation" layoutX="356.0" layoutY="272.0" style="-fx-font-weight: bold;" text="0" />
+      <Label fx:id="nbTresorsTemple" layoutX="491.0" layoutY="272.0" style="-fx-font-weight: bold;" text="0" />
+      <Button fx:id="moinsTemple" disable="true" layoutX="463.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#decrementerTresorTemple" text="-" />
+      <Button fx:id="plusTemple" disable="true" layoutX="544.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#incrementerTresorTemple" prefHeight="4.0" prefWidth="6.0" text="+" />
+      <Separator layoutX="303.0" layoutY="135.0" orientation="VERTICAL" prefHeight="178.0" prefWidth="0.0" />
+      <Separator layoutX="448.0" layoutY="135.0" orientation="VERTICAL" prefHeight="178.0" prefWidth="6.0" />
+      <Label layoutX="52.0" layoutY="225.0" style="-fx-font-weight: bold;" text="0" />
+      <Text layoutX="74.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="point(s)" />
+      <Text layoutX="215.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="point(s)" />
+      <Label layoutX="193.0" layoutY="225.0" style="-fx-font-weight: bold;" text="0" />
+      <Label layoutX="343.0" layoutY="225.0" style="-fx-font-weight: bold;" text="0" />
+      <Text layoutX="365.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="point(s)" />
+      <Text layoutX="508.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="point(s)" />
+      <Label layoutX="486.0" layoutY="225.0" style="-fx-font-weight: bold;" text="0" />
+      <Button fx:id="validerBtn" layoutX="273.0" layoutY="339.0" mnemonicParsing="false" onMouseClicked="#valider" style="-fx-background-color: green; -fx-font-weight: bold;" text="Valider" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>

@@ -1052,7 +1052,7 @@ for(int x = 0; x < 16; x++){
 					this.viderListeAction();
 					mainApp.getServeur().passerTour();
 				}else{
-					System.out.println("Compter le nombre de point LOL");
+					this.mainApp.getServeur().finirPartie();
 				}
 			}
 			//Si le chef placé est en conflit (interne)
@@ -1359,7 +1359,10 @@ for(int x = 0; x < 16; x++){
 				}else if(param.equals("conflitInterneResolu")){
 					this.conflitInterne = false;
 					
+				}else if(param.equals("finpartie")){
+					this.mainApp.goToAttributionTresors(((Client)this.mainApp.getClient()).getJoueur().getPointTresor());
 				}
+				
 			}
 		}
 	}

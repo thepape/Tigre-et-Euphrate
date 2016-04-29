@@ -533,6 +533,12 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		this.listeDynastieDispo = liste;
 
 	}
+	
+	public void finirPartie() throws RemoteException{
+		ArrayList<Object> params = new ArrayList<Object>();
+		params.add("finpartie");
+		this.notifierClient(params);
+	}
 
 	public void passerTour() throws RemoteException{
 		this.partie.passerTour();
