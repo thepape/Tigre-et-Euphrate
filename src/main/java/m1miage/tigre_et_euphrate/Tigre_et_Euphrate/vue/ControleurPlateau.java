@@ -517,6 +517,7 @@ public class ControleurPlateau implements ChangeListener{
 						} });
 				}
 				Position position = new Position(GridPane.getRowIndex((Pane)event.getSource()), GridPane.getColumnIndex((Pane)event.getSource()));
+				
 				if(target.getChildren().size() == 0 && !(this.tuileAction instanceof TuileCatastrophe))
 				{
 
@@ -553,26 +554,7 @@ public class ControleurPlateau implements ChangeListener{
 								this.construirePlateau();
 							}
 						} else {
-							if(this.tuileAction instanceof TuileCatastrophe)
-							{
-								Action actionCata = new PlacerTuileCatastrophe(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur(), (TuileCatastrophe)this.tuileAction, position);
-
-								if(!actionCata.verifier())
-								{
-									event.setDropCompleted(false);
-								} else {
-
-									boolean actionOK = mainApp.getServeur().send(actionCata, MainApp.getInstance().getClient().getIdObjetPartie());
-									target.getChildren().add(image);
-									event.setDropCompleted(true);
-
-									if(actionOK){
-										this.listeActionTour.add(action);
-									}
-								}
-								//refresh du plateau du joueur qui a droppé
-								this.construirePlateau();
-							}
+							
 
 						}
 					} catch(RemoteException e)
@@ -580,8 +562,42 @@ public class ControleurPlateau implements ChangeListener{
 						e.printStackTrace();
 					}
 				} else {
+					
+					if(this.tuileAction instanceof TuileCatastrophe)
+					{
+						
+						try {
+							Action actionCata;
+							actionCata = new PlacerTuileCatastrophe(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur(), (TuileCatastrophe)this.tuileAction, position);
+						
+							if(!actionCata.verifier())
+							{
+								event.setDropCompleted(false);
+							} else {
 
-					event.setDropCompleted(false);
+								boolean actionOK = mainApp.getServeur().send(actionCata, MainApp.getInstance().getClient().getIdObjetPartie());
+								target.getChildren().add(image);
+								event.setDropCompleted(true);
+
+								if(actionOK){
+									this.listeActionTour.add(actionCata);
+								}
+							}
+							//refresh du plateau du joueur qui a droppé
+							this.construirePlateau();
+						
+						
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+						
+					}
+					else{
+						event.setDropCompleted(false);
+					}
+					
 				}
 			}
 	}
