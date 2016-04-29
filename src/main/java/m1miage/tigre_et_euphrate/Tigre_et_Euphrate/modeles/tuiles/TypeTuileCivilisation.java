@@ -47,6 +47,12 @@ public class TypeTuileCivilisation implements Serializable {
 	private String urlImage;
 
 	/**
+	 * Constructeur vide pour JSON
+	 */
+	private TypeTuileCivilisation() {
+	}
+
+	/**
 	 * Constructeur d'un type de tuile civilisation.
 	 * @param pCouleur nom de la couleur du type (en minuscules).
 	 */

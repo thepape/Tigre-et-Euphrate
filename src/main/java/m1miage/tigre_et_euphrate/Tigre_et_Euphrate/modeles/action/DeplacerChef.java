@@ -44,6 +44,18 @@ public class DeplacerChef extends Action {
 		int x = ppos.getX();
 		int y = ppos.getY();
 		
+		if(this.verifierDeplacerChef(pchef, ppos)){
+			return false;
+		}
+		
+		this.partie.getPlateauJeu().getPlateau()[x][y] = pchef;
+		return true;
+	}
+	
+	public boolean verifierDeplacerChef(Chef pchef, Position ppos){
+		int x = ppos.getX();
+		int y = ppos.getY();
+		
 		if(this.partie.getPlateauJeu().getPlateau()[x][y] != null){
 			return false;
 		}
@@ -57,7 +69,6 @@ public class DeplacerChef extends Action {
 			return false;
 		}
 		
-		this.partie.getPlateauJeu().getPlateau()[x][y] = pchef;
 		return true;
 	}
 
@@ -69,5 +80,9 @@ public class DeplacerChef extends Action {
 		if(this.chef.getDynastie() != this.joueur.getDynastie())
 			return false;
 		return this.deplacerChef(this.chef, this.position);
+	}
+	
+	public boolean verifier(){
+		return this.verifierDeplacerChef(chef, position);
 	}
 }

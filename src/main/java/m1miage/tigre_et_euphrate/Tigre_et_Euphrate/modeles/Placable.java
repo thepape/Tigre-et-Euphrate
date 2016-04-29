@@ -57,4 +57,12 @@ public abstract class Placable implements Serializable {
 	public int getId(){
 		return this.id;
 	}
+	
+	public boolean equals(Object o){
+		if(o instanceof Placable){
+			return this.id == ((Placable) o).id;
+		}
+		
+		return false;
+	}
 }

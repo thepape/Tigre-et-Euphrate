@@ -17,6 +17,8 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCivilisation;
 
@@ -202,9 +204,9 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	/**
 	 * Fonction qui permet d'envoyer des données entre serveur et client
 	 */
-	public void send(Action action, int idClient) throws RemoteException {
+	public boolean send(Action action, int idClient) throws RemoteException {
 		action.setPartie(this.getPartie());
-		action.executer();
+		return action.executer();
 		
 		//this.notifierChangement("plateau");
 	}
@@ -335,9 +337,9 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	/**
 	 * Fonction qui notifie le changement du modele à la vue
 	 */
-	public void notifierChangement(Object arg){
+	public void notifierChangement(ArrayList<Object> args){
 		for(ChangeListener listener : this.listeners){
-			listener.changed(this, null, arg);
+			listener.changed(this, null, args);
 		}
 	}
 
@@ -368,6 +370,11 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	public void passerTour() throws RemoteException{
 		this.partieCourante.passerTour();
 		System.out.println("CLIENT MIS A JOUR");
+	}
+	
+	public void envoyerNouveauConflit(Conflits conflit, int idSender) throws RemoteException {
+		this.partieCourante.ajouterConflit(conflit);
+		
 	}
 
 
@@ -413,5 +420,21 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	public void envoyerRenforts(ArrayList<TuileCivilisation> renforts, Joueur joueur) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean piocherCartesManquantes(Joueur j) throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	public void finirPartie() throws RemoteException {
+		
+	}
+
+	
 
 }

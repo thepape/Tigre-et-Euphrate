@@ -244,6 +244,7 @@ public class MainApp extends Application implements App {
 		}
 
 	}
+	
 
 	/**
 	 * Getter de la liste des dynasties
@@ -298,6 +299,20 @@ public class MainApp extends Application implements App {
 			this.currentControler = controler;
 			controler.majSalon();
 		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Fonction qui affiche l'interface d'attribution des tresors
+	 */
+	public void goToAttributionTresors(int nombreDeTresors){
+		try{
+			this.replaceSceneContent("InterfaceTresors.fxml");
+			ControleurAttributionTresors controler = (ControleurAttributionTresors)this.currentControler;
+			// Le nombre de trésors que le joueur possède
+			controler.initialiser(nombreDeTresors);
+		} catch (Exception e){
 			e.printStackTrace();
 		}
 	}

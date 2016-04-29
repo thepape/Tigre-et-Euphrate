@@ -5,6 +5,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
@@ -34,14 +36,17 @@ public class Partie implements Serializable {
 	 * La liste des joueurs jouant la partie
 	 */
 	private ArrayList<Joueur> listeJoueurs = new ArrayList<Joueur>();
-	
+
 	/**
 	 * La liste des tours de joueur
 	 */
 	private ArrayList<Joueur> listeTours = new ArrayList<Joueur>();
-	
-	
-	
+
+	/**
+	 * La liste des tours des conflits
+	 */
+	private ArrayList<Joueur> listeToursConflits = new ArrayList<Joueur>();
+
 	/**
 	 * Un joueur plutot beau gosse (ou pas)
 	 */
@@ -66,7 +71,7 @@ public class Partie implements Serializable {
 	 * boolean pour savoir si partie est lancee
 	 */
 	private boolean estLancee = false;
-	
+
 	private ArrayList<Monument> monuments = new ArrayList<Monument>();
 
 	/**
@@ -110,10 +115,21 @@ public class Partie implements Serializable {
 	 * getter de la liste des parties de la game (désolé anglais)
 	 * @return
 	 */
-	public ArrayList<Joueur> getListeJoueurs() {
-		return this.listeJoueurs;
+	public ArrayList<Joueur> getListeTours() {
+		return listeTours;
 	}
 
+	public ArrayList<Joueur> getListeJoueurs() {
+		return listeJoueurs;
+	}
+
+	public void setListeJoueurs(ArrayList<Joueur> listeJoueurs) {
+		this.listeJoueurs = listeJoueurs;
+	}
+
+	public void setListeTours(ArrayList<Joueur> listeTours) {
+		this.listeTours = listeTours;
+	}
 
 	/**
 	 * @return la pioche
@@ -132,6 +148,7 @@ public class Partie implements Serializable {
 	/**
 	 * getter du nom de l'objet joueur de la partie
 	 */
+	@JsonIgnore
 	public String getName()  {
 		return joueur.getNom();
 	}
@@ -139,6 +156,7 @@ public class Partie implements Serializable {
 	/**
 	 * getter du nom de joueur de la partie
 	 */
+	@JsonIgnore
 	public String getNomJoueur()  {
 		return this.nomJoueur;
 	}
@@ -150,6 +168,7 @@ public class Partie implements Serializable {
 	/**
 	 * getter du nombre de point tresor du joueur de la partie
 	 */
+	@JsonIgnore
 	public int getPointTresor()  {
 		return joueur.getPointTresor();
 	}
@@ -157,6 +176,7 @@ public class Partie implements Serializable {
 	/**
 	 * getter du point victoire du joueur de la partie
 	 */
+	@JsonIgnore
 	public int getPointVictoire()  {
 		return joueur.getPointVictoire();
 	}
@@ -164,6 +184,7 @@ public class Partie implements Serializable {
 	/**
 	 * getter du deck public du joueur de la partie
 	 */
+	@JsonIgnore
 	public DeckPublic getDeckPublic()  {
 		return joueur.getDeckPublic();
 	}
@@ -193,6 +214,7 @@ public class Partie implements Serializable {
 	/**
 	 * getter du joueur
 	 */
+	@JsonIgnore
 	public Joueur getJoueur()
 	{
 		return this.joueur;
@@ -205,10 +227,12 @@ public class Partie implements Serializable {
 		this.joueur = joueur;
 	}
 
+	@JsonIgnore
 	public DeckPrive getDeckPrive()  {
 		return this.joueur.getDeckPrive();
 	}
 
+	@JsonIgnore
 	public Dynastie getDynastie()  {
 		return this.joueur.getDynastie();
 	}
@@ -254,7 +278,7 @@ public class Partie implements Serializable {
 	public boolean IsEstLancee(){
 		return this.estLancee;
 	}
-	
+
 	public ArrayList<Monument> getListeMonuments(){
 		return this.monuments;
 	}
@@ -283,7 +307,7 @@ public class Partie implements Serializable {
 				Joueur joueur = client.getJoueur();
 				joueurs.add(joueur);
 				tours.add(client.getJoueur());
-				
+
 				//attribution des chefs
 				Chef roi = new Chef(TypeChef.Roi, joueur);
 				Chef marchand = new Chef(TypeChef.Marchand, joueur);
@@ -297,24 +321,24 @@ public class Partie implements Serializable {
 				joueur.setDeckPrive(dpriv);
 
 
-				joueur.getDeckPublic().ajouter(roi);
-				joueur.getDeckPublic().ajouter(marchand);
-				joueur.getDeckPublic().ajouter(fermier);
-				joueur.getDeckPublic().ajouter(pretre);
+				joueur.getDeckPublic().ajouterChef(roi);
+				joueur.getDeckPublic().ajouterChef(marchand);
+				joueur.getDeckPublic().ajouterChef(fermier);
+				joueur.getDeckPublic().ajouterChef(pretre);
 
 				//attribution de 2 cartes cata
-				joueur.getDeckPublic().ajouter(new TuileCatastrophe());
-				joueur.getDeckPublic().ajouter(new TuileCatastrophe());
+				joueur.getDeckPublic().ajouterCatastrophe(new TuileCatastrophe());
+				joueur.getDeckPublic().ajouterCatastrophe(new TuileCatastrophe());
 
 				//attribution au hasard de 6 tuile civilisation
 				for(int i = 0; i < 6; i++){
 					TuileCivilisation tuile = this.pioche.piocherTuile();
 					joueur.getDeckPrive().ajouter(tuile);
 				}
-				
+
 				//on renvoie le joueur au client
 				client.setJoueur(joueur);
-				joueurs.add(client.getJoueur());
+				//joueurs.add(client.getJoueur()); DEJA FAIT
 				this.listeTours.add(client.getJoueur());
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
@@ -362,14 +386,14 @@ public class Partie implements Serializable {
 			joueur.setDeckPrive(dpriv);
 
 
-			joueur.getDeckPublic().ajouter(roi);
-			joueur.getDeckPublic().ajouter(marchand);
-			joueur.getDeckPublic().ajouter(fermier);
-			joueur.getDeckPublic().ajouter(pretre);
+			joueur.getDeckPublic().ajouterChef(roi);
+			joueur.getDeckPublic().ajouterChef(marchand);
+			joueur.getDeckPublic().ajouterChef(fermier);
+			joueur.getDeckPublic().ajouterChef(pretre);
 
 			//attribution de 2 cartes cata
-			joueur.getDeckPublic().ajouter(new TuileCatastrophe());
-			joueur.getDeckPublic().ajouter(new TuileCatastrophe());
+			joueur.getDeckPublic().ajouterCatastrophe(new TuileCatastrophe());
+			joueur.getDeckPublic().ajouterCatastrophe(new TuileCatastrophe());
 
 			//attribution au hasard de 6 tuile civilisation
 			for(int i = 0; i < 6; i++){
@@ -379,18 +403,19 @@ public class Partie implements Serializable {
 		}
 
 		this.estLancee=true;
-		
+
 
 	}
-	
+
 	/**
 	 * Methode qui permet de retourner le joueur qui a le tour
 	 * @return
 	 */
+	@JsonIgnore
 	public Joueur getJoueurTour(){
 		return this.listeTours.get(0);
 	}
-	
+
 	/**
 	 * Methode qui permet de passer le tour du joueur et de donner place au prochain
 	 */
@@ -402,19 +427,33 @@ public class Partie implements Serializable {
 	}
 	
 	/**
+	 * Methode qui va faire passer le tour du joueur en conflit
+	 */
+	public void passerTourConflit(){
+		this.listeToursConflits.remove(0);
+	}
+	
+	/**
+	 * Methode permettant d'ajouter un joueur dans la liste des conflits
+	 */
+	public void addJoueurConflit(Joueur j){
+		this.listeToursConflits.add(j);
+	}
+
+	/**
 	 * methode permettant de piocher les cartes manquante a la fin du tour
 	 * @param j1
 	 * @return boolean true = fin de game
 	 */
 	public boolean piocheCartesManquantes(Joueur j1){
-		
+
 		int nbTuiles = j1.getDeckPrive().getDeckPrive().size();
 		if(nbTuiles != 6){
 			if(pioche.getTotalCarte() >= 6-nbTuiles ){
 				for(int j = 0; j<6-nbTuiles;j++){
 					TuileCivilisation tuile = this.pioche.piocherTuile();
 					j1.getDeckPrive().ajouter(tuile);
-					return false;
+					System.out.println("Carte piochée");
 				}
 			}else{
 				return true;
@@ -423,4 +462,29 @@ public class Partie implements Serializable {
 		return false;
 	}
 
+	public ArrayList<Joueur> getListeToursConflits(){
+		return this.listeToursConflits;
+	}
+	
+	public void setListeToursConflits(ArrayList<Joueur> joueurs){
+		this.listeToursConflits = joueurs;
+	}
+	
+	public boolean ajouterTourConflit(Joueur joueur){
+		if(this.listeToursConflits.contains(joueur)){
+			return false;
+		}
+		
+		this.listeToursConflits.add(joueur);
+		return true;
+	}
+	
+	public boolean retirerTourConflit(Joueur joueur){
+		if(!this.listeToursConflits.contains(joueur)){
+			return false;
+		}
+		
+		this.listeToursConflits.remove(joueur);
+		return true;
+	}
 }

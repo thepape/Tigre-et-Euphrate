@@ -13,6 +13,8 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 
 public interface InterfaceServeurClient extends Remote {
 
@@ -33,14 +35,14 @@ public interface InterfaceServeurClient extends Remote {
 
 	public boolean deconnecter() throws RemoteException;
 
-	public void notifierChangement(Object arg) throws RemoteException;
+	public void notifierChangement(ArrayList<Object> args) throws RemoteException;
 	public void addListener(ChangeListener listener) throws RemoteException;
 	public void removeListener(ChangeListener listener) throws RemoteException;
 	public void clearListeners() throws RemoteException;
 	public Joueur getJoueur() throws RemoteException;
 	public void setPartieCourante(Partie partie) throws RemoteException;
 	public ArrayList<InterfaceServeurClient> getClients() throws RemoteException;
-	public void send(Action action, int idClient) throws RemoteException;
+	public boolean send(Action action, int idClient) throws RemoteException;
 	public void passerTour() throws RemoteException;
 
 	public void switchJoueurEstPret(InterfaceServeurClient client) throws RemoteException;
@@ -49,4 +51,9 @@ public interface InterfaceServeurClient extends Remote {
 	public void setDynastie(Dynastie d) throws RemoteException;
 	public void libererDynastie(Dynastie d) throws RemoteException;
 	public int getUniqueId() throws RemoteException;
+	
+	public void envoyerNouveauConflit(Conflits conflit, int idClient) throws RemoteException;
+	public void envoyerRenforts(ArrayList<TuileCivilisation> renforts, Joueur joueur) throws RemoteException;
+	public boolean piocherCartesManquantes(Joueur j) throws RemoteException;
+	public void finirPartie() throws RemoteException;
 }
