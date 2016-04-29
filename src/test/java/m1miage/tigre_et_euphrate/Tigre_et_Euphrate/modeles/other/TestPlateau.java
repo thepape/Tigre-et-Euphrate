@@ -10,7 +10,9 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Tresor;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
@@ -106,6 +108,34 @@ public class TestPlateau {
 		liste = p.recupererListeTuileCivilisationAdjacente(position);
 
 		assertSame(liste.get(liste.size()-1).getType(), TypeTuileCivilisation.Temple);
+
+	}
+
+	@Test
+	public void testRecupererTerritoireTuile()
+	{
+		Plateau p = new Plateau();
+
+		TuileCivilisation tuile = new TuileCivilisation(TypeTuileCivilisation.Marché);
+		Territoire t = p.getListeRoyaume().get(0);
+
+		t.addTuile(tuile);
+
+		assertSame(t, p.recupererTerritoireTuile(tuile));
+
+	}
+
+	@Test
+	public void testRecupererTerritoireChef()
+	{
+		Plateau p = new Plateau();
+
+		Chef tuile = new Chef(TypeChef.Roi);
+		Territoire t = p.getListeRoyaume().get(0);
+
+		t.addChefs(tuile);
+
+		assertSame(t, p.recupererTerritoireTuile(tuile));
 
 	}
 

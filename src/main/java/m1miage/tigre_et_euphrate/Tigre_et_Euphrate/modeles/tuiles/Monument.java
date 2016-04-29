@@ -137,6 +137,11 @@ public class Monument implements Serializable{
 			return false;
 		}
 		
+		//verifie qu'un monument ne repose pas deja sur la tuile
+		if(pTuileNO.estTuileMonument() || pTuileNE.estTuileMonument() || pTuileSO.estTuileMonument() || pTuileSE.estTuileMonument()){
+			return false;
+		}
+		
 		String couleur = pTuileNO.getType().getCouleur();
 		//verifie que l'une des deux couleurs du monument est egale a la couleur des 4 tuiles
 		if(!this.couleurArche.equals(couleur) && !this.couleurEscaliers.equals(couleur)){

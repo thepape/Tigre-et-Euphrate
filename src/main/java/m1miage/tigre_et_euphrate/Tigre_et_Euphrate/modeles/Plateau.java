@@ -29,6 +29,11 @@ public class Plateau implements Serializable {
 	 */
 	private ArrayList<Territoire> listeTerritoire;
 
+	/**
+	 * Le nombre de trésors présents sur le plateau
+	 */
+	private static int nombreTresors = 10;
+
 
 	/**
 	 * Constructeur d'un plateau avec son initialisation
@@ -107,16 +112,59 @@ public class Plateau implements Serializable {
 
 		//Les 10 sphinx et les tresors
 		pplateau[1][1] = new TuileCivilisation(new Tresor());
+		pplateau[1][1].setPosition(new Position(1,1));
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[1][1]));
 		pplateau[0][10] = new TuileCivilisation(new Tresor());
+		pplateau[0][10].setPosition(new Position(0,10));
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[0][10]));
 		pplateau[1][15] = new TuileCivilisation(new Tresor());
+		pplateau[1][15].setPosition(new Position(1,15));
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[1][15]));
 		pplateau[2][5] = new TuileCivilisation(new Tresor());
+		pplateau[2][5].setPosition(new Position(2,5));
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[2][5]));
 		pplateau[4][13] = new TuileCivilisation(new Tresor());
+		pplateau[4][13].setPosition(new Position(4,13));
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[4][13]));
 		pplateau[6][8] = new TuileCivilisation(new Tresor());
+		pplateau[6][8].setPosition(new Position(6,8));
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[6][8]));
 		pplateau[7][1] = new TuileCivilisation(new Tresor());
+		pplateau[7][1].setPosition(new Position(7,1));
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[7][1]));
 		pplateau[8][14] = new TuileCivilisation(new Tresor());
+		pplateau[8][14].setPosition(new Position(8,14));
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[8][14]));
 		pplateau[9][5] = new TuileCivilisation(new Tresor());
+		pplateau[9][5].setPosition(new Position(9,5));
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[9][5]));
 		pplateau[10][10] = new TuileCivilisation(new Tresor());
+		pplateau[10][10].setPosition(new Position(10,10));
+		this.listeTerritoire.add(new Territoire((TuileCivilisation) pplateau[10][10]));
 
+	}
+
+	/**
+	 * Fonction retournant le nombre de trésors restants sur le plateau
+	 * @return le nombreTresors
+	 */
+	public static int getNombreTresors() {
+		return nombreTresors;
+	}
+
+	/**
+	 * Fonction permettant de décrémenter le nombre de trésors
+	 */
+	public static void decrementerNombreTresors(){
+		if(nombreTresors > 0)
+			nombreTresors--;
+	}
+
+	/**
+	 * @param nombreTresors the nombreTresors to set
+	 */
+	public static void setNombreTresors(int nombreTresors) {
+		Plateau.nombreTresors = nombreTresors;
 	}
 
 	/**
@@ -133,7 +181,13 @@ public class Plateau implements Serializable {
 	 * @return
 	 */
 	public Placable getPlacableAt(Position pPos){
-		return this.plateau[pPos.getY()][pPos.getX()];
+		if(pPos.getX() < 0 || pPos.getX() > 15 || pPos.getY() < 0 || pPos.getY() > 10){
+			return null;
+		}
+
+
+		return this.plateau[pPos.getX()][pPos.getY()];
+
 	}
 
 	/**
@@ -196,6 +250,32 @@ public class Plateau implements Serializable {
 		this.listeTerritoire.remove(proyaume);
 	}
 
+	public boolean placerTuile(TuileCivilisation pTuile, int x, int y){
+		return this.placerTuile(pTuile, new Position(x,y));
+	}
+	
+	public boolean verifierPlacerTuile(TuileCivilisation ptuile, Position ppos){
+		int x = ppos.getX();
+		int y = ppos.getY();
+
+		if(x < 0 || y < 0 || x > 10 || y > 15)
+		{
+			return false;
+		} else {
+			if(this.plateau[x][y] != null){
+				return false;
+			}
+			if(!this.plateauTerrain[x][y] && !ptuile.estTuileEau()){
+				return false;
+			}
+			if(this.plateauTerrain[x][y] && ptuile.estTuileEau()){
+				return false;
+			}
+			return true;
+
+		}
+	}
+
 	/**
 	 * Permet de placer une tuile civilisation sur le plateau
 	 * @param ptuile tuile a placer
@@ -205,19 +285,25 @@ public class Plateau implements Serializable {
 		int x = ppos.getX();
 		int y = ppos.getY();
 
-		if(this.plateau[x][y] != null){
+		if(x < 0 || y < 0 || x > 10 || y > 15)
+		{
 			return false;
-		}
-		if(!this.plateauTerrain[x][y] && !ptuile.estTuileEau()){
-			return false;
-		}
-		if(this.plateauTerrain[x][y] && ptuile.estTuileEau()){
-			return false;
-		}
+		} else {
+			if(this.plateau[x][y] != null){
+				return false;
+			}
+			if(!this.plateauTerrain[x][y] && !ptuile.estTuileEau()){
+				return false;
+			}
+			if(this.plateauTerrain[x][y] && ptuile.estTuileEau()){
+				return false;
+			}
 
-		this.plateau[x][y] = ptuile;
-		ptuile.placer(ppos);
-		return true;
+			this.plateau[x][y] = ptuile;
+			ptuile.placer(ppos);
+			return true;
+
+		}
 	}
 
 
@@ -228,9 +314,23 @@ public class Plateau implements Serializable {
 	 * @return true si placer sinon false
 	 */
 	public boolean placerChef(Chef pchef, Position ppos){
+		if(!this.verifierPlacerChef(pchef, ppos)){
+			return false;
+		}
+		
+		this.plateau[ppos.getX()][ppos.getY()] = pchef;
+		
+		return true;
+	}
+	
+	public boolean verifierPlacerChef(Chef pchef, Position ppos){
 		int x = ppos.getX();
 		int y = ppos.getY();
 
+		if(x > 10 || y > 15 || x < 0 || y < 0)
+		{
+			return false;
+		}
 		if(this.plateau[x][y] != null){
 			return false;
 		}
@@ -298,26 +398,163 @@ public class Plateau implements Serializable {
 	public ArrayList<TuileCivilisation> recupererListeTuileCivilisationAdjacente(Position position)
 	{
 		ArrayList<TuileCivilisation> listeAdjacente = new ArrayList<TuileCivilisation>();
+		if(position.getX() < 11 && position.getY() < 16 && position.getX() > -1 && position.getY() > -1)
+		{
 
-		if(position.getX() + 1 < 11 && this.getPlateau()[position.getX() + 1 ][position.getY()] instanceof TuileCivilisation)
-		{
-			TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX() + 1][position.getY()];
-			listeAdjacente.add(tuileAdjacente);
-		} else if(position.getX() - 1 > -1 && this.getPlateau()[position.getX() - 1][position.getY()] instanceof TuileCivilisation)
-		{
-			TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX() - 1][position.getY()];
-			listeAdjacente.add(tuileAdjacente);
-		} else if(position.getY() + 1 < 15 && this.getPlateau()[position.getX()][position.getY() + 1] instanceof TuileCivilisation)
-		{
-			TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX()][position.getY() + 1];
-			listeAdjacente.add(tuileAdjacente);
-		} else if(position.getY() - 1 > -1 && this.getPlateau()[position.getX() ][position.getY() - 1] instanceof TuileCivilisation)
-		{
-			TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX()][position.getY() - 1];
-			listeAdjacente.add(tuileAdjacente);
+			if(position.getX() + 1 < 11 && this.getPlateau()[position.getX() + 1 ][position.getY()] instanceof TuileCivilisation)
+			{
+				TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX() + 1][position.getY()];
+				listeAdjacente.add(tuileAdjacente);
+			}
+
+			if(position.getX() - 1 > -1 && this.getPlateau()[position.getX() - 1][position.getY()] instanceof TuileCivilisation)
+			{
+				System.out.println("X - 1");
+				TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX() - 1][position.getY()];
+				listeAdjacente.add(tuileAdjacente);
+			}
+
+			if(position.getY() + 1 < 16 && this.getPlateau()[position.getX()][position.getY() + 1] instanceof TuileCivilisation)
+			{
+				TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX()][position.getY() + 1];
+				listeAdjacente.add(tuileAdjacente);
+			}
+
+			if(position.getY() - 1 > -1 && this.getPlateau()[position.getX()][position.getY() - 1] instanceof TuileCivilisation)
+			{
+				TuileCivilisation tuileAdjacente = (TuileCivilisation) this.getPlateau()[position.getX()][position.getY() - 1];
+				listeAdjacente.add(tuileAdjacente);
+			}
 		}
 		return listeAdjacente;
 	}
 
+	public void reconstruireTerritoires(Position pDepart){
+		Territoire tNord = new Territoire();
+		Territoire tEst = new Territoire();
+		Territoire tSud = new Territoire();
+		Territoire tOuest = new Territoire();
 
+		//construction de 4 territoires en partant des 4 voisins
+		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX()-1, pDepart.getY()), tNord);
+		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX(), pDepart.getY()+1), tEst);
+		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX()+1, pDepart.getY()), tSud);
+		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX(), pDepart.getY()-1), tOuest);
+
+		//on élimine les territoires identiques pour ne garder que les territoires differents
+		ArrayList<Territoire> territoires = new ArrayList<Territoire>();
+
+		if(tNord.getTuilesCivilisation().size() > 0)
+			territoires.add(tNord);
+		if(tEst.getTuilesCivilisation().size() > 0)
+			territoires.add(tEst);
+		if(tSud.getTuilesCivilisation().size() > 0)
+			territoires.add(tSud);
+		if(tOuest.getTuilesCivilisation().size() > 0)
+			territoires.add(tOuest);
+
+		for(int i = 0; i < territoires.size(); i ++){
+			for(int j = i+1;j < territoires.size(); j++){
+				Territoire t1 = territoires.get(i);
+				Territoire t2 = territoires.get(j);
+				boolean same = t1.comparerTuilesEtChef(t2);
+
+				if(same){
+					territoires.remove(j);
+					j--;
+				}
+			}
+		}
+
+		//on applique les nouveaux territoires aux tuiles
+		for(Territoire t : territoires){
+			//Territoire oldTerritoire = t.getTuilesCivilisation().get(0).getTerritoire();
+			Territoire oldTerritoire = this.recupererTerritoireTuile(t.getTuilesCivilisation().get(0));
+			/*for(TuileCivilisation tuile : t.getTuilesCivilisation()){
+				//tuile.setTerritoire(t);
+			}*/
+
+			/*for(Chef chef : t.getChefs()){
+				chef.setTerritoire(t);
+			}*/
+
+			//on supprime l'ancien territoire on et on ajoute le nouveau
+			this.listeTerritoire.remove(oldTerritoire);
+			this.listeTerritoire.add(t);
+		}
+	}
+
+	public void reconstruireTerritoiresRecurs(Position pDepart, Territoire territoire){
+		Placable pNord = this.getPlacableAt(new Position(pDepart.getX()-1, pDepart.getY()));
+		this.gererTuileDansReconstruction(pNord, territoire);
+
+		Placable pEst = this.getPlacableAt(new Position(pDepart.getX(), pDepart.getY()+1));
+		this.gererTuileDansReconstruction(pEst, territoire);
+
+		Placable pSud = this.getPlacableAt(new Position(pDepart.getX()+1, pDepart.getY()));
+		this.gererTuileDansReconstruction(pSud, territoire);
+
+		Placable pOuest = this.getPlacableAt(new Position(pDepart.getX(), pDepart.getY()-1));
+		this.gererTuileDansReconstruction(pOuest, territoire);
+
+		//on ajoute finallement cette tuile
+		Placable centre = this.getPlacableAt(pDepart);
+		this.gererTuileDansReconstruction(centre, territoire);
+	}
+
+	private void gererTuileDansReconstruction(Placable placable, Territoire territoire){
+		//on verifie que la case Nord est une tuile civ
+				if(placable != null && placable instanceof TuileCivilisation){
+					TuileCivilisation tuile = (TuileCivilisation) placable;
+
+					//on verifie si elle est n'est pas deja dans la liste
+					if(!territoire.contientTuileCivilisation(tuile)){
+						territoire.addTuile(tuile);
+
+						//appel recursif
+						this.reconstruireTerritoiresRecurs(tuile.getPosition(), territoire);
+					}
+				}else if(placable != null && placable instanceof Chef){
+					Chef chef = (Chef) placable;
+
+					//on verifie si elle est n'est pas deja dans la liste
+					if(!territoire.contientChef(chef)){
+						territoire.addChefs(chef);
+
+						//appel recursif
+						this.reconstruireTerritoiresRecurs(chef.getPosition(), territoire);
+					}
+				}
+	}
+
+
+
+	public Territoire recupererTerritoireTuile(Placable tuile) {
+		Territoire territoire = null;
+
+		for(int i = 0; i < this.listeTerritoire.size(); i++)
+		{
+			Territoire t = this.listeTerritoire.get(i);
+			if(tuile instanceof TuileCivilisation)
+			{
+				for(int j = 0; j < t.getTuilesCivilisation().size(); j++)
+				{
+					if(t.getTuilesCivilisation().get(j).getId() == tuile.getId())
+					{
+						territoire = t;
+					}
+				}
+			} else if(tuile instanceof Chef) {
+				for(int j = 0; j < t.getChefs().size(); j++)
+				{
+					if(t.getChefs().get(j).getId() == tuile.getId())
+					{
+						territoire = t;
+					}
+				}
+			}
+
+		}
+		return territoire;
+	}
 }

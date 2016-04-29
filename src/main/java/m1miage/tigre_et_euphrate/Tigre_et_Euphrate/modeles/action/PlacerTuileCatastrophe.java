@@ -82,4 +82,8 @@ public class PlacerTuileCatastrophe extends Action {
 		}
 		return ok;
 	}
+	
+	public boolean verifier(){
+		return false;
+	}
 }

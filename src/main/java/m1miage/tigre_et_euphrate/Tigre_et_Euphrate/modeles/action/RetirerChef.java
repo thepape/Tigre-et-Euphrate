@@ -17,6 +17,8 @@ public class RetirerChef extends Action {
 	 */
 	private Chef chef;
 
+	private int indice;
+
 	/**
 	 * Position du chef
 	 */
@@ -28,25 +30,35 @@ public class RetirerChef extends Action {
 	 * @param pchef
 	 * @param ppos
 	 */
-	public RetirerChef(Partie ppartie, Joueur pjoueur, Chef pchef, Position ppos) {
+	public RetirerChef(Partie ppartie, Joueur pjoueur, Chef pchef, int indice, Position position) {
 		super(ppartie, pjoueur);
 		this.chef = pchef;
-		this.position = ppos;
+		this.indice = indice;
+		this.position = position;
 	}
 
 	/**
 	 * Execute l'action RetirerChef
 	 * On met à null la case du tableau du chef
 	 * On ajoute le chef dans le deck du joueur
-	 * On peut retirer le chef à tout moment sans aucune contrainte ??
 	 * @return vrai ou faux, selon le bon déroulement ou non de l'action
 	 */
 	public boolean executer(){
-		// VERIFIER SI IL FAIT PARTIE D'UN ROYAUME OU D'UN TERRITOIRE
-		if(this.chef.getDynastie() != this.joueur.getDynastie())
+		if(!this.verifier()){
 			return false;
+		}
 		this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = null;
-		this.joueur.getDeckPublic().ajouterChef(this.chef);
+		this.joueur.getDeckPublic().getDeckPublic().add(chef);
+
+
 		return true;
+	}
+	
+	public boolean verifier(){
+		return true;
+	}
+	
+	public String toString(){
+		return this.joueur.getNom()+" a retiré son chef "+this.chef.getTypeChef().getNom();
 	}
 }
