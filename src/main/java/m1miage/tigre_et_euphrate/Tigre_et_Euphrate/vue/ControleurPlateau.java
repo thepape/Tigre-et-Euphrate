@@ -534,11 +534,14 @@ public class ControleurPlateau implements ChangeListener{
 								event.setDropCompleted(false);
 							} else {
 								
-								mainApp.getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
+								boolean actionOK = mainApp.getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
 								target.getChildren().add(image);
 								event.setDropCompleted(true);
 								
-								this.listeActionTour.add(action);
+								if(actionOK){
+									this.listeActionTour.add(action);
+								}
+								
 								
 								if(action instanceof PlacerChef && ((PlacerChef) action).isConflit()){
 									this.conflitInterne = true;

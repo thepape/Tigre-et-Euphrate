@@ -204,9 +204,9 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	/**
 	 * Fonction qui permet d'envoyer des données entre serveur et client
 	 */
-	public void send(Action action, int idClient) throws RemoteException {
+	public boolean send(Action action, int idClient) throws RemoteException {
 		action.setPartie(this.getPartie());
-		action.executer();
+		return action.executer();
 		
 		//this.notifierChangement("plateau");
 	}
