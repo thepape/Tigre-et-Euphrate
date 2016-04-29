@@ -9,6 +9,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 
 
@@ -17,7 +20,7 @@ import javafx.fxml.FXML;
  * @author
  *
  */
-public class ControleurClassement {
+public class ControleurClassement implements ChangeListener{
 	
 	// ATTRIBUTS
 	
@@ -106,6 +109,8 @@ public class ControleurClassement {
 	@FXML
 	private Button quitterJeuBtn;
 	
+	private ArrayList<Joueur> joueurs;
+	
 	// FONCTIONS
 	
 	/**
@@ -137,44 +142,59 @@ public class ControleurClassement {
 	 */
 	public void remplirTableauRecaputulatif() throws RemoteException{
 		ArrayList<InterfaceServeurClient> listeClients = this.mainApp.getServeur().getClients();
-		for(InterfaceServeurClient client : listeClients)
-		{
-			if(client.getJoueur().getDynastie().getNom().equals("Stark")){
-				this.starkBleu.setText(client.getJoueur().getPointVictoireBleu()+"");
-				this.starkRouge.setText(client.getJoueur().getPointVictoireRouge()+"");
-				this.starkVert.setText(client.getJoueur().getPointVictoireVert()+"");
-				this.starkJaune.setText(client.getJoueur().getPointVictoireJaune()+"");
-				this.minStark = this.plusPetit(client.getJoueur().getPointVictoireBleu(), client.getJoueur().getPointVictoireRouge(), client.getJoueur().getPointVictoireVert(), client.getJoueur().getPointVictoireJaune());
-				this.joueurStark = client.getJoueur();
-			}else{
-				if(client.getJoueur().getDynastie().getNom().equals("Lanister")){
-					this.lannisterBleu.setText(client.getJoueur().getPointVictoireBleu()+"");
-					this.lannisterRouge.setText(client.getJoueur().getPointVictoireRouge()+"");
-					this.lannisterVert.setText(client.getJoueur().getPointVictoireVert()+"");
-					this.lannisterJaune.setText(client.getJoueur().getPointVictoireJaune()+"");
-					this.minLannister = this.plusPetit(client.getJoueur().getPointVictoireBleu(), client.getJoueur().getPointVictoireRouge(), client.getJoueur().getPointVictoireVert(), client.getJoueur().getPointVictoireJaune());
-					this.joueurLannister = client.getJoueur();
-				}else{
-					if(client.getJoueur().getDynastie().getNom().equals("Tyrell")){
-						this.tyrellBleu.setText(client.getJoueur().getPointVictoireBleu()+"");
-						this.tyrellRouge.setText(client.getJoueur().getPointVictoireRouge()+"");
-						this.tyrellVert.setText(client.getJoueur().getPointVictoireVert()+"");
-						this.tyrellJaune.setText(client.getJoueur().getPointVictoireJaune()+"");
-						this.minTyrell = this.plusPetit(client.getJoueur().getPointVictoireBleu(), client.getJoueur().getPointVictoireRouge(), client.getJoueur().getPointVictoireVert(), client.getJoueur().getPointVictoireJaune());
-						this.joueurTyrell = client.getJoueur();
+		this.joueurs = new ArrayList<Joueur>();
+		
+		for(InterfaceServeurClient client : listeClients){
+			joueurs.add(client.getJoueur());
+		}
+		
+		Platform.runLater(new Runnable(){
+
+			public void run() {
+				for(Joueur joueur : joueurs)
+				{
+					if(joueur.getDynastie().getNom().equals("Stark")){
+						starkBleu.setText(joueur.getPointVictoireBleu()+"");
+						starkRouge.setText(joueur.getPointVictoireRouge()+"");
+						starkVert.setText(joueur.getPointVictoireVert()+"");
+						starkJaune.setText(joueur.getPointVictoireJaune()+"");
+						minStark = plusPetit(joueur.getPointVictoireBleu(), joueur.getPointVictoireRouge(), joueur.getPointVictoireVert(), joueur.getPointVictoireJaune());
+						joueurStark = joueur;
 					}else{
-						if(client.getJoueur().getDynastie().getNom().equals("Targaryen")){
-							this.targaryenBleu.setText(client.getJoueur().getPointVictoireBleu()+"");
-							this.targaryenRouge.setText(client.getJoueur().getPointVictoireRouge()+"");
-							this.targaryenVert.setText(client.getJoueur().getPointVictoireVert()+"");
-							this.targaryenJaune.setText(client.getJoueur().getPointVictoireJaune()+"");
-							this.minTargaryen = this.plusPetit(client.getJoueur().getPointVictoireBleu(), client.getJoueur().getPointVictoireRouge(), client.getJoueur().getPointVictoireVert(), client.getJoueur().getPointVictoireJaune());
-							this.joueurTargaryen = client.getJoueur();
+						if(joueur.getDynastie().getNom().equals("Lanister")){
+							lannisterBleu.setText(joueur.getPointVictoireBleu()+"");
+							lannisterRouge.setText(joueur.getPointVictoireRouge()+"");
+							lannisterVert.setText(joueur.getPointVictoireVert()+"");
+							lannisterJaune.setText(joueur.getPointVictoireJaune()+"");
+							minLannister = plusPetit(joueur.getPointVictoireBleu(), joueur.getPointVictoireRouge(), joueur.getPointVictoireVert(), joueur.getPointVictoireJaune());
+							joueurLannister = joueur;
+						}else{
+							if(joueur.getDynastie().getNom().equals("Tyrell")){
+								tyrellBleu.setText(joueur.getPointVictoireBleu()+"");
+								tyrellRouge.setText(joueur.getPointVictoireRouge()+"");
+								tyrellVert.setText(joueur.getPointVictoireVert()+"");
+								tyrellJaune.setText(joueur.getPointVictoireJaune()+"");
+								minTyrell = plusPetit(joueur.getPointVictoireBleu(), joueur.getPointVictoireRouge(), joueur.getPointVictoireVert(), joueur.getPointVictoireJaune());
+								joueurTyrell = joueur;
+							}else{
+								if(joueur.getDynastie().getNom().equals("Targaryen")){
+									targaryenBleu.setText(joueur.getPointVictoireBleu()+"");
+									targaryenRouge.setText(joueur.getPointVictoireRouge()+"");
+									targaryenVert.setText(joueur.getPointVictoireVert()+"");
+									targaryenJaune.setText(joueur.getPointVictoireJaune()+"");
+									minTargaryen = plusPetit(joueur.getPointVictoireBleu(), joueur.getPointVictoireRouge(), joueur.getPointVictoireVert(), joueur.getPointVictoireJaune());
+									joueurTargaryen = joueur;
+								}
+							}
 						}
 					}
 				}
+				
 			}
-		}
+			
+		});
+		
+		
 	}
 	
 	/**
@@ -198,6 +218,16 @@ public class ControleurClassement {
 		this.classementDeux.setText(this.joueurLannister+"");
 		this.classementTrois.setText(this.joueurLannister+"");
 		this.classementQuatre.setText(this.joueurLannister+"");
+	}
+	
+	@FXML
+	public void revenirMenu(){
+		MainApp.getInstance().goToMenuPage();
+	}
+
+	public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 

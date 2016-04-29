@@ -56,4 +56,5 @@ public interface InterfaceServeurClient extends Remote {
 	public void envoyerRenforts(ArrayList<TuileCivilisation> renforts, Joueur joueur) throws RemoteException;
 	public boolean piocherCartesManquantes(Joueur j) throws RemoteException;
 	public void finirPartie() throws RemoteException;
+	public void envoyerPointsAttribues(Joueur joueur) throws RemoteException;
 }

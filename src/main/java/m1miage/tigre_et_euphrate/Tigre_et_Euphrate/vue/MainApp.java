@@ -267,6 +267,8 @@ public class MainApp extends Application implements App {
 	 */
 	public void goToMenuPage() {
 		try {
+			if(this.client != null)
+				this.client.clearListeners();
 			this.replaceSceneContent("MenuDepart.fxml");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -310,6 +312,8 @@ public class MainApp extends Application implements App {
 		try{
 			this.replaceSceneContent("InterfaceTresors.fxml");
 			ControleurAttributionTresors controler = (ControleurAttributionTresors)this.currentControler;
+			this.client.clearListeners();
+			this.client.addListener(controler);
 			// Le nombre de trésors que le joueur possède
 			controler.initialiser(nombreDeTresors);
 		} catch (Exception e){
@@ -325,6 +329,9 @@ public class MainApp extends Application implements App {
 			this.replaceSceneContent("InterfaceClassement.fxml");
 			ControleurClassement controler = (ControleurClassement)this.currentControler;
 			controler.initialiser();
+			
+			this.client.clearListeners();
+			this.client.addListener(controler);
 		} catch (Exception e){
 			e.printStackTrace();
 		}
