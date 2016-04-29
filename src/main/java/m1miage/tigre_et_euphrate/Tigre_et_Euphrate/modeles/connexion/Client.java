@@ -430,6 +430,10 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public void finirPartie() throws RemoteException {
+		
+	}
 
 	
 
