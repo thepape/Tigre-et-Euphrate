@@ -517,7 +517,7 @@ public class ControleurPlateau implements ChangeListener{
 						} });
 				}
 				Position position = new Position(GridPane.getRowIndex((Pane)event.getSource()), GridPane.getColumnIndex((Pane)event.getSource()));
-				if(target.getChildren().size() == 0)
+				if(target.getChildren().size() == 0 && !(this.tuileAction instanceof TuileCatastrophe))
 				{
 
 					try
