@@ -334,7 +334,8 @@ public class Conflits implements Serializable{
 			this.partie.piocheCartesManquantes(this.chefAttaquant.getJoueur());
 			this.partie.piocheCartesManquantes(this.chefDefenseur.getJoueur());
 			
-			this.getChefDefenseur().getJoueur().ajouterPointVictoire(1);
+			this.getChefDefenseur().getJoueur().ajouterPointsVictoire("rouge", 1);
+			System.out.println("SERVEUR: points de "+this.getChefDefenseur().getJoueur().getNom()+"="+this.getChefDefenseur().getJoueur().getPointVictoireRouge());
 			return this.getChefDefenseur();
 		} else {
 			this.setEstResolu(true);
@@ -368,7 +369,8 @@ public class Conflits implements Serializable{
 			this.partie.piocheCartesManquantes(this.chefAttaquant.getJoueur());
 			this.partie.piocheCartesManquantes(this.chefDefenseur.getJoueur());
 			
-			this.getChefAttaquant().getJoueur().ajouterPointVictoire(1);
+			this.getChefAttaquant().getJoueur().ajouterPointsVictoire("rouge", 1);
+			System.out.println("SERVEUR: points de "+this.getChefAttaquant().getJoueur().getNom()+"="+this.getChefAttaquant().getJoueur().getPointVictoireRouge());
 			return this.getChefAttaquant();
 		}
 	}

@@ -266,7 +266,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	/**
 	 * Fonction qui permet d'envoyer des données du serveur aux clients
 	 */
-	public void send(Action action, int idClient) throws RemoteException {
+	public boolean send(Action action, int idClient) throws RemoteException {
 		action.setPartie(this.partie);
 		boolean ok = action.executer();
 		
@@ -300,6 +300,8 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			
 			c.notifierChangement(params);
 		}
+		
+		return ok;
 	}
 
 	/**

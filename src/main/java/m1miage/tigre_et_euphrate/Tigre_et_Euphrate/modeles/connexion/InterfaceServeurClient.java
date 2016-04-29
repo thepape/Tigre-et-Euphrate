@@ -42,7 +42,7 @@ public interface InterfaceServeurClient extends Remote {
 	public Joueur getJoueur() throws RemoteException;
 	public void setPartieCourante(Partie partie) throws RemoteException;
 	public ArrayList<InterfaceServeurClient> getClients() throws RemoteException;
-	public void send(Action action, int idClient) throws RemoteException;
+	public boolean send(Action action, int idClient) throws RemoteException;
 	public void passerTour() throws RemoteException;
 
 	public void switchJoueurEstPret(InterfaceServeurClient client) throws RemoteException;
