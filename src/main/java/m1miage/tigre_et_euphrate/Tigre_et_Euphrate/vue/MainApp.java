@@ -316,6 +316,19 @@ public class MainApp extends Application implements App {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Fonction qui affiche l'interface du classement
+	 */
+	public void goToClassement(){
+		try{
+			this.replaceSceneContent("InterfaceClassement.fxml");
+			ControleurClassement controler = (ControleurClassement)this.currentControler;
+			controler.initialiser();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
 
 	public void afficherPopTuile() {
 		//TODO
