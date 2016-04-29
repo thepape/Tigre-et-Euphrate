@@ -177,6 +177,33 @@ public class Joueur implements Serializable{
 	public int getPointVictoireRouge(){
 		return this.PointVictoireRouge;
 	}
+	
+	/**
+	 * getter des points victoire du joueur
+	 * @return points victoire du joueur
+	 */
+	@JsonProperty("PointVictoireVert")
+	public int getPointVictoireVert(){
+		return this.PointVictoireVert;
+	}
+	
+	/**
+	 * getter des points victoire du joueur
+	 * @return points victoire du joueur
+	 */
+	@JsonProperty("PointVictoireJaune")
+	public int getPointVictoireJaune(){
+		return this.PointVictoireJaune;
+	}
+	
+	/**
+	 * getter des points victoire du joueur
+	 * @return points victoire du joueur
+	 */
+	@JsonProperty("PointVictoireBleu")
+	public int getPointVictoireBleu(){
+		return this.PointVictoireBleu;
+	}
 
 	public void ajouterPointsVictoire(String couleur, int points){
 		if(couleur.equals("rouge")){
