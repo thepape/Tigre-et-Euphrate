@@ -181,7 +181,7 @@ public class Plateau implements Serializable {
 	 * @return
 	 */
 	public Placable getPlacableAt(Position pPos){
-		if(pPos.getX() < 0 || pPos.getX() > 15 || pPos.getY() < 0 || pPos.getY() > 10){
+		if(pPos.getX() < 0 || pPos.getX() > 10 || pPos.getY() < 0 || pPos.getY() > 15){
 			return null;
 		}
 
@@ -556,5 +556,35 @@ public class Plateau implements Serializable {
 
 		}
 		return territoire;
+	}
+	
+	public String afficher(){
+		StringBuffer sb = new StringBuffer("");
+		
+		for(int x = 0; x < 11; x++){
+			for(int y = 0; y < 16;y++){
+				sb.append("[");
+				
+				Placable placable = this.plateau[x][y];
+				
+				if(placable instanceof TuileCivilisation){
+					TuileCivilisation tuile = (TuileCivilisation) placable;
+					sb.append(tuile.getType().getNom().substring(0, 1)+" ");
+				}
+				else if(placable instanceof Chef){
+					Chef chef = (Chef) placable;
+					sb.append(chef.getTypeChef().getNom().substring(0, 1)+"*");
+				}
+				else{
+					sb.append("  ");
+				}
+				
+				sb.append("]");
+			}
+			
+			sb.append("\n");
+		}
+		
+		return sb.toString();
 	}
 }

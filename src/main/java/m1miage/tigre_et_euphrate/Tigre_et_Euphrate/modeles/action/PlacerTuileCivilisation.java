@@ -6,6 +6,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Tuile;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
@@ -96,8 +97,29 @@ public class PlacerTuileCivilisation extends Action {
 
 					if(!this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(i)).equals(this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(j))))
 					{
-						conflit = true;
-						System.out.println(conflit);
+						//verifier que les 2 territoires sont royaumes et contiennent un chef de la meme couleur
+						Territoire t1 = this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(i));
+						Territoire t2 = this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(j));
+						
+						for(Chef chef1 : t1.getChefs()){
+							for(Chef chef2 : t2.getChefs()){
+								if(chef1.getTypeChef().equals(chef2.getTypeChef())){
+									conflit = true;
+									System.out.println("conflit externe !");
+									this.tuile.setJonction(true);
+									
+									//il faut créer le conflit et l'ajouter a la liste de conflits de la partie
+								}
+							}
+						}
+						
+						//si pas de conflit externe detecté, on réunit les 2 territoires
+						if(!conflit){
+							//on reunit les 2 territoires
+							t1.addListeChefs(t2.getChefs());
+							t1.addListeTuiles(t2.getTuilesCivilisation());
+							this.partie.getPlateauJeu().getListeRoyaume().remove(t2);
+						}
 					}
 				}
 			}

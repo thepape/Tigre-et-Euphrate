@@ -268,7 +268,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 */
 	public void send(Action action, int idClient) throws RemoteException {
 		action.setPartie(this.partie);
-		action.executer();
+		boolean ok = action.executer();
 		
 		for(int i = 0; i < this.clients.size(); i++)
 		{
@@ -285,7 +285,10 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			params.add("plateau");
 			params.add("deckPrive");
 			params.add("deckPublic");
-			params.add("message:"+action.toString()+".");
+			
+			if(ok){
+				params.add("message:"+action.toString()+".");
+			}
 			
 			if(action instanceof PlacerChef && ((PlacerChef) action).isConflit()){
 				PlacerChef pc = ((PlacerChef) action);
