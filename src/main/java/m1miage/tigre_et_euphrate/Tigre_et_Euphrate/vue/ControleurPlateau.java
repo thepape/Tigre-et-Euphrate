@@ -385,6 +385,7 @@ public class ControleurPlateau implements ChangeListener{
 			
 			if(placable instanceof Chef){
 				this.tuileAction = (Chef) placable;
+				this.positionChefRetire = placable.getPosition();
 			}
 			
 		} catch (RemoteException e) {
@@ -697,18 +698,18 @@ public class ControleurPlateau implements ChangeListener{
 				} });
 			if((target.getAccessibleText().contains("Chef") && image.getAccessibleText().contains("Chef")))
 			{
-
+				Position posChefARetirer = this.tuileAction.getPosition();
 				Chef chefRetrait = (Chef) MainApp.getInstance().getClient().getPartie().getPlateauJeu().getPlateau()[this.positionChefRetire.getX()][this.positionChefRetire.getY()];
 				String url = getClass().getResource(mainApp.getClient().getJoueur().getDynastie().getNom().toLowerCase() + "_" + chefRetrait.getTypeChef().getFinUrlImage()).toExternalForm();
 				Image imageSrc = new Image(url);
 				image.setImage(imageSrc);
 				Action action = new RetirerChef(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur(), chefRetrait, GridPane.getRowIndex(target), this.positionChefRetire);
-				if(!action.executer())
+				if(!action.verifier())
 				{
 					event.setDropCompleted(false);
 				} else {
-					target.getChildren().remove(0);
-					target.getChildren().add(image);
+					/*target.getChildren().clear();
+					target.getChildren().add(image);*/
 					event.setDropCompleted(true);
 					this.listeActionTour.add(action);
 					MainApp.getInstance().getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
