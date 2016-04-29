@@ -140,35 +140,35 @@ public class ControleurClassement {
 		for(InterfaceServeurClient client : listeClients)
 		{
 			if(client.getJoueur().getDynastie().getNom().equals("Stark")){
-				this.starkBleu.setText(client.getJoueur().getPointsVictoireBleu()+"");
-				this.starkRouge.setText(client.getJoueur().getPointsVictoireRouge()+"");
-				this.starkVert.setText(client.getJoueur().getPointsVictoireVert()+"");
-				this.starkJaune.setText(client.getJoueur().getPointsVictoireJaune()+"");
-				this.minStark = this.plusPetit(client.getJoueur().getPointsVictoireBleu(), client.getJoueur().getPointsVictoireRouge(), client.getJoueur().getPointsVictoireVert(), client.getJoueur().getPointsVictoireJaune());
+				this.starkBleu.setText(client.getJoueur().getPointVictoireBleu()+"");
+				this.starkRouge.setText(client.getJoueur().getPointVictoireRouge()+"");
+				this.starkVert.setText(client.getJoueur().getPointVictoireVert()+"");
+				this.starkJaune.setText(client.getJoueur().getPointVictoireJaune()+"");
+				this.minStark = this.plusPetit(client.getJoueur().getPointVictoireBleu(), client.getJoueur().getPointVictoireRouge(), client.getJoueur().getPointVictoireVert(), client.getJoueur().getPointVictoireJaune());
 				this.joueurStark = client.getJoueur();
 			}else{
 				if(client.getJoueur().getDynastie().getNom().equals("Lanister")){
-					this.lannisterBleu.setText(client.getJoueur().getPointsVictoireBleu()+"");
-					this.lannisterRouge.setText(client.getJoueur().getPointsVictoireRouge()+"");
-					this.lannisterVert.setText(client.getJoueur().getPointsVictoireVert()+"");
-					this.lannisterJaune.setText(client.getJoueur().getPointsVictoireJaune()+"");
-					this.minLannister = this.plusPetit(client.getJoueur().getPointsVictoireBleu(), client.getJoueur().getPointsVictoireRouge(), client.getJoueur().getPointsVictoireVert(), client.getJoueur().getPointsVictoireJaune());
+					this.lannisterBleu.setText(client.getJoueur().getPointVictoireBleu()+"");
+					this.lannisterRouge.setText(client.getJoueur().getPointVictoireRouge()+"");
+					this.lannisterVert.setText(client.getJoueur().getPointVictoireVert()+"");
+					this.lannisterJaune.setText(client.getJoueur().getPointVictoireJaune()+"");
+					this.minLannister = this.plusPetit(client.getJoueur().getPointVictoireBleu(), client.getJoueur().getPointVictoireRouge(), client.getJoueur().getPointVictoireVert(), client.getJoueur().getPointVictoireJaune());
 					this.joueurLannister = client.getJoueur();
 				}else{
 					if(client.getJoueur().getDynastie().getNom().equals("Tyrell")){
-						this.tyrellBleu.setText(client.getJoueur().getPointsVictoireBleu()+"");
-						this.tyrellRouge.setText(client.getJoueur().getPointsVictoireRouge()+"");
-						this.tyrellVert.setText(client.getJoueur().getPointsVictoireVert()+"");
-						this.tyrellJaune.setText(client.getJoueur().getPointsVictoireJaune()+"");
-						this.minTyrell = this.plusPetit(client.getJoueur().getPointsVictoireBleu(), client.getJoueur().getPointsVictoireRouge(), client.getJoueur().getPointsVictoireVert(), client.getJoueur().getPointsVictoireJaune());
+						this.tyrellBleu.setText(client.getJoueur().getPointVictoireBleu()+"");
+						this.tyrellRouge.setText(client.getJoueur().getPointVictoireRouge()+"");
+						this.tyrellVert.setText(client.getJoueur().getPointVictoireVert()+"");
+						this.tyrellJaune.setText(client.getJoueur().getPointVictoireJaune()+"");
+						this.minTyrell = this.plusPetit(client.getJoueur().getPointVictoireBleu(), client.getJoueur().getPointVictoireRouge(), client.getJoueur().getPointVictoireVert(), client.getJoueur().getPointVictoireJaune());
 						this.joueurTyrell = client.getJoueur();
 					}else{
 						if(client.getJoueur().getDynastie().getNom().equals("Targaryen")){
-							this.targaryenBleu.setText(client.getJoueur().getPointsVictoireBleu()+"");
-							this.targaryenRouge.setText(client.getJoueur().getPointsVictoireRouge()+"");
-							this.targaryenVert.setText(client.getJoueur().getPointsVictoireVert()+"");
-							this.targaryenJaune.setText(client.getJoueur().getPointsVictoireJaune()+"");
-							this.minTargaryen = this.plusPetit(client.getJoueur().getPointsVictoireBleu(), client.getJoueur().getPointsVictoireRouge(), client.getJoueur().getPointsVictoireVert(), client.getJoueur().getPointsVictoireJaune());
+							this.targaryenBleu.setText(client.getJoueur().getPointVictoireBleu()+"");
+							this.targaryenRouge.setText(client.getJoueur().getPointVictoireRouge()+"");
+							this.targaryenVert.setText(client.getJoueur().getPointVictoireVert()+"");
+							this.targaryenJaune.setText(client.getJoueur().getPointVictoireJaune()+"");
+							this.minTargaryen = this.plusPetit(client.getJoueur().getPointVictoireBleu(), client.getJoueur().getPointVictoireRouge(), client.getJoueur().getPointVictoireVert(), client.getJoueur().getPointVictoireJaune());
 							this.joueurTargaryen = client.getJoueur();
 						}
 					}
