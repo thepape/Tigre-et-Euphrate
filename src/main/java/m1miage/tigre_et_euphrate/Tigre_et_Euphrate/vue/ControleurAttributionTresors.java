@@ -77,6 +77,10 @@ public class ControleurAttributionTresors {
 	
 	// FONCTIONS
 	
+	/**
+	 * Fonction permettant d'initialiser l'interface d'attribution des tresors
+	 * @param nbTresorsTotal
+	 */
 	public void initialiser(int nbTresorsTotal){
 		this.setCompteurTotal(nbTresorsTotal);
 		this.nbTresorsTotal.setText(this.compteurTotal+"");
@@ -259,9 +263,11 @@ public class ControleurAttributionTresors {
 	
 	/**
 	 * Fonction validant l'attribution des trésors aux Civilisations
+	 * Permet de rediriger vers l'interface de fin de partie : Tableau récapitulatif des points et Classement.
 	 */
 	public void valider(){
-		
+		// MAJ des points de chaque civilisation de chaque joueur avec les points tresors
+		this.mainApp.goToClassement();
 	}
 	
 	/**
