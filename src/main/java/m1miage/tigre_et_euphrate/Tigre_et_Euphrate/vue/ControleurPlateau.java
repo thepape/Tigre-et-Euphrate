@@ -794,9 +794,9 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 
 		/////////////////   affichage des tuiles ////////////////////
 
-		for(int x = 0; x < 16; x++){
-			for(int y = 0; y < 11; y++){
-				Node child = this.getNode(y, x);
+		for(int x = 0; x < 11; x++){
+			for(int y = 0; y < 16; y++){
+				Node child = this.getNode(x, y);
 
 				if(child == null){
 					continue;
@@ -836,6 +836,16 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 							casePlateau.getChildren().clear();
 							caseNettoyee = true;
 							casePlateau.getChildren().add(imgView);
+							
+							//si la tuile est jonction, on l'affiche
+							if(tuileCiv.estJonction()){
+								ImageView jonction = new ImageView();
+								URL Jonctfile = this.getClass().getResource("jonction.png");
+								Image imgJonct = new Image(Jonctfile.toString());
+								jonction.setImage(imgJonct);
+								
+								casePlateau.getChildren().add(jonction);
+							}
 						}
 						else if(placable instanceof TuileCatastrophe){
 							TuileCatastrophe tuile = (TuileCatastrophe) placable;
@@ -851,6 +861,8 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 							casePlateau.getChildren().clear();
 							caseNettoyee = true;
 							casePlateau.getChildren().add(imgView);
+							
+							
 						}
 						else if(placable instanceof Chef){
 
@@ -858,27 +870,9 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 							Client client = (Client) MainApp.getInstance().getClient();
 							Joueur joueur = client.getJoueur();
 
-							//si le chef present dans cette case appartient au client là, on y touche pas
-							//pour garder le drag and drop
-							if(joueur.getId() == chef.getJoueur().getId()){
-								
-								
-								if(casePlateau.getChildren().size() > 0){
-									ImageView image = (ImageView) casePlateau.getChildren().get(0);
-									image.setOnDragDetected(new EventHandler<MouseEvent>(){
-
-										public void handle(MouseEvent arg0) {
-											dragChefFromPlateau(arg0);
-											
-										}
-										
-									});
-								}
-								
-								caseNettoyee = true;
-							}
-							else{
-								//sinon, on met a jour l'affichage
+							
+							
+								//on met a jour l'affichage
 								String dyn = chef.getDynastie().getNom().toLowerCase();
 								String coul = chef.getTypeChef().getFinUrlImage();
 								String imgUrl = dyn+"_"+coul;
@@ -892,7 +886,25 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 								casePlateau.getChildren().clear();
 								caseNettoyee = true;
 								casePlateau.getChildren().add(imgView);
-							}
+								
+								//si le chef present dans cette case appartient au client là, on ajoute le drag and drop depuis plateau
+								if(joueur.getId() == chef.getJoueur().getId()){
+									
+									if(casePlateau.getChildren().size() > 0){
+										ImageView image = (ImageView) casePlateau.getChildren().get(0);
+										image.setOnDragDetected(new EventHandler<MouseEvent>(){
+
+											public void handle(MouseEvent arg0) {
+												dragChefFromPlateau(arg0);
+												
+											}
+											
+										});
+									}
+									
+									caseNettoyee = true;
+								}
+							
 						}
 
 
@@ -909,9 +921,9 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 
 		////////////////   affichage des monuments  /////////////////
 
-		for(int x = 0; x < 16; x++){
-			for(int y = 0; y < 11; y++){
-				Node child = this.getNode(y, x);
+		for(int x = 0; x < 11; x++){
+			for(int y = 0; y < 16; y++){
+				Node child = this.getNode(x, y);
 
 				if(child == null){
 					continue;
@@ -962,9 +974,9 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 
 ////////////////affichage des tresor  /////////////////
 
-for(int x = 0; x < 16; x++){
-	for(int y = 0; y < 11; y++){
-		Node child = this.getNode(y, x);
+for(int x = 0; x < 11; x++){
+	for(int y = 0; y < 16; y++){
+		Node child = this.getNode(x, y);
 
 		if(child == null){
 			continue;
@@ -1070,8 +1082,8 @@ for(int x = 0; x < 16; x++){
 		for(Node child : this.plateau.getChildren()){
 			int nx, ny = 0;
 			try{
-			nx = GridPane.getColumnIndex(child);
-			ny = GridPane.getRowIndex(child);
+			ny = GridPane.getColumnIndex(child);
+			nx = GridPane.getRowIndex(child);
 			}catch(Exception e){
 				continue;
 			}
@@ -1311,6 +1323,9 @@ for(int x = 0; x < 16; x++){
 				if(param.equals("plateau")){
 					//rafraichir le plateau
 					this.construirePlateau();
+					
+					Plateau plateau = this.partie.getPlateauJeu();
+					System.out.println(plateau.afficher());
 				} else if(param.equals("deckPublic"))
 				{
 					try
