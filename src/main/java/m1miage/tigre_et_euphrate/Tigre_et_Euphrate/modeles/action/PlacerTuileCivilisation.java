@@ -1,8 +1,11 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action;
 
+import java.util.ArrayList;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Tuile;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
@@ -17,6 +20,11 @@ public class PlacerTuileCivilisation extends Action {
 	private Position position;
 
 	private TuileCivilisation tuile;
+
+	/**
+	 * boolean pour tester les conflits
+	 */
+	private boolean conflit;
 
 	/**
 	 * getter de la position
@@ -67,35 +75,68 @@ public class PlacerTuileCivilisation extends Action {
 	public boolean executer(){
 		boolean ok = false;
 		
-		ok = this.partie.getPlateauJeu().placerTuile(this.tuile, this.position);
-
-		return ok;
-		
-
-		/*f((this.position.getX() > 11 || this.position.getY() > 16) || (this.position.getY() < 0 || this.position.getX() < 0))
-		{
+		if(!this.verifier()){
 			return false;
 		}
 
-		if(this.tuile.getType().equals(TypeTuileCivilisation.Ferme))
+		ArrayList<TuileCivilisation> listeAdjacente = this.partie.getPlateauJeu().recupererListeTuileCivilisationAdjacente(position);
+		conflit = false;
+		if(listeAdjacente.size() > 0)
 		{
-			if(this.partie.getPlateauJeu().getPlateauTerrain()[this.position.getX()][this.position.getY()] == false
-					&& this.partie.getPlateauJeu().getPlateau()[this.getPosition().getX()][this.position.getY()] == null)
+
+			for(int i = 0; i < listeAdjacente.size()-1; i++)
 			{
-				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.tuile;
-				ok = true;
-			} else {
-				ok = false;
+				for(int j = 1; j < listeAdjacente.size(); j++)
+				{
+					/*if(!listeAdjacente.get(i).getTerritoire().equals(listeAdjacente.get(j).getTerritoire()))
+					{
+						//TODO conflits
+						conflit = true;
+					}*/
+
+					if(!this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(i)).equals(this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(j))))
+					{
+						conflit = true;
+						System.out.println(conflit);
+					}
+				}
 			}
-		} else {
-			if(this.partie.getPlateauJeu().getPlateau()[this.getPosition().getX()][this.position.getY()] != null)
+
+			if(!conflit)
 			{
-				ok = false;
-			} else {
-				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.tuile;
-				ok = true;
+				this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(0)).addTuile(tuile);
 			}
+		}  else {
+			//tuile.setTerritoire(new Territoire());
+			Territoire territoire = new Territoire();
+			territoire.addTuile(tuile);
+			this.partie.getPlateauJeu().getListeRoyaume().add(territoire);
 		}
-		return ok;*/
+
+
+		ok = this.partie.getPlateauJeu().placerTuile(this.tuile, this.position);
+		
+		// on retire cette tuile du deck privé du joueur
+		this.joueur.getDeckPrive().getDeckPrive().remove(this.tuile);
+		
+		return ok;
+	}
+
+	public boolean isConflit() {
+		return conflit;
+	}
+
+	public void setConflit(boolean conflit) {
+		this.conflit = conflit;
+	}
+
+	public String toString(){
+		return this.joueur.getNom()+" a placé une tuile "+this.tuile.getType().getNom()+" à la ligne "+this.position.getX()+", colonne "+this.position.getY();
+	}
+
+	@Override
+	public boolean verifier() {
+		// TODO Auto-generated method stub
+		return this.partie.getPlateauJeu().verifierPlacerTuile(tuile, position);
 	}
 }

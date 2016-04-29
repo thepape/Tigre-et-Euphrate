@@ -38,15 +38,15 @@ public class TestPlacerTuileCivilisation {
 	@Test
 	public void testPlacerTuileFerme() {
 		TuileCivilisation tuile = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(1,3), tuile);
+		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(3,1), tuile);
 		assertTrue(action.executer());
-		assertSame(this.partie.getPlateauJeu().getPlateau()[1][3], tuile);
+		assertSame(this.partie.getPlateauJeu().getPlateau()[3][1], tuile);
 	}
 
 	@Test
 	public void testPlacerTuileFermeNonValide() {
 		TuileCivilisation tuile = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(0,5), tuile);
+		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(0,0), tuile);
 		assertFalse(action.executer());
 	}
 
@@ -64,6 +64,29 @@ public class TestPlacerTuileCivilisation {
 		action.executer();
 		action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(1,3), tuile);
 		assertFalse(action.executer());
+	}
+
+	@Test
+	public void testTerritoirePlacerTuile() {
+		TuileCivilisation tuile = new TuileCivilisation(TypeTuileCivilisation.Marché);
+		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(0,1), tuile);
+		action.executer();
+		TuileCivilisation tuileTemple = (TuileCivilisation) this.partie.getPlateauJeu().getPlateau()[1][1];
+		assertEquals(partie.getPlateauJeu().recupererTerritoireTuile(tuile), partie.getPlateauJeu().recupererTerritoireTuile(tuileTemple));
+	}
+
+
+	@Test
+	public void testTerritoireConflit() {
+		TuileCivilisation tuileT = new TuileCivilisation(TypeTuileCivilisation.Marché);
+		Action actionT = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(0,0), tuileT);
+		actionT.executer();
+		TuileCivilisation tuile = new TuileCivilisation(TypeTuileCivilisation.Marché);
+		PlacerTuileCivilisation action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(0,1), tuile);
+		boolean ok = action.executer();
+		assertTrue(action.isConflit());
+		assertTrue(ok);
+
 	}
 
 }
