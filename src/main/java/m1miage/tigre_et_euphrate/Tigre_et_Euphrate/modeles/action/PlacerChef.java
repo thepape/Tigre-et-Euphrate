@@ -10,6 +10,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
@@ -120,6 +121,8 @@ public class PlacerChef extends Action {
 
 				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
 				this.chef.setPosition(new Position(this.position.getX(), this.position.getY()));
+				//Verifie si condition de recuperation de points tresors
+				this.verifierTresors();
 				
 				this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
 
@@ -176,6 +179,39 @@ public class PlacerChef extends Action {
 	
 	public Conflits getConflit(){
 		return this.instanceConflit;
+	}
+	
+	/**
+	 * verifie si quand on pose le chef marchand le territoire possède 2 trésors ou plus
+	 * @return
+	 */
+	public void verifierTresors(){
+		//supprimer tresors + attribuer tresor
+		if(this.chef.getTypeChef().equals(TypeChef.Marchand)){
+			int nbtuiletresor = 0;
+			ArrayList<TuileCivilisation> tuileTresor = new ArrayList<TuileCivilisation>();
+			
+			Territoire terri = this.partie.getPlateauJeu().recupererTerritoireTuile(this.chef);
+			ArrayList<TuileCivilisation> listeTuile = terri.getTuilesCivilisation();
+			
+			for(TuileCivilisation tuile : listeTuile){
+				if(tuile.getType().equals(TypeTuileCivilisation.Temple)){
+					if(tuile.aTresor()){
+						nbtuiletresor++;
+						tuileTresor.add(tuile);
+					}
+				}
+			}
+			
+			if(nbtuiletresor >1){
+				for(int i = 0; i<nbtuiletresor-1;i++){
+					tuileTresor.get(0).recupererTresor();
+					tuileTresor.remove(0);
+					this.chef.getJoueur().ajouterPointsTresor(1);
+					System.out.println("Le joueur "+this.chef.getJoueur().getNom()+" a recu un point tresor");
+				}
+			}
+		}
 	}
 	
 	public String toString(){
