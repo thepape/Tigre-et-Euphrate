@@ -227,7 +227,7 @@ public class ConstruireMonument extends Action{
 					String couleurChef = chef.getTypeChef().getCouleur();
 
 					if(joueurChef.equals(this.joueur) && (couleurChef.equals(this.monument.getCouleurArche()) || couleurChef.equals(this.monument.getCouleurEscaliers()))){
-						joueur.ajouterPointsVictoire(1);
+						joueur.ajouterPointsVictoire(this.monument.getTuileNO().getType().getCouleur(),1);
 					}
 				}
 

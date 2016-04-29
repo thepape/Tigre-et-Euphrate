@@ -173,13 +173,6 @@ public class Partie implements Serializable {
 		return joueur.getPointTresor();
 	}
 
-	/**
-	 * getter du point victoire du joueur de la partie
-	 */
-	@JsonIgnore
-	public int getPointVictoire()  {
-		return joueur.getPointVictoire();
-	}
 
 	/**
 	 * getter du deck public du joueur de la partie

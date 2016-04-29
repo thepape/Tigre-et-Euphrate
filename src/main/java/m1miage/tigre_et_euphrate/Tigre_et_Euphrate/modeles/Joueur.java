@@ -39,7 +39,16 @@ public class Joueur implements Serializable{
 	 * Nombre de point victoire du joueur
 	 */
 	@JsonProperty("PointVictoire")
-	private int PointVictoire;
+	private int PointVictoireRouge;
+	
+	@JsonProperty("PointVictoire")
+	private int PointVictoireVert;
+	
+	@JsonProperty("PointVictoire")
+	private int PointVictoireBleu;
+	
+	@JsonProperty("PointVictoire")
+	private int PointVictoireJaune;
 
 	/**
 	 * Nombre de point tresor du joueur
@@ -77,6 +86,11 @@ public class Joueur implements Serializable{
 	public Joueur() {
 		super();
 		this.id = incId++;
+		
+		this.PointVictoireRouge = 0;
+		this.PointVictoireBleu = 0;
+		this.PointVictoireJaune = 0;
+		this.PointVictoireVert = 0;
 	}
 
 	/**
@@ -90,7 +104,10 @@ public class Joueur implements Serializable{
 		this.nom = pnom;
 		this.deckPublic = pdeckPublic;
 		this.deckPrive = pdeckPrive;
-		this.PointVictoire = 0;
+		this.PointVictoireRouge = 0;
+		this.PointVictoireBleu = 0;
+		this.PointVictoireJaune = 0;
+		this.PointVictoireVert = 0;
 		this.PointTresor = 0;
 		this.id = incId++;
 	}
@@ -156,13 +173,24 @@ public class Joueur implements Serializable{
 	 * getter des points victoire du joueur
 	 * @return points victoire du joueur
 	 */
-	@JsonProperty("PointVictoire")
-	public int getPointVictoire(){
-		return this.PointVictoire;
+	@JsonProperty("PointVictoireRouge")
+	public int getPointVictoireRouge(){
+		return this.PointVictoireRouge;
 	}
 
-	public void ajouterPointsVictoire(int points){
-		this.PointVictoire += points;
+	public void ajouterPointsVictoire(String couleur, int points){
+		if(couleur.equals("rouge")){
+			this.PointVictoireRouge += points;
+		}
+		else if(couleur.equals("bleu")){
+			this.PointVictoireBleu += points;
+		}
+		else if(couleur.equals("jaune")){
+			this.PointVictoireJaune += points;
+		}
+		else if(couleur.equals("vert")){
+			this.PointVictoireVert += points;
+		}
 	}
 	/**
 	 * getter des points tresor du joueur
@@ -256,10 +284,6 @@ public class Joueur implements Serializable{
 		}
 		
 		return false;
-	}
-	
-	public void ajouterPointVictoire(int points){
-		this.PointVictoire += points;
 	}
 	
 	public void ajouterPointTresor(int points){
