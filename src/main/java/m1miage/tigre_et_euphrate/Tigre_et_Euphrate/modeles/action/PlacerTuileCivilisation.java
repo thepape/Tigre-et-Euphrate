@@ -7,6 +7,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Tuile;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
@@ -127,6 +128,8 @@ public class PlacerTuileCivilisation extends Action {
 			if(!conflit)
 			{
 				this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(0)).addTuile(tuile);
+				//si pas de conflit et que la tuile posée permet de recuperer des points tresors
+				this.verifierTresors(this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(0)));
 			}
 		}  else {
 			//tuile.setTerritoire(new Territoire());
@@ -160,5 +163,46 @@ public class PlacerTuileCivilisation extends Action {
 	public boolean verifier() {
 		// TODO Auto-generated method stub
 		return this.partie.getPlateauJeu().verifierPlacerTuile(tuile, position);
+	}
+	
+	/**
+	 * verifie si quand on pose une tuile civilisation on peut recuperer des tresors
+	 */
+	public void verifierTresors(Territoire pterri){
+		int nbtuiletresor = 0;
+		boolean marchand = false;
+		Chef cmarchand = null;
+		
+		ArrayList<TuileCivilisation> tuileTresor = new ArrayList<TuileCivilisation>();
+
+		ArrayList<TuileCivilisation> listeTuile = pterri.getTuilesCivilisation();
+		ArrayList<Chef> listeChef = pterri.getChefs();
+		
+		for(Chef chef : listeChef){
+			if(chef.getTypeChef().equals(TypeChef.Marchand)){
+				cmarchand = chef;
+				marchand = true;
+			}
+		}
+		
+		if(marchand){
+			for(TuileCivilisation tuile : listeTuile){
+				if(tuile.getType().equals(TypeTuileCivilisation.Temple)){
+					if(tuile.aTresor()){
+						nbtuiletresor++;
+						tuileTresor.add(tuile);
+					}
+				}
+			}
+			
+			if(nbtuiletresor >1){
+				for(int i = 0; i<nbtuiletresor-1;i++){
+					tuileTresor.get(0).recupererTresor();
+					tuileTresor.remove(0);
+					cmarchand.getJoueur().ajouterPointsTresor(1);
+					System.out.println("Le joueur "+cmarchand.getJoueur().getNom()+" a recu un point tresor");
+				}
+			}
+		}
 	}
 }
