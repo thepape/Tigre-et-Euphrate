@@ -74,13 +74,27 @@ public class TestPlacerCatastrophe {
 		Action a = new PlacerChef(this.partie, this.joueur, (Chef) this.joueur.getDeckPublic().getDeckPublic().get(1),pos4);
 		a.executer();
 		
-		partie = new Partie(plateau, null, new Pioche());
+		
 		PlacerTuileCatastrophe ptc = new PlacerTuileCatastrophe(partie,joueur,tuilecatastrophe,pos2);
 		PlacerTuileCatastrophe ptc2 = new PlacerTuileCatastrophe(partie,joueur,tuilecatastrophe,pos3);
 		PlacerTuileCatastrophe ptc3 = new PlacerTuileCatastrophe(partie,joueur,tuilecatastrophe,pos4);
 		assertTrue(ptc.verifier());
 		assertTrue(ptc2.verifier());
 		assertFalse(ptc3.verifier());
+		
+	}
+	
+	/**
+	 * test catstrophe
+	 */
+	@Test
+	public void TestSuppresionDeck(){
+		Position pos2 = new Position(5,1); //Terre avec Tuile
+		PlacerTuileCatastrophe ptc = new PlacerTuileCatastrophe(partie,joueur,tuilecatastrophe,pos2);
+		
+		assertEquals(this.joueur.getDeckPublic().getListeTuileCatastrophe().size(),1);
+		ptc.executer();
+		assertTrue(this.joueur.getDeckPublic().getListeTuileCatastrophe().isEmpty());
 		
 	}
 	
@@ -98,7 +112,7 @@ public class TestPlacerCatastrophe {
 		Action a = new PlacerChef(this.partie, this.joueur, new Chef(TypeChef.Roi,joueur),pos4);
 		a.executer();
 		
-		partie = new Partie(plateau, null, new Pioche());
+		
 		PlacerTuileCatastrophe ptc = new PlacerTuileCatastrophe(partie,joueur,tuilecatastrophe,pos2);
 		PlacerTuileCatastrophe ptc2 = new PlacerTuileCatastrophe(partie,joueur,tuilecatastrophe,pos3);
 		PlacerTuileCatastrophe ptc3 = new PlacerTuileCatastrophe(partie,joueur,tuilecatastrophe,pos4);
