@@ -217,7 +217,7 @@
             </Label>
          </children>
       </GridPane>
-      <Button fx:id="quitterJeuBtn" layoutX="515.0" layoutY="604.0" mnemonicParsing="false" text="Quitter le jeu">
+      <Button fx:id="quitterJeuBtn" onMouseClicked="#revenirMenu" layoutX="515.0" layoutY="604.0" mnemonicParsing="false" text="Quitter le jeu">
          <font>
             <Font size="20.0" />
          </font>

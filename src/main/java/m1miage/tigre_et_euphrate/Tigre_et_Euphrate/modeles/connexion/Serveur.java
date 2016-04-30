@@ -67,6 +67,8 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 
 	private int increment = 0;
+	
+	private ArrayList<Joueur> listeJoueursPointsAttribues = new ArrayList<Joueur>();
 
 
 	/**
@@ -386,6 +388,19 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		this.partie.getConflits().remove(conflit);
 		
 		return gagnant;
+	}
+	
+	public void envoyerPointsAttribues(Joueur joueur) throws RemoteException{
+		
+		if(!this.listeJoueursPointsAttribues.contains(joueur)){
+			this.listeJoueursPointsAttribues.add(joueur);
+		}
+		
+		if(this.listeJoueursPointsAttribues.size() == this.clients.size()){
+			ArrayList<Object> params = new ArrayList<Object>();
+			params.add("gotoclassement");
+			this.notifierClient(params);
+		}
 	}
 
 	/**
