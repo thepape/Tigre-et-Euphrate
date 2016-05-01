@@ -89,7 +89,10 @@ public class ControleurAttributionTresors implements ChangeListener{
 	 * @param nbTresorsTotal
 	 */
 	public void initialiser(int nbTresorsTotal){
-		this.setCompteurTotal(nbTresorsTotal);
+		//this.setCompteurTotal(nbTresorsTotal);
+		int pttresors = ((Client) MainApp.getInstance().getClient()).getJoueur().getPointTresor();
+		this.setCompteurTotal(pttresors);
+		
 		this.nbTresorsTotal.setText(this.compteurTotal+"");
 		if(this.compteurTotal > 0)
 			this.activerTousLesBoutonsPlus();
@@ -280,7 +283,7 @@ public class ControleurAttributionTresors implements ChangeListener{
 		joueur.ajouterPointsVictoire("vert", compteurMarche);
 		joueur.ajouterPointsVictoire("jaune", compteurPopulation);
 		
-		this.mainApp.goToClassement();
+		MainApp.getInstance().goToClassement();
 	}
 	
 	/**

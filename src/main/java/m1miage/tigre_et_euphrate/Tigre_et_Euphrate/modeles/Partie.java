@@ -199,7 +199,7 @@ public class Partie implements Serializable {
 			this.listeJoueurs.add(pJoueur);
 		}
 
-		System.out.println("Le joueur "+pJoueur.getNom()+" s'est connecté.");
+		//System.out.println("Le joueur "+pJoueur.getNom()+" s'est connecté.");
 
 		return j;
 	}
@@ -251,8 +251,8 @@ public class Partie implements Serializable {
 	}
 
 	public void send(String string, int idClient) {
-		System.out.println(idClient);
-		System.out.println(string);
+		//System.out.println(idClient);
+		//System.out.println(string);
 	}
 
 
@@ -361,6 +361,7 @@ public class Partie implements Serializable {
 		int it = 0;
 
 		//////initialisation des decks de chaque joueur et de leurs dynasties
+		/*
 		for(Joueur joueur : joueurs){
 
 			joueur.setDynastie(dynasties.get(it));
@@ -393,7 +394,7 @@ public class Partie implements Serializable {
 				TuileCivilisation tuile = this.pioche.piocherTuile();
 				joueur.getDeckPrive().ajouter(tuile);
 			}
-		}
+		}*/
 
 		this.estLancee=true;
 
@@ -416,7 +417,9 @@ public class Partie implements Serializable {
 		Joueur temp = this.getJoueurTour();
 		this.listeTours.remove(0);
 		this.listeTours.add(temp);
-		System.out.println("C'est le tour de "+this.listeTours.get(0).getNom());
+		//System.out.println("C'est le tour de "+this.listeTours.get(0).getNom());
+		
+		
 	}
 	
 	/**
@@ -439,19 +442,25 @@ public class Partie implements Serializable {
 	 * @return boolean true = fin de game
 	 */
 	public boolean piocheCartesManquantes(Joueur j1){
-
+		if(j1.getNom().equals("aaa"))
+			System.out.println("DECK AVANT PIOCHE:"+j1.getNom()+" - "+j1.getDeckPrive());
+		
 		int nbTuiles = j1.getDeckPrive().getDeckPrive().size();
 		if(nbTuiles != 6){
 			if(pioche.getTotalCarte() >= 6-nbTuiles ){
 				for(int j = 0; j<6-nbTuiles;j++){
 					TuileCivilisation tuile = this.pioche.piocherTuile();
 					j1.getDeckPrive().ajouter(tuile);
-					System.out.println("Carte piochée");
+					//System.out.println("Carte piochée: "+tuile.getId());
 				}
 			}else{
+				
 				return true;
 			}
 		}
+		if(j1.getNom().equals("aaa"))
+			System.out.println("DECK APRES PIOCHE:"+j1.getNom()+" - "+j1.getDeckPrive());
+		
 		return false;
 	}
 
@@ -479,5 +488,19 @@ public class Partie implements Serializable {
 		
 		this.listeToursConflits.remove(joueur);
 		return true;
+	}
+	
+	public int nombreTresorsRestant(){
+		int tresors = 0;
+		
+		for(Territoire territoire : this.getPlateauJeu().getListeRoyaume()){
+			for(TuileCivilisation tuile : territoire.getTuilesCivilisation()){
+				if(tuile.aTresor()){
+					tresors++;
+				}
+			}
+		}
+		
+		return tresors;
 	}
 }
