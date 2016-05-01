@@ -63,4 +63,14 @@ public class DeckPrive extends Deck implements Serializable{
 	public boolean supprimer(Placable pTuile){
 		return this.deckPrive.remove((TuileCivilisation)pTuile);
 	}
+	
+	public String toString(){
+		StringBuffer sb = new StringBuffer("[");
+		for(TuileCivilisation tuile : this.deckPrive){
+			sb.append(tuile.getType().getNom()+":"+ tuile.getId()+",");
+		}
+		sb.append("]");
+		
+		return sb.toString();
+	}
 }

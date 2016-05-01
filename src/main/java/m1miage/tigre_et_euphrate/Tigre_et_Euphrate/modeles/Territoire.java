@@ -174,7 +174,8 @@ public class Territoire implements Serializable{
 	 * @return
 	 */
 	public boolean isEstRoyaume() {
-		return estRoyaume;
+		//return estRoyaume;
+		return this.chefs.size() > 0;
 	}
 
 	/**

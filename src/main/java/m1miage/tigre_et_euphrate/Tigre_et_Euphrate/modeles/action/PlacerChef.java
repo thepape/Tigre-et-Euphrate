@@ -99,7 +99,7 @@ public class PlacerChef extends Action {
 		if(ok) {
 			for(int i = 0; i < listeAdjacente.size() - 1; i++)
 			{
-				for(int j = 1 ; j < listeAdjacente.size(); j++)
+				for(int j = i+1 ; j < listeAdjacente.size(); j++)
 				{
 					/*if(!listeAdjacente.get(i).getTerritoire().equals(listeAdjacente.get(j).getTerritoire()))
 					{
@@ -117,8 +117,9 @@ public class PlacerChef extends Action {
 				this.retirerChef();
 				//this.chef.setTerritoire(this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(0)));
 				//listeAdjacente.get(0).getTerritoire().addChefs(this.chef);
-				this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(0)).addChefs(this.chef);
-
+				Territoire territoire = this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(0));
+				territoire.addChefs(this.chef);
+				
 				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
 				this.chef.setPosition(new Position(this.position.getX(), this.position.getY()));
 				//Verifie si condition de recuperation de points tresors
@@ -172,6 +173,7 @@ public class PlacerChef extends Action {
 				}*/
 			}
 		}
+		
 
 		return ok;
 	}
@@ -208,7 +210,8 @@ public class PlacerChef extends Action {
 					tuileTresor.get(0).recupererTresor();
 					tuileTresor.remove(0);
 					this.chef.getJoueur().ajouterPointsTresor(1);
-					System.out.println("Le joueur "+this.chef.getJoueur().getNom()+" a recu un point tresor");
+					//this.ajouterJoueurImpacte(this.chef.getJoueur());
+					//System.out.println("Le joueur "+this.chef.getJoueur().getNom()+" a recu un point tresor");
 				}
 			}
 		}

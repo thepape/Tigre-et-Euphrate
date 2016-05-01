@@ -16,6 +16,8 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerChef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCatastrophe;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
@@ -132,7 +134,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			e.printStackTrace();
 		}
 
-		System.out.println("Serveur lancé !");
+		//System.out.println("Serveur lancé !");
 
 		this.lance = true;
 	}
@@ -271,7 +273,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	public boolean send(Action action, int idClient) throws RemoteException {
 		action.setPartie(this.partie);
 		boolean ok = action.executer();
-		
+		//System.out.println(this.partie.getPlateauJeu().afficherTerritoires());
 		for(int i = 0; i < this.clients.size(); i++)
 		{
 			Joueur joueurConcerne = this.clients.get(i).getJoueur();
@@ -279,7 +281,35 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			{
 				this.clients.get(i).setJoueur(action.getJoueur());
 			}
+			
+			//on mmaj tous les autres joueurs impactés par l'action, sauf le joueur ayant joué l'action
+			for(Joueur j : action.getJoueurImpactes()){
+				if(j.getId() == joueurConcerne.getId() && j.getId() != action.getJoueur().getId()){
+					
+					//on verifie ce qu'il faut changer, et on applique les changement au BON joueur recuperé chez
+					//le bon client
+					if(action instanceof PlacerTuileCivilisation){
+						//si un autre joueur a été impacté par une pose de truile civ, on verifie si c'est
+						//a cause d'un ajout de point tresor
+						if(joueurConcerne.getPointTresor() != j.getPointTresor()){
+							int diff = j.getPointTresor() - joueurConcerne.getPointTresor();
+							joueurConcerne.ajouterPointsTresor(diff);
+							this.clients.get(i).setJoueur(joueurConcerne);
+						}
+					}
+					else if(action instanceof PlacerTuileCatastrophe){
+						//si un autre joueur a été impacté par une pose de tuile cata, on verifie si c'est
+						//parce qu'un de ses chefs doit retourner dans son deck du fait de l'ecrasement d'un temple
+						if(!joueurConcerne.getDeckPublic().getDeckPublic().equals(j.getDeckPublic().getDeckPublic())){
+							joueurConcerne.setDeckPublic(j.getDeckPublic());
+						}
+					}
+					
+				}
+			}
 		}
+		
+		
 
 		for(InterfaceServeurClient c : this.clients){
 			ArrayList<Object> params = new ArrayList<Object>();
@@ -496,7 +526,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		//si tous les joueurs sont prets, on change l'affichage plutot
 		if(this.tousPret()){
 			this.genererPartie();
-			System.out.println("Partie lancée");
+			//System.out.println("Partie lancée");
 			arg="partieLancee";
 		}
 
@@ -568,6 +598,11 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		ArrayList<Object> params = new ArrayList<Object>();
 		params.add("partie");
 		params.add("passerTour");
+		
+		//on verifie les conditions de fin de partie
+		if(this.partie.nombreTresorsRestant() <= 2){
+			params.add("");
+		}
 		
 		this.notifierClient(params);
 	}

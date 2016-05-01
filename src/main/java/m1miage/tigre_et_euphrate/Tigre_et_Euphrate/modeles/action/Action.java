@@ -1,6 +1,8 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
@@ -22,6 +24,8 @@ public abstract class Action implements Serializable {
 	 * Joueur effectuant l action
 	 */
 	protected Joueur joueur;
+	
+	protected ArrayList<Joueur> joueursImpactes = new ArrayList<Joueur>();
 
 	/**
 	 * Constructeur d une Action
@@ -53,6 +57,7 @@ public abstract class Action implements Serializable {
 	/**
 	 * Execute l'action
 	 * @return vrai ou faux, selon le bon déroulement ou non de l'action
+	 * @throws RemoteException 
 	 */
 	public abstract boolean executer();
 	
@@ -61,5 +66,21 @@ public abstract class Action implements Serializable {
 	 * @return
 	 */
 	public abstract boolean verifier();
+	
+	public void ajouterJoueurImpacte(Joueur j){
+		if(!this.joueursImpactes.contains(j)){
+			this.joueursImpactes.add(j);
+		}
+	}
+	
+	public ArrayList<Joueur> getJoueurImpactes(){
+		return this.joueursImpactes;
+	}
+	
+	public void retirerJoueurImpacte(Joueur j){
+		if(this.joueursImpactes.contains(j)){
+			this.joueursImpactes.remove(j);
+		}
+	}
 
 }
