@@ -70,6 +70,8 @@ public class ControleurSalleAttente implements ChangeListener {
 
 		@FXML
 		private ListView listeJoueur;
+		
+		private boolean dynastiechoisie = false;
 
 	public MainApp getMainApp() {
 		return mainApp;
@@ -225,7 +227,9 @@ public class ControleurSalleAttente implements ChangeListener {
 		InterfaceServeurClient serveur =  this.mainApp.getServeur();
 		InterfaceServeurClient client = this.mainApp.getClient();
 		try {
-			serveur.switchJoueurEstPret(client);
+			if(dynastiechoisie){//faire des trucs
+				serveur.switchJoueurEstPret(client);
+			}
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -238,6 +242,7 @@ public class ControleurSalleAttente implements ChangeListener {
 		
 		try {
 			serveur.setDynastieOfClient(client, dynastie);
+			dynastiechoisie = true;
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

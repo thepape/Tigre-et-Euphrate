@@ -435,6 +435,11 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		
 	}
 
+	public void envoyerPointsAttribues(Joueur joueur) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 }

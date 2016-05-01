@@ -2,6 +2,13 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.*;
+
+import java.util.ArrayList;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 
 /**
@@ -9,7 +16,7 @@ import javafx.fxml.FXML;
  * @author
  *
  */
-public class ControleurAttributionTresors {
+public class ControleurAttributionTresors implements ChangeListener{
 	
 	
 	// ATTRIBUTS
@@ -77,6 +84,10 @@ public class ControleurAttributionTresors {
 	
 	// FONCTIONS
 	
+	/**
+	 * Fonction permettant d'initialiser l'interface d'attribution des tresors
+	 * @param nbTresorsTotal
+	 */
 	public void initialiser(int nbTresorsTotal){
 		this.setCompteurTotal(nbTresorsTotal);
 		this.nbTresorsTotal.setText(this.compteurTotal+"");
@@ -259,9 +270,17 @@ public class ControleurAttributionTresors {
 	
 	/**
 	 * Fonction validant l'attribution des trésors aux Civilisations
+	 * Permet de rediriger vers l'interface de fin de partie : Tableau récapitulatif des points et Classement.
 	 */
 	public void valider(){
+		// MAJ des points de chaque civilisation de chaque joueur avec les points tresors
+		Joueur joueur = ((Client) MainApp.getInstance().getClient()).getJoueur();
+		joueur.ajouterPointsVictoire("rouge", compteurTemple);
+		joueur.ajouterPointsVictoire("bleu", compteurFerme);
+		joueur.ajouterPointsVictoire("vert", compteurMarche);
+		joueur.ajouterPointsVictoire("jaune", compteurPopulation);
 		
+		this.mainApp.goToClassement();
 	}
 	
 	/**
@@ -346,6 +365,19 @@ public class ControleurAttributionTresors {
 	 */
 	public void setCompteurTemple(int pcompteurTemple) {
 		this.compteurTemple = pcompteurTemple;
+	}
+
+	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+		// TODO Auto-generated method stub
+		if(arg2 != null && arg2 instanceof ArrayList){
+			ArrayList<Object> params = (ArrayList<Object>) arg2;
+			
+			for(Object param : params){
+				if(param.equals("gotoclassement")){
+					MainApp.getInstance().goToClassement();
+				}
+			}
+		}
 	}
 	
 	

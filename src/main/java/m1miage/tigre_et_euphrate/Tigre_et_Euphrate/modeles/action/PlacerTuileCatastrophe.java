@@ -41,25 +41,18 @@ public class PlacerTuileCatastrophe extends Action {
 		int x = this.position.getX();
 		int y = this.position.getY();
 		//getClass().isInstance(TuileCivilisation.class)
-		//TODO tester avec instanceof
-		if(this.partie.getPlateauJeu().getPlateau()[x][y]==null ||
-				this.partie.getPlateauJeu().getPlateau()[x][y].equals(new TuileCivilisation(TypeTuileCivilisation.Marché)) || 
-				this.partie.getPlateauJeu().getPlateau()[x][y].equals(new TuileCivilisation(TypeTuileCivilisation.Ferme)) || 
-				this.partie.getPlateauJeu().getPlateau()[x][y].equals(new TuileCivilisation(TypeTuileCivilisation.Population)) || 
-				this.partie.getPlateauJeu().getPlateau()[x][y].equals(new TuileCivilisation(TypeTuileCivilisation.Temple)) ){
+		/*if(this.partie.getPlateauJeu().getPlateau()[x][y]==null ||
+				((TuileCivilisation)this.partie.getPlateauJeu().getPlateau()[x][y]).getType().equals(TypeTuileCivilisation.Marché) || 
+				((TuileCivilisation)this.partie.getPlateauJeu().getPlateau()[x][y]).getType().equals(TypeTuileCivilisation.Ferme) || 
+				((TuileCivilisation)this.partie.getPlateauJeu().getPlateau()[x][y]).getType().equals(TypeTuileCivilisation.Population) || 
+				((TuileCivilisation)this.partie.getPlateauJeu().getPlateau()[x][y]).getType().equals(TypeTuileCivilisation.Temple) ){*/
+		if(this.partie.getPlateauJeu().getPlateau()[x][y]==null || 
+				this.partie.getPlateauJeu().getPlateau()[x][y] instanceof TuileCivilisation){	
 			ok = true;
 		}
 		return ok;
 	}
 	
-	/**
-	 * Fonction qui permet de gérer le cas ou une tuile catastrophe sépare 2 royaume
-	 * @return
-	 */
-	public boolean VerifierTeritoire(){
-		//TODO Algo romain
-		return true;
-	}
 
 	/**
 	 * Execute l'action PlacerTuileCatastrophe
@@ -68,22 +61,29 @@ public class PlacerTuileCatastrophe extends Action {
 	 */
 	public boolean executer(){
 		boolean ok = false;
-		if((this.position.getX() > 11 || this.position.getY() > 16) || (this.position.getY() < 0 || this.position.getX() < 0))
+		if(this.verifier()){
+			ok = true;
+			this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()]=this.tuileCatastrophe;
+			this.tuileCatastrophe.setPosition(this.position);
+			this.partie.getPlateauJeu().reconstruireTerritoires(this.tuileCatastrophe.getPosition());
+			this.joueur.getDeckPublic().getListeTuileCatastrophe().remove(this.tuileCatastrophe);
+		}
+		return ok;
+	}
+	
+	/**
+	 * Verifie les conditions de pose
+	 */
+	public boolean verifier(){
+		boolean ok = false;
+		if((this.position.getX() > 10 || this.position.getY() > 15) || (this.position.getY() < 0 || this.position.getX() < 0))
 		{
 			ok = false;
 		}
 		else
 		{
 			ok = this.VerifierCase();
-			ok = this.VerifierTeritoire();
-			if(ok){
-				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()]=this.tuileCatastrophe;
-			}
 		}
 		return ok;
-	}
-	
-	public boolean verifier(){
-		return false;
 	}
 }
