@@ -69,6 +69,7 @@ public class PlacerTuileCivilisation extends Action {
 		this.position = position;
 		this.tuile = tuile;
 	}
+	
 
 	/**
 	 * Execute l'action PlacerTuileCivilisation
@@ -163,6 +164,38 @@ public class PlacerTuileCivilisation extends Action {
 	public boolean verifier() {
 		// TODO Auto-generated method stub
 		return this.partie.getPlateauJeu().verifierPlacerTuile(tuile, position);
+	}
+	
+	/*
+	 *  Dans ce royaume se trouve un chef de la même couleur que la nouvelle tuile Civilisation. C’est le
+joueur à qui ce chef appartient qui remporte le point de victoire.
+— Dans ce Royaume, aucun chef n’est de la couleur de la nouvelle tuile, mais il y a un Roi (chef noir).
+Dans ce cas, c’est le joueur à qui appartient le Roi qui remporte le point de victoire.
+	 */
+	
+	/**
+	 * Methode qui retourne le nombre de point victoire gagner lorsqu'un joureur
+	 * place une tuile civilisation.
+	 * @return
+	 */
+	public void AttributionPointVictoire(){
+		Territoire t = this.partie.getPlateauJeu().recupererTerritoireTuile(this.tuile);
+		if(t.isEstRoyaume() && !this.tuile.estJonction()){
+			String couleurTuile = this.tuile.getType().getCouleur();
+			ArrayList<Chef> chefs = t.getChefs();
+			for (Chef pchef : chefs){
+				if(pchef.getTypeChef().getCouleur().equals(couleurTuile)){
+					pchef.getJoueur().ajouterPointsVictoire(couleurTuile, 1);
+				}
+				else{
+					if(pchef.getTypeChef().getCouleur().equals("jaune")){
+						pchef.getJoueur().ajouterPointsVictoire(couleurTuile, 1);
+					}
+				}
+			}
+			
+		}
+		
 	}
 	
 	/**
