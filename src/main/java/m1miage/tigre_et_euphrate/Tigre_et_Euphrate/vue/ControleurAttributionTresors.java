@@ -5,8 +5,10 @@ import javafx.scene.control.Label;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.*;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -283,7 +285,19 @@ public class ControleurAttributionTresors implements ChangeListener{
 		joueur.ajouterPointsVictoire("vert", compteurMarche);
 		joueur.ajouterPointsVictoire("jaune", compteurPopulation);
 		
-		MainApp.getInstance().goToClassement();
+		try {
+			MainApp.getInstance().getServeur().envoyerPointsAttribues(joueur);
+			
+			Platform.runLater(new Runnable(){
+				public void run() {
+					validerBtn.setDisable(true);
+				}
+				
+			});
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
