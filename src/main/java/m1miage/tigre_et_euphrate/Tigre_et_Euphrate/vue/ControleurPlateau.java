@@ -1418,6 +1418,7 @@ for(int x = 0; x < 11; x++){
 					Plateau plateau = this.partie.getPlateauJeu();
 					//System.out.println(plateau.afficherTerritoires());
 					//System.out.println(plateau.afficherTuilesId());
+					Joueur j = ((Client) MainApp.getInstance().getClient()).getJoueur();
 				} else if(param.equals("deckPublic"))
 				{
 					try

@@ -143,7 +143,7 @@ public class ControleurClassement implements ChangeListener{
 	 * @throws RemoteException
 	 */
 	public void remplirTableauRecaputulatif() throws RemoteException{
-		ArrayList<InterfaceServeurClient> listeClients = this.mainApp.getServeur().getClients();
+		ArrayList<InterfaceServeurClient> listeClients = MainApp.getInstance().getServeur().getClients();
 		this.joueurs = new ArrayList<Joueur>();
 		
 		for(InterfaceServeurClient client : listeClients){
@@ -153,6 +153,7 @@ public class ControleurClassement implements ChangeListener{
 		Platform.runLater(new Runnable(){
 
 			public void run() {
+				System.out.println("Initialisation des points");
 				for(Joueur joueur : joueurs)
 				{
 					if(joueur.getDynastie().getNom().equals("Stark")){
@@ -247,11 +248,21 @@ public class ControleurClassement implements ChangeListener{
 			
 		});
 		
-		// On affiche sur l'interface le classement final
-		this.classementUn.setText(this.joueurs.get(0)+"");
-		this.classementDeux.setText(this.joueurs.get(1)+"");
-		this.classementTrois.setText(this.joueurs.get(2)+"");
-		this.classementQuatre.setText(this.joueurs.get(3)+"");
+		Platform.runLater(new Runnable(){
+
+			public void run() {
+				// On affiche sur l'interface le classement final
+				classementUn.setText(joueurs.get(0).getNom()+" ["+joueurs.get(0).getDynastie().getNom()+"]");
+				classementDeux.setText(joueurs.get(1).getNom()+" ["+joueurs.get(1).getDynastie().getNom()+"]");
+				if(joueurs.size() == 3){
+					classementTrois.setText(joueurs.get(2).getNom()+" ["+joueurs.get(2).getDynastie().getNom()+"]");
+				}else if(joueurs.size() == 4){
+					classementQuatre.setText(joueurs.get(3).getNom()+" ["+joueurs.get(3).getDynastie().getNom()+"]");
+			}
+			}
+			
+		});
+		
 	}
 	
 	@FXML
