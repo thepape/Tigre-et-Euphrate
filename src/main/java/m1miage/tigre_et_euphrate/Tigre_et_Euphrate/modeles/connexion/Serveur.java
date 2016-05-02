@@ -14,6 +14,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCatastrophe;
@@ -70,7 +72,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	private int increment = 0;
 	
-	private ArrayList<Joueur> listeJoueursPointsAttribues = new ArrayList<Joueur>();
+	private ArrayList<Joueur> classementFinal = new ArrayList<Joueur>();
 
 
 	/**
@@ -266,11 +268,45 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	public void setListeClient(ArrayList<InterfaceServeurClient> client) {
 		this.clients = client;
 	}
+	
+	/**
+	 * Cette méthode sert à mettre à jour l'attribut Joueur de chaque chef présent sur le plateau. Les joueurs
+	 * (notamment leurs decks) étant geré coté client, il faut donc resynchroniser les objets Joueur dans le serveur
+	 * avant de gérer l'action, puisque l'action peut impacter des joueurs autres que le joueur ayant joué l'action
+	 * @throws RemoteException
+	 */
+	public void mettreAJourJoueursPartie() throws RemoteException{
+		ArrayList<Joueur> joueursAJour = new ArrayList<Joueur>();
+		
+		for(InterfaceServeurClient client : this.clients){
+			Joueur joueurTemp = client.getJoueur();
+			
+			joueursAJour.add(joueurTemp);
+		}
+		
+		//on met a jour les objet Joueur en attributs des chefs pour la future action
+		for(int x = 0; x < 11; x++){
+			for(int y = 0; y < 16; y++){
+				Placable placable = this.partie.getPlateauJeu().getPlacableAt(new Position(x,y));
+				
+				if(placable instanceof Chef){
+					Chef chef = (Chef) placable;
+					
+					//on recupere le bon joueur corresponddant au chefdans la liste des joueurs a jour
+					Joueur joueurAJour = joueursAJour.get(joueursAJour.indexOf(chef.getJoueur()));
+					chef.setJoueur(joueurAJour);
+				}
+			}
+		}
+	}
 
 	/**
 	 * Fonction qui permet d'envoyer des données du serveur aux clients
 	 */
 	public boolean send(Action action, int idClient) throws RemoteException {
+		//on mets a jour tous les objets Joueur sur le plateau
+		this.mettreAJourJoueursPartie();
+		
 		action.setPartie(this.partie);
 		boolean ok = action.executer();
 		//System.out.println(this.partie.getPlateauJeu().afficherTerritoires());
@@ -283,27 +319,10 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			}
 			
 			//on mmaj tous les autres joueurs impactés par l'action, sauf le joueur ayant joué l'action
+			// car il a déjà été impacté ci dessus
 			for(Joueur j : action.getJoueurImpactes()){
 				if(j.getId() == joueurConcerne.getId() && j.getId() != action.getJoueur().getId()){
-					
-					//on verifie ce qu'il faut changer, et on applique les changement au BON joueur recuperé chez
-					//le bon client
-					if(action instanceof PlacerTuileCivilisation){
-						//si un autre joueur a été impacté par une pose de truile civ, on verifie si c'est
-						//a cause d'un ajout de point tresor
-						if(joueurConcerne.getPointTresor() != j.getPointTresor()){
-							int diff = j.getPointTresor() - joueurConcerne.getPointTresor();
-							joueurConcerne.ajouterPointsTresor(diff);
-							this.clients.get(i).setJoueur(joueurConcerne);
-						}
-					}
-					else if(action instanceof PlacerTuileCatastrophe){
-						//si un autre joueur a été impacté par une pose de tuile cata, on verifie si c'est
-						//parce qu'un de ses chefs doit retourner dans son deck du fait de l'ecrasement d'un temple
-						if(!joueurConcerne.getDeckPublic().getDeckPublic().equals(j.getDeckPublic().getDeckPublic())){
-							joueurConcerne.setDeckPublic(j.getDeckPublic());
-						}
-					}
+					this.clients.get(i).setJoueur(j);
 					
 				}
 			}
@@ -422,11 +441,11 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	
 	public void envoyerPointsAttribues(Joueur joueur) throws RemoteException{
 		
-		if(!this.listeJoueursPointsAttribues.contains(joueur)){
-			this.listeJoueursPointsAttribues.add(joueur);
+		if(!this.classementFinal.contains(joueur)){
+			this.classementFinal.add(joueur);
 		}
 		
-		if(this.listeJoueursPointsAttribues.size() == this.clients.size()){
+		if(this.classementFinal.size() == this.clients.size()){
 			ArrayList<Object> params = new ArrayList<Object>();
 			params.add("gotoclassement");
 			this.notifierClient(params);
