@@ -110,6 +110,10 @@ public class Chef extends Placable implements Serializable{
 	public Joueur getJoueur() {
 		return joueur;
 	}
+	
+	public void setJoueur(Joueur joueur){
+		this.joueur = joueur;
+	}
 
 	/**
 	 * return la dynastie du chef
