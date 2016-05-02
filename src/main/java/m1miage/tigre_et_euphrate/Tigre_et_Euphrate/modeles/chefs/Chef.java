@@ -119,6 +119,10 @@ public class Chef extends Placable implements Serializable{
 		return dynastie;
 	}
 
+	public void setDynastie(Dynastie dynastie)
+	{
+		this.dynastie = dynastie;
+	}
 
 	/**
 	 * return la puissance du chef
