@@ -244,7 +244,7 @@ public class MainApp extends Application implements App {
 		}
 
 	}
-	
+
 
 	/**
 	 * Getter de la liste des dynasties
@@ -304,7 +304,7 @@ public class MainApp extends Application implements App {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Fonction qui affiche l'interface d'attribution des tresors
 	 */
@@ -320,7 +320,7 @@ public class MainApp extends Application implements App {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Fonction qui affiche l'interface du classement
 	 */
@@ -329,7 +329,7 @@ public class MainApp extends Application implements App {
 			this.replaceSceneContent("InterfaceClassement.fxml");
 			ControleurClassement controler = (ControleurClassement)this.currentControler;
 			controler.initialiser();
-			
+
 			this.client.clearListeners();
 			this.client.addListener(controler);
 		} catch (Exception e){
@@ -348,11 +348,11 @@ public class MainApp extends Application implements App {
 		try{
 			//on supprime le controleurSalon des listeners du client
 			this.client.clearListeners();
-			
+
 			this.replaceSceneContent("ApplicationPrincipale.fxml");
 			/*
 			Monument m = new Monument("bleu","jaune");
-			
+
 			TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
 			tuile1.setMonument(m);
 			m.setTuileNO(tuile1);
@@ -374,17 +374,17 @@ public class MainApp extends Application implements App {
 			//on force un id de joueur unique en attendant
 			int id = this.serveur.getUniqueId();
 			joueur.setId(id);
-			
+
 			Chef chefFermier = new Chef(TypeChef.Fermier,joueur);
 			Chef chefRoi = new Chef(TypeChef.Roi,joueur);
 			Chef chefMarchand = new Chef(TypeChef.Marchand,joueur);
 			Chef chefPretre = new Chef(TypeChef.Pretre,joueur);
-			
+
 			deckPublic.ajouter(chefFermier);
 			deckPublic.ajouter(chefRoi);
 			deckPublic.ajouter(chefMarchand);
 			deckPublic.ajouter(chefPretre);
-			
+
 			// PartieInterface partie = (Partie)
 			// this.getListeJoueur().get(0);
 			ControleurPlateau controleurPlateau = this.currentLoader.getController();
@@ -395,19 +395,20 @@ public class MainApp extends Application implements App {
 			partie.setPlateauJeu(new Plateau());
 			partie.setJoueur(joueur);
 			*/
-			
+
 			ControleurPlateau controleurPlateau = this.currentLoader.getController();
 			Partie partie = this.serveur.getPartie();
 			Joueur joueur = this.client.getJoueur();
-			
+
 			this.client.setPartieCourante(partie);
 			this.client.setJoueur(joueur);
 			controleurPlateau.setDeckPriveJoueur(this.client.getJoueur().getDeckPrive().getDeckPrive());
 			controleurPlateau.setMainApp(this);
-			
+
 			//on ajoute le controleurPlateau comme listener de ce client
 			this.client.addListener(controleurPlateau);
 			controleurPlateau.construirePlateau();
+			controleurPlateau.construireMonument();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

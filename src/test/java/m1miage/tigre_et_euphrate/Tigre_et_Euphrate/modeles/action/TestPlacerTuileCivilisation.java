@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import org.junit.Before;
 import org.junit.Test;
 
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPrive;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
@@ -17,14 +18,26 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivil
 public class TestPlacerTuileCivilisation {
 
 	private Partie partie;
+	private Joueur joueur = new Joueur();
 
 	@Before
 	public void initialize() throws RemoteException
 	{
 		partie = new Partie();
 		partie.setPlateauJeu(new Plateau());
-		Joueur joueur = new Joueur();
+
 		partie.setJoueur(joueur);
+		DeckPrive deck = new DeckPrive();
+		TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Marché);
+		TuileCivilisation tuile2 = new TuileCivilisation(TypeTuileCivilisation.Marché);
+		TuileCivilisation tuile3 = new TuileCivilisation(TypeTuileCivilisation.Marché);
+		TuileCivilisation tuile4 = new TuileCivilisation(TypeTuileCivilisation.Marché);
+		deck.ajouter(tuile1);
+		deck.ajouter(tuile2);
+		deck.ajouter(tuile3);
+		deck.ajouter(tuile4);
+
+		joueur.setDeckPrive(deck);
 	}
 
 	@Test
@@ -69,10 +82,10 @@ public class TestPlacerTuileCivilisation {
 	@Test
 	public void testTerritoirePlacerTuile() {
 		TuileCivilisation tuile = new TuileCivilisation(TypeTuileCivilisation.Marché);
-		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(0,1), tuile);
+		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(0,1), joueur.getDeckPrive().getDeckPrive().get(1));
 		action.executer();
 		TuileCivilisation tuileTemple = (TuileCivilisation) this.partie.getPlateauJeu().getPlateau()[1][1];
-		assertEquals(partie.getPlateauJeu().recupererTerritoireTuile(tuile), partie.getPlateauJeu().recupererTerritoireTuile(tuileTemple));
+		assertEquals(partie.getPlateauJeu().recupererTerritoireTuile(joueur.getDeckPrive().getDeckPrive().get(1)), partie.getPlateauJeu().recupererTerritoireTuile(tuile));
 	}
 
 
@@ -84,8 +97,8 @@ public class TestPlacerTuileCivilisation {
 		TuileCivilisation tuile = new TuileCivilisation(TypeTuileCivilisation.Marché);
 		PlacerTuileCivilisation action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(0,1), tuile);
 		boolean ok = action.executer();
-		assertTrue(action.isConflit());
 		assertTrue(ok);
+		assertTrue(action.isConflit());
 
 	}
 

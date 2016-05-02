@@ -48,6 +48,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.ConstruireMonument;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.EchangerTuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCatastrophe;
@@ -96,10 +97,16 @@ public class ControleurPlateau implements ChangeListener{
 	 */
 	@FXML
 	private TextArea texteAction;
+
+	/**
+	 * GridPane de la liste des monuments
+	 */
+	@FXML
+	private GridPane listeMonument;
+
 	/**
 	 * Application principale
 	 */
-
 	private MainApp mainApp;
 
 	/**
@@ -138,6 +145,7 @@ public class ControleurPlateau implements ChangeListener{
 
 	private Partie partie;
 
+	private Monument monumentEnCours;
 	/**
 	 * Position antérieure au retrait du chef
 	 */
@@ -556,9 +564,16 @@ public class ControleurPlateau implements ChangeListener{
 								this.tuileAction = null;
 								this.construirePlateau();
 							}
-						} else {
+						} else if(this.monumentEnCours != null) {
+							action = new ConstruireMonument(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur(), this.monumentEnCours, position);
 
-
+							if(!action.verifier())
+							{
+								event.setDropCompleted(false);
+							} else {
+								boolean actionOK = mainApp.getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
+								event.setDropCompleted(true);
+							}
 						}
 					} catch(RemoteException e)
 					{
@@ -1339,9 +1354,72 @@ for(int x = 0; x < 11; x++){
 		}*/
 	}
 
-	private void construireMonument()
+	@FXML
+	private void dragMonument(MouseEvent event) throws RemoteException
 	{
+		imageEnDragAndDropChef = null;
+		imageEnDragAndDropTuile = null;
+		this.tuileAction = null;
+		ImageView imageTuile = (ImageView) event.getSource();
 
+		if(GridPane.getColumnIndex(imageTuile) == 0)
+		{
+			this.monumentEnCours = MainApp.getInstance().getServeur().getPartie().getListeMonuments().get(GridPane.getRowIndex(imageTuile));
+		} else {
+			this.monumentEnCours = MainApp.getInstance().getServeur().getPartie().getListeMonuments().get(GridPane.getRowIndex(imageTuile) + 3);
+		}
+		Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
+		ClipboardContent content = new ClipboardContent();
+        content.putImage(imageTuile.getImage());
+        db.setContent(content);
+        event.consume();
+
+	}
+
+	public void construireMonument() throws RemoteException
+	{
+		this.listeMonument.getChildren().clear();
+		for(int i = 0; i < MainApp.getInstance().getServeur().getPartie().getListeMonuments().size(); i++)
+		{
+			if(i < 3)
+			{
+				String url = getClass().getResource("monument_" + mainApp.getServeur().getPartie().getListeMonuments().get(i).getCouleurArche() + "_" + mainApp.getServeur().getPartie().getListeMonuments().get(i).getCouleurEscaliers() + ".png").toExternalForm();
+				ImageView imageView = new ImageView(new Image(url));
+				imageView.setOnDragDetected(new EventHandler<MouseEvent>(){
+
+					public void handle(MouseEvent event)  {
+						try
+						{
+							dragMonument(event);
+						} catch(RemoteException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				});
+				imageView.setFitHeight(40);
+				imageView.setFitWidth(40);
+				this.listeMonument.addRow(i, imageView);
+			} else {
+				String url = getClass().getResource("monument_" + mainApp.getServeur().getPartie().getListeMonuments().get(i).getCouleurArche() + "_" + mainApp.getServeur().getPartie().getListeMonuments().get(i).getCouleurEscaliers() + ".png").toExternalForm();
+				ImageView imageView = new ImageView(new Image(url));
+				imageView.setOnDragDetected(new EventHandler<MouseEvent>(){
+
+					public void handle(MouseEvent event)  {
+						try
+						{
+							dragMonument(event);
+						} catch(RemoteException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				});
+				imageView.setFitHeight(40);
+				imageView.setFitWidth(40);
+				this.listeMonument.addRow(i - 3,imageView);
+			}
+		}
 	}
 
 	public void afficherMessageJAVAFX(String message){
@@ -1478,6 +1556,14 @@ for(int x = 0; x < 11; x++){
 
 				}else if(param.equals("finpartie")){
 					this.mainApp.goToAttributionTresors(((Client)this.mainApp.getClient()).getJoueur().getPointTresor());
+				}else if(param.equals("listemonument")){
+					try{
+						this.construireMonument();
+					} catch(RemoteException e)
+					{
+						e.printStackTrace();
+					}
+
 				}
 
 			}
