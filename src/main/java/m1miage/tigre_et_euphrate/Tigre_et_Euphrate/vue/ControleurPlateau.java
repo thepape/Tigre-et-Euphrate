@@ -923,6 +923,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 							casePlateau.getChildren().clear();
 							caseNettoyee = true;
 							casePlateau.getChildren().add(imgView);
+							imgView.toBack();
 
 							//si la tuile est jonction, on l'affiche
 							if(tuileCiv.estJonction()){
@@ -1043,6 +1044,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 								imgView.setImage(img);
 
 								casePlateau.getChildren().add(imgView);
+								imgView.toFront();
 
 								imgView = new ImageView();
 								file = this.getClass().getResource(stairs);
@@ -1051,6 +1053,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 
 
 								casePlateau.getChildren().add(imgView);
+								imgView.toFront();
 							}
 						}
 					}
@@ -1383,11 +1386,11 @@ for(int x = 0; x < 11; x++){
 	public void construireMonument() throws RemoteException
 	{
 		this.listeMonument.getChildren().clear();
-		for(int i = 0; i < MainApp.getInstance().getServeur().getPartie().getListeMonuments().size(); i++)
+		for(int i = 0; i < this.partie.getListeMonuments().size(); i++)
 		{
 			if(i < 3)
 			{
-				String url = getClass().getResource("monument_" + mainApp.getServeur().getPartie().getListeMonuments().get(i).getCouleurArche() + "_" + mainApp.getServeur().getPartie().getListeMonuments().get(i).getCouleurEscaliers() + ".png").toExternalForm();
+				String url = getClass().getResource("monument_" + this.partie.getListeMonuments().get(i).getCouleurArche() + "_" + this.partie.getListeMonuments().get(i).getCouleurEscaliers() + ".png").toExternalForm();
 				ImageView imageView = new ImageView(new Image(url));
 				imageView.setOnDragDetected(new EventHandler<MouseEvent>(){
 
@@ -1405,7 +1408,7 @@ for(int x = 0; x < 11; x++){
 				imageView.setFitWidth(40);
 				this.listeMonument.addRow(i, imageView);
 			} else {
-				String url = getClass().getResource("monument_" + mainApp.getServeur().getPartie().getListeMonuments().get(i).getCouleurArche() + "_" + mainApp.getServeur().getPartie().getListeMonuments().get(i).getCouleurEscaliers() + ".png").toExternalForm();
+				String url = getClass().getResource("monument_" + this.partie.getListeMonuments().get(i).getCouleurArche() + "_" + this.partie.getListeMonuments().get(i).getCouleurEscaliers() + ".png").toExternalForm();
 				ImageView imageView = new ImageView(new Image(url));
 				imageView.setOnDragDetected(new EventHandler<MouseEvent>(){
 
@@ -1561,12 +1564,21 @@ for(int x = 0; x < 11; x++){
 				}else if(param.equals("finpartie")){
 					this.mainApp.goToAttributionTresors(((Client)this.mainApp.getClient()).getJoueur().getPointTresor());
 				}else if(param.equals("listemonument")){
-					try{
-						this.construireMonument();
-					} catch(RemoteException e)
-					{
-						e.printStackTrace();
-					}
+					
+						Platform.runLater(new Runnable(){
+
+							public void run() {
+								try {
+									construireMonument();
+								} catch (RemoteException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+							
+						});
+						
+					
 
 				}
 
