@@ -1053,6 +1053,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 
 
 								casePlateau.getChildren().add(imgView);
+								casePlateau.toFront();
 								imgView.toFront();
 							}
 						}
