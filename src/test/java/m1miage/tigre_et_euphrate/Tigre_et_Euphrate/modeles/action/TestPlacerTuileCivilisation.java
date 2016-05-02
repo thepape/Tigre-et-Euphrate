@@ -7,10 +7,15 @@ import java.rmi.RemoteException;
 import org.junit.Before;
 import org.junit.Test;
 
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPrive;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPublic;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
@@ -25,12 +30,28 @@ public class TestPlacerTuileCivilisation {
 		partie.setPlateauJeu(new Plateau());
 		Joueur joueur = new Joueur();
 		partie.setJoueur(joueur);
+
+		DeckPrive deck = new DeckPrive();
+		TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Marché);
+		deck.ajouter(tuile1);
+
+		joueur.setDynastie(Dynastie.Lanister);
+		DeckPublic deckp = new DeckPublic();
+		Chef chef1 = new Chef(TypeChef.Marchand);
+		chef1.setDynastie(Dynastie.Lanister);
+		deckp.ajouterChef(chef1);
+		Chef chef2 = new Chef(TypeChef.Marchand);
+		chef2.setDynastie(Dynastie.Stark);
+		deckp.ajouterChef(chef2);
+		joueur.setDeckPrive(deck);
+		joueur.setDeckPublic(deckp);
 	}
 
 	@Test
 	public void testPlacerTuileNormal() {
-		TuileCivilisation tuile = new TuileCivilisation(TypeTuileCivilisation.Marché);
-		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(3,4), tuile);
+		TuileCivilisation tuile = this.partie.getJoueur().getDeckPrive().getDeckPrive().get(0);
+
+		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(3,4), this.partie.getJoueur().getDeckPrive().getDeckPrive().get(0));
 		assertTrue(action.executer());
 		assertSame(this.partie.getPlateauJeu().getPlateau()[3][4], tuile);
 	}
@@ -38,7 +59,8 @@ public class TestPlacerTuileCivilisation {
 	@Test
 	public void testPlacerTuileFerme() {
 		TuileCivilisation tuile = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(3,1), tuile);
+		this.partie.getJoueur().getDeckPrive().getDeckPrive().add(tuile);
+		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(3,1), this.partie.getJoueur().getDeckPrive().getDeckPrive().get(1));
 		assertTrue(action.executer());
 		assertSame(this.partie.getPlateauJeu().getPlateau()[3][1], tuile);
 	}
@@ -78,11 +100,15 @@ public class TestPlacerTuileCivilisation {
 
 	@Test
 	public void testTerritoireConflit() {
-		TuileCivilisation tuileT = new TuileCivilisation(TypeTuileCivilisation.Marché);
-		Action actionT = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(0,0), tuileT);
+		TuileCivilisation tuileT = new TuileCivilisation(TypeTuileCivilisation.Temple);
+		Action actionT = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(0,2), tuileT);
 		actionT.executer();
+		Action actionChef = new PlacerChef(partie, partie.getJoueur(), this.partie.getJoueur().getDeckPublic().getDeckPublic().get(0), new Position(0,3));
+		actionChef.executer();
 		TuileCivilisation tuile = new TuileCivilisation(TypeTuileCivilisation.Marché);
-		PlacerTuileCivilisation action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(0,1), tuile);
+		PlacerTuileCivilisation action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(1,2), tuile);
+		Action actionC = new PlacerChef(partie, partie.getJoueur(), this.partie.getJoueur().getDeckPublic().getDeckPublic().get(0), new Position(1,0));
+		actionC.executer();
 		boolean ok = action.executer();
 		assertTrue(action.isConflit());
 		assertTrue(ok);

@@ -1,5 +1,6 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
@@ -8,6 +9,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.InterfaceServeurClient;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Tuile;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
@@ -74,6 +76,7 @@ public class PlacerTuileCivilisation extends Action {
 	/**
 	 * Execute l'action PlacerTuileCivilisation
 	 * @return vrai ou faux, selon le bon déroulement ou non de l'action
+	 * @throws RemoteException 
 	 */
 	public boolean executer(){
 		boolean ok = false;
@@ -81,21 +84,33 @@ public class PlacerTuileCivilisation extends Action {
 		if(!this.verifier()){
 			return false;
 		}
+		
+		
 
 		ArrayList<TuileCivilisation> listeAdjacente = this.partie.getPlateauJeu().recupererListeTuileCivilisationAdjacente(position);
 		conflit = false;
 		if(listeAdjacente.size() > 0)
 		{
+			//on verifie d'abord si on reunit + de 2 royaumes
+			int nbRoyaumesDifferents = 0;
+			for(int i = 0; i < listeAdjacente.size()-1; i++){
+				for(int j = i+1; j< listeAdjacente.size(); j++){
+					Territoire t1 = this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(i));
+					Territoire t2 = this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(j));
+					if(!t1.equals(t2) && t1.isEstRoyaume() && t2.isEstRoyaume()){
+						nbRoyaumesDifferents++;
+					}
+				}
+			}
+			if(nbRoyaumesDifferents > 2){
+				return false;
+			}
 
 			for(int i = 0; i < listeAdjacente.size()-1; i++)
 			{
-				for(int j = 1; j < listeAdjacente.size(); j++)
+				for(int j = i+1; j < listeAdjacente.size(); j++)
 				{
-					/*if(!listeAdjacente.get(i).getTerritoire().equals(listeAdjacente.get(j).getTerritoire()))
-					{
-						//TODO conflits
-						conflit = true;
-					}*/
+					
 
 					if(!this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(i)).equals(this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(j))))
 					{
@@ -128,7 +143,8 @@ public class PlacerTuileCivilisation extends Action {
 
 			if(!conflit)
 			{
-				this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(0)).addTuile(tuile);
+				Territoire terr = this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(0));
+				terr.addTuile(tuile);
 				//si pas de conflit et que la tuile posée permet de recuperer des points tresors
 				this.verifierTresors(this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(0)));
 			}
@@ -141,9 +157,12 @@ public class PlacerTuileCivilisation extends Action {
 
 
 		ok = this.partie.getPlateauJeu().placerTuile(this.tuile, this.position);
+		//System.out.println("placement : "+this.tuile.getId()+"-"+this.position.getX()+","+this.position.getY());
 		
 		// on retire cette tuile du deck privé du joueur
+		
 		this.joueur.getDeckPrive().getDeckPrive().remove(this.tuile);
+		//System.out.println("DECK:"+this.joueur.getNom()+" - "+this.joueur.getDeckPrive());
 		
 		return ok;
 	}
@@ -200,6 +219,7 @@ Dans ce cas, c’est le joueur à qui appartient le Roi qui remporte le point de
 	
 	/**
 	 * verifie si quand on pose une tuile civilisation on peut recuperer des tresors
+	 * @throws RemoteException 
 	 */
 	public void verifierTresors(Territoire pterri){
 		int nbtuiletresor = 0;
@@ -232,8 +252,23 @@ Dans ce cas, c’est le joueur à qui appartient le Roi qui remporte le point de
 				for(int i = 0; i<nbtuiletresor-1;i++){
 					tuileTresor.get(0).recupererTresor();
 					tuileTresor.remove(0);
+					
 					cmarchand.getJoueur().ajouterPointsTresor(1);
-					System.out.println("Le joueur "+cmarchand.getJoueur().getNom()+" a recu un point tresor");
+					this.ajouterJoueurImpacte(cmarchand.getJoueur());
+					/*
+					//on recupere le bon joueur auquel ajouter les points
+					for(InterfaceServeurClient client : this.partie.getServeur().getClients()){
+						int idJoueur = cmarchand.getJoueur().getId();
+						Joueur joueurAChanger = client.getJoueur();
+						
+						if(idJoueur == joueurAChanger.getId()){
+							joueurAChanger.ajouterPointsTresor(nbtuiletresor-1);
+							this.ajouterJoueurImpacte(joueurAChanger);
+						}
+					}*/
+					
+					
+					//System.out.println("Le joueur "+cmarchand.getJoueur().getNom()+" a recu un point tresor");
 				}
 			}
 		}

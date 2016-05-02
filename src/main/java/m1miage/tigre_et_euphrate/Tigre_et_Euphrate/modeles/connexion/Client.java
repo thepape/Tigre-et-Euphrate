@@ -369,7 +369,7 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	
 	public void passerTour() throws RemoteException{
 		this.partieCourante.passerTour();
-		System.out.println("CLIENT MIS A JOUR");
+		//System.out.println("CLIENT MIS A JOUR");
 	}
 	
 	public void envoyerNouveauConflit(Conflits conflit, int idSender) throws RemoteException {

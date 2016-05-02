@@ -1,9 +1,14 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.InterfaceServeurClient;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCatastrophe;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
@@ -58,6 +63,7 @@ public class PlacerTuileCatastrophe extends Action {
 	 * Execute l'action PlacerTuileCatastrophe
 	 * On place ces tuiles soit sur une case vide, soit sur une tuile Civilisation.
 	 * @return vrai ou faux, selon le bon déroulement ou non de l'action
+	 * @throws RemoteException 
 	 */
 	public boolean executer(){
 		boolean ok = false;
@@ -67,6 +73,30 @@ public class PlacerTuileCatastrophe extends Action {
 			this.tuileCatastrophe.setPosition(this.position);
 			this.partie.getPlateauJeu().reconstruireTerritoires(this.tuileCatastrophe.getPosition());
 			this.joueur.getDeckPublic().getListeTuileCatastrophe().remove(this.tuileCatastrophe);
+			
+			//verifier si des joueurs doivent retourner dans leurs decks apres la pose
+			ArrayList<Chef> chefsAdjacents = this.partie.getPlateauJeu().recupererListeChefsAdjacente(this.position);
+			for(Chef chef : chefsAdjacents){
+				//on verifie si un temple se trouve encore a coté du chef
+				ArrayList<TuileCivilisation> tuilesAdj = this.partie.getPlateauJeu().recupererListeTuileCivilisationAdjacente(chef.getPosition());
+				boolean templeAdj = false;
+				for(TuileCivilisation tuileCiv : tuilesAdj){
+					if(tuileCiv.getType().equals(TypeTuileCivilisation.Temple)){
+						templeAdj = true;
+						break;
+					}
+				}
+				
+				if(!templeAdj){
+					//si aucun temple adjacent au chef suite au placement de la tuile cata, on ejecte le chef
+					this.partie.getPlateauJeu().getPlateau()[chef.getPosition().getX()][chef.getPosition().getY()] = null;
+					
+					
+					Joueur possesseur = chef.getJoueur();
+					possesseur.getDeckPublic().ajouterChef(chef);
+					this.ajouterJoueurImpacte(possesseur);
+				}
+			}
 		}
 		return ok;
 	}
@@ -85,5 +115,9 @@ public class PlacerTuileCatastrophe extends Action {
 			ok = this.VerifierCase();
 		}
 		return ok;
+	}
+	
+	public String toString(){
+		return this.joueur.getNom()+" a posé une tuile catastrophe à la ligne "+this.position.getX()+", colonne "+this.position.getY();
 	}
 }

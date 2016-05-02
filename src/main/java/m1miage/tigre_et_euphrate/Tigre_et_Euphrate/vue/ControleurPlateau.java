@@ -110,7 +110,7 @@ public class ControleurPlateau implements ChangeListener{
 	/**
 	 * Liste des tuiles du deckPrive du joueur
 	 */
-	private ObservableList<TuileCivilisation> deckPriveJoueur = FXCollections.observableArrayList();
+	//private ObservableList<TuileCivilisation> deckPriveJoueur = FXCollections.observableArrayList();
 
 	/**
 	 * Liste des tuiles que le joueur veut changer
@@ -417,7 +417,9 @@ public class ControleurPlateau implements ChangeListener{
 					ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
 					ControleurPlateau.imageEnDragAndDropChef = null;
 					int gridPanColIndex = GridPane.getColumnIndex(imageTuile.getParent());
-					this.tuileAction = ((Client) mainApp.getInstance().getClient()).getJoueur().getDeckPrive().getDeckPrive().get(gridPanColIndex-2);
+					ArrayList<TuileCivilisation> deck = ((Client) MainApp.getInstance().getClient()).getJoueur().getDeckPrive().getDeckPrive();
+					this.tuileAction = deck.get(gridPanColIndex-2);
+					//System.out.println("drag tuile "+this.tuileAction.getId());
 				} else if(imageTuile.getAccessibleText().equals("tuileChef"))
 				{
 					ControleurPlateau.imageEnDragAndDropTuile = null;
@@ -517,7 +519,7 @@ public class ControleurPlateau implements ChangeListener{
 						} });
 				}
 				Position position = new Position(GridPane.getRowIndex((Pane)event.getSource()), GridPane.getColumnIndex((Pane)event.getSource()));
-				
+
 				if(target.getChildren().size() == 0 && !(this.tuileAction instanceof TuileCatastrophe))
 				{
 
@@ -551,10 +553,11 @@ public class ControleurPlateau implements ChangeListener{
 								}
 
 								//refresh du plateau du joueur qui a droppé
+								this.tuileAction = null;
 								this.construirePlateau();
 							}
 						} else {
-							
+
 
 						}
 					} catch(RemoteException e)
@@ -562,14 +565,14 @@ public class ControleurPlateau implements ChangeListener{
 						e.printStackTrace();
 					}
 				} else {
-					
+
 					if(this.tuileAction instanceof TuileCatastrophe)
 					{
-						
+
 						try {
 							Action actionCata;
 							actionCata = new PlacerTuileCatastrophe(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur(), (TuileCatastrophe)this.tuileAction, position);
-						
+
 							if(!actionCata.verifier())
 							{
 								event.setDropCompleted(false);
@@ -583,21 +586,22 @@ public class ControleurPlateau implements ChangeListener{
 									this.listeActionTour.add(actionCata);
 								}
 							}
+							this.tuileAction = null;
 							//refresh du plateau du joueur qui a droppé
 							this.construirePlateau();
-						
-						
+
+
 						} catch (RemoteException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 
-						
+
 					}
 					else{
 						event.setDropCompleted(false);
 					}
-					
+
 				}
 			}
 	}
@@ -609,7 +613,13 @@ public class ControleurPlateau implements ChangeListener{
 				ImageView imageTuile = (ImageView) event.getSource();
 				imageTuile.setVisible(false);
 
-				this.tuileAction = ((Client) mainApp.getInstance().getClient()).getJoueur().getDeckPublic().getListeTuileCatastrophe().get(GridPane.getColumnIndex(imageTuile.getParent()) - 10);
+				//this.tuileAction = ((Client) mainApp.getInstance().getClient()).getJoueur().getDeckPublic().getListeTuileCatastrophe().get(GridPane.getColumnIndex(imageTuile.getParent()) - 10);
+				if(((Client) mainApp.getClient()).getJoueur().getDeckPublic().getListeTuileCatastrophe().size() > 0){
+					this.tuileAction = ((Client) mainApp.getClient()).getJoueur().getDeckPublic().getListeTuileCatastrophe().get(0);
+				}
+				else{
+					return;
+				}
 
 				Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
 				ClipboardContent content = new ClipboardContent();
@@ -651,7 +661,7 @@ public class ControleurPlateau implements ChangeListener{
 	private void dragDonePlateau(DragEvent event) throws RemoteException
 	{
 		Pane pane = (Pane) event.getSource();
-		System.out.println(event.getTransferMode());
+		//System.out.println(event.getTransferMode());
 		if(event.getTransferMode() == null)
 		{
 			Pane image = (Pane) event.getSource();
@@ -705,7 +715,9 @@ public class ControleurPlateau implements ChangeListener{
 							{
 								ControleurPlateau.imageEnDragAndDropTuile = (Pane) imageTuile.getParent();
 								ControleurPlateau.imageEnDragAndDropChef = null;
-								tuileAction = deckPriveJoueur.get(GridPane.getColumnIndex(imageTuile.getParent()) - 2);
+								//tuileAction = deckPriveJoueur.get(GridPane.getColumnIndex(imageTuile.getParent()) - 2);
+								int index = GridPane.getColumnIndex(imageTuile.getParent()) - 2;
+								tuileAction = ((Client) MainApp.getInstance().getClient()).getJoueur().getDeckPrive().getDeckPrive().get(index);
 							} else if(imageTuile.getAccessibleText().equals("tuileChef"))
 							{
 								ControleurPlateau.imageEnDragAndDropTuile = null;
@@ -739,7 +751,7 @@ public class ControleurPlateau implements ChangeListener{
 						if(ControleurPlateau.imageEnDragAndDropTuile != null)
 						{
 							indice = GridPane.getColumnIndex(pane) - 2;
-							supprimerTuileDeckPrive(indice);
+							//supprimerTuileDeckPrive(indice);
 						} else if(ControleurPlateau.imageEnDragAndDropChef != null)
 						{
 							indice = GridPane.getRowIndex(pane);
@@ -763,6 +775,7 @@ public class ControleurPlateau implements ChangeListener{
 					event.setDropCompleted(true);
 					this.listeActionTour.add(action);
 					MainApp.getInstance().getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
+					this.tuileAction = null;
 				}
 			} else {
 				event.setDropCompleted(false);
@@ -773,6 +786,7 @@ public class ControleurPlateau implements ChangeListener{
 
 	public void setDeckPriveJoueur(ArrayList<TuileCivilisation> pDeckPrive)
 	{
+		/*
 		this.deckPriveJoueur = FXCollections.observableArrayList(pDeckPrive);
 		deckPriveJoueur.addListener(new ListChangeListener<TuileCivilisation>() {
 		      public void onChanged(ListChangeListener.Change change) {
@@ -799,23 +813,23 @@ public class ControleurPlateau implements ChangeListener{
 		    		  e.printStackTrace();
 		    	  }
 		      }
-		    });
+		    });*/
 	}
-
+/*
 	public ObservableList<TuileCivilisation> getDeckPriveJoueur() {
 		return deckPriveJoueur;
 	}
 
 	public void setDeckPriveJoueur(ObservableList<TuileCivilisation> deckPriveJoueur) {
 		this.deckPriveJoueur = deckPriveJoueur;
-	}
-
+	}*/
+/*
 	private void supprimerTuileDeckPrive(int indice)
 	{
 		Client client = (Client) mainApp.getClient();
 		client.getJoueur().getDeckPrive().getDeckPrive().remove(indice);
 		this.deckPriveJoueur.remove(indice);
-	}
+	}*/
 
 	public void construirePlateau(){
 		try {
@@ -1083,7 +1097,14 @@ for(int x = 0; x < 11; x++){
 		if(this.conflitInterne){
 			//envoyer les renforts au serveur
 			MainApp.getInstance().getServeur().envoyerRenforts(this.tuilesRenfort, ((Client) MainApp.getInstance().getClient()).getJoueur());
+			Joueur tour = MainApp.getInstance().getServeur().getPartie().getJoueurTour();
+			Joueur local = MainApp.getInstance().getClient().getJoueur();
 
+			if(tour.getId() == local.getId()){
+				this.activerBoutonPasserTour(true);
+			}else{
+				this.activerBoutonPasserTour(false);
+			}
 			//remettre le texte "passer tour" au bouton passer tour
 			Platform.runLater(new Runnable(){
 
@@ -1107,14 +1128,14 @@ for(int x = 0; x < 11; x++){
 			//mise a jour du deck privé
 			this.construireDeckPrivee();
 
-			System.out.println(mainApp.getServeur().getPartie().getJoueurTour().getNom());
-			System.out.println(mainApp.getClient().getPartie().getJoueurTour().getNom());
+			//System.out.println(mainApp.getServeur().getPartie().getJoueurTour().getNom());
+			//System.out.println(mainApp.getClient().getPartie().getJoueurTour().getNom());
 
 			//On test si la personne qui a cliquer sur passer tour est la même qui a le tour de jeu
 			if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()){
 				//On teste si il y a une condition de fin de partie avant de donner la main
-				if(!finpartie && mainApp.getServeur().getPartie().getPlateauJeu().getNombreTresors() > 2){
-					System.out.println("Le joueur a finit son tour. " + mainApp.getClient().getNomJoueur());
+				if(!finpartie && mainApp.getServeur().getPartie().nombreTresorsRestant() > 2){
+					//System.out.println("Le joueur a finit son tour. " + mainApp.getClient().getNomJoueur());
 					this.viderListeAction();
 					mainApp.getServeur().passerTour();
 				}else{
@@ -1318,6 +1339,11 @@ for(int x = 0; x < 11; x++){
 		}*/
 	}
 
+	private void construireMonument()
+	{
+
+	}
+
 	public void afficherMessageJAVAFX(String message){
 		this.texteAction.appendText("\n"+message);
 	}
@@ -1334,6 +1360,16 @@ for(int x = 0; x < 11; x++){
 	}
 
 
+	public void activerBoutonPasserTour(final boolean activer){
+
+		Platform.runLater(new Runnable(){
+
+			public void run() {
+				boutonFinTour.setDisable(!activer);
+			}
+
+		});
+	}
 
 
 	public void gererConflitInterne(){
@@ -1344,6 +1380,7 @@ for(int x = 0; x < 11; x++){
 		if(toursConflit.contains(joueur)){
 			//alors on lui permet de selectionner des tuiles renfort
 			this.conflitInterne = true;
+			this.activerBoutonPasserTour(true);
 
 			//on change le role du bouton fin de tour, désormais il sert à envoyer les renforts
 			Platform.runLater(new Runnable(){
@@ -1379,7 +1416,8 @@ for(int x = 0; x < 11; x++){
 					this.construirePlateau();
 
 					Plateau plateau = this.partie.getPlateauJeu();
-					System.out.println(plateau.afficher());
+					//System.out.println(plateau.afficherTerritoires());
+					//System.out.println(plateau.afficherTuilesId());
 				} else if(param.equals("deckPublic"))
 				{
 					try
@@ -1394,6 +1432,7 @@ for(int x = 0; x < 11; x++){
 					try
 					{
 						this.construireDeckPrivee();
+						//System.out.println("DECK APRES: "+((Client) MainApp.getInstance().getClient()).getJoueur().getDeckPrive());
 					} catch(RemoteException e)
 					{
 						e.printStackTrace();
@@ -1404,16 +1443,25 @@ for(int x = 0; x < 11; x++){
 						j1 = this.mainApp.getServeur().getPartie().getJoueurTour();
 
 						this.afficherMessage("C'est au tour de "+j1.getNom());
+						Joueur jlocal = this.mainApp.getClient().getJoueur();
+
+						//si le joueur a qui c'est au tour de jouer == ce joueur là, on active le bouton passer tour
+						if(jlocal.getId() == j1.getId() || this.conflitInterne){
+							this.activerBoutonPasserTour(true);
+						}
+						else{
+							this.activerBoutonPasserTour(false);
+						}
 					} catch (RemoteException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					System.out.println("COUILLE"+j1.getNom());
+					//System.out.println("COUILLE"+j1.getNom());
 				}else if(param.contains("message:")){
 
 					String message = param.split(":")[1];
 					this.afficherMessage(message);
-					System.out.println(param);
+					//System.out.println(param);
 				}else if(param.equals("partie")){
 					try {
 						this.partie = MainApp.getInstance().getServeur().getPartie();

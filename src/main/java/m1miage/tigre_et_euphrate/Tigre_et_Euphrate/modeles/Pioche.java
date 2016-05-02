@@ -73,6 +73,10 @@ public class Pioche implements Serializable{
 				}
 			}
 		}
+		
+			//System.out.println(tuilePiochee.getType().getNom()+":" +tuilePiochee.getId());
+		
+		
 		return tuilePiochee;
 	}
 

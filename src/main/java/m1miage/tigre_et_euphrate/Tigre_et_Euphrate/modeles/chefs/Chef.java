@@ -5,6 +5,7 @@ import java.io.Serializable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 
 /**
  * Class représentant un chef. Un chef peut etre placé, déplacé ou retiré
@@ -61,7 +62,8 @@ public class Chef extends Placable implements Serializable{
 		this.puissance = 0;
 		this.retiree = true;
 		//this.territoire = null;
-		this.id = Placable.idIncrement++;
+		Chef.idIncrement += 10;
+		this.id = Chef.idIncrement;
 	}
 
 	/**
@@ -71,6 +73,8 @@ public class Chef extends Placable implements Serializable{
 	public Chef(TypeChef typeChef) {
 		super();
 		this.typeChef = typeChef;
+		Chef.idIncrement += 10;
+		this.id = Chef.idIncrement;
 	}
 
 
@@ -85,7 +89,8 @@ public class Chef extends Placable implements Serializable{
 		this.puissance = 0;
 		this.retiree = true;
 		//this.territoire = null;
-		this.id = Placable.idIncrement++;
+		Chef.idIncrement += 10;
+		this.id = Chef.idIncrement;
 	}
 
 
@@ -105,6 +110,10 @@ public class Chef extends Placable implements Serializable{
 	public Joueur getJoueur() {
 		return joueur;
 	}
+	
+	public void setJoueur(Joueur joueur){
+		this.joueur = joueur;
+	}
 
 	/**
 	 * return la dynastie du chef
@@ -114,6 +123,10 @@ public class Chef extends Placable implements Serializable{
 		return dynastie;
 	}
 
+	public void setDynastie(Dynastie dynastie)
+	{
+		this.dynastie = dynastie;
+	}
 
 	/**
 	 * return la puissance du chef

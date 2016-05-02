@@ -40,11 +40,11 @@ public class EchangerTuileCivilisation extends Action {
 		
 		
 		for(TuileCivilisation tuile : this.tuileAEchanger){
-			Joueur joueur = ((Client) MainApp.getInstance().getClient()).getJoueur();
-			joueur.getDeckPrive().getDeckPrive().remove(tuile);
+			
+			this.joueur.getDeckPrive().getDeckPrive().remove(tuile);
 			System.out.println("Suppression dune carte");
 		}
-		this.partie.piocheCartesManquantes(this.getJoueur());
+		this.partie.piocheCartesManquantes(this.joueur);
 		return true;
 	}
 	

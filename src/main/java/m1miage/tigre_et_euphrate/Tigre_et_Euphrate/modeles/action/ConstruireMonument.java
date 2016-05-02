@@ -216,7 +216,9 @@ public class ConstruireMonument extends Action{
 
 			//on ejecte le chef dans le deck de son joueur si c'est le cas
 			plateau.getPlateau()[x][y] = null;
-			joueur.getDeckPublic().ajouterChef(chef);
+			Joueur possesseur = chef.getJoueur();
+			possesseur.getDeckPublic().ajouterChef(chef);
+			this.joueursImpactes.add(possesseur);
 		}
 
 		//attribution des points de victoire

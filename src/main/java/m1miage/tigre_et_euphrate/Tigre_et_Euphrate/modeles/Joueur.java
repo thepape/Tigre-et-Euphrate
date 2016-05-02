@@ -1,6 +1,7 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -316,4 +317,6 @@ public class Joueur implements Serializable{
 	public void ajouterPointTresor(int points){
 		this.PointTresor += points;
 	}
+
+	
 }
