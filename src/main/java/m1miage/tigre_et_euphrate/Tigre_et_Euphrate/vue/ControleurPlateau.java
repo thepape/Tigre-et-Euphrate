@@ -564,16 +564,6 @@ public class ControleurPlateau implements ChangeListener{
 								this.tuileAction = null;
 								this.construirePlateau();
 							}
-						} else if(this.monumentEnCours != null) {
-							action = new ConstruireMonument(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur(), this.monumentEnCours, position);
-
-							if(!action.verifier())
-							{
-								event.setDropCompleted(false);
-							} else {
-								boolean actionOK = mainApp.getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
-								event.setDropCompleted(true);
-							}
 						}
 					} catch(RemoteException e)
 					{
@@ -600,23 +590,37 @@ public class ControleurPlateau implements ChangeListener{
 								if(actionOK){
 									this.listeActionTour.add(actionCata);
 								}
-							}
 							this.tuileAction = null;
 							//refresh du plateau du joueur qui a droppé
 							this.construirePlateau();
 
-
+							}
 						} catch (RemoteException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 
 
-					}
-					else{
+					}  else if(this.monumentEnCours != null) {
+						try
+						{
+							Action action;
+							action = new ConstruireMonument(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur(), this.monumentEnCours, position);
+
+							if(!action.verifier())
+							{
+								event.setDropCompleted(false);
+							} else {
+								boolean actionOK = mainApp.getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
+								event.setDropCompleted(true);
+							}
+						} catch(RemoteException e)
+						{
+							e.printStackTrace();
+						}
+					} else {
 						event.setDropCompleted(false);
 					}
-
 				}
 			}
 	}
