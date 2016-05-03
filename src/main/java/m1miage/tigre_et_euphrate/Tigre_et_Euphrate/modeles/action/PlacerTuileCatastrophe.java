@@ -93,8 +93,17 @@ public class PlacerTuileCatastrophe extends Action {
 					
 					
 					Joueur possesseur = chef.getJoueur();
-					possesseur.getDeckPublic().ajouterChef(chef);
-					this.ajouterJoueurImpacte(possesseur);
+					
+					//si le chef a virer appartient au joueur ayant joué l'action, on modifie ddirectement l'objet
+					//joueur ayant joué
+					if(possesseur.getId() == this.joueur.getId()){
+						this.joueur.getDeckPublic().ajouterChef(chef);
+					}
+					else{
+						//sinon, on modifie le joueur et on l'ajoute dans la liste des autres joueurs a impacter
+						possesseur.getDeckPublic().ajouterChef(chef);
+						this.ajouterJoueurImpacte(possesseur);
+					}
 				}
 			}
 		}
