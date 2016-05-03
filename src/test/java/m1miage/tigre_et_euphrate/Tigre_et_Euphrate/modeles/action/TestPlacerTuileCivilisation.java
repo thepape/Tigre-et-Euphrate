@@ -109,7 +109,6 @@ public class TestPlacerTuileCivilisation {
 		TuileCivilisation tuile = new TuileCivilisation(TypeTuileCivilisation.Marché);
 		PlacerTuileCivilisation action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(1,2), tuile);
 		Action actionC = new PlacerChef(partie, partie.getJoueur(), this.partie.getJoueur().getDeckPublic().getDeckPublic().get(0), new Position(1,0));
-		System.out.println(tuile);
 		actionC.executer();
 		boolean ok = action.executer();
 		assertTrue(action.isConflit());
