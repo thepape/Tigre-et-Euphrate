@@ -136,6 +136,7 @@ public class PlacerTuileCivilisation extends Action {
 							t1.addListeChefs(t2.getChefs());
 							t1.addListeTuiles(t2.getTuilesCivilisation());
 							this.partie.getPlateauJeu().getListeRoyaume().remove(t2);
+							this.tuile.setJonction(true);
 						}
 					}
 				}
@@ -164,7 +165,7 @@ public class PlacerTuileCivilisation extends Action {
 		this.joueur.getDeckPrive().getDeckPrive().remove(this.tuile);
 		//System.out.println("DECK:"+this.joueur.getNom()+" - "+this.joueur.getDeckPrive());
 		
-		//this.AttributionPointVictoire();
+		this.AttributionPointVictoire();
 		return ok;
 	}
 

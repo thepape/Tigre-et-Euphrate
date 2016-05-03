@@ -6,7 +6,6 @@ import java.rmi.RemoteException;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPrive;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPublic;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
@@ -38,10 +37,10 @@ public class TestPlacerTuileCivilisation {
 
 		joueur.setDynastie(Dynastie.Lanister);
 		DeckPublic deckp = new DeckPublic();
-		Chef chef1 = new Chef(TypeChef.Marchand);
+		Chef chef1 = new Chef(TypeChef.Marchand,joueur);
 		chef1.setDynastie(Dynastie.Lanister);
 		deckp.ajouterChef(chef1);
-		Chef chef2 = new Chef(TypeChef.Marchand);
+		Chef chef2 = new Chef(TypeChef.Marchand, joueur);
 		chef2.setDynastie(Dynastie.Stark);
 		deckp.ajouterChef(chef2);
 		joueur.setDeckPrive(deck);
@@ -125,14 +124,55 @@ public class TestPlacerTuileCivilisation {
 		TuileCivilisation tuile = this.partie.getJoueur().getDeckPrive().getDeckPrive().get(0);
 		Chef chef = this.partie.getJoueur().getDeckPublic().getDeckPublic().get(0);
 		Action actionChef = new PlacerChef(partie, partie.getJoueur(), chef,  new Position(3,5));
-		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(3,4), tuile);
-		assertTrue(action.executer());
+		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(1,5), tuile);
 		assertTrue(actionChef.executer());
-		Territoire t1 = partie.getPlateauJeu().recupererTerritoireTuile(tuile);
-		Territoire t2 = partie.getPlateauJeu().recupererTerritoireTuile(chef);
-		assertFalse(t1.getIdTerritoire()==(t2.getIdTerritoire()));
+		assertTrue(action.executer());
+		assertEquals(partie.getJoueur().getPointVictoireVert(),1);
+		assertEquals(partie.getJoueur().getPointVictoireBleu(),0);
+		assertEquals(partie.getJoueur().getPointVictoireJaune(),0);
+		assertEquals(partie.getJoueur().getPointVictoireRouge(),0);
 		
 		//assertFalse(t.isEstRoyaume());
+	}
+	
+	/**
+	 * TestNonAttributionPoint
+	 */
+	@Test
+	public void PasAttribuerPointMauvaisChef(){
+		TuileCivilisation tuiletest = new TuileCivilisation(TypeTuileCivilisation.Population);
+		this.partie.getJoueur().getDeckPrive().getDeckPrive().add(tuiletest);
+		Chef chef = this.partie.getJoueur().getDeckPublic().getDeckPublic().get(0);
+		Action actionChef = new PlacerChef(partie, partie.getJoueur(), chef,  new Position(3,5));
+		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(1,5), tuiletest);
+		assertTrue(actionChef.executer());
+		assertTrue(action.executer());
+		assertEquals(partie.getJoueur().getPointVictoireVert(),0);
+		assertEquals(partie.getJoueur().getPointVictoireBleu(),0);
+		assertEquals(partie.getJoueur().getPointVictoireJaune(),0);
+		assertEquals(partie.getJoueur().getPointVictoireRouge(),0);
+	}
+	
+	/**
+	 * TestNonAttributionPoint
+	 */
+	@Test
+	public void PasAttribuerPointJonction(){
+		TuileCivilisation tuile = this.partie.getJoueur().getDeckPrive().getDeckPrive().get(0);
+		TuileCivilisation tuiletest = new TuileCivilisation(TypeTuileCivilisation.Population);
+		this.partie.getJoueur().getDeckPrive().getDeckPrive().add(tuiletest);
+		Chef chef = this.partie.getJoueur().getDeckPublic().getDeckPublic().get(0);
+		Action actionChef = new PlacerChef(partie, partie.getJoueur(), chef,  new Position(3,5));
+		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(2,6), tuile);
+		Action action2 = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(2,7), tuiletest);
+		assertTrue(actionChef.executer());
+		assertTrue(action2.executer());
+		assertTrue(action.executer());
+		assertTrue(tuile.estJonction());
+		assertEquals(partie.getJoueur().getPointVictoireVert(),0);
+		assertEquals(partie.getJoueur().getPointVictoireBleu(),0);
+		assertEquals(partie.getJoueur().getPointVictoireJaune(),0);
+		assertEquals(partie.getJoueur().getPointVictoireRouge(),0);
 	}
 
 }
