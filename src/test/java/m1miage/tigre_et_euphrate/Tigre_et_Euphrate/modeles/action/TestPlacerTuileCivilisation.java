@@ -13,6 +13,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
@@ -46,7 +47,7 @@ public class TestPlacerTuileCivilisation {
 		joueur.setDeckPrive(deck);
 		joueur.setDeckPublic(deckp);
 	}
-
+ 
 	@Test
 	public void testPlacerTuileNormal() {
 		TuileCivilisation tuile = this.partie.getJoueur().getDeckPrive().getDeckPrive().get(0);
@@ -54,6 +55,7 @@ public class TestPlacerTuileCivilisation {
 		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(3,4), this.partie.getJoueur().getDeckPrive().getDeckPrive().get(0));
 		assertTrue(action.executer());
 		assertSame(this.partie.getPlateauJeu().getPlateau()[3][4], tuile);
+		
 	}
 
 	@Test
@@ -113,6 +115,24 @@ public class TestPlacerTuileCivilisation {
 		assertTrue(action.isConflit());
 		assertTrue(ok);
 
+	}
+	
+	/**
+	 * test d'attribution de point Victoire
+	 */
+	@Test
+	public void testAttribuerPoint(){
+		TuileCivilisation tuile = this.partie.getJoueur().getDeckPrive().getDeckPrive().get(0);
+		Chef chef = this.partie.getJoueur().getDeckPublic().getDeckPublic().get(0);
+		Action actionChef = new PlacerChef(partie, partie.getJoueur(), chef,  new Position(3,5));
+		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(3,4), tuile);
+		assertTrue(action.executer());
+		assertTrue(actionChef.executer());
+		Territoire t1 = partie.getPlateauJeu().recupererTerritoireTuile(tuile);
+		Territoire t2 = partie.getPlateauJeu().recupererTerritoireTuile(chef);
+		assertFalse(t1.getIdTerritoire()==(t2.getIdTerritoire()));
+		
+		//assertFalse(t.isEstRoyaume());
 	}
 
 }

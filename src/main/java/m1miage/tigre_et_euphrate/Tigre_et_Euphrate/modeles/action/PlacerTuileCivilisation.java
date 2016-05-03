@@ -164,6 +164,7 @@ public class PlacerTuileCivilisation extends Action {
 		this.joueur.getDeckPrive().getDeckPrive().remove(this.tuile);
 		//System.out.println("DECK:"+this.joueur.getNom()+" - "+this.joueur.getDeckPrive());
 		
+		//this.AttributionPointVictoire();
 		return ok;
 	}
 
@@ -204,6 +205,7 @@ Dans ce cas, c’est le joueur à qui appartient le Roi qui remporte le point de
 			ArrayList<Chef> chefs = t.getChefs();
 			for (Chef pchef : chefs){
 				if(pchef.getTypeChef().getCouleur().equals(couleurTuile)){
+					//ROMAIN JOUEUR !!!!
 					pchef.getJoueur().ajouterPointsVictoire(couleurTuile, 1);
 				}
 				else{
