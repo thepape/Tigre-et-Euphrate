@@ -252,12 +252,19 @@ Dans ce cas, c’est le joueur à qui appartient le Roi qui remporte le point de
 			}
 			
 			if(nbtuiletresor >1){
+				Joueur possesseur = cmarchand.getJoueur();
 				for(int i = 0; i<nbtuiletresor-1;i++){
 					tuileTresor.get(0).recupererTresor();
 					tuileTresor.remove(0);
 					
-					cmarchand.getJoueur().ajouterPointsTresor(1);
-					this.ajouterJoueurImpacte(cmarchand.getJoueur());
+					
+					if(possesseur.getId() == this.joueur.getId()){
+						this.joueur.ajouterPointsTresor(1);
+					}else{
+						possesseur.ajouterPointsTresor(1);
+					}
+					
+					
 					/*
 					//on recupere le bon joueur auquel ajouter les points
 					for(InterfaceServeurClient client : this.partie.getServeur().getClients()){
@@ -273,6 +280,11 @@ Dans ce cas, c’est le joueur à qui appartient le Roi qui remporte le point de
 					
 					//System.out.println("Le joueur "+cmarchand.getJoueur().getNom()+" a recu un point tresor");
 				}
+				//on ajoute le joueur impacté dans laliste des impactés que si ce joueur n'est pasle joueur qui a send l'action
+				if(this.joueur.getId() != possesseur.getId()){
+					this.ajouterJoueurImpacte(cmarchand.getJoueur());
+				}
+				
 			}
 		}
 	}

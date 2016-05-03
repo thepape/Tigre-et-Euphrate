@@ -328,10 +328,9 @@ public class MainApp extends Application implements App {
 		try{
 			this.replaceSceneContent("InterfaceClassement.fxml");
 			ControleurClassement controler = (ControleurClassement)this.currentControler;
-			controler.initialiser();
-			
 			this.client.clearListeners();
 			this.client.addListener(controler);
+			controler.initialiser();
 		} catch (Exception e){
 			e.printStackTrace();
 		}
