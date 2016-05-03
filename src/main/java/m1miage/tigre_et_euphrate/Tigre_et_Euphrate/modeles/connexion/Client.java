@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.UnknownHostException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -115,8 +116,11 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 
 	/**
 	 * Fonction qui permet de se connecter au serveur
+	 * @throws NotBoundException 
+	 * @throws RemoteException 
+	 * @throws MalformedURLException 
 	 */
-	public void connect()
+	public void connect() throws MalformedURLException, RemoteException, NotBoundException
 	{
 		System.setSecurityManager(null);
 		System.setProperty("java.security.policy", "file:/security.policy");
@@ -127,25 +131,12 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		String url = "rmi://"+this.ip+":"+this.port+"/"+this.namespace;
 		//PartieInterface partie = null;
 
-		try {
 			//serveur = (Serveur) Naming.lookup(url);
 			this.serveur = (InterfaceServeurClient) Naming.lookup("rmi://"+this.ip+":"+this.port+"/"+this.namespace);
 			//this.serveur = partie;
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("ERREUR : Serveur introuvable.");
-
-		}
 
 		System.out.println("Client connecté au serveur !");
-		try
-		{
 			serveur.ajouterClient(this);
-
-		} catch(RemoteException e)
-		{
-			e.printStackTrace();
-		}
 
 	}
 
