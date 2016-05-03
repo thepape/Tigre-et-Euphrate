@@ -455,6 +455,11 @@
                   <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0" />
                </children>
             </Pane>
+            <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
+               <children>
+                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0" />
+               </children>
+            </Pane>
             <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5">
                <children>
                   <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0" />
@@ -466,11 +471,6 @@
                </children>
             </Pane>
             <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7">
-               <children>
-                  <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0" />
-               </children>
-            </Pane>
-            <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8">
                <children>
                   <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0" />
                </children>
