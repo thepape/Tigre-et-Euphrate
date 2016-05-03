@@ -165,7 +165,10 @@ public class PlacerTuileCivilisation extends Action {
 		this.joueur.getDeckPrive().getDeckPrive().remove(this.tuile);
 		//System.out.println("DECK:"+this.joueur.getNom()+" - "+this.joueur.getDeckPrive());
 		
-		this.AttributionPointVictoire();
+		if(!conflit){
+			this.AttributionPointVictoire();
+		}
+		
 		return ok;
 	}
 
