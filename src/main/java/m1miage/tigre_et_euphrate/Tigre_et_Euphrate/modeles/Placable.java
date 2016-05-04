@@ -20,8 +20,6 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisat
 include = JsonTypeInfo.As.PROPERTY,
 property = "typePlacable")
 @JsonSubTypes({
-@Type(value = TuileCivilisation.class, name = "tuileCivilisation"),
-@Type(value = TuileCatastrophe.class, name = "tuileCatastrophe"),
 @Type(value = Chef.class, name = "chef")})
 public abstract class Placable implements Serializable {
 	/**
