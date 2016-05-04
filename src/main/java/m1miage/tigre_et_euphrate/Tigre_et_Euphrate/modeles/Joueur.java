@@ -1,6 +1,7 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -38,16 +39,16 @@ public class Joueur implements Serializable{
 	/**
 	 * Nombre de point victoire du joueur
 	 */
-	@JsonProperty("PointVictoire")
+	@JsonProperty("PointVictoireRouge")
 	private int PointVictoireRouge;
-	
-	@JsonProperty("PointVictoire")
+
+	@JsonProperty("PointVictoireVert")
 	private int PointVictoireVert;
-	
-	@JsonProperty("PointVictoire")
+
+	@JsonProperty("PointVictoireBleu")
 	private int PointVictoireBleu;
-	
-	@JsonProperty("PointVictoire")
+
+	@JsonProperty("PointVictoireJaune")
 	private int PointVictoireJaune;
 
 	/**
@@ -86,7 +87,7 @@ public class Joueur implements Serializable{
 	public Joueur() {
 		super();
 		this.id = incId++;
-		
+
 		this.PointVictoireRouge = 0;
 		this.PointVictoireBleu = 0;
 		this.PointVictoireJaune = 0;
@@ -177,7 +178,7 @@ public class Joueur implements Serializable{
 	public int getPointVictoireRouge(){
 		return this.PointVictoireRouge;
 	}
-	
+
 	/**
 	 * getter des points victoire du joueur
 	 * @return points victoire du joueur
@@ -186,7 +187,7 @@ public class Joueur implements Serializable{
 	public int getPointVictoireVert(){
 		return this.PointVictoireVert;
 	}
-	
+
 	/**
 	 * getter des points victoire du joueur
 	 * @return points victoire du joueur
@@ -195,7 +196,7 @@ public class Joueur implements Serializable{
 	public int getPointVictoireJaune(){
 		return this.PointVictoireJaune;
 	}
-	
+
 	/**
 	 * getter des points victoire du joueur
 	 * @return points victoire du joueur
@@ -304,16 +305,18 @@ public class Joueur implements Serializable{
 	public void setId(int id){
 		this.id = id;
 	}
-	
+
 	public boolean equals(Object o){
 		if(o instanceof Joueur){
 			return this.id == ((Joueur) o).getId();
 		}
-		
+
 		return false;
 	}
-	
+
 	public void ajouterPointTresor(int points){
 		this.PointTresor += points;
 	}
+
+
 }

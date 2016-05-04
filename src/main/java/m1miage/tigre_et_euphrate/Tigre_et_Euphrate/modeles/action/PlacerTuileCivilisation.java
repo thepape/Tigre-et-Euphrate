@@ -71,6 +71,7 @@ public class PlacerTuileCivilisation extends Action {
 		this.position = position;
 		this.tuile = tuile;
 	}
+	
 
 	/**
 	 * Execute l'action PlacerTuileCivilisation
@@ -135,6 +136,7 @@ public class PlacerTuileCivilisation extends Action {
 							t1.addListeChefs(t2.getChefs());
 							t1.addListeTuiles(t2.getTuilesCivilisation());
 							this.partie.getPlateauJeu().getListeRoyaume().remove(t2);
+							this.tuile.setJonction(true);
 						}
 					}
 				}
@@ -163,6 +165,7 @@ public class PlacerTuileCivilisation extends Action {
 		this.joueur.getDeckPrive().getDeckPrive().remove(this.tuile);
 		//System.out.println("DECK:"+this.joueur.getNom()+" - "+this.joueur.getDeckPrive());
 		
+		this.AttributionPointVictoire();
 		return ok;
 	}
 
@@ -182,6 +185,39 @@ public class PlacerTuileCivilisation extends Action {
 	public boolean verifier() {
 		// TODO Auto-generated method stub
 		return this.partie.getPlateauJeu().verifierPlacerTuile(tuile, position);
+	}
+	
+	/*
+	 *  Dans ce royaume se trouve un chef de la même couleur que la nouvelle tuile Civilisation. C’est le
+joueur à qui ce chef appartient qui remporte le point de victoire.
+— Dans ce Royaume, aucun chef n’est de la couleur de la nouvelle tuile, mais il y a un Roi (chef noir).
+Dans ce cas, c’est le joueur à qui appartient le Roi qui remporte le point de victoire.
+	 */
+	
+	/**
+	 * Methode qui retourne le nombre de point victoire gagner lorsqu'un joureur
+	 * place une tuile civilisation.
+	 * @return
+	 */
+	public void AttributionPointVictoire(){
+		Territoire t = this.partie.getPlateauJeu().recupererTerritoireTuile(this.tuile);
+		if(t.isEstRoyaume() && !this.tuile.estJonction()){
+			String couleurTuile = this.tuile.getType().getCouleur();
+			ArrayList<Chef> chefs = t.getChefs();
+			for (Chef pchef : chefs){
+				if(pchef.getTypeChef().getCouleur().equals(couleurTuile)){
+					//ROMAIN JOUEUR !!!!
+					pchef.getJoueur().ajouterPointsVictoire(couleurTuile, 1);
+				}
+				else{
+					if(pchef.getTypeChef().getCouleur().equals("jaune")){
+						pchef.getJoueur().ajouterPointsVictoire(couleurTuile, 1);
+					}
+				}
+			}
+			
+		}
+		
 	}
 	
 	/**
@@ -216,12 +252,19 @@ public class PlacerTuileCivilisation extends Action {
 			}
 			
 			if(nbtuiletresor >1){
+				Joueur possesseur = cmarchand.getJoueur();
 				for(int i = 0; i<nbtuiletresor-1;i++){
 					tuileTresor.get(0).recupererTresor();
 					tuileTresor.remove(0);
 					
-					cmarchand.getJoueur().ajouterPointsTresor(1);
-					this.ajouterJoueurImpacte(cmarchand.getJoueur());
+					
+					if(possesseur.getId() == this.joueur.getId()){
+						this.joueur.ajouterPointsTresor(1);
+					}else{
+						possesseur.ajouterPointsTresor(1);
+					}
+					
+					
 					/*
 					//on recupere le bon joueur auquel ajouter les points
 					for(InterfaceServeurClient client : this.partie.getServeur().getClients()){
@@ -237,6 +280,11 @@ public class PlacerTuileCivilisation extends Action {
 					
 					//System.out.println("Le joueur "+cmarchand.getJoueur().getNom()+" a recu un point tresor");
 				}
+				//on ajoute le joueur impacté dans laliste des impactés que si ce joueur n'est pasle joueur qui a send l'action
+				if(this.joueur.getId() != possesseur.getId()){
+					this.ajouterJoueurImpacte(cmarchand.getJoueur());
+				}
+				
 			}
 		}
 	}

@@ -6,6 +6,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
@@ -24,8 +25,16 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivil
  */
 public class Partie implements Serializable {
 
-
+	@JsonIgnore
 	private InterfaceServeurClient serveur;
+
+	public ArrayList<Monument> getMonuments() {
+		return monuments;
+	}
+
+	public void setMonuments(ArrayList<Monument> monuments) {
+		this.monuments = monuments;
+	}
 
 	/**
 	 * Le plateau de jeu des joueurs
@@ -35,6 +44,7 @@ public class Partie implements Serializable {
 	/**
 	 * La liste des joueurs jouant la partie
 	 */
+	@JsonProperty("listeJoueurs")
 	private ArrayList<Joueur> listeJoueurs = new ArrayList<Joueur>();
 
 	/**
@@ -45,6 +55,7 @@ public class Partie implements Serializable {
 	/**
 	 * La liste des tours des conflits
 	 */
+	@JsonProperty("listeConflits")
 	private ArrayList<Joueur> listeToursConflits = new ArrayList<Joueur>();
 
 	/**
@@ -65,6 +76,7 @@ public class Partie implements Serializable {
 	/**
 	 * liste des conflits
 	 */
+	@JsonProperty("conflits")
 	private ArrayList<Conflits> conflits;
 
 	/**
@@ -72,6 +84,7 @@ public class Partie implements Serializable {
 	 */
 	private boolean estLancee = false;
 
+	@JsonProperty("monuments")
 	private ArrayList<Monument> monuments = new ArrayList<Monument>();
 
 	/**
@@ -119,6 +132,7 @@ public class Partie implements Serializable {
 		return listeTours;
 	}
 
+	@JsonProperty("listeJoueurs")
 	public ArrayList<Joueur> getListeJoueurs() {
 		return listeJoueurs;
 	}
@@ -272,6 +286,7 @@ public class Partie implements Serializable {
 		return this.estLancee;
 	}
 
+	@JsonProperty("monuments")
 	public ArrayList<Monument> getListeMonuments(){
 		return this.monuments;
 	}
@@ -418,17 +433,17 @@ public class Partie implements Serializable {
 		this.listeTours.remove(0);
 		this.listeTours.add(temp);
 		//System.out.println("C'est le tour de "+this.listeTours.get(0).getNom());
-		
-		
+
+
 	}
-	
+
 	/**
 	 * Methode qui va faire passer le tour du joueur en conflit
 	 */
 	public void passerTourConflit(){
 		this.listeToursConflits.remove(0);
 	}
-	
+
 	/**
 	 * Methode permettant d'ajouter un joueur dans la liste des conflits
 	 */
@@ -444,7 +459,7 @@ public class Partie implements Serializable {
 	public boolean piocheCartesManquantes(Joueur j1){
 		if(j1.getNom().equals("aaa"))
 			System.out.println("DECK AVANT PIOCHE:"+j1.getNom()+" - "+j1.getDeckPrive());
-		
+
 		int nbTuiles = j1.getDeckPrive().getDeckPrive().size();
 		if(nbTuiles != 6){
 			if(pioche.getTotalCarte() >= 6-nbTuiles ){
@@ -454,45 +469,46 @@ public class Partie implements Serializable {
 					//System.out.println("Carte piochée: "+tuile.getId());
 				}
 			}else{
-				
+
 				return true;
 			}
 		}
 		if(j1.getNom().equals("aaa"))
 			System.out.println("DECK APRES PIOCHE:"+j1.getNom()+" - "+j1.getDeckPrive());
-		
+
 		return false;
 	}
 
+	@JsonProperty("listeConflits")
 	public ArrayList<Joueur> getListeToursConflits(){
 		return this.listeToursConflits;
 	}
-	
+
 	public void setListeToursConflits(ArrayList<Joueur> joueurs){
 		this.listeToursConflits = joueurs;
 	}
-	
+
 	public boolean ajouterTourConflit(Joueur joueur){
 		if(this.listeToursConflits.contains(joueur)){
 			return false;
 		}
-		
+
 		this.listeToursConflits.add(joueur);
 		return true;
 	}
-	
+
 	public boolean retirerTourConflit(Joueur joueur){
 		if(!this.listeToursConflits.contains(joueur)){
 			return false;
 		}
-		
+
 		this.listeToursConflits.remove(joueur);
 		return true;
 	}
-	
+
 	public int nombreTresorsRestant(){
 		int tresors = 0;
-		
+
 		for(Territoire territoire : this.getPlateauJeu().getListeRoyaume()){
 			for(TuileCivilisation tuile : territoire.getTuilesCivilisation()){
 				if(tuile.aTresor()){
@@ -500,7 +516,7 @@ public class Partie implements Serializable {
 				}
 			}
 		}
-		
+
 		return tresors;
 	}
 }

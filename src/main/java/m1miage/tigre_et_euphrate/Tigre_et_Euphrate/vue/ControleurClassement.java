@@ -7,6 +7,8 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.InterfaceSe
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.TreeMap;
 
 import javafx.application.Platform;
@@ -141,7 +143,7 @@ public class ControleurClassement implements ChangeListener{
 	 * @throws RemoteException
 	 */
 	public void remplirTableauRecaputulatif() throws RemoteException{
-		ArrayList<InterfaceServeurClient> listeClients = this.mainApp.getServeur().getClients();
+		ArrayList<InterfaceServeurClient> listeClients = MainApp.getInstance().getServeur().getClients();
 		this.joueurs = new ArrayList<Joueur>();
 		
 		for(InterfaceServeurClient client : listeClients){
@@ -151,6 +153,7 @@ public class ControleurClassement implements ChangeListener{
 		Platform.runLater(new Runnable(){
 
 			public void run() {
+				System.out.println("Initialisation des points");
 				for(Joueur joueur : joueurs)
 				{
 					if(joueur.getDynastie().getNom().equals("Stark")){
@@ -212,12 +215,54 @@ public class ControleurClassement implements ChangeListener{
 			classement.put(this.joueurTargaryen, this.minTargaryen);
 		// Là, on a les joueurs de la partie avec leur score minimale dans le TreeMap.
 		// Il faut trier
+		Collections.sort(this.joueurs, new Comparator<Joueur>(){
+
+			public int compare(Joueur j1, Joueur j2) {
+				ArrayList<Integer> points0 = new ArrayList<Integer>();
+				ArrayList<Integer> points1 = new ArrayList<Integer>();
+				points0.add(j1.getPointVictoireBleu());
+				points0.add(j1.getPointVictoireRouge());
+				points0.add(j1.getPointVictoireJaune());
+				points0.add(j1.getPointVictoireVert());
+				points1.add(j2.getPointVictoireBleu());
+				points1.add(j2.getPointVictoireRouge());
+				points1.add(j2.getPointVictoireJaune());
+				points1.add(j2.getPointVictoireVert());
+				
+				Collections.sort(points0);
+				Collections.sort(points1);
+				
+				int min0 = points0.get(0);
+				int min1 = points1.get(0);
+				
+				if(min0 > min1){
+					return 1;
+				}
+				else if(min0 < min1){
+					return -1;
+				}
+				else{
+					return 0;
+				}
+			}
+			
+		});
 		
-		// On affiche sur l'interface le classement final
-		this.classementUn.setText(this.joueurLannister+"");
-		this.classementDeux.setText(this.joueurLannister+"");
-		this.classementTrois.setText(this.joueurLannister+"");
-		this.classementQuatre.setText(this.joueurLannister+"");
+		Platform.runLater(new Runnable(){
+
+			public void run() {
+				// On affiche sur l'interface le classement final
+				classementUn.setText(joueurs.get(0).getNom()+" ["+joueurs.get(0).getDynastie().getNom()+"]");
+				classementDeux.setText(joueurs.get(1).getNom()+" ["+joueurs.get(1).getDynastie().getNom()+"]");
+				if(joueurs.size() == 3){
+					classementTrois.setText(joueurs.get(2).getNom()+" ["+joueurs.get(2).getDynastie().getNom()+"]");
+				}else if(joueurs.size() == 4){
+					classementQuatre.setText(joueurs.get(3).getNom()+" ["+joueurs.get(3).getDynastie().getNom()+"]");
+			}
+			}
+			
+		});
+		
 	}
 	
 	@FXML

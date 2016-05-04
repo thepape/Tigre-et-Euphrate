@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.UnknownHostException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -115,8 +116,11 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 
 	/**
 	 * Fonction qui permet de se connecter au serveur
+	 * @throws NotBoundException
+	 * @throws RemoteException
+	 * @throws MalformedURLException
 	 */
-	public void connect()
+	public void connect() throws MalformedURLException, RemoteException, NotBoundException
 	{
 		System.setSecurityManager(null);
 		System.setProperty("java.security.policy", "file:/security.policy");
@@ -127,25 +131,12 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		String url = "rmi://"+this.ip+":"+this.port+"/"+this.namespace;
 		//PartieInterface partie = null;
 
-		try {
 			//serveur = (Serveur) Naming.lookup(url);
 			this.serveur = (InterfaceServeurClient) Naming.lookup("rmi://"+this.ip+":"+this.port+"/"+this.namespace);
 			//this.serveur = partie;
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("ERREUR : Serveur introuvable.");
-
-		}
 
 		System.out.println("Client connecté au serveur !");
-		try
-		{
 			serveur.ajouterClient(this);
-
-		} catch(RemoteException e)
-		{
-			e.printStackTrace();
-		}
 
 	}
 
@@ -207,7 +198,7 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	public boolean send(Action action, int idClient) throws RemoteException {
 		action.setPartie(this.getPartie());
 		return action.executer();
-		
+
 		//this.notifierChangement("plateau");
 	}
 
@@ -326,7 +317,7 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	public void removeListener(ChangeListener listener) {
 		this.listeners.remove(listener);
 	}
-	
+
 	/**
 	 * fonction qui supprime tous les ChangeListeners du client
 	 */
@@ -366,15 +357,15 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		this.partieCourante = partie;
 
 	}
-	
+
 	public void passerTour() throws RemoteException{
 		this.partieCourante.passerTour();
 		//System.out.println("CLIENT MIS A JOUR");
 	}
-	
+
 	public void envoyerNouveauConflit(Conflits conflit, int idSender) throws RemoteException {
 		this.partieCourante.ajouterConflit(conflit);
-		
+
 	}
 
 
@@ -423,23 +414,28 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 
 	public void envoyerRenforts(ArrayList<TuileCivilisation> renforts, Joueur joueur) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public boolean piocherCartesManquantes(Joueur j) throws RemoteException {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	public void finirPartie() throws RemoteException {
-		
+
 	}
 
 	public void envoyerPointsAttribues(Joueur joueur) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	
+	public ArrayList<Joueur> recupererListeJoueurPartie() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }

@@ -17,8 +17,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPrive;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPublic;
@@ -195,6 +199,21 @@ public class MainApp extends Application implements App {
 		this.client = client;
 	}
 
+	public void setClient(InterfaceServeurClient client) {
+		this.client = client;
+	}
+
+	public void setPartieJoueur(Partie partie)
+	{
+		try
+		{
+			MainApp.getInstance().getClient().setPartieCourante(partie);
+		} catch(RemoteException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Fonction qui remplace le contenu de la fenetre principale
 	 * @param fxml
@@ -328,10 +347,14 @@ public class MainApp extends Application implements App {
 		try{
 			this.replaceSceneContent("InterfaceClassement.fxml");
 			ControleurClassement controler = (ControleurClassement)this.currentControler;
+<<<<<<< HEAD
 			controler.initialiser();
 
+=======
+>>>>>>> master
 			this.client.clearListeners();
 			this.client.addListener(controler);
+			controler.initialiser();
 		} catch (Exception e){
 			e.printStackTrace();
 		}
@@ -348,6 +371,7 @@ public class MainApp extends Application implements App {
 		try{
 			//on supprime le controleurSalon des listeners du client
 			this.client.clearListeners();
+<<<<<<< HEAD
 
 			this.replaceSceneContent("ApplicationPrincipale.fxml");
 			/*
@@ -388,14 +412,19 @@ public class MainApp extends Application implements App {
 			// PartieInterface partie = (Partie)
 			// this.getListeJoueur().get(0);
 			ControleurPlateau controleurPlateau = this.currentLoader.getController();
+=======
+>>>>>>> master
 
-			// Client client = new Client("fffff", "joueur 1");
+			this.replaceSceneContent("ApplicationPrincipale.fxml");
 
+<<<<<<< HEAD
 			Partie partie = new Partie();
 			partie.setPlateauJeu(new Plateau());
 			partie.setJoueur(joueur);
 			*/
 
+=======
+>>>>>>> master
 			ControleurPlateau controleurPlateau = this.currentLoader.getController();
 			Partie partie = this.serveur.getPartie();
 			Joueur joueur = this.client.getJoueur();

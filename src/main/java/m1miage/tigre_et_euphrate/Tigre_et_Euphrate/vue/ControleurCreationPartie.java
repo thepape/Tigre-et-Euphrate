@@ -1,5 +1,6 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue;
 
+import javafx.scene.control.Label;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -54,6 +55,9 @@ public class ControleurCreationPartie {
 	@FXML
 	private TextField TFIP;
 
+	@FXML
+	private Label LBLErreur;
+
 	/**
 	 * Controleur vide
 	 */
@@ -61,7 +65,12 @@ public class ControleurCreationPartie {
 	}
 
 	@FXML
-	public void lancerServeur(){
+	public void lancerServeur() throws MalformedURLException, RemoteException, NotBoundException{
+		String nomJoueur = this.TFNomJoueur.getText();
+		if(!this.estUnBonPseudo(nomJoueur)){
+			this.LBLErreur.setText("Erreur : Veuillez saisir un nom correct ! \n3 caractères minimum composés de lettres.");
+			return;
+		}
 		//creation du serveur
 		Serveur serveur = null;
 		try
@@ -81,7 +90,6 @@ public class ControleurCreationPartie {
 		//serveur.initialiser();
 		//serveur.attendreJoueursPrets();
 
-		String nomJoueur = this.TFNomJoueur.getText();
 		Client client = null;
 		try
 		{
@@ -106,22 +114,49 @@ public class ControleurCreationPartie {
 		this.goToSalon();
 	}
 
+	/**
+	 * Fonction permettant de checker le nom du joueur
+	 * @param pnom Le nom du joueur
+	 * @return vrai ou faux
+	 */
+	public boolean estUnBonPseudo(String pnom){
+		if( (pnom.length() < 3) || (!pnom.matches("[a-zA-Z]*")) )
+			return false;
+		return true;
+	}
+
 	@FXML
-	public void rejoindreServeur(){
+	public void rejoindreServeur() throws MalformedURLException, NotBoundException{
 		String nomJoueur = this.TFNomJoueur.getText();
+		if(!this.estUnBonPseudo(nomJoueur)){
+			this.LBLErreur.setText("Erreur : Veuillez saisir un nom correct ! 3 caractères minimum composés de lettres.");
+			return;
+		}
+		System.out.println("Joueur : " + nomJoueur);
 		String ip = this.TFIP.getText();
 		try
 		{
+
 			Joueur joueur = new Joueur();
 			joueur.setNom(nomJoueur);
 			Client client = new Client(ip, nomJoueur);
 			client.setJoueur(joueur);
-			client.connect();
+			try{
+				client.connect();
+			}catch(MalformedURLException e1){
+				System.out.println("HIHI 1");
+				return;
+			}catch(RemoteException e2){
+				this.LBLErreur.setText("Erreur : L'adresse IP est incorrecte !");
+				return;
+			}catch(NotBoundException e3){
+				System.out.println("HIHI 3");
+				return;
+			}
 			MainApp.getInstance().setServeur(client.getServeur());
 			System.out.println(client.getIdClientCourant());
 			MainApp.getInstance().setClient(client);
-			System.out.println("ID a la cReatIon : " + MainApp.getInstance().getClient().getIdObjetPartie());
-			//client.rejoindrePartie();
+
 		} catch(RemoteException e)
 		{
 			e.printStackTrace();
