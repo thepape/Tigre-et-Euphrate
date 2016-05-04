@@ -52,8 +52,8 @@ public class PlacerTuileCatastrophe extends Action {
 				((TuileCivilisation)this.partie.getPlateauJeu().getPlateau()[x][y]).getType().equals(TypeTuileCivilisation.Population) || 
 				((TuileCivilisation)this.partie.getPlateauJeu().getPlateau()[x][y]).getType().equals(TypeTuileCivilisation.Temple) ){*/
 		if(this.partie.getPlateauJeu().getPlateau()[x][y]==null || 
-				(this.partie.getPlateauJeu().getPlateau()[x][y] instanceof TuileCivilisation
-				&& ((TuileCivilisation) this.partie.getPlateauJeu().getPlateau()[x][y]).estTuileMonument())){	
+				((this.partie.getPlateauJeu().getPlateau()[x][y] instanceof TuileCivilisation)
+				&&((TuileCivilisation) this.partie.getPlateauJeu().getPlateau()[x][y]).estTuileMonument()==false)){	
 			ok = true;
 		}
 		return ok;
