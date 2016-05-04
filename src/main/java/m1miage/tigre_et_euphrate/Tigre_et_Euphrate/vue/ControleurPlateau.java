@@ -1,5 +1,7 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.Naming;
@@ -48,6 +50,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.ConstruireMonument;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.EchangerTuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerChef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCatastrophe;
@@ -57,6 +60,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Client;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.EncoderJSON;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.*;
 
 public class ControleurPlateau implements ChangeListener{
@@ -98,10 +102,16 @@ public class ControleurPlateau implements ChangeListener{
 	 */
 	@FXML
 	private TextArea texteAction;
+
+	/**
+	 * GridPane de la liste des monuments
+	 */
+	@FXML
+	private GridPane listeMonument;
+
 	/**
 	 * Application principale
 	 */
-
 	private MainApp mainApp;
 
 	/**
@@ -140,6 +150,7 @@ public class ControleurPlateau implements ChangeListener{
 
 	private Partie partie;
 
+	private Monument monumentEnCours;
 	/**
 	 * Position antérieure au retrait du chef
 	 */
@@ -636,9 +647,6 @@ public class ControleurPlateau implements ChangeListener{
 								this.tuileAction = null;
 								this.construirePlateau();
 							}
-						} else {
-
-
 						}
 					} catch(RemoteException e)
 					{
@@ -665,23 +673,37 @@ public class ControleurPlateau implements ChangeListener{
 								if(actionOK){
 									this.listeActionTour.add(actionCata);
 								}
-							}
 							this.tuileAction = null;
 							//refresh du plateau du joueur qui a droppé
 							this.construirePlateau();
 
-
+							}
 						} catch (RemoteException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 
 
-					}
-					else{
+					}  else if(this.monumentEnCours != null) {
+						try
+						{
+							Action action;
+							action = new ConstruireMonument(MainApp.getInstance().getClient().getPartie(), MainApp.getInstance().getClient().getJoueur(), this.monumentEnCours, position);
+
+							if(!action.verifier())
+							{
+								event.setDropCompleted(false);
+							} else {
+								boolean actionOK = mainApp.getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
+								event.setDropCompleted(true);
+							}
+						} catch(RemoteException e)
+						{
+							e.printStackTrace();
+						}
+					} else {
 						event.setDropCompleted(false);
 					}
-
 				}
 			}
 	}
@@ -741,7 +763,6 @@ public class ControleurPlateau implements ChangeListener{
 	private void dragDonePlateau(DragEvent event) throws RemoteException
 	{
 		Pane pane = (Pane) event.getSource();
-		//System.out.println(event.getTransferMode());
 		if(event.getTransferMode() == null)
 		{
 			Pane image = (Pane) event.getSource();
@@ -770,6 +791,8 @@ public class ControleurPlateau implements ChangeListener{
 			} else if(ControleurPlateau.imageEnDragAndDropTuile != null)
 			{
 				image.setAccessibleText("tuileCivilisation");
+			} else {
+				image.setAccessibleText("otherTuile");
 			}
 			if(target.getAccessibleText().equals("paneTuileChef"))
 			{
@@ -838,7 +861,7 @@ public class ControleurPlateau implements ChangeListener{
 						}
 					}
 				} });
-			if((target.getAccessibleText().contains("Chef") && image.getAccessibleText().contains("Chef")))
+			if(target.getAccessibleText() != null && (target.getAccessibleText().contains("Chef") && image.getAccessibleText().contains("Chef")))
 			{
 				Position posChefARetirer = this.tuileAction.getPosition();
 				Chef chefRetrait = (Chef) MainApp.getInstance().getClient().getPartie().getPlateauJeu().getPlateau()[this.positionChefRetire.getX()][this.positionChefRetire.getY()];
@@ -934,6 +957,14 @@ public class ControleurPlateau implements ChangeListener{
 
 // Gestion des tuiles Catastrophes
 
+public Partie getPartie() {
+		return partie;
+	}
+
+	public void setPartie(Partie partie) {
+		this.partie = partie;
+	}
+
 public void placerTuile(MouseEvent event) throws RemoteException{
 
 }
@@ -984,6 +1015,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 							casePlateau.getChildren().clear();
 							caseNettoyee = true;
 							casePlateau.getChildren().add(imgView);
+
 							
 							if(this.DEBUGMODE){
 								Label labelId = new Label();
@@ -991,6 +1023,9 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 								labelId.setStyle("-fx-text-fill: white;");
 								casePlateau.getChildren().add(labelId);
 							}
+
+							imgView.toBack();
+
 
 							//si la tuile est jonction, on l'affiche
 							if(tuileCiv.estJonction()){
@@ -1125,6 +1160,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 								imgView.setImage(img);
 
 								casePlateau.getChildren().add(imgView);
+								imgView.toFront();
 
 								imgView = new ImageView();
 								file = this.getClass().getResource(stairs);
@@ -1133,6 +1169,8 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 
 
 								casePlateau.getChildren().add(imgView);
+								casePlateau.toFront();
+								imgView.toFront();
 							}
 						}
 					}
@@ -1466,9 +1504,108 @@ for(int x = 0; x < 11; x++){
 		}*/
 	}
 
-	private void construireMonument()
+	@FXML
+	private void dragMonument(MouseEvent event) throws RemoteException
 	{
+		imageEnDragAndDropChef = null;
+		imageEnDragAndDropTuile = null;
+		this.tuileAction = null;
+		ImageView imageTuile = (ImageView) event.getSource();
+		imageTuile.setVisible(false);
 
+		Pane pane = (Pane) imageTuile.getParent();
+		if(GridPane.getColumnIndex(pane) == 0)
+		{
+			this.monumentEnCours = MainApp.getInstance().getServeur().getPartie().getListeMonuments().get(GridPane.getRowIndex(pane));
+		} else {
+			this.monumentEnCours = MainApp.getInstance().getServeur().getPartie().getListeMonuments().get(GridPane.getRowIndex(pane) + 3);
+		}
+		Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
+		ClipboardContent content = new ClipboardContent();
+        content.putImage(imageTuile.getImage());
+        db.setContent(content);
+        event.consume();
+
+	}
+
+	public void construireMonument() throws RemoteException
+	{
+		//this.listeMonument.getChildren().clear();
+		for(int i = 0; i < this.partie.getListeMonuments().size(); i++)
+		{
+			if(i < 3)
+			{
+				String url = getClass().getResource("monument_" + this.partie.getListeMonuments().get(i).getCouleurArche() + "_" + this.partie.getListeMonuments().get(i).getCouleurEscaliers() + ".png").toExternalForm();
+				ImageView imageView = new ImageView(new Image(url));
+				imageView.setOnDragDetected(new EventHandler<MouseEvent>(){
+
+					public void handle(MouseEvent event)  {
+						try
+						{
+							dragMonument(event);
+						} catch(RemoteException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				});
+
+				imageView.setOnDragDone(new EventHandler<DragEvent>(){
+
+
+					public void handle(DragEvent event) {
+						try
+						{
+							dragDoneDecks(event);
+						} catch(RemoteException e)
+						{
+							e.printStackTrace();
+						}
+
+					}
+				});
+				imageView.setFitHeight(40);
+				imageView.setFitWidth(40);
+				Pane pane = (Pane) this.listeMonument.getChildren().get(i);
+				pane.getChildren().add(imageView);
+				//this.listeMonument.addRow(i, imageView);
+			} else {
+				String url = getClass().getResource("monument_" + this.partie.getListeMonuments().get(i).getCouleurArche() + "_" + this.partie.getListeMonuments().get(i).getCouleurEscaliers() + ".png").toExternalForm();
+				ImageView imageView = new ImageView(new Image(url));
+				imageView.setOnDragDetected(new EventHandler<MouseEvent>(){
+
+					public void handle(MouseEvent event)  {
+						try
+						{
+							dragMonument(event);
+						} catch(RemoteException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				});
+
+				imageView.setOnDragDone(new EventHandler<DragEvent>(){
+
+
+					public void handle(DragEvent event) {
+						try
+						{
+							dragDoneDecks(event);
+						} catch(RemoteException e)
+						{
+							e.printStackTrace();
+						}
+
+					}
+				});
+				imageView.setFitHeight(40);
+				imageView.setFitWidth(40);
+				Pane pane = (Pane) this.listeMonument.getChildren().get(i);
+				pane.getChildren().add(imageView);
+				//this.listeMonument.addRow(i - 3,imageView);
+			}
+		}
 	}
 
 	public void afficherMessageJAVAFX(String message){
@@ -1561,6 +1698,19 @@ for(int x = 0; x < 11; x++){
 		}
 	}
 
+	@FXML
+	private void sauvegarderPartie() throws RemoteException, IOException
+	{
+		try
+		{
+			MainApp.getInstance().getServeur().getPartie().setListeJoueurs(MainApp.getInstance().getServeur().recupererListeJoueurPartie());
+			EncoderJSON e = new EncoderJSON(MainApp.getInstance().getServeur().getPartie());
+			File file = e.convertToJSON();
+		} catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	}
 
 	/**
 	 * Methode appelée par le client ou le serveur pour indiquer au controleur de rafraichir sa vue
@@ -1688,6 +1838,23 @@ for(int x = 0; x < 11; x++){
 
 				}else if(param.equals("finpartie")){
 					this.mainApp.goToAttributionTresors(((Client)this.mainApp.getClient()).getJoueur().getPointTresor());
+				}else if(param.equals("listemonument")){
+
+						Platform.runLater(new Runnable(){
+
+							public void run() {
+								try {
+									construireMonument();
+								} catch (RemoteException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+
+						});
+
+
+
 				}
 
 			}

@@ -54,7 +54,7 @@ public class ControleurCreationPartie {
 
 	@FXML
 	private TextField TFIP;
-	
+
 	@FXML
 	private Label LBLErreur;
 
@@ -113,7 +113,7 @@ public class ControleurCreationPartie {
 		//client.rejoindrePartie();
 		this.goToSalon();
 	}
-	
+
 	/**
 	 * Fonction permettant de checker le nom du joueur
 	 * @param pnom Le nom du joueur
@@ -136,7 +136,7 @@ public class ControleurCreationPartie {
 		String ip = this.TFIP.getText();
 		try
 		{
-			
+
 			Joueur joueur = new Joueur();
 			joueur.setNom(nomJoueur);
 			Client client = new Client(ip, nomJoueur);
@@ -156,8 +156,7 @@ public class ControleurCreationPartie {
 			MainApp.getInstance().setServeur(client.getServeur());
 			System.out.println(client.getIdClientCourant());
 			MainApp.getInstance().setClient(client);
-			System.out.println("ID a la cReatIon : " + MainApp.getInstance().getClient().getIdObjetPartie());
-			//client.rejoindrePartie();
+
 		} catch(RemoteException e)
 		{
 			e.printStackTrace();

@@ -2,6 +2,11 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonTypeName;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
@@ -13,16 +18,20 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisat
  * @author jerome
  *
  */
+@JsonTypeName("chef")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Chef extends Placable implements Serializable{
 
 	/**
 	 * Type du chef
 	 */
+	@JsonProperty("typeChef")
 	private TypeChef typeChef;
 
 	/**
 	 * Joueur auquel il correspond
 	 */
+	@JsonIgnore
 	private Joueur joueur;
 
 	/**
@@ -99,6 +108,7 @@ public class Chef extends Placable implements Serializable{
 	 * return le type chef
 	 * @return
 	 */
+	@JsonProperty("typeChef")
 	public TypeChef getTypeChef() {
 		return typeChef;
 	}
@@ -110,7 +120,7 @@ public class Chef extends Placable implements Serializable{
 	public Joueur getJoueur() {
 		return joueur;
 	}
-	
+
 	public void setJoueur(Joueur joueur){
 		this.joueur = joueur;
 	}

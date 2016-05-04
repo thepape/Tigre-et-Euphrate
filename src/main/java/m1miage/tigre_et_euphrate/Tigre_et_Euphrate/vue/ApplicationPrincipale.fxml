@@ -18,17 +18,8 @@
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
-          	<items>
-              <MenuItem mnemonicParsing="false" text="Nouvelle Partie" />
-            </items>
             <items>
-              <MenuItem mnemonicParsing="false" text="Enregistrer la partie" />
-            </items>
-            <items>
-              <MenuItem mnemonicParsing="false" text="Reprendre une partie" />
-            </items>
-            <items>
-              <MenuItem mnemonicParsing="false" text="Fermer" />
+              <MenuItem mnemonicParsing="false" onAction="#sauvegarderPartie" text="Enregistrer la partie" />
             </items>
           </Menu>
         </menus>
@@ -439,6 +430,7 @@
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -474,27 +466,27 @@
                   <ImageView accessibleText="tuileCivilisation" fitHeight="150.0" fitWidth="80.0" onDragDetected="#dragTuileDecks" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0" />
                </children>
             </Pane>
-            <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10">
-               <children>
-                  <ImageView accessibleText="tuileCatastrophe" fitHeight="125.0" fitWidth="80.0" onDragDetected="#dragTuileCatastrophe" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
-                     <image>
-                        <Image url="@tuile_catastrophe.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </Pane>
             <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11">
                <children>
-                  <ImageView accessibleText="tuileCatastrophe" fitHeight="125.0" fitWidth="80.0" onDragDetected="#dragTuileCatastrophe" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
+                  <ImageView accessibleText="tuileCatastrophe" fitHeight="125.0" fitWidth="80.0" onDragDetected="#dragTuileCatastrophe" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
                      <image>
                         <Image url="@tuile_catastrophe.png" />
                      </image>
                   </ImageView>
                </children>
             </Pane>
-            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="13">
+            <Pane accessibleText="paneTuileCivilisation" onDragDropped="#dropTuileDecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="12">
                <children>
-                  <GridPane alignment="CENTER" layoutY="-13.0" prefHeight="167.0" prefWidth="200.0">
+                  <ImageView accessibleText="tuileCatastrophe" fitHeight="125.0" fitWidth="80.0" onDragDetected="#dragTuileCatastrophe" onDragDone="#dragDoneDecks" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="25.0">
+                     <image>
+                        <Image url="@tuile_catastrophe.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="14">
+               <children>
+                  <GridPane fx:id="listeMonument" alignment="CENTER" layoutY="-13.0" prefHeight="167.0" prefWidth="156.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -505,11 +497,12 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ImageView fitHeight="53.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@monument_bleu_jaune.png" />
-                           </image>
-                        </ImageView>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                </children>
@@ -530,7 +523,7 @@
          <children>
             <TextArea fx:id="texteAction" prefHeight="657.0" prefWidth="356.0" GridPane.rowIndex="1" />
             <Button fx:id="boutonFinTour" mnemonicParsing="false" onMouseClicked="#finirTour" text="Fin de tour" />
-            <Button fx:id="boutonEchange" mnemonicParsing="false" onMouseClicked="#echangeTuile" text="Echanger ses tuiles" translateX="65.0" translateY="50.0" GridPane.rowIndex="2" />
+            <Button fx:id="boutonEchange" mnemonicParsing="false" onMouseClicked="#echangeTuile" text="Echanger ses tuiles" translateY="50.0" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </left>
