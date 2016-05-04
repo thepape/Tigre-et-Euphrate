@@ -44,7 +44,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Pioche;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
@@ -210,6 +209,7 @@ public class ControleurPlateau implements ChangeListener{
 			this.construireDeckPublic();
 		} catch(RemoteException e)
 		{
+			this.mainApp.currentException = e;
 			this.mainApp.goToMenuPage();
 			this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 		}
@@ -482,6 +482,7 @@ public class ControleurPlateau implements ChangeListener{
 			}
 
 		} catch (RemoteException e) {
+			this.mainApp.currentException = e;
 			this.mainApp.goToMenuPage();
 			this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 		}
@@ -592,6 +593,7 @@ public class ControleurPlateau implements ChangeListener{
 									}
 								}
 							} catch (RemoteException e) {
+								mainApp.currentException = e;
 								mainApp.goToMenuPage();
 								mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 							}} });
@@ -651,6 +653,7 @@ public class ControleurPlateau implements ChangeListener{
 						}
 					} catch(RemoteException e)
 					{
+						this.mainApp.currentException = e;
 						this.mainApp.goToMenuPage();
 						this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 					}
@@ -681,6 +684,7 @@ public class ControleurPlateau implements ChangeListener{
 
 							}
 						} catch (RemoteException e) {
+							this.mainApp.currentException = e;
 							this.mainApp.goToMenuPage();
 							this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 						}
@@ -838,6 +842,7 @@ public class ControleurPlateau implements ChangeListener{
 					        event.consume();
 						} catch(RemoteException e)
 						{
+							mainApp.currentException = e;
 							mainApp.goToMenuPage();
 							mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 						}
@@ -953,6 +958,7 @@ public class ControleurPlateau implements ChangeListener{
 			});
 
 		} catch (RemoteException e) {
+			this.mainApp.currentException = e;
 			this.mainApp.goToMenuPage();
 			this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 		}
@@ -995,8 +1001,6 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 					try{
 					placable = this.partie.getPlateauJeu().getPlacableAt(new Position(x,y));
 					}catch(Exception e){
-						this.mainApp.goToMenuPage();
-						this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 						continue;
 					}
 					if(placable != null){
@@ -1146,8 +1150,6 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 					try{
 					placable = this.partie.getPlateauJeu().getPlacableAt(new Position(x,y));
 					}catch(Exception e){
-						this.mainApp.goToMenuPage();
-						this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 						continue;
 					}
 					if(placable != null){
@@ -1204,8 +1206,6 @@ for(int x = 0; x < 11; x++){
 			try{
 			placable = this.partie.getPlateauJeu().getPlacableAt(new Position(x,y));
 			}catch(Exception e){
-				this.mainApp.goToMenuPage();
-				this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 				continue;
 			}
 			if(placable != null){
@@ -1333,8 +1333,6 @@ for(int x = 0; x < 11; x++){
 			ny = GridPane.getColumnIndex(child);
 			nx = GridPane.getRowIndex(child);
 			}catch(Exception e){
-				this.mainApp.goToMenuPage();
-				this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 				continue;
 			}
 
@@ -1403,6 +1401,7 @@ for(int x = 0; x < 11; x++){
 						try {
 							dragTuileDecks(arg0);
 						} catch (RemoteException e) {
+							mainApp.currentException = e;
 							mainApp.goToMenuPage();
 							mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 						}
@@ -1416,6 +1415,7 @@ for(int x = 0; x < 11; x++){
 						try {
 							dragDoneDecks(event);
 						} catch (RemoteException e) {
+							mainApp.currentException = e;
 							mainApp.goToMenuPage();
 							mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 						}
@@ -1480,6 +1480,7 @@ for(int x = 0; x < 11; x++){
 					try {
 						dragTuileDecks(arg0);
 					} catch (RemoteException e) {
+						mainApp.currentException = e;
 						mainApp.goToMenuPage();
 						mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 					}
@@ -1493,6 +1494,7 @@ for(int x = 0; x < 11; x++){
 					try {
 						dragDoneDecks(event);
 					} catch (RemoteException e) {
+						mainApp.currentException = e;
 						mainApp.goToMenuPage();
 						mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 					}
@@ -1755,6 +1757,7 @@ for(int x = 0; x < 11; x++){
 						this.construireDeckPublic();
 					} catch(RemoteException e)
 					{
+						this.mainApp.currentException = e;
 						this.mainApp.goToMenuPage();
 						this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 					}
@@ -1766,6 +1769,7 @@ for(int x = 0; x < 11; x++){
 						//System.out.println("DECK APRES: "+((Client) MainApp.getInstance().getClient()).getJoueur().getDeckPrive());
 					} catch(RemoteException e)
 					{
+						this.mainApp.currentException = e;
 						this.mainApp.goToMenuPage();
 						this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 					}
@@ -1788,6 +1792,7 @@ for(int x = 0; x < 11; x++){
 							this.modifierBoutonPasserTour(false, "Passer tour");
 						}
 					} catch (RemoteException e) {
+						this.mainApp.currentException = e;
 						this.mainApp.goToMenuPage();
 						this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 					}
@@ -1803,6 +1808,7 @@ for(int x = 0; x < 11; x++){
 						Client client = (Client) MainApp.getInstance().getClient();
 						client.setPartieCourante(partie);
 					} catch (RemoteException e) {
+						this.mainApp.currentException = e;
 						this.mainApp.goToMenuPage();
 						this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 					}

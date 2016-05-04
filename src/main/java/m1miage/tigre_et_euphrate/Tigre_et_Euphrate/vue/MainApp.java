@@ -29,7 +29,6 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPrive;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPublic;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
@@ -73,6 +72,8 @@ public class MainApp extends Application implements App {
 	private FXMLLoader currentLoader;
 
 	public Object currentControler;
+	
+	public Exception currentException;
 
 	ArrayList<Dynastie> listeDynastieDispo = new ArrayList<Dynastie>();
 

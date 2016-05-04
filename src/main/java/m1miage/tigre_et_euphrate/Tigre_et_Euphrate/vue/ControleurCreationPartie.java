@@ -23,7 +23,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Client;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Serveur;
@@ -231,6 +230,7 @@ public class ControleurCreationPartie {
 	 */
 	public void setMessageErreur(String message){
 		this.MessageErreur.setText(message);
+		mainApp.currentException.printStackTrace();
 	}
 }
 

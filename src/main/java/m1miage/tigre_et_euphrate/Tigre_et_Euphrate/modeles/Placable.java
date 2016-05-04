@@ -75,6 +75,9 @@ public abstract class Placable implements Serializable {
 		return this.id;
 	}
 
+	/**
+	 * Methode equals sur l'objet placable sur son id
+	 */
 	public boolean equals(Object o){
 		if(o instanceof Placable){
 			return this.id == ((Placable) o).id;

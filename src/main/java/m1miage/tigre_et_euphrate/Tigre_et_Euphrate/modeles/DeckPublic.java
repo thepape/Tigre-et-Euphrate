@@ -19,7 +19,7 @@ public class DeckPublic extends Deck implements Serializable {
 	private ArrayList<Placable> listeTuileCatastrophe;
 
 	/**
-	 *
+	 * Constructeur du deck public
 	 */
 	public DeckPublic() {
 		super();
