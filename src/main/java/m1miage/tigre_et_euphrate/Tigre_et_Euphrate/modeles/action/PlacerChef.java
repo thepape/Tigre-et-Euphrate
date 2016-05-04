@@ -208,12 +208,23 @@ public class PlacerChef extends Action {
 			}
 
 			if(nbtuiletresor >1){
+				Joueur possesseur = chef.getJoueur();
 				for(int i = 0; i<nbtuiletresor-1;i++){
 					tuileTresor.get(0).recupererTresor();
 					tuileTresor.remove(0);
-					this.chef.getJoueur().ajouterPointsTresor(1);
+					
+					if(possesseur.getId() == this.joueur.getId()){
+						this.joueur.ajouterPointsTresor(1);
+					}else{
+						possesseur.ajouterPointsTresor(1);
+					}
 					//this.ajouterJoueurImpacte(this.chef.getJoueur());
 					//System.out.println("Le joueur "+this.chef.getJoueur().getNom()+" a recu un point tresor");
+				}
+				
+				//on ajoute le joueur impacté dans laliste des impactés que si ce joueur n'est pasle joueur qui a send l'action
+				if(this.joueur.getId() != possesseur.getId()){
+					this.ajouterJoueurImpacte(possesseur);
 				}
 			}
 		}

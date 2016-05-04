@@ -65,7 +65,7 @@ public class TuileCivilisation extends Tuile {
 		this.tresor = null;
 		this.type = pType;	//clone pour eviter le couplage au maximum entre les objets.
 		this.monument = null;
-		TuileCivilisation.idIncrement += 10;
+		TuileCivilisation.idIncrement += 1;
 		this.id = TuileCivilisation.idIncrement;
 		//this.territoire = null;
 
@@ -87,7 +87,7 @@ public class TuileCivilisation extends Tuile {
 		this.type = TypeTuileCivilisation.Temple;
 		this.monument = null;
 		this.tuileEau = false;
-		TuileCivilisation.idIncrement += 10;
+		TuileCivilisation.idIncrement += 1;
 		this.id = TuileCivilisation.idIncrement;
 		//this.territoire = null;
 	}
