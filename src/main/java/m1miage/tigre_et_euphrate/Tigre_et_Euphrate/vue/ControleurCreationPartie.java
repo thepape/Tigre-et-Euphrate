@@ -141,25 +141,25 @@ public class ControleurCreationPartie {
 			joueur.setNom(nomJoueur);
 			Client client = new Client(ip, nomJoueur);
 			client.setJoueur(joueur);
-			try{
+			
 				client.connect();
-			}catch(MalformedURLException e1){
-				System.out.println("HIHI 1");
-				return;
-			}catch(RemoteException e2){
-				this.LBLErreur.setText("Erreur : L'adresse IP est incorrecte !");
-				return;
-			}catch(NotBoundException e3){
-				System.out.println("HIHI 3");
-				return;
-			}
+			
 			MainApp.getInstance().setServeur(client.getServeur());
 			System.out.println(client.getIdClientCourant());
 			MainApp.getInstance().setClient(client);
 
-		} catch(RemoteException e)
-		{
-			e.printStackTrace();
+		}catch(MalformedURLException e1){
+			System.out.println("HIHI 1");
+			e1.printStackTrace();
+			return;
+		}catch(RemoteException e2){
+			this.LBLErreur.setText("Erreur : L'adresse IP est incorrecte !");
+			e2.printStackTrace();
+			return;
+		}catch(NotBoundException e3){
+			System.out.println("HIHI 3");
+			e3.printStackTrace();
+			return;
 		}
 
 		this.goToSalon();
