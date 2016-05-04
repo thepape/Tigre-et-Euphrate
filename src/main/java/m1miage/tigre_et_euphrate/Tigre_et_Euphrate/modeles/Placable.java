@@ -17,10 +17,12 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisat
  *
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-include = JsonTypeInfo.As.PROPERTY,
-property = "typePlacable")
+include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes({
-@Type(value = Chef.class, name = "chef")})
+	@JsonSubTypes.Type(value = TuileCivilisation.class, name = "tuileCivilisation"),
+	@JsonSubTypes.Type(value = Chef.class, name = "chef"),
+	@JsonSubTypes.Type(value = TuileCatastrophe.class, name = "tuileCatastrophe")
+})
 public abstract class Placable implements Serializable {
 	/**
 	 * Incrément de l'id des objets placables.
@@ -35,14 +37,12 @@ public abstract class Placable implements Serializable {
 	/**
 	 * Position de l'objet placable.
 	 */
-	@JsonProperty("position")
 	protected Position position;
 
 	/**
 	 * Getter de la position du placable.
 	 * @return position du placable.
 	 */
-	@JsonProperty("position")
 	public Position getPosition(){
 		return this.position;
 	}
@@ -71,6 +71,11 @@ public abstract class Placable implements Serializable {
 	 */
 	public int getId(){
 		return this.id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public boolean equals(Object o){

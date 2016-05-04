@@ -46,9 +46,6 @@ public class EncoderJSON {
 	{
 		Partie partie = null;
 		ObjectMapper mapper = new ObjectMapper();
-		/*mapper.registerSubtypes(TuileCivilisation.class);
-		mapper.registerSubtypes(Chef.class);
-		mapper.registerSubtypes(TuileCatastrophe.class);*/
 		partie = mapper.readValue(file, Partie.class);
 
 		return partie;
