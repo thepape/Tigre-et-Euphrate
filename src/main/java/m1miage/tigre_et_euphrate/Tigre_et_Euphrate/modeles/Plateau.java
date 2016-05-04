@@ -391,6 +391,43 @@ public class Plateau implements Serializable {
 		}
 		return false;
 	}
+	
+	public ArrayList<Placable> recupererListePlacableAdjacants(Position position)
+	{
+		ArrayList<Placable> listeAdjacente = new ArrayList<Placable>();
+		if(position.getX() < 11 && position.getY() < 16 && position.getX() > -1 && position.getY() > -1)
+		{
+
+			if(position.getX() + 1 < 11 && (this.getPlateau()[position.getX() + 1 ][position.getY()] instanceof TuileCivilisation
+					|| this.getPlateau()[position.getX() + 1 ][position.getY()] instanceof Chef))
+			{
+				Placable tuileAdjacente = (Placable) this.getPlateau()[position.getX() + 1][position.getY()];
+				listeAdjacente.add(tuileAdjacente);
+			}
+
+			if(position.getX() - 1 > -1 && (this.getPlateau()[position.getX() - 1][position.getY()] instanceof TuileCivilisation
+					|| this.getPlateau()[position.getX() - 1 ][position.getY()] instanceof Chef))
+			{
+				Placable tuileAdjacente = (Placable) this.getPlateau()[position.getX() - 1][position.getY()];
+				listeAdjacente.add(tuileAdjacente);
+			}
+
+			if(position.getY() + 1 < 16 && (this.getPlateau()[position.getX()][position.getY() + 1] instanceof TuileCivilisation
+					|| this.getPlateau()[position.getX()][position.getY()+1] instanceof Chef))
+			{
+				Placable tuileAdjacente = (Placable) this.getPlateau()[position.getX()][position.getY()+1];
+				listeAdjacente.add(tuileAdjacente);
+			}
+
+			if(position.getY() - 1 > -1 && (this.getPlateau()[position.getX()][position.getY() - 1] instanceof TuileCivilisation
+					|| this.getPlateau()[position.getX()][position.getY() - 1] instanceof Chef))
+			{
+				Placable tuileAdjacente = (Placable) this.getPlateau()[position.getX()][position.getY()-1];
+				listeAdjacente.add(tuileAdjacente);
+			}
+		}
+		return listeAdjacente;
+	}
 
 	/**
 	 * Fonction qui renvoie la liste des tuiles civilisation adjacentes
