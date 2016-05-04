@@ -196,7 +196,8 @@ public class ControleurPlateau implements ChangeListener{
 			this.construireDeckPublic();
 		} catch(RemoteException e)
 		{
-			e.printStackTrace();
+			this.mainApp.goToMenuPage();
+			this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 		}
 		//this.mainApp = mainApp;
 	}
@@ -390,8 +391,8 @@ public class ControleurPlateau implements ChangeListener{
 			}
 
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.mainApp.goToMenuPage();
+			this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 		}
 
 		Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
@@ -500,8 +501,8 @@ public class ControleurPlateau implements ChangeListener{
 									}
 								}
 							} catch (RemoteException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+								mainApp.goToMenuPage();
+								mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 							}} });
 
 					image.setOnDragDone(new EventHandler<DragEvent>(){
@@ -562,7 +563,8 @@ public class ControleurPlateau implements ChangeListener{
 						}
 					} catch(RemoteException e)
 					{
-						e.printStackTrace();
+						this.mainApp.goToMenuPage();
+						this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 					}
 				} else {
 
@@ -592,8 +594,8 @@ public class ControleurPlateau implements ChangeListener{
 
 
 						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							this.mainApp.goToMenuPage();
+							this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 						}
 
 
@@ -733,7 +735,8 @@ public class ControleurPlateau implements ChangeListener{
 					        event.consume();
 						} catch(RemoteException e)
 						{
-							e.printStackTrace();
+							mainApp.goToMenuPage();
+							mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 						}
 					}
 				}
@@ -847,8 +850,8 @@ public class ControleurPlateau implements ChangeListener{
 			});
 
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.mainApp.goToMenuPage();
+			this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 		}
 	}
 
@@ -881,6 +884,8 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 					try{
 					placable = this.partie.getPlateauJeu().getPlacableAt(new Position(x,y));
 					}catch(Exception e){
+						this.mainApp.goToMenuPage();
+						this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 						continue;
 					}
 					if(placable != null){
@@ -1005,6 +1010,8 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 					try{
 					placable = this.partie.getPlateauJeu().getPlacableAt(new Position(x,y));
 					}catch(Exception e){
+						this.mainApp.goToMenuPage();
+						this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 						continue;
 					}
 					if(placable != null){
@@ -1058,6 +1065,8 @@ for(int x = 0; x < 11; x++){
 			try{
 			placable = this.partie.getPlateauJeu().getPlacableAt(new Position(x,y));
 			}catch(Exception e){
+				this.mainApp.goToMenuPage();
+				this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 				continue;
 			}
 			if(placable != null){
@@ -1160,6 +1169,8 @@ for(int x = 0; x < 11; x++){
 			ny = GridPane.getColumnIndex(child);
 			nx = GridPane.getRowIndex(child);
 			}catch(Exception e){
+				this.mainApp.goToMenuPage();
+				this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 				continue;
 			}
 
@@ -1227,8 +1238,8 @@ for(int x = 0; x < 11; x++){
 						try {
 							dragTuileDecks(arg0);
 						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							mainApp.goToMenuPage();
+							mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 						}
 					}
 
@@ -1240,8 +1251,8 @@ for(int x = 0; x < 11; x++){
 						try {
 							dragDoneDecks(event);
 						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							mainApp.goToMenuPage();
+							mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 						}
 					}
 
@@ -1304,8 +1315,8 @@ for(int x = 0; x < 11; x++){
 					try {
 						dragTuileDecks(arg0);
 					} catch (RemoteException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						mainApp.goToMenuPage();
+						mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 					}
 				}
 
@@ -1317,8 +1328,8 @@ for(int x = 0; x < 11; x++){
 					try {
 						dragDoneDecks(event);
 					} catch (RemoteException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						mainApp.goToMenuPage();
+						mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 					}
 				}
 
@@ -1426,7 +1437,8 @@ for(int x = 0; x < 11; x++){
 						this.construireDeckPublic();
 					} catch(RemoteException e)
 					{
-						e.printStackTrace();
+						this.mainApp.goToMenuPage();
+						this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 					}
 				} else if(param.equals("deckPrive"))
 				{
@@ -1436,7 +1448,8 @@ for(int x = 0; x < 11; x++){
 						//System.out.println("DECK APRES: "+((Client) MainApp.getInstance().getClient()).getJoueur().getDeckPrive());
 					} catch(RemoteException e)
 					{
-						e.printStackTrace();
+						this.mainApp.goToMenuPage();
+						this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 					}
 				}else if(param.equals("passerTour")){
 					Joueur j1 = null;
@@ -1454,8 +1467,8 @@ for(int x = 0; x < 11; x++){
 							this.activerBoutonPasserTour(false);
 						}
 					} catch (RemoteException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						this.mainApp.goToMenuPage();
+						this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 					}
 					//System.out.println("COUILLE"+j1.getNom());
 				}else if(param.contains("message:")){
@@ -1469,8 +1482,8 @@ for(int x = 0; x < 11; x++){
 						Client client = (Client) MainApp.getInstance().getClient();
 						client.setPartieCourante(partie);
 					} catch (RemoteException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						this.mainApp.goToMenuPage();
+						this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 					}
 				}else if(param.equals("conflitInterne")){
 					this.gererConflitInterne();

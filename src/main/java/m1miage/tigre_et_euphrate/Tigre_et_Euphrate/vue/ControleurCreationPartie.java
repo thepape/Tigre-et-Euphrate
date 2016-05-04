@@ -1,6 +1,7 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue;
 
 import javafx.scene.control.Label;
+
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -57,6 +58,9 @@ public class ControleurCreationPartie {
 	
 	@FXML
 	private Label LBLErreur;
+	
+	@FXML
+	private Label MessageErreur;
 
 	/**
 	 * Controleur vide
@@ -221,6 +225,11 @@ public class ControleurCreationPartie {
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 	}
-
-
+	
+	/**
+	 * permet de passer le message d'erreur
+	 */
+	public void setMessageErreur(String message){
+		this.MessageErreur.setText(message);
+	}
 }

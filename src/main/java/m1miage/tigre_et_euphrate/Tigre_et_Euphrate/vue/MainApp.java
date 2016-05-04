@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.fxml.FXML;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPrive;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPublic;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
@@ -410,6 +411,14 @@ public class MainApp extends Application implements App {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * permet de set le message d'erreur
+	 */
+	public void setMesageErreur(String message){
+		ControleurCreationPartie cp = this.currentLoader.getController();
+		cp.setMessageErreur(message);
 	}
 
 }
