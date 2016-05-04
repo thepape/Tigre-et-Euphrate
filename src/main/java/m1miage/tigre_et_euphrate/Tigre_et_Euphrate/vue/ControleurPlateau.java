@@ -64,6 +64,9 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.*;
 
 public class ControleurPlateau implements ChangeListener{
 	
+	/**
+	 * Attribut pour afficher les id des placable dans le debug
+	 */
 	private boolean DEBUGMODE = true;
 
 	/**
@@ -119,11 +122,6 @@ public class ControleurPlateau implements ChangeListener{
 	private ArrayList<Action> listeActionTour = new ArrayList<Action>();
 
 	/**
-	 * Liste des tuiles du deckPrive du joueur
-	 */
-	//private ObservableList<TuileCivilisation> deckPriveJoueur = FXCollections.observableArrayList();
-
-	/**
 	 * Liste des tuiles que le joueur veut changer
 	 */
 	private ArrayList<TuileCivilisation> listeTuileChange = new ArrayList<TuileCivilisation>();
@@ -143,19 +141,39 @@ public class ControleurPlateau implements ChangeListener{
 	 */
 	private Placable tuileAction;
 
+	/**
+	 * Liste des Tuile Civilisation qui seront le renfort du joueur
+	 */
 	private ArrayList<TuileCivilisation> tuilesRenfort = new ArrayList<TuileCivilisation>();
 
+	/**
+	 * Methode permettant de savir si on est en conflit interne ou non
+	 */
 	private boolean conflitInterne = false;
 
+	/**
+	 * Attribut representant la partie
+	 */
 	private Partie partie;
 
+	/**
+	 * Monument qui est en train d'etre drag and drop
+	 */
 	private Monument monumentEnCours;
+	
 	/**
 	 * Position antérieure au retrait du chef
 	 */
 	private Position positionChefRetire;
 
+	/**
+	 * Message temporaire
+	 */
 	private String messageTemporaire;
+	
+	/**
+	 * Attribut pour savoir si on est en conflit externe ou non
+	 */
 	private boolean conflitExterne = false;
 
 	/**
@@ -174,38 +192,10 @@ public class ControleurPlateau implements ChangeListener{
 		this.mainApp = mainApp;
 		this.texteAction.setEditable(false);
 		this.texteAction.setWrapText(true);
-		// Création aléatoire du deck privé du joueur
-		/*for(int i = 0; i < 6; i++)
-		{
-			joueur.getDeckPrive().ajouter(this.partie.getPioche().piocherTuile());
-		}*/
-
 		// Initialisation de l'interface du deck privé
 		try
 		{
-			/*for(int i = 0; i < mainApp.getClient().getJoueur().getDeckPrive().getDeckPrive().size(); i++)
-			{
-				Pane pane = (Pane) deckPrive.getChildren().get(i);
-				ImageView imageView = (ImageView) pane.getChildren().get(0);
-				String urlImage = getClass().getResource(mainApp.getClient().getJoueur().getDeckPrive().getDeckPrive().get(i).getType().getUrlImage()).toExternalForm();
-				Image image = new Image(urlImage);
-				imageView.setImage(image);
-			}*/
-
 			this.construireDeckPrivee();
-
-			// Initialisation de l'interface du deck public
-			//int size = mainApp.getClient().getJoueur().getDeckPublic().getDeckPublic().size();
-			/*int size = 4;
-			for(int i = 0; i < size; i++)
-			{
-				Pane pane = (Pane) deckPublic.getChildren().get(i);
-				ImageView imageView = (ImageView) pane.getChildren().get(0);
-				Chef chef = (Chef) mainApp.getClient().getJoueur().getDeckPublic().getDeckPublic().get(i);
-				String urlImage = getClass().getResource(mainApp.getClient().getJoueur().getDynastie().getNom().toLowerCase() + "_" + chef.getTypeChef().getFinUrlImage()).toExternalForm();
-				Image image = new Image(urlImage);
-				imageView.setImage(image);
-			}*/
 			this.construireDeckPublic();
 		} catch(RemoteException e)
 		{
@@ -213,7 +203,6 @@ public class ControleurPlateau implements ChangeListener{
 			this.mainApp.goToMenuPage();
 			this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 		}
-		//this.mainApp = mainApp;
 	}
 
 	/**
@@ -232,6 +221,10 @@ public class ControleurPlateau implements ChangeListener{
 
 	}
 	
+	/**
+	 * Methode permetant de selectionner les tuiles renforts pour le conflit interne
+	 * @param event
+	 */
 	public void selectionnerTuileRenfortConflitInterne(MouseEvent event){
 		if(!this.conflitInterne){
 			return;
@@ -293,6 +286,10 @@ public class ControleurPlateau implements ChangeListener{
 
 	}
 
+	/**
+	 * Methode permettant de selectionner les tuiles renforts pour les conflits externes
+	 * @param event
+	 */
 	public void selectionnerTuileRenfortConflitExterne(MouseEvent event){
 		if(!this.conflitExterne){
 			return;
@@ -368,6 +365,10 @@ public class ControleurPlateau implements ChangeListener{
 	}
 
 
+	/**
+	 * Methode permettant d'echanger les tuiles d'un joueur apres son choix de cartes a echanger
+	 * @throws RemoteException
+	 */
 	public void echangeTuile() throws RemoteException{
 		if(this.echangeCarte){
 			//supprime les cartes dans le deck prive
@@ -894,54 +895,9 @@ public class ControleurPlateau implements ChangeListener{
 		}
 	}
 
-
-	public void setDeckPriveJoueur(ArrayList<TuileCivilisation> pDeckPrive)
-	{
-		/*
-		this.deckPriveJoueur = FXCollections.observableArrayList(pDeckPrive);
-		deckPriveJoueur.addListener(new ListChangeListener<TuileCivilisation>() {
-		      public void onChanged(ListChangeListener.Change change) {
-		    	  try
-		    	  {
-			    	Client client = (Client) mainApp.getClient();
-				    for(int i = 0; i < client.getJoueur().getDeckPrive().getDeckPrive().size(); i++)
-				    {
-				    	Pane pane = (Pane) deckPrive.getChildren().get(i);
-				    	ImageView image = (ImageView) pane.getChildren().get(0);
-				    	if(i < deckPriveJoueur.size())
-				    	{
-							String urlImage = getClass().getResource(mainApp.getClient().getJoueur().getDeckPrive().getDeckPrive().get(i).getType().getUrlImage()).toExternalForm();
-							Image imageUrl = new Image(urlImage);
-							image.setImage(imageUrl);
-							image.setVisible(true);
-				    	}  else if(i >= deckPriveJoueur.size() && i < 6) {
-				    		pane.setVisible(false);
-				    		image.setVisible(false);
-				    	}
-				    }
-		    	  } catch(RemoteException e)
-		    	  {
-		    		  e.printStackTrace();
-		    	  }
-		      }
-		    });*/
-	}
-/*
-	public ObservableList<TuileCivilisation> getDeckPriveJoueur() {
-		return deckPriveJoueur;
-	}
-
-	public void setDeckPriveJoueur(ObservableList<TuileCivilisation> deckPriveJoueur) {
-		this.deckPriveJoueur = deckPriveJoueur;
-	}*/
-/*
-	private void supprimerTuileDeckPrive(int indice)
-	{
-		Client client = (Client) mainApp.getClient();
-		client.getJoueur().getDeckPrive().getDeckPrive().remove(indice);
-		this.deckPriveJoueur.remove(indice);
-	}*/
-
+	/**
+	 * Methode qui permet de construire un plateau
+	 */
 	public void construirePlateau(){
 		try {
 			//this.partie = MainApp.getInstance().getClient().getPartie();

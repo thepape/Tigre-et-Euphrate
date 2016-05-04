@@ -384,6 +384,9 @@ public class ControleurAttributionTresors implements ChangeListener{
 		this.compteurTemple = pcompteurTemple;
 	}
 
+	/**
+	 * Methoe permettant de refresh le plateau a chaque changements
+	 */
 	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
 		// TODO Auto-generated method stub
 		if(arg2 != null && arg2 instanceof ArrayList){

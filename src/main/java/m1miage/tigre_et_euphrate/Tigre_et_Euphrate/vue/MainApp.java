@@ -377,7 +377,6 @@ public class MainApp extends Application implements App {
 
 			this.client.setPartieCourante(partie);
 			this.client.setJoueur(joueur);
-			controleurPlateau.setDeckPriveJoueur(this.client.getJoueur().getDeckPrive().getDeckPrive());
 			controleurPlateau.setMainApp(this);
 
 			//on ajoute le controleurPlateau comme listener de ce client

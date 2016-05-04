@@ -182,15 +182,6 @@ public class TuileCivilisation extends Tuile {
 		return this.type.equals(pTuile.type);
 	}
 
-	/*public Territoire getTerritoire(){
-		return this.territoire;
-	}
-
-	public void setTerritoire(Territoire pTerritoire){
-		this.territoire = pTerritoire;
-	}*/
-
-
 	public boolean aTresor(){
 		return this.tresor != null;
 	}
