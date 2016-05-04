@@ -503,4 +503,27 @@ public class Partie implements Serializable {
 		
 		return tresors;
 	}
+	
+	public boolean contientDejaConflitIdentique(Conflits conflit){
+		for(Conflits c : this.conflits){
+			Chef attaquantc = c.getChefAttaquant();
+			Chef defenseurc = c.getChefDefenseur();
+			Territoire tattc = c.getTerritoireAttaquant();
+			Territoire tdefc = c.getTerritoireDefenseur();
+			
+			Chef attaquant = conflit.getChefAttaquant();
+			Chef defenseur = conflit.getChefDefenseur();
+			Territoire tatt = conflit.getTerritoireAttaquant();
+			Territoire tdef = conflit.getTerritoireDefenseur();
+			
+			if(attaquantc.getId() == attaquant.getId() 
+					&& defenseurc.getId() == defenseur.getId()
+					&& tattc.getIdTerritoire() == tatt.getIdTerritoire()
+					&& tdefc.getIdTerritoire() == tdef.getIdTerritoire()){
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

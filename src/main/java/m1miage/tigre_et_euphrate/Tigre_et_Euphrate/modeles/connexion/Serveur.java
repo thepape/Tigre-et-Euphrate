@@ -349,6 +349,13 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 				params.add("message:Conflit entre "+conflit.getChefAttaquant().getJoueur().getNom()+" et "+conflit.getChefDefenseur().getJoueur().getNom());
 			}
 			
+			if(action instanceof PlacerTuileCivilisation && ((PlacerTuileCivilisation) action).isConflit()){
+				Conflits conflit = this.partie.getConflits().get(0);
+				params.add("conflitExterne");
+				params.add("message:Conflit entre "+conflit.getChefAttaquant().getJoueur().getNom()+" et "+conflit.getChefDefenseur().getJoueur().getNom());
+				
+			}
+			
 			c.notifierChangement(params);
 		}
 		
@@ -382,9 +389,11 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	public boolean retirerClient(InterfaceServeurClient client) throws RemoteException {
 		boolean trouve = this.clients.remove(client);
 
-		for(InterfaceServeurClient c : this.clients){
-			c.notifierChangement(null);
-		}
+		//for(InterfaceServeurClient c : this.clients){
+			ArrayList<Object> params = new ArrayList<Object>();
+			params.add("refreshSalon");
+			this.notifierClient(params);
+		//}
 
 		return trouve;
 	}
@@ -405,9 +414,13 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			if(conflit.getTypeConflit().equals("I")){
 				conflit.setPartie(this.partie);
 				this.resoudreConflitInterne(conflit);
-				
+			}
+			if(conflit.getTypeConflit().equals("E")){
+				conflit.setPartie(this.partie);
+				this.resoudreConflitInterne(conflit);
 			}
 		}
+		
 	}
 	
 	public Chef resoudreConflitInterne(Conflits conflit) throws RemoteException{
@@ -425,16 +438,30 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			}
 		}
 		
+		//this.partie.getConflits().remove(conflit);
+		
 		ArrayList<Object> params = new ArrayList<Object>();
 		params.add("partie");
 		params.add("plateau");
 		params.add("deckPrive");
 		params.add("deckPublic");
-		params.add("conflitInterneResolu");
+		if(conflit.getTypeConflit().equals("I")){
+			params.add("conflitInterneResolu");
+		}
+		else{
+			params.add("conflitExterneResolu");
+		}
 		params.add("message:Le joueur "+gagnant.getJoueur().getNom()+" a gagné le conflit !");
+		
+		if(this.partie.getConflits().size() > 0){
+			Conflits newConflit = this.partie.getConflits().get(0);
+			params.add("conflitExterne");
+			params.add("message:Conflit entre "+newConflit.getChefAttaquant().getJoueur().getNom()+" et "+newConflit.getChefDefenseur().getJoueur().getNom());
+		}
+		
 		this.notifierClient(params);
 		
-		this.partie.getConflits().remove(conflit);
+		
 		
 		return gagnant;
 	}
