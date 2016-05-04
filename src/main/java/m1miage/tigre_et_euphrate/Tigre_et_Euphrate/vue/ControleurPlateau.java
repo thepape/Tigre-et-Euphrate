@@ -683,7 +683,6 @@ public class ControleurPlateau implements ChangeListener{
 	private void dragDonePlateau(DragEvent event) throws RemoteException
 	{
 		Pane pane = (Pane) event.getSource();
-		//System.out.println(event.getTransferMode());
 		if(event.getTransferMode() == null)
 		{
 			Pane image = (Pane) event.getSource();
@@ -712,6 +711,8 @@ public class ControleurPlateau implements ChangeListener{
 			} else if(ControleurPlateau.imageEnDragAndDropTuile != null)
 			{
 				image.setAccessibleText("tuileCivilisation");
+			} else {
+				image.setAccessibleText("otherTuile");
 			}
 			if(target.getAccessibleText().equals("paneTuileChef"))
 			{
@@ -780,7 +781,7 @@ public class ControleurPlateau implements ChangeListener{
 						}
 					}
 				} });
-			if((target.getAccessibleText().contains("Chef") && image.getAccessibleText().contains("Chef")))
+			if(target.getAccessibleText() != null && (target.getAccessibleText().contains("Chef") && image.getAccessibleText().contains("Chef")))
 			{
 				Position posChefARetirer = this.tuileAction.getPosition();
 				Chef chefRetrait = (Chef) MainApp.getInstance().getClient().getPartie().getPlateauJeu().getPlateau()[this.positionChefRetire.getX()][this.positionChefRetire.getY()];
@@ -1380,12 +1381,14 @@ for(int x = 0; x < 11; x++){
 		imageEnDragAndDropTuile = null;
 		this.tuileAction = null;
 		ImageView imageTuile = (ImageView) event.getSource();
+		imageTuile.setVisible(false);
 
-		if(GridPane.getColumnIndex(imageTuile) == 0)
+		Pane pane = (Pane) imageTuile.getParent();
+		if(GridPane.getColumnIndex(pane) == 0)
 		{
-			this.monumentEnCours = MainApp.getInstance().getServeur().getPartie().getListeMonuments().get(GridPane.getRowIndex(imageTuile));
+			this.monumentEnCours = MainApp.getInstance().getServeur().getPartie().getListeMonuments().get(GridPane.getRowIndex(pane));
 		} else {
-			this.monumentEnCours = MainApp.getInstance().getServeur().getPartie().getListeMonuments().get(GridPane.getRowIndex(imageTuile) + 3);
+			this.monumentEnCours = MainApp.getInstance().getServeur().getPartie().getListeMonuments().get(GridPane.getRowIndex(pane) + 3);
 		}
 		Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
 		ClipboardContent content = new ClipboardContent();
@@ -1397,7 +1400,7 @@ for(int x = 0; x < 11; x++){
 
 	public void construireMonument() throws RemoteException
 	{
-		this.listeMonument.getChildren().clear();
+		//this.listeMonument.getChildren().clear();
 		for(int i = 0; i < this.partie.getListeMonuments().size(); i++)
 		{
 			if(i < 3)
@@ -1416,9 +1419,26 @@ for(int x = 0; x < 11; x++){
 						}
 					}
 				});
+
+				imageView.setOnDragDone(new EventHandler<DragEvent>(){
+
+
+					public void handle(DragEvent event) {
+						try
+						{
+							dragDoneDecks(event);
+						} catch(RemoteException e)
+						{
+							e.printStackTrace();
+						}
+
+					}
+				});
 				imageView.setFitHeight(40);
 				imageView.setFitWidth(40);
-				this.listeMonument.addRow(i, imageView);
+				Pane pane = (Pane) this.listeMonument.getChildren().get(i);
+				pane.getChildren().add(imageView);
+				//this.listeMonument.addRow(i, imageView);
 			} else {
 				String url = getClass().getResource("monument_" + this.partie.getListeMonuments().get(i).getCouleurArche() + "_" + this.partie.getListeMonuments().get(i).getCouleurEscaliers() + ".png").toExternalForm();
 				ImageView imageView = new ImageView(new Image(url));
@@ -1434,9 +1454,26 @@ for(int x = 0; x < 11; x++){
 						}
 					}
 				});
+
+				imageView.setOnDragDone(new EventHandler<DragEvent>(){
+
+
+					public void handle(DragEvent event) {
+						try
+						{
+							dragDoneDecks(event);
+						} catch(RemoteException e)
+						{
+							e.printStackTrace();
+						}
+
+					}
+				});
 				imageView.setFitHeight(40);
 				imageView.setFitWidth(40);
-				this.listeMonument.addRow(i - 3,imageView);
+				Pane pane = (Pane) this.listeMonument.getChildren().get(i);
+				pane.getChildren().add(imageView);
+				//this.listeMonument.addRow(i - 3,imageView);
 			}
 		}
 	}
@@ -1590,7 +1627,7 @@ for(int x = 0; x < 11; x++){
 				}else if(param.equals("finpartie")){
 					this.mainApp.goToAttributionTresors(((Client)this.mainApp.getClient()).getJoueur().getPointTresor());
 				}else if(param.equals("listemonument")){
-					
+
 						Platform.runLater(new Runnable(){
 
 							public void run() {
@@ -1601,10 +1638,10 @@ for(int x = 0; x < 11; x++){
 									e.printStackTrace();
 								}
 							}
-							
+
 						});
-						
-					
+
+
 
 				}
 
