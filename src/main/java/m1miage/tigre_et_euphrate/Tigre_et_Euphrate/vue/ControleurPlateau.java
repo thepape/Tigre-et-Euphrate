@@ -1,5 +1,7 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.Naming;
@@ -57,6 +59,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Client;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.EncoderJSON;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.*;
 
 public class ControleurPlateau implements ChangeListener{
@@ -854,6 +857,14 @@ public class ControleurPlateau implements ChangeListener{
 
 // Gestion des tuiles Catastrophes
 
+public Partie getPartie() {
+		return partie;
+	}
+
+	public void setPartie(Partie partie) {
+		this.partie = partie;
+	}
+
 public void placerTuile(MouseEvent event) throws RemoteException{
 
 }
@@ -1393,6 +1404,19 @@ for(int x = 0; x < 11; x++){
 		}
 	}
 
+	@FXML
+	private void sauvegarderPartie() throws RemoteException, IOException
+	{
+		try
+		{
+			MainApp.getInstance().getServeur().getPartie().setListeJoueurs(MainApp.getInstance().getServeur().recupererListeJoueurPartie());
+			EncoderJSON e = new EncoderJSON(MainApp.getInstance().getServeur().getPartie());
+			File file = e.convertToJSON();
+		} catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	}
 
 	/**
 	 * Methode appelée par le client ou le serveur pour indiquer au controleur de rafraichir sa vue

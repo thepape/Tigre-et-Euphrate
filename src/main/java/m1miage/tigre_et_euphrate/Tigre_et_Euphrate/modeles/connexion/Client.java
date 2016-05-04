@@ -116,9 +116,9 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 
 	/**
 	 * Fonction qui permet de se connecter au serveur
-	 * @throws NotBoundException 
-	 * @throws RemoteException 
-	 * @throws MalformedURLException 
+	 * @throws NotBoundException
+	 * @throws RemoteException
+	 * @throws MalformedURLException
 	 */
 	public void connect() throws MalformedURLException, RemoteException, NotBoundException
 	{
@@ -198,7 +198,7 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	public boolean send(Action action, int idClient) throws RemoteException {
 		action.setPartie(this.getPartie());
 		return action.executer();
-		
+
 		//this.notifierChangement("plateau");
 	}
 
@@ -317,7 +317,7 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	public void removeListener(ChangeListener listener) {
 		this.listeners.remove(listener);
 	}
-	
+
 	/**
 	 * fonction qui supprime tous les ChangeListeners du client
 	 */
@@ -357,15 +357,15 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		this.partieCourante = partie;
 
 	}
-	
+
 	public void passerTour() throws RemoteException{
 		this.partieCourante.passerTour();
 		//System.out.println("CLIENT MIS A JOUR");
 	}
-	
+
 	public void envoyerNouveauConflit(Conflits conflit, int idSender) throws RemoteException {
 		this.partieCourante.ajouterConflit(conflit);
-		
+
 	}
 
 
@@ -414,23 +414,28 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 
 	public void envoyerRenforts(ArrayList<TuileCivilisation> renforts, Joueur joueur) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public boolean piocherCartesManquantes(Joueur j) throws RemoteException {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	public void finirPartie() throws RemoteException {
-		
+
 	}
 
 	public void envoyerPointsAttribues(Joueur joueur) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	
+	public ArrayList<Joueur> recupererListeJoueurPartie() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }

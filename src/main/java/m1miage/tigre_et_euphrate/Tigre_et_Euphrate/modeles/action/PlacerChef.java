@@ -36,9 +36,9 @@ public class PlacerChef extends Action {
 	 * Booleen qui permet de tester les conflit
 	 */
 	private boolean conflit = false;
-	
+
 	private Conflits instanceConflit = null;
-	
+
 	public boolean isConflit() {
 		return conflit;
 	}
@@ -70,7 +70,7 @@ public class PlacerChef extends Action {
 					boolean memeCouleur = chefc.getTypeChef().getCouleur().equals(this.chef.getTypeChef().getCouleur());
 
 					if(memeDynastie && memeCouleur){
-						
+
 						this.partie.getPlateauJeu().getPlateau()[x][y] = null;
 						Territoire t = this.partie.getPlateauJeu().recupererTerritoireTuile(this.chef);
 						t.deletChef(chef);
@@ -80,7 +80,7 @@ public class PlacerChef extends Action {
 			}
 		}
 	}
-	
+
 	public boolean verifier(){
 		return this.partie.getPlateauJeu().verifierPlacerChef(chef, position);
 	}
@@ -119,25 +119,27 @@ public class PlacerChef extends Action {
 				//listeAdjacente.get(0).getTerritoire().addChefs(this.chef);
 				Territoire territoire = this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(0));
 				territoire.addChefs(this.chef);
-				
+
+				System.out.println(this.chef.getClass());
 				this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = this.chef;
 				this.chef.setPosition(new Position(this.position.getX(), this.position.getY()));
+
 				//Verifie si condition de recuperation de points tresors
 				this.verifierTresors();
-				
+
 				this.joueur.getDeckPublic().getDeckPublic().remove(this.chef);
 
-				
+
 				for(int i = 0; i < this.partie.getPlateauJeu().recupererTerritoireTuile(this.chef).getChefs().size();i++){
 					Chef autreChef = this.partie.getPlateauJeu().recupererTerritoireTuile(this.chef).getChefs().get(i);
-					
+
 					if(chef.getTypeChef().equals(autreChef.getTypeChef()) && chef.getId() != autreChef.getId())
 					{
-						//TODO conflit						
+						//TODO conflit
 						conflit = true;
 						Chef attaquant = this.chef;
 						Chef defenseur = autreChef;
-						
+
 						Conflits conflit = new Conflits(attaquant, defenseur, this.partie.getPlateauJeu().recupererTerritoireTuile(defenseur), null);
 						conflit.setTypeConflit("I");
 						this.partie.ajouterConflit(conflit);
@@ -153,11 +155,11 @@ public class PlacerChef extends Action {
 					{
 						Chef chefi = this.chef.getTerritoire().getChefs().get(i);
 						Chef chefj = this.chef.getTerritoire().getChefs().get(j);
-						
+
 						if(chefi.getTypeChef().equals(chefj.getTypeChef()) && chefi.getId() != chefj.getId())
 
 						{
-							//TODO conflit						
+							//TODO conflit
 							conflit = true;
 
 							Chef attaquant = this.chef.getTerritoire().getChefs().get(i);
@@ -165,7 +167,7 @@ public class PlacerChef extends Action {
 							Conflits conflit = new Conflits(attaquant, defenseur, defenseur.getTerritoire(), null);
 							conflit.setChefAttaquant(attaquant);
 							conflit.setChefDefenseur(defenseur);
-							
+
 							this.partie.ajouterConflit(conflit);
 
 						}
@@ -173,16 +175,16 @@ public class PlacerChef extends Action {
 				}*/
 			}
 		}
-		
+
 
 		return ok;
 	}
 
-	
+
 	public Conflits getConflit(){
 		return this.instanceConflit;
 	}
-	
+
 	/**
 	 * verifie si quand on pose le chef marchand le territoire possède 2 trésors ou plus
 	 * @return
@@ -192,10 +194,10 @@ public class PlacerChef extends Action {
 		if(this.chef.getTypeChef().equals(TypeChef.Marchand)){
 			int nbtuiletresor = 0;
 			ArrayList<TuileCivilisation> tuileTresor = new ArrayList<TuileCivilisation>();
-			
+
 			Territoire terri = this.partie.getPlateauJeu().recupererTerritoireTuile(this.chef);
 			ArrayList<TuileCivilisation> listeTuile = terri.getTuilesCivilisation();
-			
+
 			for(TuileCivilisation tuile : listeTuile){
 				if(tuile.getType().equals(TypeTuileCivilisation.Temple)){
 					if(tuile.aTresor()){
@@ -204,7 +206,7 @@ public class PlacerChef extends Action {
 					}
 				}
 			}
-			
+
 			if(nbtuiletresor >1){
 				for(int i = 0; i<nbtuiletresor-1;i++){
 					tuileTresor.get(0).recupererTresor();
@@ -216,7 +218,7 @@ public class PlacerChef extends Action {
 			}
 		}
 	}
-	
+
 	public String toString(){
 		return this.joueur.getNom()+" a placé son chef "+this.chef.getTypeChef().getNom()+" à la ligne "+this.position.getX()+", colonne "+this.position.getY();
 	}
