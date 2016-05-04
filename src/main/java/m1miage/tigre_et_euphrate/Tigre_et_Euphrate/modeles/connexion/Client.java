@@ -25,6 +25,9 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCiv
 
 public class Client extends UnicastRemoteObject implements InterfaceServeurClient, ObservableValue {
 
+	/**
+	 * Liste des controlleurs qui ecoutent le client pour refresh
+	 */
 	private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
 
 	/**
@@ -67,6 +70,9 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	 */
 	public InterfaceServeurClient serveur = null;
 
+	/**
+	 * Liste des Dynastie présent dans la partie
+	 */
 	private ArrayList<Dynastie> listeDynastie = new ArrayList<Dynastie>();
 
 	/**
@@ -128,17 +134,15 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		/////////////// infos de connexion
 
 		String url = "rmi://"+this.ip+":"+this.port+"/"+this.namespace;
-		//PartieInterface partie = null;
-
-			//serveur = (Serveur) Naming.lookup(url);
-			this.serveur = (InterfaceServeurClient) Naming.lookup("rmi://"+this.ip+":"+this.port+"/"+this.namespace);
-			//this.serveur = partie;
-
+		this.serveur = (InterfaceServeurClient) Naming.lookup("rmi://"+this.ip+":"+this.port+"/"+this.namespace);
 		System.out.println("Client connecté au serveur !");
 			serveur.ajouterClient(this);
 
 	}
 
+	/**
+	 * Permet de deconnecter un client
+	 */
 	public boolean deconnecter() throws RemoteException{
 		return this.serveur.retirerClient(this);
 	}

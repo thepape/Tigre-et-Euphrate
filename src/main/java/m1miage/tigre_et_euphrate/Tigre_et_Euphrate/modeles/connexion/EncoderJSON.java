@@ -13,18 +13,33 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisat
 
 public class EncoderJSON {
 
+	/**
+	 * Partie 
+	 */
 	private Partie partie;
 
+	/**
+	 * Constructeur vide de EncoderJSON
+	 */
 	public EncoderJSON()
 	{
 
 	}
 
+	/**
+	 * Constructeur de EncoderJSON
+	 * @param partie
+	 */
 	public EncoderJSON(Partie partie) {
 		super();
 		this.partie = partie;
 	}
 
+	/**
+	 * Methode permettant de convertir vers le Json
+	 * @return
+	 * @throws IOException
+	 */
 	public File convertToJSON() throws IOException
 	{
 
@@ -41,6 +56,12 @@ public class EncoderJSON {
 		return file;
 	}
 
+	/**
+	 * Methode permettant de convertir la partie en Json
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
 	public Partie convertToPartie(File file) throws IOException
 	{
 		Partie partie = null;

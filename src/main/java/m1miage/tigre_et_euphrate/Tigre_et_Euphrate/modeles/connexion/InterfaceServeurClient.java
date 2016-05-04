@@ -15,6 +15,10 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 
+/**
+ * Interface Serveur Client qui est la Remote
+ *
+ */
 public interface InterfaceServeurClient extends Remote {
 
 	public void setServeur(InterfaceServeurClient serveur) throws RemoteException;
