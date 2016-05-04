@@ -71,7 +71,7 @@ public class Chef extends Placable implements Serializable{
 		this.puissance = 0;
 		this.retiree = true;
 		//this.territoire = null;
-		Chef.idIncrement += 10;
+		Chef.idIncrement += 1;
 		this.id = Chef.idIncrement;
 	}
 
@@ -82,7 +82,7 @@ public class Chef extends Placable implements Serializable{
 	public Chef(TypeChef typeChef) {
 		super();
 		this.typeChef = typeChef;
-		Chef.idIncrement += 10;
+		Chef.idIncrement += 1;
 		this.id = Chef.idIncrement;
 	}
 

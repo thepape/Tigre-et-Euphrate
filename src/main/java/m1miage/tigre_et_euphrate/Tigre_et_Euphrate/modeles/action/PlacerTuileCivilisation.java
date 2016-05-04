@@ -9,6 +9,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.TypeChef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.InterfaceServeurClient;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.Tuile;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
@@ -93,16 +94,27 @@ public class PlacerTuileCivilisation extends Action {
 		{
 			//on verifie d'abord si on reunit + de 2 royaumes
 			int nbRoyaumesDifferents = 0;
+			ArrayList<Territoire> royaumesDifferents = new ArrayList<Territoire>();
 			for(int i = 0; i < listeAdjacente.size()-1; i++){
 				for(int j = i+1; j< listeAdjacente.size(); j++){
 					Territoire t1 = this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(i));
 					Territoire t2 = this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(j));
+					
+					//si l'une des 2 tuiles est jonction, l'un des territoires sera null
+					if(t1 == null || t2 == null){
+						continue;
+					}
+					
 					if(!t1.equals(t2) && t1.isEstRoyaume() && t2.isEstRoyaume()){
 						nbRoyaumesDifferents++;
+						if(!royaumesDifferents.contains(t1))
+							royaumesDifferents.add(t1);
+						if(!royaumesDifferents.contains(t2))
+							royaumesDifferents.add(t2);
 					}
 				}
 			}
-			if(nbRoyaumesDifferents > 2){
+			if(royaumesDifferents.size() > 2){
 				return false;
 			}
 
@@ -110,22 +122,55 @@ public class PlacerTuileCivilisation extends Action {
 			{
 				for(int j = i+1; j < listeAdjacente.size(); j++)
 				{
+					//verifier que les 2 territoires sont royaumes et contiennent un chef de la meme couleur
+					Territoire t1 = this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(i));
+					Territoire t2 = this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(j));
 					
+					//si l'une des 2 tuiles est jonction, l'un des territoires sera null
+					if(t1 == null || t2 == null){
+						continue;
+					}
 
-					if(!this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(i)).equals(this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(j))))
+					if(!t1.equals(t2))
 					{
-						//verifier que les 2 territoires sont royaumes et contiennent un chef de la meme couleur
-						Territoire t1 = this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(i));
-						Territoire t2 = this.partie.getPlateauJeu().recupererTerritoireTuile(listeAdjacente.get(j));
+						
 						
 						for(Chef chef1 : t1.getChefs()){
 							for(Chef chef2 : t2.getChefs()){
 								if(chef1.getTypeChef().equals(chef2.getTypeChef())){
+									if(conflit){
+										//s'il y a deja un conflit engeandré par la posee, on le gérera plus tard,
+										//après la résolution ddu premier conflit
+										break;
+									}
 									conflit = true;
 									System.out.println("conflit externe !");
 									this.tuile.setJonction(true);
 									
 									//il faut créer le conflit et l'ajouter a la liste de conflits de la partie
+									//pour l'instant, on considère que l'attaque est le joueur ayant posé la tuile engeandrant
+									//le conflit
+									Chef attaquant = null;
+									Chef defenseur = null;
+									if(chef1.getJoueur().getId() == this.joueur.getId()){
+										attaquant = chef1;
+										defenseur = chef2;
+									}
+									else{
+										attaquant = chef2;
+										defenseur = chef1;
+									}
+									Territoire terrAttaquant = this.partie.getPlateauJeu().recupererTerritoireTuile(attaquant);
+									Territoire terrDefenseur = this.partie.getPlateauJeu().recupererTerritoireTuile(defenseur);
+									
+									Conflits conflitExterne = new Conflits(attaquant, defenseur, terrDefenseur, terrAttaquant);
+									conflitExterne.setTypeConflit("E");
+									
+									
+									this.partie.ajouterConflit(conflitExterne);
+									this.partie.ajouterTourConflit(attaquant.getJoueur());
+									this.partie.ajouterTourConflit(defenseur.getJoueur());
+									
 								}
 							}
 						}
@@ -136,7 +181,7 @@ public class PlacerTuileCivilisation extends Action {
 							t1.addListeChefs(t2.getChefs());
 							t1.addListeTuiles(t2.getTuilesCivilisation());
 							this.partie.getPlateauJeu().getListeRoyaume().remove(t2);
-							this.tuile.setJonction(true);
+							this.tuile.setJonction(false);
 						}
 					}
 				}
@@ -165,7 +210,9 @@ public class PlacerTuileCivilisation extends Action {
 		this.joueur.getDeckPrive().getDeckPrive().remove(this.tuile);
 		//System.out.println("DECK:"+this.joueur.getNom()+" - "+this.joueur.getDeckPrive());
 		
-		this.AttributionPointVictoire();
+		if(!this.conflit)
+			this.AttributionPointVictoire();
+		
 		return ok;
 	}
 

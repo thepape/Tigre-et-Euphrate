@@ -12,7 +12,7 @@ public class TuileCatastrophe extends Tuile {
 
 	public TuileCatastrophe(){
 		super();
-		TuileCatastrophe.idIncrement += 10;
+		TuileCatastrophe.idIncrement += 1;
 		this.id = TuileCatastrophe.idIncrement;
 	}
 }
