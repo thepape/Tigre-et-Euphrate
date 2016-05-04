@@ -37,8 +37,15 @@ public class PlacerChef extends Action {
 	 */
 	private boolean conflit = false;
 
+	/**
+	 * Instance du conflit en cours causé par le placerChef
+	 */
 	private Conflits instanceConflit = null;
 
+	/**
+	 * Methode permettant de savoir si on est en conflit ou non
+	 * @return
+	 */
 	public boolean isConflit() {
 		return conflit;
 	}
@@ -59,6 +66,9 @@ public class PlacerChef extends Action {
 		this.position = ppos;
 	}
 
+	/**
+	 * Methode permettant de retirer un chef apres 
+	 */
 	private void retirerChef(){
 		for(int x = 0; x < 11; x++){
 			for(int y = 0; y < 16;y++){
@@ -81,6 +91,9 @@ public class PlacerChef extends Action {
 		}
 	}
 
+	/**
+	 * Methode permettant de verifier si le placerChef a bien été effectué
+	 */
 	public boolean verifier(){
 		return this.partie.getPlateauJeu().verifierPlacerChef(chef, position);
 	}
@@ -148,31 +161,6 @@ public class PlacerChef extends Action {
 						this.instanceConflit = conflit;
 					}
 				}
-				/*
-				for(int i = 0; i < this.chef.getTerritoire().getChefs().size() - 1;i++)
-				{
-					for(int j = i+1; j < this.chef.getTerritoire().getChefs().size();j++)
-					{
-						Chef chefi = this.chef.getTerritoire().getChefs().get(i);
-						Chef chefj = this.chef.getTerritoire().getChefs().get(j);
-
-						if(chefi.getTypeChef().equals(chefj.getTypeChef()) && chefi.getId() != chefj.getId())
-
-						{
-							//TODO conflit
-							conflit = true;
-
-							Chef attaquant = this.chef.getTerritoire().getChefs().get(i);
-							Chef defenseur = this.chef.getTerritoire().getChefs().get(j);
-							Conflits conflit = new Conflits(attaquant, defenseur, defenseur.getTerritoire(), null);
-							conflit.setChefAttaquant(attaquant);
-							conflit.setChefDefenseur(defenseur);
-
-							this.partie.ajouterConflit(conflit);
-
-						}
-					}
-				}*/
 			}
 		}
 

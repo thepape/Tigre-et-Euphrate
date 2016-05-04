@@ -48,6 +48,9 @@ public class EchangerTuileCivilisation extends Action {
 		return true;
 	}
 	
+	/**
+	 * Methode permettant de verifier si la pioche est vide 
+	 */
 	public boolean verifier(){
 		if(this.partie.getPioche().estVide())
 			return false;
@@ -55,6 +58,9 @@ public class EchangerTuileCivilisation extends Action {
 		return true;
 	}
 	
+	/**
+	 * Methode toString d'un echange de tuile civilisation
+	 */
 	public String toString(){
 		return "Le joueur "+this.joueur.getNom()+" a echangé ses tuiles.";
 	}

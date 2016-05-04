@@ -40,17 +40,15 @@ public class PlacerTuileCatastrophe extends Action {
 		this.position = ppos;
 	}
 	
+	/**
+	 * Methode permettant de verifier si on peut placer la tuile catastrophe
+	 * @return
+	 */
 	public boolean VerifierCase(){
 		
 		boolean ok = false;
 		int x = this.position.getX();
 		int y = this.position.getY();
-		//getClass().isInstance(TuileCivilisation.class)
-		/*if(this.partie.getPlateauJeu().getPlateau()[x][y]==null ||
-				((TuileCivilisation)this.partie.getPlateauJeu().getPlateau()[x][y]).getType().equals(TypeTuileCivilisation.Marché) || 
-				((TuileCivilisation)this.partie.getPlateauJeu().getPlateau()[x][y]).getType().equals(TypeTuileCivilisation.Ferme) || 
-				((TuileCivilisation)this.partie.getPlateauJeu().getPlateau()[x][y]).getType().equals(TypeTuileCivilisation.Population) || 
-				((TuileCivilisation)this.partie.getPlateauJeu().getPlateau()[x][y]).getType().equals(TypeTuileCivilisation.Temple) ){*/
 		if(this.partie.getPlateauJeu().getPlateau()[x][y]==null || 
 				this.partie.getPlateauJeu().getPlateau()[x][y] instanceof TuileCivilisation){	
 			ok = true;
