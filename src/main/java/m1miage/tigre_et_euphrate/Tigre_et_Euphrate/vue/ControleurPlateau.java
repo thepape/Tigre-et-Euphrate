@@ -40,6 +40,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
@@ -200,6 +202,13 @@ public class ControleurPlateau implements ChangeListener{
 			this.mainApp.setMesageErreur("Problème de réseau ou rage quit d'un adversaire");
 		}
 		//this.mainApp = mainApp;
+		MainApp.getInstance().getPrimaryStage().setOnCloseRequest(new EventHandler<WindowEvent>(){
+
+			public void handle(WindowEvent event) {
+				System.exit(0);
+			}
+			
+		});
 	}
 
 	/**
