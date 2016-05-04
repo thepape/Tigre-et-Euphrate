@@ -71,6 +71,9 @@ public class ControleurSalleAttente implements ChangeListener {
 		@FXML
 		private ListView listeJoueur;
 		
+		@FXML
+		private Button BtnPret;
+		
 		private boolean dynastiechoisie = false;
 
 	public MainApp getMainApp() {
@@ -85,6 +88,7 @@ public class ControleurSalleAttente implements ChangeListener {
 		this.boutonsDynastie.put(Dynastie.Stark, this.stark);
 		this.boutonsDynastie.put(Dynastie.Tyrell, this.tyrell);
 		this.boutonsDynastie.put(Dynastie.Targaryen, this.targaryen);
+		//this.BtnPret.setDisable(true);
 
 		//Ajout du listener pour la dynsatie Lanister
 		/*
@@ -306,6 +310,17 @@ public class ControleurSalleAttente implements ChangeListener {
 		}
 	}*/
 	
+	
+	/**
+	 * Fonction permettant d'activer ou desactiver le bouton pret en fonction du nombre de joueurs présents dans la partie
+	 */
+	public void joueursSuffisants(){
+		if(this.nomJoueurs.size() > 1 && this.nomJoueurs.size() < 5)
+			this.BtnPret.setDisable(false);
+		else
+			this.BtnPret.setDisable(true);
+	}
+	
 	public void ajouterJoueurDansListe(Joueur j){
 		this.joueurs.add(j);
 	}
@@ -313,6 +328,7 @@ public class ControleurSalleAttente implements ChangeListener {
 	public void retirerJoueurDansListe(Joueur j){
 		this.joueurs.remove(j);
 	}
+	
 	/*
 	public void changeListeJoueur(){
 		ObservableList<String> items = FXCollections.observableArrayList();
@@ -334,6 +350,7 @@ public class ControleurSalleAttente implements ChangeListener {
 		try {
 			this.majListeJoueur();
 			this.majListeDynasties();
+			this.joueursSuffisants();
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

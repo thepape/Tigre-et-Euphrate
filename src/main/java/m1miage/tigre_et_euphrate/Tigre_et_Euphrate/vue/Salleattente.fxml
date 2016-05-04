@@ -46,7 +46,7 @@
         </AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
           <children>
-            <Button layoutX="71.0" layoutY="259.0" mnemonicParsing="false" onMouseClicked="#handleBoutonPret" text="Prêt" />
+            <Button fx:id="BtnPret" layoutX="71.0" layoutY="259.0" mnemonicParsing="false" onMouseClicked="#handleBoutonPret" text="Prêt" />
             <Button layoutX="67.0" layoutY="291.0" mnemonicParsing="false" onMouseClicked="#retourAuMenu" text="Quiter" />
             <Button fx:id="lanister" layoutX="19.0" layoutY="61.0" minHeight="61.0" minWidth="61.0" mnemonicParsing="false" onMouseClicked="#dynastieChoisi" prefHeight="61.0" prefWidth="61.0" text="">
               <graphic>
