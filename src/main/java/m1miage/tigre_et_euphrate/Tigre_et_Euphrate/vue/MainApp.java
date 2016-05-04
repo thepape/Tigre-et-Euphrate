@@ -347,11 +347,6 @@ public class MainApp extends Application implements App {
 		try{
 			this.replaceSceneContent("InterfaceClassement.fxml");
 			ControleurClassement controler = (ControleurClassement)this.currentControler;
-<<<<<<< HEAD
-			controler.initialiser();
-
-=======
->>>>>>> master
 			this.client.clearListeners();
 			this.client.addListener(controler);
 			controler.initialiser();
@@ -371,60 +366,9 @@ public class MainApp extends Application implements App {
 		try{
 			//on supprime le controleurSalon des listeners du client
 			this.client.clearListeners();
-<<<<<<< HEAD
-
-			this.replaceSceneContent("ApplicationPrincipale.fxml");
-			/*
-			Monument m = new Monument("bleu","jaune");
-
-			TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-			tuile1.setMonument(m);
-			m.setTuileNO(tuile1);
-			TuileCivilisation tuile2 = new TuileCivilisation(TypeTuileCivilisation.Marché);
-			TuileCivilisation tuile3 = new TuileCivilisation(TypeTuileCivilisation.Population);
-			TuileCivilisation tuile4 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-			TuileCivilisation tuile5 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-			TuileCivilisation tuile6 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-			DeckPrive deckPrive = new DeckPrive();
-			deckPrive.ajouter(tuile1);
-			deckPrive.ajouter(tuile2);
-			deckPrive.ajouter(tuile3);
-			deckPrive.ajouter(tuile4);
-			deckPrive.ajouter(tuile5);
-			deckPrive.ajouter(tuile6);
-
-			DeckPublic deckPublic = new DeckPublic();
-			Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
-			//on force un id de joueur unique en attendant
-			int id = this.serveur.getUniqueId();
-			joueur.setId(id);
-
-			Chef chefFermier = new Chef(TypeChef.Fermier,joueur);
-			Chef chefRoi = new Chef(TypeChef.Roi,joueur);
-			Chef chefMarchand = new Chef(TypeChef.Marchand,joueur);
-			Chef chefPretre = new Chef(TypeChef.Pretre,joueur);
-
-			deckPublic.ajouter(chefFermier);
-			deckPublic.ajouter(chefRoi);
-			deckPublic.ajouter(chefMarchand);
-			deckPublic.ajouter(chefPretre);
-
-			// PartieInterface partie = (Partie)
-			// this.getListeJoueur().get(0);
-			ControleurPlateau controleurPlateau = this.currentLoader.getController();
-=======
->>>>>>> master
 
 			this.replaceSceneContent("ApplicationPrincipale.fxml");
 
-<<<<<<< HEAD
-			Partie partie = new Partie();
-			partie.setPlateauJeu(new Plateau());
-			partie.setJoueur(joueur);
-			*/
-
-=======
->>>>>>> master
 			ControleurPlateau controleurPlateau = this.currentLoader.getController();
 			Partie partie = this.serveur.getPartie();
 			Joueur joueur = this.client.getJoueur();

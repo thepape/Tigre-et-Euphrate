@@ -6,13 +6,8 @@ import java.rmi.RemoteException;
 
 import org.junit.Before;
 import org.junit.Test;
-<<<<<<< HEAD
-
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPrive;
-=======
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPrive;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPublic;
->>>>>>> master
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
@@ -36,21 +31,6 @@ public class TestPlacerTuileCivilisation {
 		partie.setPlateauJeu(new Plateau());
 
 		partie.setJoueur(joueur);
-<<<<<<< HEAD
-		DeckPrive deck = new DeckPrive();
-		TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Marché);
-		TuileCivilisation tuile2 = new TuileCivilisation(TypeTuileCivilisation.Marché);
-		TuileCivilisation tuile3 = new TuileCivilisation(TypeTuileCivilisation.Marché);
-		TuileCivilisation tuile4 = new TuileCivilisation(TypeTuileCivilisation.Marché);
-		deck.ajouter(tuile1);
-		deck.ajouter(tuile2);
-		deck.ajouter(tuile3);
-		deck.ajouter(tuile4);
-
-		joueur.setDeckPrive(deck);
-	}
-=======
->>>>>>> master
 
 		DeckPrive deck = new DeckPrive();
 		TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Marché);
@@ -67,7 +47,7 @@ public class TestPlacerTuileCivilisation {
 		joueur.setDeckPrive(deck);
 		joueur.setDeckPublic(deckp);
 	}
- 
+
 	@Test
 	public void testPlacerTuileNormal() {
 		TuileCivilisation tuile = this.partie.getJoueur().getDeckPrive().getDeckPrive().get(0);
@@ -75,7 +55,7 @@ public class TestPlacerTuileCivilisation {
 		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(3,4), this.partie.getJoueur().getDeckPrive().getDeckPrive().get(0));
 		assertTrue(action.executer());
 		assertSame(this.partie.getPlateauJeu().getPlateau()[3][4], tuile);
-		
+
 	}
 
 	@Test
@@ -136,7 +116,7 @@ public class TestPlacerTuileCivilisation {
 		assertTrue(action.isConflit());
 
 	}
-	
+
 	/**
 	 * test d'attribution de point Victoire
 	 */
@@ -152,10 +132,10 @@ public class TestPlacerTuileCivilisation {
 		assertEquals(partie.getJoueur().getPointVictoireBleu(),0);
 		assertEquals(partie.getJoueur().getPointVictoireJaune(),0);
 		assertEquals(partie.getJoueur().getPointVictoireRouge(),0);
-		
+
 		//assertFalse(t.isEstRoyaume());
 	}
-	
+
 	/**
 	 * TestNonAttributionPoint
 	 */
@@ -173,7 +153,7 @@ public class TestPlacerTuileCivilisation {
 		assertEquals(partie.getJoueur().getPointVictoireJaune(),0);
 		assertEquals(partie.getJoueur().getPointVictoireRouge(),0);
 	}
-	
+
 	/**
 	 * TestNonAttributionPoint
 	 */

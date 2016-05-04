@@ -73,11 +73,8 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	private int increment = 0;
 
-<<<<<<< HEAD
-	private ArrayList<Joueur> listeJoueursPointsAttribues = new ArrayList<Joueur>();
-=======
 	private ArrayList<Joueur> classementFinal = new ArrayList<Joueur>();
->>>>>>> master
+
 
 
 	/**
@@ -327,29 +324,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			// car il a déjà été impacté ci dessus
 			for(Joueur j : action.getJoueurImpactes()){
 				if(j.getId() == joueurConcerne.getId() && j.getId() != action.getJoueur().getId()){
-<<<<<<< HEAD
-
-					//on verifie ce qu'il faut changer, et on applique les changement au BON joueur recuperé chez
-					//le bon client
-					if(action instanceof PlacerTuileCivilisation){
-						//si un autre joueur a été impacté par une pose de truile civ, on verifie si c'est
-						//a cause d'un ajout de point tresor
-						if(joueurConcerne.getPointTresor() != j.getPointTresor()){
-							int diff = j.getPointTresor() - joueurConcerne.getPointTresor();
-							joueurConcerne.ajouterPointsTresor(diff);
-							this.clients.get(i).setJoueur(joueurConcerne);
-						}
-					}
-					else if(action instanceof PlacerTuileCatastrophe){
-						//si un autre joueur a été impacté par une pose de tuile cata, on verifie si c'est
-						//parce qu'un de ses chefs doit retourner dans son deck du fait de l'ecrasement d'un temple
-						if(!joueurConcerne.getDeckPublic().getDeckPublic().equals(j.getDeckPublic().getDeckPublic())){
-							joueurConcerne.setDeckPublic(j.getDeckPublic());
-						}
-					}
-=======
 					this.clients.get(i).setJoueur(j);
->>>>>>> master
 
 				}
 			}
@@ -471,19 +446,11 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	public void envoyerPointsAttribues(Joueur joueur) throws RemoteException{
 
-<<<<<<< HEAD
-		if(!this.listeJoueursPointsAttribues.contains(joueur)){
-			this.listeJoueursPointsAttribues.add(joueur);
-		}
-
-		if(this.listeJoueursPointsAttribues.size() == this.clients.size()){
-=======
 		if(!this.classementFinal.contains(joueur)){
 			this.classementFinal.add(joueur);
 		}
 
 		if(this.classementFinal.size() == this.clients.size()){
->>>>>>> master
 			ArrayList<Object> params = new ArrayList<Object>();
 			params.add("gotoclassement");
 			this.notifierClient(params);
