@@ -31,17 +31,17 @@ public class TestCissionRoyaume {
 	 * test methode addTuile
 	 * TODO
 	 */
-	/*@Test
+	@Test
 	public void testCissionTerritoires3x1Cission() {
 		Territoire terr1 = new Territoire();
 		this.plateau.getListeRoyaume().add(terr1);
 
 		TuileCivilisation t1 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		t1.setTerritoire(terr1);
+		terr1.addTuile(t1);
 		TuileCivilisation t2 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		t2.setTerritoire(terr1);
+		terr1.addTuile(t2);
 		TuileCivilisation t3 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		t3.setTerritoire(terr1);
+		terr1.addTuile(t3);
 
 		this.plateau.placerTuile(t1, 4, 0);
 		this.plateau.placerTuile(t2, 4, 1);
@@ -65,25 +65,25 @@ public class TestCissionRoyaume {
 		this.plateau.getListeRoyaume().add(terr1);
 
 		TuileCivilisation t11 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		t11.setTerritoire(terr1);
+		terr1.addTuile(t11);
 		TuileCivilisation t21 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		t21.setTerritoire(terr1);
+		terr1.addTuile(t21);
 		TuileCivilisation t31 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		t31.setTerritoire(terr1);
+		terr1.addTuile(t31);
 
 		TuileCivilisation t12 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		t12.setTerritoire(terr1);
+		terr1.addTuile(t12);
 		TuileCivilisation t22 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		t22.setTerritoire(terr1);
+		terr1.addTuile(t22);
 		TuileCivilisation t32 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		t32.setTerritoire(terr1);
+		terr1.addTuile(t32);
 
 		TuileCivilisation t13 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		t13.setTerritoire(terr1);
+		terr1.addTuile(t13);
 		TuileCivilisation t23 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		t23.setTerritoire(terr1);
+		terr1.addTuile(t23);
 		TuileCivilisation t33 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		t33.setTerritoire(terr1);
+		terr1.addTuile(t33);
 
 		this.plateau.placerTuile(t11, 4, 4);
 		this.plateau.placerTuile(t21, 4, 5);
@@ -117,15 +117,15 @@ public class TestCissionRoyaume {
 		this.plateau.getListeRoyaume().add(terr1);
 
 		TuileCivilisation tn = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		tn.setTerritoire(terr1);
+		terr1.addTuile(tn);
 		TuileCivilisation te = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		te.setTerritoire(terr1);
+		terr1.addTuile(te);
 		TuileCivilisation ts = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		ts.setTerritoire(terr1);
+		terr1.addTuile(ts);
 		TuileCivilisation to = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		to.setTerritoire(terr1);
+		terr1.addTuile(to);
 		TuileCivilisation tc = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		tc.setTerritoire(terr1);
+		terr1.addTuile(tc);
 
 
 		this.plateau.placerTuile(tn, 4, 5);
@@ -154,17 +154,17 @@ public class TestCissionRoyaume {
 		this.plateau.getListeRoyaume().add(terr1);
 
 		TuileCivilisation tn = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		tn.setTerritoire(terr1);
+		terr1.addTuile(tn);
 		TuileCivilisation te = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		te.setTerritoire(terr1);
+		terr1.addTuile(te);
 		TuileCivilisation ts = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		ts.setTerritoire(terr1);
+		terr1.addTuile(ts);
 		TuileCivilisation to = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		to.setTerritoire(terr1);
+		terr1.addTuile(to);
 		TuileCivilisation tc = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		tc.setTerritoire(terr1);
+		terr1.addTuile(tc);
 		TuileCivilisation tne = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		tne.setTerritoire(terr1);
+		terr1.addTuile(tne);
 
 
 		this.plateau.placerTuile(tn, 4, 5);
@@ -194,19 +194,19 @@ public class TestCissionRoyaume {
 		this.plateau.getListeRoyaume().add(terr1);
 
 		TuileCivilisation tn = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		tn.setTerritoire(terr1);
+		terr1.addTuile(tn);
 		TuileCivilisation te = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		te.setTerritoire(terr1);
+		terr1.addTuile(te);
 		TuileCivilisation ts = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		ts.setTerritoire(terr1);
+		terr1.addTuile(ts);
 		TuileCivilisation to = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		to.setTerritoire(terr1);
+		terr1.addTuile(to);
 		TuileCivilisation tc = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		tc.setTerritoire(terr1);
+		terr1.addTuile(tc);
 		TuileCivilisation tne = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		tne.setTerritoire(terr1);
+		terr1.addTuile(tne);
 		TuileCivilisation tnee = new TuileCivilisation(TypeTuileCivilisation.Temple);
-		tnee.setTerritoire(terr1);
+		terr1.addTuile(tnee);
 
 
 		this.plateau.placerTuile(tn, 4, 5);
@@ -240,6 +240,51 @@ public class TestCissionRoyaume {
 		System.out.println("après cission 2:");
 		System.out.println(this.printTerritoiresPlateau());
 	}
+	
+	@Test
+	public void testCissionTerritoiresJonction() {
+		TuileCivilisation temple = (TuileCivilisation) this.plateau.getPlacableAt(new Position(9,5));
+		Territoire terr1 = this.plateau.recupererTerritoireTuile(temple);
+		//this.plateau.getListeRoyaume().add(terr1);
+
+		TuileCivilisation t1 = new TuileCivilisation(TypeTuileCivilisation.Temple);
+		terr1.addTuile(t1);
+		TuileCivilisation t2 = new TuileCivilisation(TypeTuileCivilisation.Temple);
+		terr1.addTuile(t2);
+		TuileCivilisation t3 = new TuileCivilisation(TypeTuileCivilisation.Temple);
+		terr1.addTuile(t3);
+
+		this.plateau.placerTuile(t1, 9, 4);
+		this.plateau.placerTuile(t2, 9, 3);
+		this.plateau.placerTuile(t3, 10, 5);
+		
+		TuileCivilisation temple2 = (TuileCivilisation) this.plateau.getPlacableAt(new Position(7,1));
+		Territoire terr2 = this.plateau.recupererTerritoireTuile(temple2);
+		//this.plateau.getListeRoyaume().add(terr2);
+		
+		TuileCivilisation t4 = new TuileCivilisation(TypeTuileCivilisation.Temple);
+		terr2.addTuile(t4);
+		TuileCivilisation t5 = new TuileCivilisation(TypeTuileCivilisation.Temple);
+		terr2.addTuile(t5);
+		TuileCivilisation t6 = new TuileCivilisation(TypeTuileCivilisation.Temple);
+		terr2.addTuile(t6);
+		
+		this.plateau.placerTuile(t4, 8, 1);
+		this.plateau.placerTuile(t5, 8, 2);
+		this.plateau.placerTuile(t6, 9, 2);
+		
+		t6.setJonction(true);
+		terr2.deletTuilesCivilisation(t6);
+		
+		System.out.println("avant cission jonction:");
+		System.out.println(this.printTerritoiresPlateau());
+
+		this.plateau.reconstruireTerritoires(new Position(9,4));
+
+		System.out.println("apres cission jonction:");
+		System.out.println(this.printTerritoiresPlateau());
+
+	}
 
 	private String printTerritoiresPlateau(){
 		StringBuffer sb = new StringBuffer("");
@@ -249,7 +294,7 @@ public class TestCissionRoyaume {
 				Placable p = this.plateau.getPlateau()[i][j];
 				String s = "[";
 				if(p instanceof TuileCivilisation){
-					Territoire t = ((TuileCivilisation)p).getTerritoire();
+					Territoire t = plateau.recupererTerritoireTuile(p);
 
 					if(t != null){
 						String id = t.getIdTerritoire()+"";
@@ -273,5 +318,5 @@ public class TestCissionRoyaume {
 		}
 
 		return sb.toString();
-	}*/
+	}
 }

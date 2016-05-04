@@ -233,3 +233,4 @@ public class ControleurCreationPartie {
 		this.MessageErreur.setText(message);
 	}
 }
+

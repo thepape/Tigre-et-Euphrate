@@ -1,5 +1,10 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonTypeName;
+import org.codehaus.jackson.map.annotate.JsonTypeIdResolver;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 
@@ -8,11 +13,14 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
  * Classe représentant une tuile civilisation.
  *
  */
+@JsonTypeName("tuileCivilisation")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class TuileCivilisation extends Tuile {
 
 	/**
 	 * Type de la tuile civilisation.
 	 */
+	@JsonProperty("type")
 	private TypeTuileCivilisation type;
 
 	/**
@@ -56,7 +64,7 @@ public class TuileCivilisation extends Tuile {
 		this.tresor = null;
 		this.type = pType;	//clone pour eviter le couplage au maximum entre les objets.
 		this.monument = null;
-		TuileCivilisation.idIncrement += 10;
+		TuileCivilisation.idIncrement += 1;
 		this.id = TuileCivilisation.idIncrement;
 		//this.territoire = null;
 
@@ -78,7 +86,7 @@ public class TuileCivilisation extends Tuile {
 		this.type = TypeTuileCivilisation.Temple;
 		this.monument = null;
 		this.tuileEau = false;
-		TuileCivilisation.idIncrement += 10;
+		TuileCivilisation.idIncrement += 1;
 		this.id = TuileCivilisation.idIncrement;
 		//this.territoire = null;
 	}
@@ -128,6 +136,7 @@ public class TuileCivilisation extends Tuile {
 	/**
 	 * @return le type de la tuile
 	 */
+	@JsonProperty("type")
 	public TypeTuileCivilisation getType() {
 		return type;
 	}

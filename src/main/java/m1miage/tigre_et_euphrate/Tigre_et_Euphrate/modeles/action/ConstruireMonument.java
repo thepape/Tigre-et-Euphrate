@@ -176,7 +176,6 @@ public class ConstruireMonument extends Action{
 	 */
 	@Override
 	public boolean executer() {
-
 		boolean ok = this.verifier();
 		if(!ok){
 			return false;

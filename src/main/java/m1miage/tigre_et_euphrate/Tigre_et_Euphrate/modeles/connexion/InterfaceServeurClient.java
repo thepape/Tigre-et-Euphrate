@@ -51,10 +51,11 @@ public interface InterfaceServeurClient extends Remote {
 	public void setDynastie(Dynastie d) throws RemoteException;
 	public void libererDynastie(Dynastie d) throws RemoteException;
 	public int getUniqueId() throws RemoteException;
-	
+
 	public void envoyerNouveauConflit(Conflits conflit, int idClient) throws RemoteException;
 	public void envoyerRenforts(ArrayList<TuileCivilisation> renforts, Joueur joueur) throws RemoteException;
 	public boolean piocherCartesManquantes(Joueur j) throws RemoteException;
 	public void finirPartie() throws RemoteException;
 	public void envoyerPointsAttribues(Joueur joueur) throws RemoteException;
+	public ArrayList<Joueur> recupererListeJoueurPartie() throws RemoteException;
 }

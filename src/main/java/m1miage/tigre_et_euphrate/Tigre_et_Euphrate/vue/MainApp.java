@@ -17,8 +17,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.fxml.FXML;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPrive;
@@ -196,6 +200,21 @@ public class MainApp extends Application implements App {
 		this.client = client;
 	}
 
+	public void setClient(InterfaceServeurClient client) {
+		this.client = client;
+	}
+
+	public void setPartieJoueur(Partie partie)
+	{
+		try
+		{
+			MainApp.getInstance().getClient().setPartieCourante(partie);
+		} catch(RemoteException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Fonction qui remplace le contenu de la fenetre principale
 	 * @param fxml
@@ -245,7 +264,7 @@ public class MainApp extends Application implements App {
 		}
 
 	}
-	
+
 
 	/**
 	 * Getter de la liste des dynasties
@@ -305,7 +324,7 @@ public class MainApp extends Application implements App {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Fonction qui affiche l'interface d'attribution des tresors
 	 */
@@ -321,7 +340,7 @@ public class MainApp extends Application implements App {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Fonction qui affiche l'interface du classement
 	 */
@@ -348,66 +367,22 @@ public class MainApp extends Application implements App {
 		try{
 			//on supprime le controleurSalon des listeners du client
 			this.client.clearListeners();
-			
+
 			this.replaceSceneContent("ApplicationPrincipale.fxml");
-			/*
-			Monument m = new Monument("bleu","jaune");
-			
-			TuileCivilisation tuile1 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-			tuile1.setMonument(m);
-			m.setTuileNO(tuile1);
-			TuileCivilisation tuile2 = new TuileCivilisation(TypeTuileCivilisation.Marché);
-			TuileCivilisation tuile3 = new TuileCivilisation(TypeTuileCivilisation.Population);
-			TuileCivilisation tuile4 = new TuileCivilisation(TypeTuileCivilisation.Temple);
-			TuileCivilisation tuile5 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-			TuileCivilisation tuile6 = new TuileCivilisation(TypeTuileCivilisation.Ferme);
-			DeckPrive deckPrive = new DeckPrive();
-			deckPrive.ajouter(tuile1);
-			deckPrive.ajouter(tuile2);
-			deckPrive.ajouter(tuile3);
-			deckPrive.ajouter(tuile4);
-			deckPrive.ajouter(tuile5);
-			deckPrive.ajouter(tuile6);
 
-			DeckPublic deckPublic = new DeckPublic();
-			Joueur joueur = new Joueur("joueur test", Dynastie.Lanister, deckPublic, deckPrive);
-			//on force un id de joueur unique en attendant
-			int id = this.serveur.getUniqueId();
-			joueur.setId(id);
-			
-			Chef chefFermier = new Chef(TypeChef.Fermier,joueur);
-			Chef chefRoi = new Chef(TypeChef.Roi,joueur);
-			Chef chefMarchand = new Chef(TypeChef.Marchand,joueur);
-			Chef chefPretre = new Chef(TypeChef.Pretre,joueur);
-			
-			deckPublic.ajouter(chefFermier);
-			deckPublic.ajouter(chefRoi);
-			deckPublic.ajouter(chefMarchand);
-			deckPublic.ajouter(chefPretre);
-			
-			// PartieInterface partie = (Partie)
-			// this.getListeJoueur().get(0);
-			ControleurPlateau controleurPlateau = this.currentLoader.getController();
-
-			// Client client = new Client("fffff", "joueur 1");
-
-			Partie partie = new Partie();
-			partie.setPlateauJeu(new Plateau());
-			partie.setJoueur(joueur);
-			*/
-			
 			ControleurPlateau controleurPlateau = this.currentLoader.getController();
 			Partie partie = this.serveur.getPartie();
 			Joueur joueur = this.client.getJoueur();
-			
+
 			this.client.setPartieCourante(partie);
 			this.client.setJoueur(joueur);
 			controleurPlateau.setDeckPriveJoueur(this.client.getJoueur().getDeckPrive().getDeckPrive());
 			controleurPlateau.setMainApp(this);
-			
+
 			//on ajoute le controleurPlateau comme listener de ce client
 			this.client.addListener(controleurPlateau);
 			controleurPlateau.construirePlateau();
+			controleurPlateau.construireMonument();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

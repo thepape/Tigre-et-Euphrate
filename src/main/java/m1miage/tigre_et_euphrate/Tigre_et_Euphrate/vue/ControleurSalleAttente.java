@@ -1,5 +1,7 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.vue;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Client;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.EncoderJSON;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -34,15 +37,17 @@ public class ControleurSalleAttente implements ChangeListener {
 	 * Application gérer par ce controleur
 	 */
 	private MainApp mainApp;
-	
+
+	private Partie partieChargee = null;
+
 	public ObservableList<Joueur> joueurs = FXCollections.observableArrayList();
-	
+
 	public ObservableList<String> nomJoueurs = FXCollections.observableArrayList();
-	
+
 	public HashMap<Dynastie, Button> boutonsDynastie = new HashMap<Dynastie, Button>();
-	
+
 	private ArrayList<Dynastie> dynastiesDispo = new ArrayList<Dynastie>();
-	
+
 	//Bouton des differentes dynasties
 		/**
 		 * Bouton de la dynastie lanister
@@ -177,15 +182,15 @@ public class ControleurSalleAttente implements ChangeListener {
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						
-						
+
+
 					}
-					
+
 				}
 				);*/
 	}
 
-	
+
 
 
 	/**
@@ -204,7 +209,7 @@ public class ControleurSalleAttente implements ChangeListener {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 				return deconnexionOK;
 	}
 
@@ -220,12 +225,12 @@ public class ControleurSalleAttente implements ChangeListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		this.deconnecterClient();
-		
+
 		MainApp.getInstance().goToMenuPage();
 	}
-	
+
 	@FXML
 	public void handleBoutonPret(){
 		InterfaceServeurClient serveur =  this.mainApp.getServeur();
@@ -239,11 +244,11 @@ public class ControleurSalleAttente implements ChangeListener {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void handleChoixDynastie(Dynastie dynastie){
 		InterfaceServeurClient serveur =  this.mainApp.getServeur();
 		InterfaceServeurClient client = this.mainApp.getClient();
-		
+
 		try {
 			serveur.setDynastieOfClient(client, dynastie);
 			dynastiechoisie = true;
@@ -251,8 +256,8 @@ public class ControleurSalleAttente implements ChangeListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
+
 	}
 
 	/**
@@ -284,7 +289,7 @@ public class ControleurSalleAttente implements ChangeListener {
 				dynastie = Dynastie.Targaryen;
 				//this.mainApp.getClient().getListeDynastie().get(2).setEstPrise(true);
 			}
-			
+
 			this.handleChoixDynastie(dynastie);
 
 			//MainApp.getInstance().getServeur().sendDynastieChoisi(dynastie.getNom(), MainApp.getInstance().getClient().getIdObjetPartie());
@@ -297,7 +302,7 @@ public class ControleurSalleAttente implements ChangeListener {
 		InterfaceServeurClient serveur = MainApp.getInstance().getServeur();
 		ArrayList<InterfaceServeurClient> clients = serveur.getClients();
 		this.joueurs.clear();
-		
+
 		for(InterfaceServeurClient i: clients){
 			try {
 				Joueur j = i.getJoueur();
@@ -321,10 +326,11 @@ public class ControleurSalleAttente implements ChangeListener {
 			this.BtnPret.setDisable(true);
 	}
 	
+
 	public void ajouterJoueurDansListe(Joueur j){
 		this.joueurs.add(j);
 	}
-	
+
 	public void retirerJoueurDansListe(Joueur j){
 		this.joueurs.remove(j);
 	}
@@ -332,20 +338,20 @@ public class ControleurSalleAttente implements ChangeListener {
 	/*
 	public void changeListeJoueur(){
 		ObservableList<String> items = FXCollections.observableArrayList();
-		
+
 		for(Joueur j : this.joueurs){
 			String n = j.getNom();
-			
+
 			if(j.estPret()){
 				n += " [PRET]";
 			}
-			
+
 			items.add(n);
 		}
-		
+
 		this.listeJoueur.setItems(items);
 	}*/
-	
+
 	public void majSalon(){
 		try {
 			this.majListeJoueur();
@@ -355,11 +361,11 @@ public class ControleurSalleAttente implements ChangeListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void majListeJoueur() throws RemoteException{
-		
+
 		ObservableList<String> items = FXCollections.observableArrayList();
 		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
 		InterfaceServeurClient client = MainApp.getInstance().getClient();
@@ -375,17 +381,17 @@ public class ControleurSalleAttente implements ChangeListener {
 				/*if(j.getDynastie() != null){
 					n += " - "+j.getDynastie().getNom();
 				}*/
-				
+
 				if(d != null){
 					n += " - "+d.getNom();
 				}
-				
+
 				if(pret){
 					n = n + " [PRET]";
 				}
-				
-				
-				
+
+
+
 				items.add(n);
 				System.out.println(n);
 			} catch (RemoteException e) {
@@ -395,24 +401,24 @@ public class ControleurSalleAttente implements ChangeListener {
 		}
 
 		this.nomJoueurs = items;
-		
+
 		Platform.runLater(new Runnable(){
 
 			public void run() {
 				if(MainApp.getInstance().currentControler instanceof ControleurSalleAttente){
 					((ControleurSalleAttente) MainApp.getInstance().currentControler).majListeJoueurJAVAFX();
-					
+
 				}
-					
+
 			}
-			
+
 		});
 	}
-	
+
 	public void majListeJoueurJAVAFX(){
 		this.listeJoueur.setItems(this.nomJoueurs);
 	}
-	
+
 	public void majListeDynasties(){
 		InterfaceServeurClient serveur = MainApp.getInstance().getServeur();
 		try {
@@ -421,7 +427,7 @@ public class ControleurSalleAttente implements ChangeListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		//JAVAFX
 		Platform.runLater(new Runnable(){
 
@@ -429,22 +435,22 @@ public class ControleurSalleAttente implements ChangeListener {
 				if(MainApp.getInstance().currentControler instanceof ControleurSalleAttente){
 					((ControleurSalleAttente) MainApp.getInstance().currentControler).majListeDynastiesJAVAFX();
 				}
-					
-				
+
+
 			}
-			
+
 		});
 	}
-	
+
 	public void majListeDynastiesJAVAFX(){
-		
+
 			Iterator<Entry<Dynastie, Button>> ite = this.boutonsDynastie.entrySet().iterator();
-			
+
 			while(ite.hasNext()){
 				Entry<Dynastie, Button> entry =  ite.next();
 				Dynastie dynastie = entry.getKey();
 				Button bouton = entry.getValue();
-				
+
 				if(dynastiesDispo.contains(dynastie)){
 					bouton.setDisable(false);
 				}
@@ -455,16 +461,49 @@ public class ControleurSalleAttente implements ChangeListener {
 	}
 
 	@FXML
-	public void afficherPlateau(){
-		Platform.runLater(new Runnable(){
+	public void chargerPartie() throws IOException
+	{
+		File file = new File("partieEnCours.json");
+		if(file.exists())
+		{
+			EncoderJSON e = new EncoderJSON();
+			Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
+			this.partieChargee = e.convertToPartie(file);
+		}
 
+		this.afficherPlateau();
+	}
+
+	@FXML
+	public void afficherPlateau() throws RemoteException {
+		if(this.partieChargee != null)
+		{
+			for(int i = 0; i < MainApp.getInstance().getServeur().getClients().size(); i++)
+			{
+				InterfaceServeurClient client = MainApp.getInstance().getServeur().getClients().get(i);
+				Dynastie dynastie = client.getJoueur().getDynastie();
+				for(int j = 0; j < this.partieChargee.getListeJoueurs().size(); j++)
+				{
+					if(dynastie.getNom().equals(this.partieChargee.getListeJoueurs().get(j).getDynastie().getNom()))
+					{
+
+						client.setJoueur(this.partieChargee.getListeJoueurs().get(j));
+						MainApp.getInstance().setPartieJoueur(this.partieChargee);
+						MainApp.getInstance().getServeur().setPartieCourante(this.partieChargee);
+						System.out.println(MainApp.getInstance().getServeur().getPartie().getPlateauJeu().getPlateau()[0][0]);
+						MainApp.getInstance().getClient().setJoueur(this.partieChargee.getListeJoueurs().get(j));
+					}
+				}
+			}
+		}
+		Platform.runLater(new Runnable(){
 			public void run() {
 				// TODO Auto-generated method stub
 				MainApp.getInstance().afficherPlateau();
 			}
-			
+
 		});
-		
+
 	}
 
 	public boolean partieEstGeneree() throws RemoteException{
@@ -482,47 +521,53 @@ public class ControleurSalleAttente implements ChangeListener {
 	}
 
 	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
-		
+
 			//try {
 				//this.updateListeJoueurs();
 		//this.majSalon();
 		String arg = null;
-		
+
 		if(arg2 == null || !(arg2 instanceof ArrayList)){
 			return;
 		}
-		
+
 		ArrayList<Object> params = (ArrayList<Object>) arg2;
 		/*
 		try{
 			arg = (String) arg2;
 		}catch(Exception e){
-			
+
 		}*/
-		
+
 				/*
 					if(arg != null && arg.equals("partieLancee")){
 						this.afficherPlateau();
 					}
 					else{
-						
+
 					}*/
-					
+
 					for(int i = 0; i < params.size(); i++){
 						Object param = params.get(i);
-						
+
 						if(param != null && param instanceof String){
 							if(param.equals("partieLancee")){
-								this.afficherPlateau();
+								try
+								{
+									this.afficherPlateau();
+								} catch(RemoteException e)
+								{
+									e.printStackTrace();
+								}
 							}
 							if(param.equals("refreshSalon")){
 								this.majSalon();
 							}
 						}
-						
+
 					}
-				
-				
+
+
 			/*} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -534,6 +579,6 @@ public class ControleurSalleAttente implements ChangeListener {
 			else if( arg1 instanceof Joueur && arg2 == null){
 				this.retirerJoueurDansListe((Joueur) arg1);
 			}*/
-		
+
 	}
 }

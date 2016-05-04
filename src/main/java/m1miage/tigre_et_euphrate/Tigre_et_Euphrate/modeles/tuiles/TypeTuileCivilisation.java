@@ -49,7 +49,7 @@ public class TypeTuileCivilisation implements Serializable {
 	/**
 	 * Constructeur vide pour JSON
 	 */
-	private TypeTuileCivilisation() {
+	public TypeTuileCivilisation() {
 	}
 
 	/**
