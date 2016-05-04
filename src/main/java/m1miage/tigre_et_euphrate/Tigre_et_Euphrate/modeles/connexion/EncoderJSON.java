@@ -36,7 +36,7 @@ public class EncoderJSON {
 		}
 
 		ObjectMapper mapper = new ObjectMapper();
-
+		//mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
 		mapper.writeValue(new File("partieEnCours.json"), partie);
 
 		return file;
@@ -46,6 +46,7 @@ public class EncoderJSON {
 	{
 		Partie partie = null;
 		ObjectMapper mapper = new ObjectMapper();
+		//mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
 		partie = mapper.readValue(file, Partie.class);
 
 		return partie;

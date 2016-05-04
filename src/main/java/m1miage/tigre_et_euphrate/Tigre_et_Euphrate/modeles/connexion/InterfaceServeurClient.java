@@ -58,4 +58,5 @@ public interface InterfaceServeurClient extends Remote {
 	public void finirPartie() throws RemoteException;
 	public void envoyerPointsAttribues(Joueur joueur) throws RemoteException;
 	public ArrayList<Joueur> recupererListeJoueurPartie() throws RemoteException;
+	public void chargerPartie() throws RemoteException;
 }

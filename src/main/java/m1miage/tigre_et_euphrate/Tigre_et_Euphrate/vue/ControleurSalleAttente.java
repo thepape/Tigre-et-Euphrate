@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Client;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.EncoderJSON;
@@ -454,6 +455,7 @@ public class ControleurSalleAttente implements ChangeListener {
 		}
 
 		this.afficherPlateau();
+
 	}
 
 	@FXML
@@ -472,19 +474,34 @@ public class ControleurSalleAttente implements ChangeListener {
 						client.setJoueur(this.partieChargee.getListeJoueurs().get(j));
 						MainApp.getInstance().setPartieJoueur(this.partieChargee);
 						MainApp.getInstance().getServeur().setPartieCourante(this.partieChargee);
-						System.out.println(MainApp.getInstance().getServeur().getPartie().getPlateauJeu().getPlateau()[0][0]);
 						MainApp.getInstance().getClient().setJoueur(this.partieChargee.getListeJoueurs().get(j));
+						for(int l = 0; l < 11; l++)
+						{
+							for(int k = 0; k < 16; k++)
+							{
+								if(this.partieChargee.getPlateauJeu().getPlateau()[l][k] instanceof Chef)
+								{
+									Chef chef = (Chef) this.partieChargee.getPlateauJeu().getPlateau()[l][k];
+									if(chef.getDynastie().getNom().equals(client.getJoueur().getDynastie().getNom()))
+									{
+										chef.setJoueur(client.getJoueur());
+									}
+								}
+							}
+						}
 					}
 				}
 			}
 		}
-		Platform.runLater(new Runnable(){
+
+		mainApp.getInstance().getServeur().chargerPartie();
+		/*Platform.runLater(new Runnable(){
 			public void run() {
 				// TODO Auto-generated method stub
 				MainApp.getInstance().afficherPlateau();
 			}
 
-		});
+		});*/
 
 	}
 
