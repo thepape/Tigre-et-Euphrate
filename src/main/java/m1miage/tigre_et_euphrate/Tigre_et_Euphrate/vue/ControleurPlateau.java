@@ -100,6 +100,12 @@ public class ControleurPlateau implements ChangeListener{
 	 */
 	@FXML
 	private Button boutonFinTour;
+	
+	/**
+	 * Bouton d'echange de tuiles
+	 */
+	@FXML
+	private Button boutonEchange;
 
 	/**
 	 * Texte area qui affiche toutes les actions de la partie
@@ -194,6 +200,7 @@ public class ControleurPlateau implements ChangeListener{
 		this.mainApp = mainApp;
 		this.texteAction.setEditable(false);
 		this.texteAction.setWrapText(true);
+		this.mainApp.getPrimaryStage().setTitle("Tigre et Euphrate : joueur "+((Client) MainApp.getInstance().getClient()).getJoueur().getNom());
 		// Initialisation de l'interface du deck privé
 		try
 		{
@@ -374,6 +381,15 @@ public class ControleurPlateau implements ChangeListener{
 
 	}
 
+	public void activerBoutonEchangeTuile(final boolean active){
+		Platform.runLater(new Runnable(){
+
+			public void run() {
+				boutonEchange.setDisable(!active);
+			}
+			
+		});
+	}
 
 	/**
 	 * Methode permettant d'echanger les tuiles d'un joueur apres son choix de cartes a echanger
@@ -386,9 +402,25 @@ public class ControleurPlateau implements ChangeListener{
 			this.mainApp.getServeur().send(action, this.mainApp.getClient().getIdObjetPartie());
 			this.listeActionTour.add(action);
 			this.echangeCarte = false;
+			
+			Platform.runLater(new Runnable(){
+
+				public void run() {
+					boutonEchange.setText("Echanger mes tuiles");
+				}
+				
+			});
 		}else{
 			if(this.listeActionTour.size() <2){
 				this.echangeCarte = true;
+				
+				Platform.runLater(new Runnable(){
+
+					public void run() {
+						boutonEchange.setText("  Echanger !");
+					}
+					
+				});
 			}
 		}
 	}
@@ -1717,6 +1749,24 @@ for(int x = 0; x < 11; x++){
 			System.out.println(e);
 		}
 	}
+	
+	public void initialiserBoutonPasserTour(){
+		try {
+			Joueur tour = MainApp.getInstance().getServeur().getPartie().getListeTours().get(0);
+			
+			if(((Client) MainApp.getInstance().getClient()).getJoueur().getId() != tour.getId()){
+				this.activerBoutonPasserTour(false);
+				this.activerBoutonEchangeTuile(false);
+			}
+			else{
+				//on indique au joueur que c'est ) lui de joueur
+				this.afficherMessage(tour.getNom()+", à vous de commencer !");
+			}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Methode appelée par le client ou le serveur pour indiquer au controleur de rafraichir sa vue
@@ -1777,12 +1827,15 @@ for(int x = 0; x < 11; x++){
 						//si le joueur a qui c'est au tour de jouer == ce joueur là, on active le bouton passer tour
 						if( this.conflitInterne || this.conflitExterne){
 							this.modifierBoutonPasserTour(true, "Envoyer renforts");
+							this.activerBoutonEchangeTuile(false);
 						}
 						else if(jlocal.getId() == j1.getId()){
 							this.modifierBoutonPasserTour(true, "Passer tour");
+							this.activerBoutonEchangeTuile(true);
 						}
 						else{
 							this.modifierBoutonPasserTour(false, "Passer tour");
+							this.activerBoutonEchangeTuile(false);
 						}
 					} catch (RemoteException e) {
 						this.mainApp.currentException = e;
@@ -1807,8 +1860,10 @@ for(int x = 0; x < 11; x++){
 					}
 				}else if(param.equals("conflitInterne")){
 					this.gererConflitInterne();
+					this.activerBoutonEchangeTuile(false);
 				}else if(param.equals("conflitExterne")){
 					this.gererConflitExterne();
+					this.activerBoutonEchangeTuile(false);
 				}else if(param.equals("conflitInterneResolu")){
 					this.conflitInterne = false;
 					Joueur jtour = null;
@@ -1819,6 +1874,7 @@ for(int x = 0; x < 11; x++){
 						
 						if(jlocal.getId() == jtour.getId()){
 							this.modifierBoutonPasserTour(true, "Passer tour");
+							this.activerBoutonEchangeTuile(true);
 						}
 						else{
 							this.modifierBoutonPasserTour(false, "Passer tour");
@@ -1839,6 +1895,7 @@ for(int x = 0; x < 11; x++){
 						
 						if(jlocal.getId() == jtour.getId()){
 							this.modifierBoutonPasserTour(true, "Passer tour");
+							this.activerBoutonEchangeTuile(true);
 						}
 						else{
 							this.modifierBoutonPasserTour(false, "Passer tour");

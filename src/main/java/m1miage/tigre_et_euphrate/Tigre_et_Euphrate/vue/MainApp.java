@@ -383,6 +383,7 @@ public class MainApp extends Application implements App {
 			this.client.addListener(controleurPlateau);
 			controleurPlateau.construirePlateau();
 			controleurPlateau.construireMonument();
+			controleurPlateau.initialiserBoutonPasserTour();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
