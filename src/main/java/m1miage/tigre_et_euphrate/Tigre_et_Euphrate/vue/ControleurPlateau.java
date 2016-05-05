@@ -176,10 +176,6 @@ public class ControleurPlateau implements ChangeListener{
 		this.texteAction.setEditable(false);
 		this.texteAction.setWrapText(true);
 		// Création aléatoire du deck privé du joueur
-		/*for(int i = 0; i < 6; i++)
-		{
-			joueur.getDeckPrive().ajouter(this.partie.getPioche().piocherTuile());
-		}*/
 
 		// Initialisation de l'interface du deck privé
 		try
