@@ -6,13 +6,18 @@ import java.util.ArrayList;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivilisation;
 
 public class Conflits implements Serializable{
 
+	/**
+	 * Static representant l'id du conflit
+	 */
 	private static int idIncrementConflit = 0;
 	/**
 	 * Chef qui attaque
@@ -58,6 +63,9 @@ public class Conflits implements Serializable{
 	 */
 	private String typeConflit;
 	
+	/**
+	 * Attributs representant la partie
+	 */
 	private Partie partie;
 
 	public Partie getPartie() {
@@ -248,6 +256,8 @@ public class Conflits implements Serializable{
 		
 		return false;
 	}
+	
+	
 
 	/**
 	 * Fonction qui retourne le chef gagnant d'Un conflit et l'indique comme résolu. Retire le chef du plateau
@@ -257,27 +267,36 @@ public class Conflits implements Serializable{
 	{
 		int nbTuileCivilisationDefenseur = 0;
 		int nbTuileCivilisationAttaquant = 0;
+		
+		ArrayList<TuileCivilisation> soutiensAttaquant = new ArrayList<TuileCivilisation>();
+		ArrayList<TuileCivilisation> soutiensDefenseur = new ArrayList<TuileCivilisation>();
 
+		//Si le territoire de l'attaquant n'est pas null alors on lance le choix des tuiles renforts et on compte les tuiles du territoire
+		//Conflit externe
 		if(this.getTerritoireAttaquant() != null)
 		{
 			for(int i = 0; i < this.getTerritoireDefenseur().getTuilesCivilisation().size(); i++)
 			{
 				TuileCivilisation tuileDefenseur = (TuileCivilisation) this.getTerritoireDefenseur().getTuilesCivilisation().get(i);
-				if(tuileDefenseur.getType().getCouleur().equals(this.getChefDefenseur().getTypeChef().getCouleur()))
+				if(tuileDefenseur.getType().getCouleur().equals(this.getChefDefenseur().getTypeChef().getCouleur()) && !tuileDefenseur.estTuileMonument())
 				{
 					nbTuileCivilisationDefenseur++;
+					soutiensDefenseur.add(tuileDefenseur);
 				}
 			}
 
 			for(int i = 0; i < this.getTerritoireAttaquant().getTuilesCivilisation().size(); i++)
 			{
 				TuileCivilisation tuileAttaquant = (TuileCivilisation) this.getTerritoireAttaquant().getTuilesCivilisation().get(i);
-				if(tuileAttaquant.getType().getCouleur().equals(this.getChefAttaquant().getTypeChef().getCouleur()))
+				if(tuileAttaquant.getType().getCouleur().equals(this.getChefAttaquant().getTypeChef().getCouleur()) && !tuileAttaquant.estTuileMonument())
 				{
 					nbTuileCivilisationAttaquant++;
+					soutiensAttaquant.add(tuileAttaquant);
 				}
 			}
 		} else {
+			//Conflit interne
+			//recupere tous les temples voisins + recuperer les tuiles renforts
 			for(int i = 0; i < this.getTerritoireDefenseur().getTuilesCivilisation().size(); i++)
 			{
 				TuileCivilisation tuileAdjacente = this.getTerritoireDefenseur().getTuilesCivilisation().get(i);
@@ -300,6 +319,7 @@ public class Conflits implements Serializable{
 		nbTuileCivilisationDefenseur += this.getListeTuileRenfortDefenseur().size();
 		nbTuileCivilisationAttaquant += this.getListeTuileRenfortAttaquant().size();
 
+		//Si non egalite alors le defenseur gagne
 		if(nbTuileCivilisationDefenseur >= nbTuileCivilisationAttaquant)
 		{
 			this.setEstResolu(true);
@@ -334,8 +354,32 @@ public class Conflits implements Serializable{
 			this.partie.piocheCartesManquantes(this.chefAttaquant.getJoueur());
 			this.partie.piocheCartesManquantes(this.chefDefenseur.getJoueur());
 			
-			this.getChefDefenseur().getJoueur().ajouterPointsVictoire("rouge", 1);
+			if(this.getTypeConflit().equals("I")){
+				this.getChefDefenseur().getJoueur().ajouterPointsVictoire("rouge", 1);
+			}
+			else{
+				//si c'est un conflit externe, on enleve en plus les soutiens et on attribue les points
+				for(TuileCivilisation tuileARetirer : soutiensAttaquant){
+					//si c'est un temple avec un tresor, on le vire pas
+					if(tuileARetirer.aTresor()){
+						continue;
+					}
+					this.partie.getPlateauJeu().getPlateau()[tuileARetirer.getPosition().getX()][tuileARetirer.getPosition().getY()] = null;
+					tuileARetirer.setPosition(null);
+					this.territoireAttaquant.deletTuilesCivilisation(tuileARetirer);
+					this.getChefDefenseur().getJoueur().ajouterPointsVictoire(chefAttaquant.getTypeChef().getCouleur(), 1);
+				}
+				//ajout du point supplémentaire pour la victoire contre le chef
+				this.getChefDefenseur().getJoueur().ajouterPointsVictoire(chefAttaquant.getTypeChef().getCouleur(), 1);
+			}
 			System.out.println("SERVEUR: points de "+this.getChefDefenseur().getJoueur().getNom()+"="+this.getChefDefenseur().getJoueur().getPointVictoireRouge());
+			this.partie.getConflits().remove(this);
+			this.partie.retirerTourConflit(this.chefAttaquant.getJoueur());
+			this.partie.retirerTourConflit(this.chefDefenseur.getJoueur());
+			//on regarde s'il existe d'autres conflits. 
+			this.reconstruireTerritoires(this.territoireAttaquant);
+			this.reverifierConflits(this.chefAttaquant);
+			
 			return this.getChefDefenseur();
 		} else {
 			this.setEstResolu(true);
@@ -369,12 +413,120 @@ public class Conflits implements Serializable{
 			this.partie.piocheCartesManquantes(this.chefAttaquant.getJoueur());
 			this.partie.piocheCartesManquantes(this.chefDefenseur.getJoueur());
 			
-			this.getChefAttaquant().getJoueur().ajouterPointsVictoire("rouge", 1);
-			System.out.println("SERVEUR: points de "+this.getChefAttaquant().getJoueur().getNom()+"="+this.getChefAttaquant().getJoueur().getPointVictoireRouge());
+			if(this.getTypeConflit().equals("I")){
+				this.chefAttaquant.getJoueur().ajouterPointsVictoire("rouge", 1);
+			}
+			else{
+				//si c'est un conflit externe, on enleve en plus les soutiens et on attribue les points
+				for(TuileCivilisation tuileARetirer : soutiensDefenseur){
+					//si c'est un temple avec un tresor, on le vire pas
+					if(tuileARetirer.aTresor()){
+						continue;
+					}
+					this.partie.getPlateauJeu().getPlateau()[tuileARetirer.getPosition().getX()][tuileARetirer.getPosition().getY()] = null;
+					tuileARetirer.setPosition(null);
+					this.territoireDefenseur.deletTuilesCivilisation(tuileARetirer);
+					this.chefAttaquant.getJoueur().ajouterPointsVictoire(chefDefenseur.getTypeChef().getCouleur(), 1);
+				}
+				//ajout du point supplémentaire pour la victoire contre le chef
+				this.chefAttaquant.getJoueur().ajouterPointsVictoire(chefDefenseur.getTypeChef().getCouleur(), 1);
+			}
+			//System.out.println("SERVEUR: points de "+this.getChefAttaquant().getJoueur().getNom()+"="+this.getChefAttaquant().getJoueur().getPointVictoireRouge());
+			this.partie.getConflits().remove(this);
+			this.partie.retirerTourConflit(this.chefAttaquant.getJoueur());
+			this.partie.retirerTourConflit(this.chefDefenseur.getJoueur());
+			//on regarde s'il existe d'autres conflits. 
+			this.reconstruireTerritoires(this.territoireDefenseur);
+			this.reverifierConflits(this.chefAttaquant);
+			
 			return this.getChefAttaquant();
 		}
 	}
+	
+	/**
+	 * Methode permettant de reconstruire une territoire apres un conflit externe (puisque des tuiles sautent)
+	 * @param perdant
+	 */
+	public void reconstruireTerritoires(Territoire perdant){
+		//on reconstruit les territoires suite au retrait de tuiles soutiens
+		
+		System.out.println("conflit:reconstruireTerritoires AVANT");
+		System.out.println(this.partie.getPlateauJeu().afficherTerritoires());
+		
+		for(TuileCivilisation tuile : perdant.getTuilesCivilisation()){
+			this.partie.getPlateauJeu().reconstruireTerritoires(tuile.getPosition());
+			System.out.println("conflit:reconstruireTerritoires TUILE:"+tuile.getId());
+			System.out.println(this.partie.getPlateauJeu().afficherTerritoires());
+		}
+		
+		for(Chef chef : perdant.getChefs()){
+			//on verifie si le chef est toujours a coté d'un temple
+			ArrayList<TuileCivilisation> listeAdj = this.partie.getPlateauJeu().recupererListeTuileCivilisationAdjacente(chef.getPosition());
+			
+			TuileCivilisation templeAdj = null;
+			for(TuileCivilisation tuileAdj : listeAdj){
+				if(tuileAdj.getType().equals(TypeTuileCivilisation.Temple)){
+					templeAdj = tuileAdj;
+					break;
+				}
+			}
+			
+			if(templeAdj != null){
+				/*
+				this.partie.getPlateauJeu().reconstruireTerritoires(chef.getPosition());
+				System.out.println("conflit:reconstruireTerritoires CHEF:"+chef.getId());
+				System.out.println(this.partie.getPlateauJeu().afficherTerritoires());*/
+				Territoire oldTerritoire = this.partie.getPlateauJeu().recupererTerritoireTuile(chef);
+				if(oldTerritoire != null){
+					oldTerritoire.deletChef(chef);
+					Territoire nouveauTerri = this.partie.getPlateauJeu().recupererTerritoireTuile(templeAdj);
+					nouveauTerri.addChefs(chef);
+				}
+			}else{
+				//si le chef n'as plus dde temple a coté, on l'ejecte
+				Joueur possesseur = chef.getJoueur();
+				this.partie.getPlateauJeu().getPlateau()[chef.getPosition().getX()][chef.getPosition().getY()] = null;
+				chef.setPosition(null);
+				possesseur.getDeckPublic().ajouterChef(chef);
+			}
+		}
+		
+		System.out.println("conflit:reconstruireTerritoires");
+		System.out.println(this.partie.getPlateauJeu().afficherTerritoires());
+	}
+	
+	/**
+	 * Methode permettant de reverifier les conflits sur le terrain apres la resolution d'un conflit externe par exemple
+	 * @param attaquant
+	 * @return
+	 */
+	public boolean reverifierConflits(Chef attaquant){
+		//reverifie si après reconstruction il y a toujours des conflits
+		TuileCivilisation jonction = this.partie.getPlateauJeu().recupererTuileJonction();
+		Position position = jonction.getPosition();
+		
+		//on réexecute l'action de placer une tuile civilisation pour checker les conflits
+		this.partie.getPlateauJeu().getPlateau()[position.getX()][position.getY()] = null;
+		jonction.setJonction(false);
+		PlacerTuileCivilisation action = new PlacerTuileCivilisation(this.partie, attaquant.getJoueur(), position, jonction);
+		boolean ok = action.executer();
+		
+		if(this.partie.getConflits().size() > 0){
+			return true;
+		}
+		
+		System.out.println("conflit:reverifierconflit");
+		System.out.println(this.partie.getPlateauJeu().afficherTerritoires());
+		
+		return false;
+	}
 
+	/**
+	 * Methode permettant d'ajouter des renforts dans les conflits à l'aide du deck privé
+	 * @param listeTuileRenfort
+	 * @param tuileRenfort
+	 * @return
+	 */
 	public boolean ajoutRenfort(ArrayList<TuileCivilisation> listeTuileRenfort, TuileCivilisation tuileRenfort)
 	{
 		if(this.typeConflit.equals("E"))

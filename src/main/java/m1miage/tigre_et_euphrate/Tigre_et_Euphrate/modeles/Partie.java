@@ -6,6 +6,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
@@ -24,8 +25,24 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivil
  */
 public class Partie implements Serializable {
 
-
+	@JsonIgnore
 	private InterfaceServeurClient serveur;
+
+	/**
+	 * Liste des Monuments de la partie
+	 * @return
+	 */
+	public ArrayList<Monument> getMonuments() {
+		return monuments;
+	}
+
+	/**
+	 * setter des monuments
+	 * @param monuments
+	 */
+	public void setMonuments(ArrayList<Monument> monuments) {
+		this.monuments = monuments;
+	}
 
 	/**
 	 * Le plateau de jeu des joueurs
@@ -35,6 +52,7 @@ public class Partie implements Serializable {
 	/**
 	 * La liste des joueurs jouant la partie
 	 */
+	@JsonProperty("listeJoueurs")
 	private ArrayList<Joueur> listeJoueurs = new ArrayList<Joueur>();
 
 	/**
@@ -45,6 +63,7 @@ public class Partie implements Serializable {
 	/**
 	 * La liste des tours des conflits
 	 */
+	@JsonProperty("listeConflits")
 	private ArrayList<Joueur> listeToursConflits = new ArrayList<Joueur>();
 
 	/**
@@ -65,6 +84,7 @@ public class Partie implements Serializable {
 	/**
 	 * liste des conflits
 	 */
+	@JsonProperty("conflits")
 	private ArrayList<Conflits> conflits;
 
 	/**
@@ -72,6 +92,7 @@ public class Partie implements Serializable {
 	 */
 	private boolean estLancee = false;
 
+	@JsonProperty("monuments")
 	private ArrayList<Monument> monuments = new ArrayList<Monument>();
 
 	/**
@@ -119,6 +140,7 @@ public class Partie implements Serializable {
 		return listeTours;
 	}
 
+	@JsonProperty("listeJoueurs")
 	public ArrayList<Joueur> getListeJoueurs() {
 		return listeJoueurs;
 	}
@@ -230,6 +252,10 @@ public class Partie implements Serializable {
 		return this.joueur.getDynastie();
 	}
 
+	/**
+	 * Méthode permettant de vérifier si tous les joueurs sont prets dans la salle d'attente pour lancer la partie
+	 * @return true si tous pret sinon false
+	 */
 	public boolean tousLesJoueursPrets() {
 		boolean res = true;
 		for(Joueur joueur : this.listeJoueurs){
@@ -250,28 +276,35 @@ public class Partie implements Serializable {
 		return this.serveur;
 	}
 
-	public void send(String string, int idClient) {
-		//System.out.println(idClient);
-		//System.out.println(string);
-	}
-
-
 	public ArrayList<Conflits> getConflits(){
 		return this.conflits;
 	}
 
+	/**
+	 * Ajout un conflit dans la liste de conflit de la partie
+	 * @param pConflit
+	 */
 	public void ajouterConflit(Conflits pConflit){
 		this.conflits.add(pConflit);
 	}
 
+	/**
+	 * Supprime un conflit dans la liste de conflit
+	 * @param pConflit
+	 */
 	public void retirerConflit(Conflits pConflit){
 		this.conflits.remove(pConflit);
 	}
 
+	/**
+	 * Methode pour savoir si la partie est lancee
+	 * @return
+	 */
 	public boolean IsEstLancee(){
 		return this.estLancee;
 	}
 
+	@JsonProperty("monuments")
 	public ArrayList<Monument> getListeMonuments(){
 		return this.monuments;
 	}
@@ -360,42 +393,6 @@ public class Partie implements Serializable {
 		dynasties.add(Dynastie.Tyrell);
 		int it = 0;
 
-		//////initialisation des decks de chaque joueur et de leurs dynasties
-		/*
-		for(Joueur joueur : joueurs){
-
-			joueur.setDynastie(dynasties.get(it));
-			it++;
-
-			//attribution des chefs
-			Chef roi = new Chef(TypeChef.Roi, joueur);
-			Chef marchand = new Chef(TypeChef.Marchand, joueur);
-			Chef fermier = new Chef(TypeChef.Fermier, joueur);
-			Chef pretre = new Chef(TypeChef.Pretre, joueur);
-
-			DeckPublic dpub = new DeckPublic();
-			DeckPrive dpriv = new DeckPrive();
-
-			joueur.setDeckPublic(dpub);
-			joueur.setDeckPrive(dpriv);
-
-
-			joueur.getDeckPublic().ajouterChef(roi);
-			joueur.getDeckPublic().ajouterChef(marchand);
-			joueur.getDeckPublic().ajouterChef(fermier);
-			joueur.getDeckPublic().ajouterChef(pretre);
-
-			//attribution de 2 cartes cata
-			joueur.getDeckPublic().ajouterCatastrophe(new TuileCatastrophe());
-			joueur.getDeckPublic().ajouterCatastrophe(new TuileCatastrophe());
-
-			//attribution au hasard de 6 tuile civilisation
-			for(int i = 0; i < 6; i++){
-				TuileCivilisation tuile = this.pioche.piocherTuile();
-				joueur.getDeckPrive().ajouter(tuile);
-			}
-		}*/
-
 		this.estLancee=true;
 
 
@@ -418,17 +415,17 @@ public class Partie implements Serializable {
 		this.listeTours.remove(0);
 		this.listeTours.add(temp);
 		//System.out.println("C'est le tour de "+this.listeTours.get(0).getNom());
-		
-		
+
+
 	}
-	
+
 	/**
 	 * Methode qui va faire passer le tour du joueur en conflit
 	 */
 	public void passerTourConflit(){
 		this.listeToursConflits.remove(0);
 	}
-	
+
 	/**
 	 * Methode permettant d'ajouter un joueur dans la liste des conflits
 	 */
@@ -444,7 +441,7 @@ public class Partie implements Serializable {
 	public boolean piocheCartesManquantes(Joueur j1){
 		if(j1.getNom().equals("aaa"))
 			System.out.println("DECK AVANT PIOCHE:"+j1.getNom()+" - "+j1.getDeckPrive());
-		
+
 		int nbTuiles = j1.getDeckPrive().getDeckPrive().size();
 		if(nbTuiles != 6){
 			if(pioche.getTotalCarte() >= 6-nbTuiles ){
@@ -454,45 +451,60 @@ public class Partie implements Serializable {
 					//System.out.println("Carte piochée: "+tuile.getId());
 				}
 			}else{
-				
+
 				return true;
 			}
 		}
 		if(j1.getNom().equals("aaa"))
 			System.out.println("DECK APRES PIOCHE:"+j1.getNom()+" - "+j1.getDeckPrive());
-		
+
 		return false;
 	}
 
+	@JsonProperty("listeConflits")
 	public ArrayList<Joueur> getListeToursConflits(){
 		return this.listeToursConflits;
 	}
-	
+
 	public void setListeToursConflits(ArrayList<Joueur> joueurs){
 		this.listeToursConflits = joueurs;
 	}
-	
+
+	/**
+	 * Methode permettant d'ajouter un joueur dans un conflit
+	 * @param joueur
+	 * @return
+	 */
 	public boolean ajouterTourConflit(Joueur joueur){
 		if(this.listeToursConflits.contains(joueur)){
 			return false;
 		}
-		
+
 		this.listeToursConflits.add(joueur);
 		return true;
 	}
-	
+
+	/**
+	 * Methode permettant de supprimer un joueur dans un conflit
+	 * @param joueur
+	 * @return
+	 */
 	public boolean retirerTourConflit(Joueur joueur){
 		if(!this.listeToursConflits.contains(joueur)){
 			return false;
 		}
-		
+
 		this.listeToursConflits.remove(joueur);
 		return true;
 	}
-	
+
+	/**
+	 * Méthode retournant le nombre de trésrs restants sur le terrain
+	 * @return le nb de tresors sur le terrain
+	 */
 	public int nombreTresorsRestant(){
 		int tresors = 0;
-		
+
 		for(Territoire territoire : this.getPlateauJeu().getListeRoyaume()){
 			for(TuileCivilisation tuile : territoire.getTuilesCivilisation()){
 				if(tuile.aTresor()){
@@ -500,7 +512,8 @@ public class Partie implements Serializable {
 				}
 			}
 		}
-		
+
 		return tresors;
 	}
+	
 }

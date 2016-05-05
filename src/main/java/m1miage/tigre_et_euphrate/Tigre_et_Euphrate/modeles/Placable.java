@@ -2,13 +2,28 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonSubTypes;
+import org.codehaus.jackson.annotate.JsonSubTypes.Type;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.codehaus.jackson.annotate.JsonTypeInfo.Id;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCatastrophe;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
+
 /**
  *
  * Classe représentant un objet placable sur une case de plateau. Deux placables ou plus ne peuvent pas être empilées sur une même case.
  *
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({
+	@JsonSubTypes.Type(value = TuileCivilisation.class, name = "tuileCivilisation"),
+	@JsonSubTypes.Type(value = Chef.class, name = "chef"),
+	@JsonSubTypes.Type(value = TuileCatastrophe.class, name = "tuileCatastrophe")
+})
 public abstract class Placable implements Serializable {
-
 	/**
 	 * Incrément de l'id des objets placables.
 	 */
@@ -57,12 +72,17 @@ public abstract class Placable implements Serializable {
 	public int getId(){
 		return this.id;
 	}
-	
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public boolean equals(Object o){
 		if(o instanceof Placable){
 			return this.id == ((Placable) o).id;
 		}
-		
+
 		return false;
 	}
 }

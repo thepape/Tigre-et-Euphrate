@@ -22,13 +22,14 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivil
 public class TestPlacerTuileCivilisation {
 
 	private Partie partie;
+	private Joueur joueur = new Joueur();
 
 	@Before
 	public void initialize() throws RemoteException
 	{
 		partie = new Partie();
 		partie.setPlateauJeu(new Plateau());
-		Joueur joueur = new Joueur();
+
 		partie.setJoueur(joueur);
 
 		DeckPrive deck = new DeckPrive();
@@ -46,7 +47,7 @@ public class TestPlacerTuileCivilisation {
 		joueur.setDeckPrive(deck);
 		joueur.setDeckPublic(deckp);
 	}
- 
+
 	@Test
 	public void testPlacerTuileNormal() {
 		TuileCivilisation tuile = this.partie.getJoueur().getDeckPrive().getDeckPrive().get(0);
@@ -54,7 +55,7 @@ public class TestPlacerTuileCivilisation {
 		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(3,4), this.partie.getJoueur().getDeckPrive().getDeckPrive().get(0));
 		assertTrue(action.executer());
 		assertSame(this.partie.getPlateauJeu().getPlateau()[3][4], tuile);
-		
+
 	}
 
 	@Test
@@ -92,10 +93,10 @@ public class TestPlacerTuileCivilisation {
 	@Test
 	public void testTerritoirePlacerTuile() {
 		TuileCivilisation tuile = new TuileCivilisation(TypeTuileCivilisation.Marché);
-		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(0,1), tuile);
+		Action action = new PlacerTuileCivilisation(partie, partie.getJoueur(), new Position(0,1), joueur.getDeckPrive().getDeckPrive().get(1));
 		action.executer();
 		TuileCivilisation tuileTemple = (TuileCivilisation) this.partie.getPlateauJeu().getPlateau()[1][1];
-		assertEquals(partie.getPlateauJeu().recupererTerritoireTuile(tuile), partie.getPlateauJeu().recupererTerritoireTuile(tuileTemple));
+		assertEquals(partie.getPlateauJeu().recupererTerritoireTuile(joueur.getDeckPrive().getDeckPrive().get(1)), partie.getPlateauJeu().recupererTerritoireTuile(tuile));
 	}
 
 
@@ -111,11 +112,11 @@ public class TestPlacerTuileCivilisation {
 		Action actionC = new PlacerChef(partie, partie.getJoueur(), this.partie.getJoueur().getDeckPublic().getDeckPublic().get(0), new Position(1,0));
 		actionC.executer();
 		boolean ok = action.executer();
-		assertTrue(action.isConflit());
 		assertTrue(ok);
+		assertTrue(action.isConflit());
 
 	}
-	
+
 	/**
 	 * test d'attribution de point Victoire
 	 */
@@ -131,10 +132,10 @@ public class TestPlacerTuileCivilisation {
 		assertEquals(partie.getJoueur().getPointVictoireBleu(),0);
 		assertEquals(partie.getJoueur().getPointVictoireJaune(),0);
 		assertEquals(partie.getJoueur().getPointVictoireRouge(),0);
-		
+
 		//assertFalse(t.isEstRoyaume());
 	}
-	
+
 	/**
 	 * TestNonAttributionPoint
 	 */
@@ -152,7 +153,7 @@ public class TestPlacerTuileCivilisation {
 		assertEquals(partie.getJoueur().getPointVictoireJaune(),0);
 		assertEquals(partie.getJoueur().getPointVictoireRouge(),0);
 	}
-	
+
 	/**
 	 * TestNonAttributionPoint
 	 */

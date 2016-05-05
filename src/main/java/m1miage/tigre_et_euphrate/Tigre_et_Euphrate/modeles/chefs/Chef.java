@@ -2,6 +2,11 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonTypeName;
+
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Placable;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
@@ -13,6 +18,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisat
  * @author jerome
  *
  */
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Chef extends Placable implements Serializable{
 
 	/**
@@ -23,6 +29,7 @@ public class Chef extends Placable implements Serializable{
 	/**
 	 * Joueur auquel il correspond
 	 */
+	@JsonIgnore
 	private Joueur joueur;
 
 	/**
@@ -62,7 +69,7 @@ public class Chef extends Placable implements Serializable{
 		this.puissance = 0;
 		this.retiree = true;
 		//this.territoire = null;
-		Chef.idIncrement += 10;
+		Chef.idIncrement += 1;
 		this.id = Chef.idIncrement;
 	}
 
@@ -73,7 +80,7 @@ public class Chef extends Placable implements Serializable{
 	public Chef(TypeChef typeChef) {
 		super();
 		this.typeChef = typeChef;
-		Chef.idIncrement += 10;
+		Chef.idIncrement += 1;
 		this.id = Chef.idIncrement;
 	}
 
@@ -110,7 +117,7 @@ public class Chef extends Placable implements Serializable{
 	public Joueur getJoueur() {
 		return joueur;
 	}
-	
+
 	public void setJoueur(Joueur joueur){
 		this.joueur = joueur;
 	}
@@ -165,22 +172,4 @@ public class Chef extends Placable implements Serializable{
 	public void setRetiree(boolean retiree) {
 		this.retiree = retiree;
 	}
-
-	/**
-	 * @return the territoire
-	 */
-	/*public Territoire getTerritoire() {
-		return territoire;
-	}*/
-
-	/**
-	 * @param pterritoire the territoire to set
-	 */
-	/*public void setTerritoire(Territoire pterritoire) {
-		this.territoire = pterritoire;
-	}*/
-
-
-
-
 }

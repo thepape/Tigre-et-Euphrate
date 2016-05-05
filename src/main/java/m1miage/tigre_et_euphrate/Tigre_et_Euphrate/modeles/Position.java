@@ -2,6 +2,8 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 /**
  *
  * Classe représentant une position sur le plateau. Cette classe n'est pas liée à la classe Plateau.
@@ -12,13 +14,19 @@ public class Position implements Serializable {
 	/**
 	 * Coordonnée en abscisse (X) de la position.
 	 */
+	@JsonProperty("x")
 	private int X;
 
 	/**
 	 * Coordonnée en ordonnée (Y) de la position.
 	 */
+	@JsonProperty("y")
 	private int Y;
 
+	public Position()
+	{
+
+	}
 	/**
 	 * Constructeur d'une position à partir des coordonnées en abscisse et en ordonnée.
 	 * @param pX coordonnée en abscisse.
@@ -42,6 +50,7 @@ public class Position implements Serializable {
 	 * Méthode permettant de récupérer la coordonnée en abscisse de la position.
 	 * @return coordonnée en abscisse.
 	 */
+	@JsonProperty("x")
 	public int getX(){
 		return this.X;
 	}
@@ -50,6 +59,7 @@ public class Position implements Serializable {
 	 * Méthode permettant de récupérer la coordonnée en ordonnée de la position.
 	 * @return coordonnée en ordonnée.
 	 */
+	@JsonProperty("y")
 	public int getY(){
 		return this.Y;
 	}

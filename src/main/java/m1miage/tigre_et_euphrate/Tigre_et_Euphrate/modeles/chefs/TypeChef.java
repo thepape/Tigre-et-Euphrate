@@ -63,7 +63,12 @@ public class TypeChef implements Serializable{
 	}
 
 
-
+	/**
+	 * Constructeur d'un type chef
+	 * @param pCouleur
+	 * @param pNom
+	 * @param pFinUrlImage
+	 */
 	public TypeChef(String pCouleur, String pNom, String pFinUrlImage) {
 		super();
 		this.couleur = pCouleur;

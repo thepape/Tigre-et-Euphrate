@@ -16,7 +16,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
@@ -26,6 +25,9 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.PlacerTuileCiv
 
 public class Client extends UnicastRemoteObject implements InterfaceServeurClient, ObservableValue {
 
+	/**
+	 * Liste des controlleurs qui ecoutent le client pour refresh
+	 */
 	private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
 
 	/**
@@ -68,6 +70,9 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	 */
 	public InterfaceServeurClient serveur = null;
 
+	/**
+	 * Liste des Dynastie présent dans la partie
+	 */
 	private ArrayList<Dynastie> listeDynastie = new ArrayList<Dynastie>();
 
 	/**
@@ -116,9 +121,9 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 
 	/**
 	 * Fonction qui permet de se connecter au serveur
-	 * @throws NotBoundException 
-	 * @throws RemoteException 
-	 * @throws MalformedURLException 
+	 * @throws NotBoundException
+	 * @throws RemoteException
+	 * @throws MalformedURLException
 	 */
 	public void connect() throws MalformedURLException, RemoteException, NotBoundException
 	{
@@ -129,17 +134,15 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		/////////////// infos de connexion
 
 		String url = "rmi://"+this.ip+":"+this.port+"/"+this.namespace;
-		//PartieInterface partie = null;
-
-			//serveur = (Serveur) Naming.lookup(url);
-			this.serveur = (InterfaceServeurClient) Naming.lookup("rmi://"+this.ip+":"+this.port+"/"+this.namespace);
-			//this.serveur = partie;
-
+		this.serveur = (InterfaceServeurClient) Naming.lookup("rmi://"+this.ip+":"+this.port+"/"+this.namespace);
 		System.out.println("Client connecté au serveur !");
 			serveur.ajouterClient(this);
 
 	}
 
+	/**
+	 * Permet de deconnecter un client
+	 */
 	public boolean deconnecter() throws RemoteException{
 		return this.serveur.retirerClient(this);
 	}
@@ -198,7 +201,7 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	public boolean send(Action action, int idClient) throws RemoteException {
 		action.setPartie(this.getPartie());
 		return action.executer();
-		
+
 		//this.notifierChangement("plateau");
 	}
 
@@ -317,7 +320,7 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 	public void removeListener(ChangeListener listener) {
 		this.listeners.remove(listener);
 	}
-	
+
 	/**
 	 * fonction qui supprime tous les ChangeListeners du client
 	 */
@@ -357,15 +360,15 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 		this.partieCourante = partie;
 
 	}
-	
+
 	public void passerTour() throws RemoteException{
 		this.partieCourante.passerTour();
 		//System.out.println("CLIENT MIS A JOUR");
 	}
-	
+
 	public void envoyerNouveauConflit(Conflits conflit, int idSender) throws RemoteException {
 		this.partieCourante.ajouterConflit(conflit);
-		
+
 	}
 
 
@@ -414,23 +417,28 @@ public class Client extends UnicastRemoteObject implements InterfaceServeurClien
 
 	public void envoyerRenforts(ArrayList<TuileCivilisation> renforts, Joueur joueur) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public boolean piocherCartesManquantes(Joueur j) throws RemoteException {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	public void finirPartie() throws RemoteException {
-		
+
 	}
 
 	public void envoyerPointsAttribues(Joueur joueur) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	
+	public ArrayList<Joueur> recupererListeJoueurPartie() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }

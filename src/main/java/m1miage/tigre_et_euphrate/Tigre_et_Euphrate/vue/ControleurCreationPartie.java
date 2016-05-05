@@ -23,7 +23,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Client;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Serveur;
@@ -68,6 +67,9 @@ public class ControleurCreationPartie {
 	public ControleurCreationPartie() {
 	}
 
+	/**
+	 * Methode qui lance le serveur et l'affichage de la creation de partie
+	 */
 	@FXML
 	public void lancerServeur() throws MalformedURLException, RemoteException, NotBoundException{
 		String nomJoueur = this.TFNomJoueur.getText();
@@ -84,15 +86,13 @@ public class ControleurCreationPartie {
 		{
 			e.printStackTrace();
 		}
-		//this.mainApp.setServeur(serveur);
 		MainApp.getInstance().setServeur(serveur);
 
 		//creation du thread qui contient le serveur
 		Thread thread = new Thread(serveur);
 		//lancement du serveur
 		thread.start();
-		//serveur.initialiser();
-		//serveur.attendreJoueursPrets();
+
 
 		Client client = null;
 		try
@@ -129,6 +129,11 @@ public class ControleurCreationPartie {
 		return true;
 	}
 
+	/**
+	 * Methode qui permet de rejoindre un serveur lancé et qui affiche la page d'accueil
+	 * @throws MalformedURLException
+	 * @throws NotBoundException
+	 */
 	@FXML
 	public void rejoindreServeur() throws MalformedURLException, NotBoundException{
 		String nomJoueur = this.TFNomJoueur.getText();
@@ -170,35 +175,33 @@ public class ControleurCreationPartie {
 		this.goToSalon();
 	}
 
-	@FXML
-	public void testerSend()
-	{
-		try
-		{
-			System.out.println(MainApp.getInstance().getClient().getNomJoueur());
-			System.out.println("Message du serveur");
-			//MainApp.getInstance().getServeur().send("client envoie", MainApp.getInstance().getClient().getIdObjetPartie());
-		} catch(RemoteException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
+	/**
+	 * Methode qui permet d'afficher la page de la partie
+	 */
 	@FXML
 	public void goToHebergerPartie(){
 		MainApp.getInstance().goToHebergerPartiePage();
 	}
 
+	/**
+	 * Methode qui permet d'afficher la page pour rejoindre une game
+	 */
 	@FXML
 	public void goToRejoindrePartie(){
 		MainApp.getInstance().goToRejoindrePartiePage();
 	}
 
+	/**
+	 * Methode qui permet d'afficher la page de menu
+	 */
 	@FXML
 	public void retourAuMenu(){
 		MainApp.getInstance().goToMenuPage();
 	}
 
+	/**
+	 * Methode qui permet d'afficher la page de salon
+	 */
 	@FXML
 	public void goToSalon(){
 		MainApp.getInstance().goToSalon();
@@ -231,5 +234,6 @@ public class ControleurCreationPartie {
 	 */
 	public void setMessageErreur(String message){
 		this.MessageErreur.setText(message);
+		mainApp.currentException.printStackTrace();
 	}
 }

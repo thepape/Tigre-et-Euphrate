@@ -88,6 +88,10 @@ public class Pioche implements Serializable{
 		return (Pioche.nbTuilesFerme == 0 && Pioche.nbTuilesMarche == 0 && Pioche.nbTuilesPopulation == 0 && Pioche.nbTuilesTemple == 0);
 	}
 
+	/**
+	 * Méthode retournant le nombre totale de cartes
+	 * @return
+	 */
 	@JsonProperty("totalCarte")
 	public int getTotalCarte(){
 		this.totalCarte = nbTuilesPopulation + nbTuilesFerme + nbTuilesTemple + nbTuilesMarche;

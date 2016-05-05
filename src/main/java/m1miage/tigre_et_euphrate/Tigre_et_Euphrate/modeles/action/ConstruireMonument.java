@@ -16,19 +16,44 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivil
 
 public class ConstruireMonument extends Action{
 
+	/**
+	 * Le monument qu'on construit
+	 */
 	private Monument monument;
 
+	/**
+	 * La position du monument
+	 */
 	private Position position;
 
+	/**
+	 * Tuile NordOuest du monument
+	 */
 	private TuileCivilisation pNO;
 
+	/**
+	 * Tuile NordEst du monument
+	 */
 	private TuileCivilisation pNE;
 
+	/**
+	 * Tuile SUdOuest du monument
+	 */
 	private TuileCivilisation pSO;
 
+	/**
+	 * Tuile SudEst du monument
+	 */
 	private TuileCivilisation pSE;
 
 
+	/**
+	 * Constructeur du monument
+	 * @param pPartie
+	 * @param pJoueur
+	 * @param pMonument
+	 * @param pPosition
+	 */
 	public ConstruireMonument(Partie pPartie, Joueur pJoueur, Monument pMonument, Position pPosition){
 		super(pPartie, pJoueur);
 		this.monument = pMonument;
@@ -176,7 +201,6 @@ public class ConstruireMonument extends Action{
 	 */
 	@Override
 	public boolean executer() {
-
 		boolean ok = this.verifier();
 		if(!ok){
 			return false;

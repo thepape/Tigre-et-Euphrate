@@ -10,12 +10,15 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPrive;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPublic;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action.Action;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 
+/**
+ * Interface Serveur Client qui est la Remote
+ *
+ */
 public interface InterfaceServeurClient extends Remote {
 
 	public void setServeur(InterfaceServeurClient serveur) throws RemoteException;
@@ -51,10 +54,11 @@ public interface InterfaceServeurClient extends Remote {
 	public void setDynastie(Dynastie d) throws RemoteException;
 	public void libererDynastie(Dynastie d) throws RemoteException;
 	public int getUniqueId() throws RemoteException;
-	
+
 	public void envoyerNouveauConflit(Conflits conflit, int idClient) throws RemoteException;
 	public void envoyerRenforts(ArrayList<TuileCivilisation> renforts, Joueur joueur) throws RemoteException;
 	public boolean piocherCartesManquantes(Joueur j) throws RemoteException;
 	public void finirPartie() throws RemoteException;
 	public void envoyerPointsAttribues(Joueur joueur) throws RemoteException;
+	public ArrayList<Joueur> recupererListeJoueurPartie() throws RemoteException;
 }
