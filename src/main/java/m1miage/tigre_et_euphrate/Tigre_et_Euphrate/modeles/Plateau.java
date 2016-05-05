@@ -362,6 +362,8 @@ public class Plateau implements Serializable {
 		}
 
 		boolean ok = verifierTemple(ppos);
+		
+		
 
 		if(!ok){
 			return false;
@@ -384,7 +386,7 @@ public class Plateau implements Serializable {
 		if(x-1>=0 && x-1<=10){
 			if(this.plateau[x-1][y] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x-1][y];
-				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple))
+				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple) && !tuileCivilisation.estTuileMonument())
 					return true;
 			}
 		}
@@ -393,7 +395,7 @@ public class Plateau implements Serializable {
 		if(x+1<=10 && x+1>=0){
 			if(this.plateau[x+1][y] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
-				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple))
+				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple) && !tuileCivilisation.estTuileMonument())
 					return true;
 			}
 		}
@@ -401,7 +403,7 @@ public class Plateau implements Serializable {
 		if(y-1>=0 && y-1<=15){
 			if(this.plateau[x][y-1] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x][y-1];
-				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple))
+				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple) && !tuileCivilisation.estTuileMonument())
 					return true;
 			}
 		}
@@ -410,11 +412,48 @@ public class Plateau implements Serializable {
 		if(y+1<=15 && y+1>=0){
 			if(this.plateau[x][y+1] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x][y+1];
-				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple))
+				if(tuileCivilisation.getType().equals(TypeTuileCivilisation.Temple) && !tuileCivilisation.estTuileMonument())
 					return true;
 			}
 		}
 		return false;
+	}
+	
+	public ArrayList<Placable> recupererListePlacableAdjacants(Position position)
+	{
+		ArrayList<Placable> listeAdjacente = new ArrayList<Placable>();
+		if(position.getX() < 11 && position.getY() < 16 && position.getX() > -1 && position.getY() > -1)
+		{
+
+			if(position.getX() + 1 < 11 && (this.getPlateau()[position.getX() + 1 ][position.getY()] instanceof TuileCivilisation
+					|| this.getPlateau()[position.getX() + 1 ][position.getY()] instanceof Chef))
+			{
+				Placable tuileAdjacente = (Placable) this.getPlateau()[position.getX() + 1][position.getY()];
+				listeAdjacente.add(tuileAdjacente);
+			}
+
+			if(position.getX() - 1 > -1 && (this.getPlateau()[position.getX() - 1][position.getY()] instanceof TuileCivilisation
+					|| this.getPlateau()[position.getX() - 1 ][position.getY()] instanceof Chef))
+			{
+				Placable tuileAdjacente = (Placable) this.getPlateau()[position.getX() - 1][position.getY()];
+				listeAdjacente.add(tuileAdjacente);
+			}
+
+			if(position.getY() + 1 < 16 && (this.getPlateau()[position.getX()][position.getY() + 1] instanceof TuileCivilisation
+					|| this.getPlateau()[position.getX()][position.getY()+1] instanceof Chef))
+			{
+				Placable tuileAdjacente = (Placable) this.getPlateau()[position.getX()][position.getY()+1];
+				listeAdjacente.add(tuileAdjacente);
+			}
+
+			if(position.getY() - 1 > -1 && (this.getPlateau()[position.getX()][position.getY() - 1] instanceof TuileCivilisation
+					|| this.getPlateau()[position.getX()][position.getY() - 1] instanceof Chef))
+			{
+				Placable tuileAdjacente = (Placable) this.getPlateau()[position.getX()][position.getY()-1];
+				listeAdjacente.add(tuileAdjacente);
+			}
+		}
+		return listeAdjacente;
 	}
 
 	/**

@@ -237,4 +237,3 @@ public class ControleurCreationPartie {
 		mainApp.currentException.printStackTrace();
 	}
 }
-

@@ -9,11 +9,23 @@ import java.io.Serializable;
  */
 public class Tresor implements Serializable {
 
+	private boolean tresor;
+
 	/**
 	 * Constructeur d'un trésor.
 	 */
 	public Tresor()
 	{
-
+		tresor = true;
 	}
+
+	public boolean isTresor() {
+		return tresor;
+	}
+
+	public void setTresor(boolean tresor) {
+		this.tresor = tresor;
+	}
+
+
 }

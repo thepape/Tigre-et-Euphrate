@@ -18,14 +18,12 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisat
  * @author jerome
  *
  */
-@JsonTypeName("chef")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Chef extends Placable implements Serializable{
 
 	/**
 	 * Type du chef
 	 */
-	@JsonProperty("typeChef")
 	private TypeChef typeChef;
 
 	/**
@@ -108,7 +106,6 @@ public class Chef extends Placable implements Serializable{
 	 * return le type chef
 	 * @return
 	 */
-	@JsonProperty("typeChef")
 	public TypeChef getTypeChef() {
 		return typeChef;
 	}
@@ -175,5 +172,4 @@ public class Chef extends Placable implements Serializable{
 	public void setRetiree(boolean retiree) {
 		this.retiree = retiree;
 	}
-
 }

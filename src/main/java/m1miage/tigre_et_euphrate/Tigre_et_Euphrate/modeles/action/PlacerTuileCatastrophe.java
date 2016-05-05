@@ -50,7 +50,8 @@ public class PlacerTuileCatastrophe extends Action {
 		int x = this.position.getX();
 		int y = this.position.getY();
 		if(this.partie.getPlateauJeu().getPlateau()[x][y]==null || 
-				this.partie.getPlateauJeu().getPlateau()[x][y] instanceof TuileCivilisation){	
+				((this.partie.getPlateauJeu().getPlateau()[x][y] instanceof TuileCivilisation)
+				&&((TuileCivilisation) this.partie.getPlateauJeu().getPlateau()[x][y]).estTuileMonument()==false)){	
 			ok = true;
 		}
 		return ok;
