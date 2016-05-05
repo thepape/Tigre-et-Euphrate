@@ -628,6 +628,9 @@ public class ControleurPlateau implements ChangeListener{
 							if(!action.verifier())
 							{
 								event.setDropCompleted(false);
+								//on rafraichit le plateau pour réafficher le chef à sa position initiale
+								//s'il etait drag depuis le plateau
+								this.construirePlateau();
 							} else {
 
 								boolean actionOK = mainApp.getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
