@@ -360,7 +360,9 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 				Conflits conflit = pc.getConflit();
 
 				params.add("conflitInterne");
-				params.add("message:Conflit entre "+conflit.getChefAttaquant().getJoueur().getNom()+" et "+conflit.getChefDefenseur().getJoueur().getNom());
+				params.add("message:Conflit entre "+conflit.getChefAttaquant().getJoueur().getNom()+" ["+conflit.getChefAttaquant().getJoueur().getDynastie().getNom()+"-"+conflit.getChefAttaquant().getTypeChef().getNom()+"] et "+conflit.getChefDefenseur().getJoueur().getNom()+" ["+conflit.getChefDefenseur().getJoueur().getDynastie().getNom()+"-"+conflit.getChefDefenseur().getTypeChef().getNom()+"]");
+				//params.add("message:Selectionnez vous renforts "+conflit.getChefAttaquant().getTypeChef().getCouleur());
+			
 			} else if(action instanceof ConstruireMonument)
 			{
 				params.add("listemonument");
@@ -370,8 +372,9 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			if(action instanceof PlacerTuileCivilisation && ((PlacerTuileCivilisation) action).isConflit()){
 				Conflits conflit = this.partie.getConflits().get(0);
 				params.add("conflitExterne");
-				params.add("message:Conflit entre "+conflit.getChefAttaquant().getJoueur().getNom()+" et "+conflit.getChefDefenseur().getJoueur().getNom());
-				
+				params.add("message:Conflit entre "+conflit.getChefAttaquant().getJoueur().getNom()+" ["+conflit.getChefAttaquant().getJoueur().getDynastie().getNom()+"-"+conflit.getChefAttaquant().getTypeChef().getNom()+"] et "+conflit.getChefDefenseur().getJoueur().getNom()+" ["+conflit.getChefDefenseur().getJoueur().getDynastie().getNom()+"-"+conflit.getChefDefenseur().getTypeChef().getNom()+"]");
+				//params.add("message:Selectionnez vous renforts "+conflit.getChefAttaquant().getTypeChef().getCouleur());
+			
 			}
 			
 
@@ -484,7 +487,8 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		if(this.partie.getConflits().size() > 0){
 			Conflits newConflit = this.partie.getConflits().get(0);
 			params.add("conflitExterne");
-			params.add("message:Conflit entre "+newConflit.getChefAttaquant().getJoueur().getNom()+" et "+newConflit.getChefDefenseur().getJoueur().getNom());
+			params.add("message:Conflit entre "+newConflit.getChefAttaquant().getJoueur().getNom()+" ["+newConflit.getChefAttaquant().getJoueur().getDynastie().getNom()+"-"+newConflit.getChefAttaquant().getTypeChef().getNom()+"] et "+newConflit.getChefDefenseur().getJoueur().getNom()+" ["+newConflit.getChefDefenseur().getJoueur().getDynastie().getNom()+"-"+newConflit.getChefDefenseur().getTypeChef().getNom()+"]");
+			//params.add("message:Selectionnez vous renforts "+newConflit.getChefAttaquant().getTypeChef().getCouleur());
 		}
 		
 		this.notifierClient(params);
