@@ -181,6 +181,9 @@ public class ControleurPlateau implements ChangeListener{
 		this.mainApp = mainApp;
 		this.texteAction.setEditable(false);
 		this.texteAction.setWrapText(true);
+		
+		this.nombrePoint.setVisible(false);
+		
 		// Création aléatoire du deck privé du joueur
 
 		// Initialisation de l'interface du deck privé
@@ -1822,6 +1825,26 @@ for(int x = 0; x < 11; x++){
 		{
 			System.out.println(e);
 		}
+	}
+	
+	public void afficherPointsJoueur(){
+		Joueur joueur = ((Client) MainApp.getInstance().getClient()).getJoueur();
+		
+		String texte = "Pts trésor : "+joueur.getPointTresor()+"\n"
+				+ "Pts rouge : "+joueur.getPointVictoireRouge()+"\n"
+				+ "Pts bleu : "+joueur.getPointVictoireBleu()+"\n"
+				+ "Pts vert : "+joueur.getPointVictoireVert()+"\n"
+				+ "Pts jaune : "+joueur.getPointVictoireJaune();
+		
+		final String finalTxt = texte;
+		
+		Platform.runLater(new Runnable(){
+
+			public void run() {
+				nombrePoint.setText(finalTxt);
+			}
+			
+		});
 	}
 
 	/**
