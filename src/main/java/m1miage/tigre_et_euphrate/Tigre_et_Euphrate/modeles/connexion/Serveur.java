@@ -659,7 +659,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			params.add("partie");
 			params.add("deckPublic");
 			params.add("deckPrive");
-			//params.add("partieLancee");
+			params.add("partieLancee");
 			c.notifierChangement(params);
 		}
 	}

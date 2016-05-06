@@ -407,7 +407,8 @@ public class ControleurSalleAttente implements ChangeListener {
 			this.partieChargee = e.convertToPartie(file);
 		}
 
-		this.afficherPlateau();
+		//this.afficherPlateau();
+		this.chargerPartieLocale();
 	}
 
 	/**
@@ -416,6 +417,24 @@ public class ControleurSalleAttente implements ChangeListener {
 	 */
 	@FXML
 	public void afficherPlateau() throws RemoteException {
+		
+
+		Platform.runLater(new Runnable(){
+			public void run() {
+				// TODO Auto-generated method stub
+				MainApp.getInstance().afficherPlateau();
+			}
+
+		});
+
+	}
+	
+	/**
+	 * Cette methode permet d'envoyer au serveur la partie chargée localement par le client hebergeur
+	 * @throws RemoteException
+	 */
+	@FXML
+	public void chargerPartieLocale() throws RemoteException{
 		if(this.partieChargee != null)
 		{
 
@@ -429,15 +448,6 @@ public class ControleurSalleAttente implements ChangeListener {
 				}
 			}
 		}
-
-		Platform.runLater(new Runnable(){
-			public void run() {
-				// TODO Auto-generated method stub
-				MainApp.getInstance().afficherPlateau();
-			}
-
-		});
-
 	}
 
 	/**
