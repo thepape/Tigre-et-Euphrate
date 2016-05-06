@@ -1480,6 +1480,7 @@ for(int x = 0; x < 11; x++){
 
 					public void handle(MouseEvent arg0) {
 						selectionnerTuileRenfortConflitInterne(arg0);
+						selectionnerTuileRenfortConflitExterne(arg0);
 						selectionnerTuileAEchanger(arg0);
 					}
 
