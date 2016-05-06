@@ -64,7 +64,7 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.EncoderJSON
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.*;
 
 public class ControleurPlateau implements ChangeListener{
-	
+
 	private boolean DEBUGMODE = true;
 
 	/**
@@ -109,6 +109,11 @@ public class ControleurPlateau implements ChangeListener{
 	@FXML
 	private GridPane listeMonument;
 
+	/**
+	 * Label qui affiche le nombre de points du joueur
+	 */
+	@FXML
+	private Label nombrePoint;
 	/**
 	 * Application principale
 	 */
@@ -226,12 +231,12 @@ public class ControleurPlateau implements ChangeListener{
 	{
 
 	}
-	
+
 	public void selectionnerTuileRenfortConflitInterne(MouseEvent event){
 		if(!this.conflitInterne){
 			return;
 		}
-		
+
 		//on force l'activation du bouton si on est en conflit
 				this.activerBoutonPasserTour(true);
 
@@ -292,7 +297,7 @@ public class ControleurPlateau implements ChangeListener{
 		if(!this.conflitExterne){
 			return;
 		}
-		
+
 		//on force l'activation du bouton si on est en conflit
 		this.activerBoutonPasserTour(true);
 
@@ -310,7 +315,7 @@ public class ControleurPlateau implements ChangeListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		//on recupere le chef pour ne pouvoir selectionner que les tuiles du meme type que le chef
 		Chef chef = conflitExterne.getChefAttaquant();
 		if(chef.getJoueur().getId() != ((Client) MainApp.getInstance().getClient()).getJoueur().getId()){
@@ -1015,7 +1020,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 							caseNettoyee = true;
 							casePlateau.getChildren().add(imgView);
 
-							
+
 							if(this.DEBUGMODE){
 								Label labelId = new Label();
 								labelId.setText(tuileCiv.getId()+"");
@@ -1050,7 +1055,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 							casePlateau.getChildren().clear();
 							caseNettoyee = true;
 							casePlateau.getChildren().add(imgView);
-							
+
 							if(this.DEBUGMODE){
 								Label labelId = new Label();
 								labelId.setText(tuile.getId()+"");
@@ -1082,7 +1087,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 								casePlateau.getChildren().clear();
 								caseNettoyee = true;
 								casePlateau.getChildren().add(imgView);
-								
+
 								if(this.DEBUGMODE){
 									Label labelId = new Label();
 									labelId.setText(chef.getId()+"");
@@ -1242,11 +1247,11 @@ for(int x = 0; x < 11; x++){
 			Joueur tour = MainApp.getInstance().getServeur().getPartie().getJoueurTour();
 			Joueur local = MainApp.getInstance().getClient().getJoueur();
 			envoieRenfort = true;
-			
+
 			ArrayList<Joueur> toursConflit = MainApp.getInstance().getServeur().getPartie().getListeToursConflits();
 			ArrayList<Conflits> conflits = MainApp.getInstance().getServeur().getPartie().getConflits();
-			
-			
+
+
 			//on verifie si on est encore en conflit, mais dans un conflit différent du 1er
 			if(toursConflit.contains(((Client) MainApp.getInstance().getClient()).getJoueur())){
 			//if(this.conflitExterne || this.conflitInterne){
@@ -1258,7 +1263,7 @@ for(int x = 0; x < 11; x++){
 				else{
 					this.modifierBoutonPasserTour(false, "Envoyer renforts");
 				}
-				
+
 			}
 			else if(tour.getId() == local.getId()){
 				this.modifierBoutonPasserTour(true, "Passer tour");
@@ -1268,7 +1273,7 @@ for(int x = 0; x < 11; x++){
 			/*
 			final String finalTexte = texte;
 			//remettre le texte "passer tour" au bouton passer tour
-			
+
 			Platform.runLater(new Runnable(){
 
 				public void run() {
@@ -1516,7 +1521,7 @@ for(int x = 0; x < 11; x++){
 		int col = GridPane.getColumnIndex(pane);
 		int row = GridPane.getRowIndex(pane);
 		int index = 0;
-		
+
 		if(col == 0)
 		{
 			if(row == 0)
@@ -1535,9 +1540,9 @@ for(int x = 0; x < 11; x++){
 			else if(row == 2)
 				index = 5;
 		}
-		
+
 		this.monumentEnCours = MainApp.getInstance().getServeur().getPartie().getListeMonuments().get(index);
-		
+
 		Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
 		ClipboardContent content = new ClipboardContent();
         content.putImage(imageTuile.getImage());
@@ -1551,10 +1556,10 @@ for(int x = 0; x < 11; x++){
 		//nettoyage des monuments
 		for(int i = 0; i < this.listeMonument.getChildren().size(); i++){
 			Pane pane = (Pane) this.listeMonument.getChildren().get(i);
-			
+
 			pane.getChildren().clear();
 		}
-		
+
 		for(int i = 0; i < this.partie.getListeMonuments().size(); i++)
 		{
 			if(i < 3)
@@ -1648,7 +1653,7 @@ for(int x = 0; x < 11; x++){
 
 		});
 	}
-	
+
 	public void modifierBoutonPasserTour(final boolean activer, final String texte){
 		Platform.runLater(new Runnable(){
 
@@ -1662,13 +1667,13 @@ for(int x = 0; x < 11; x++){
 
 
 	public void activerBoutonPasserTour(final boolean activer){
-		
+
 		//si on est en conflit, on set le text a "envoyer renforts", si le bouton est a true
 		String texte = "passer tour";
 		if(activer && (this.conflitExterne || this.conflitInterne)){
 			texte = "envoyer renforts";
 		}
-		
+
 		final String finalTexte = texte;
 
 		Platform.runLater(new Runnable(){
@@ -1702,7 +1707,7 @@ for(int x = 0; x < 11; x++){
 			});
 		}
 	}
-	
+
 	public void gererConflitExterne(){
 		ArrayList<Joueur> toursConflit = this.partie.getListeToursConflits();
 		Joueur joueur = ((Client) MainApp.getInstance().getClient()).getJoueur();
@@ -1830,7 +1835,7 @@ for(int x = 0; x < 11; x++){
 						jtour = this.mainApp.getServeur().getPartie().getJoueurTour();
 						Joueur jlocal = this.mainApp.getClient().getJoueur();
 
-						
+
 						if(jlocal.getId() == jtour.getId()){
 							this.modifierBoutonPasserTour(true, "Passer tour");
 						}
@@ -1841,16 +1846,16 @@ for(int x = 0; x < 11; x++){
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+
 				}else if(param.equals("conflitExterneResolu")){
 					this.conflitExterne = false;
-					
+
 					Joueur jtour = null;
 					try {
 						jtour = this.mainApp.getServeur().getPartie().getJoueurTour();
 						Joueur jlocal = this.mainApp.getClient().getJoueur();
 
-						
+
 						if(jlocal.getId() == jtour.getId()){
 							this.modifierBoutonPasserTour(true, "Passer tour");
 						}
