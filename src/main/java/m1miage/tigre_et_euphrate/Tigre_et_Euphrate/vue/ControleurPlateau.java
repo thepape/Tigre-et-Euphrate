@@ -1335,6 +1335,7 @@ for(int x = 0; x < 11; x++){
 		return null;
 	}
 
+	@FXML
 	private void finirTour(MouseEvent event) throws RemoteException
 	{
 		//si ce client est en conflit, le bouton fin de tour sert a envoyer ses renforts
