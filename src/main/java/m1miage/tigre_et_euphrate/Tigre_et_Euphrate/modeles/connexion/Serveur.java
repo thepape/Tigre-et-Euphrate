@@ -350,6 +350,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			params.add("plateau");
 			params.add("deckPrive");
 			params.add("deckPublic");
+			params.add("majPoints");
 
 			if(ok){
 				params.add("message:"+action.toString()+".");
@@ -493,6 +494,8 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			//params.add("message:Selectionnez vous renforts "+newConflit.getChefAttaquant().getTypeChef().getCouleur());
 		}
 
+		params.add("majPoints");
+		
 		this.notifierClient(params);
 
 		return gagnant;

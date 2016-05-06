@@ -1888,6 +1888,24 @@ for(int x = 0; x < 11; x++){
 
 	}
 
+	public void rafraichirAffichagePoints(){
+		Joueur joueur = ((Client) MainApp.getInstance().getClient()).getJoueur();
+		
+		final String texte = "trésor : "+joueur.getPointTresor()
+			+ ", rouge : "+joueur.getPointVictoireRouge()
+			+ ", bleu : "+joueur.getPointVictoireBleu()
+			+ ", vert : "+joueur.getPointVictoireVert()
+			+ ", jaune : "+joueur.getPointVictoireJaune();
+		
+		Platform.runLater(new Runnable(){
+
+			public void run() {
+				nombrePoint.setText(texte);
+			}
+			
+		});
+	}
+	
 	/**
 	 * Methode appelée par le client ou le serveur pour indiquer au controleur de rafraichir sa vue
 	 */
@@ -2048,6 +2066,8 @@ for(int x = 0; x < 11; x++){
 
 
 
+				}else if(param.equals("majPoints")){
+					this.rafraichirAffichagePoints();
 				}
 
 			}

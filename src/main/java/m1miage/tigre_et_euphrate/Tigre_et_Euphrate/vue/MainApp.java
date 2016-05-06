@@ -385,6 +385,7 @@ public class MainApp extends Application implements App {
 			controleurPlateau.construirePlateau();
 			controleurPlateau.construireMonument();
 			controleurPlateau.initialiserBoutonPasserTour();
+			controleurPlateau.rafraichirAffichagePoints();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
