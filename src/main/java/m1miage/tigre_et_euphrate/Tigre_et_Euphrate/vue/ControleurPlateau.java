@@ -173,10 +173,6 @@ public class ControleurPlateau implements ChangeListener{
 		this.texteAction.setEditable(false);
 		this.texteAction.setWrapText(true);
 		// Création aléatoire du deck privé du joueur
-		/*for(int i = 0; i < 6; i++)
-		{
-			joueur.getDeckPrive().ajouter(this.partie.getPioche().piocherTuile());
-		}*/
 
 		// Initialisation de l'interface du deck privé
 		try
@@ -548,6 +544,9 @@ public class ControleurPlateau implements ChangeListener{
 							if(!action.verifier())
 							{
 								event.setDropCompleted(false);
+								//on rafraichit le plateau pour réafficher le chef à sa position initiale
+								//s'il etait drag depuis le plateau
+								this.construirePlateau();
 							} else {
 
 								boolean actionOK = mainApp.getServeur().send(action, MainApp.getInstance().getClient().getIdObjetPartie());
@@ -1385,12 +1384,31 @@ for(int x = 0; x < 11; x++){
 		imageTuile.setVisible(false);
 
 		Pane pane = (Pane) imageTuile.getParent();
-		if(GridPane.getColumnIndex(pane) == 0)
+		int col = GridPane.getColumnIndex(pane);
+		int row = GridPane.getRowIndex(pane);
+		int index = 0;
+		
+		if(col == 0)
 		{
-			this.monumentEnCours = MainApp.getInstance().getServeur().getPartie().getListeMonuments().get(GridPane.getRowIndex(pane));
-		} else {
-			this.monumentEnCours = MainApp.getInstance().getServeur().getPartie().getListeMonuments().get(GridPane.getRowIndex(pane) + 3);
+			if(row == 0)
+				index = 0;
+			else if(row == 1)
+				index = 2;
+			else if(row == 2)
+				index = 4;
 		}
+		else if(col == 1)
+		{
+			if(row == 0)
+				index = 1;
+			else if(row == 1)
+				index = 3;
+			else if(row == 2)
+				index = 5;
+		}
+		
+		this.monumentEnCours = MainApp.getInstance().getServeur().getPartie().getListeMonuments().get(index);
+		
 		Dragboard db = imageTuile.startDragAndDrop(TransferMode.ANY);
 		ClipboardContent content = new ClipboardContent();
         content.putImage(imageTuile.getImage());
@@ -1401,7 +1419,13 @@ for(int x = 0; x < 11; x++){
 
 	public void construireMonument() throws RemoteException
 	{
-		//this.listeMonument.getChildren().clear();
+		//nettoyage des monuments
+		for(int i = 0; i < this.listeMonument.getChildren().size(); i++){
+			Pane pane = (Pane) this.listeMonument.getChildren().get(i);
+			
+			pane.getChildren().clear();
+		}
+		
 		for(int i = 0; i < this.partie.getListeMonuments().size(); i++)
 		{
 			if(i < 3)
@@ -1438,6 +1462,7 @@ for(int x = 0; x < 11; x++){
 				imageView.setFitHeight(40);
 				imageView.setFitWidth(40);
 				Pane pane = (Pane) this.listeMonument.getChildren().get(i);
+				//pane.getChildren().clear();
 				pane.getChildren().add(imageView);
 				//this.listeMonument.addRow(i, imageView);
 			} else {
@@ -1473,6 +1498,7 @@ for(int x = 0; x < 11; x++){
 				imageView.setFitHeight(40);
 				imageView.setFitWidth(40);
 				Pane pane = (Pane) this.listeMonument.getChildren().get(i);
+				//pane.getChildren().clear();
 				pane.getChildren().add(imageView);
 				//this.listeMonument.addRow(i - 3,imageView);
 			}

@@ -23,6 +23,7 @@ import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.stage.WindowEvent;
 import javafx.collections.*;
 import javafx.scene.control.ListView;
 
@@ -90,6 +91,14 @@ public class ControleurSalleAttente implements ChangeListener {
 		this.boutonsDynastie.put(Dynastie.Stark, this.stark);
 		this.boutonsDynastie.put(Dynastie.Tyrell, this.tyrell);
 		this.boutonsDynastie.put(Dynastie.Targaryen, this.targaryen);
+		
+		this.mainApp.getPrimaryStage().setOnCloseRequest(new EventHandler<WindowEvent>(){
+
+			public void handle(WindowEvent arg0) {
+				quitterJeu();
+			}
+			
+		});
 
 		//Ajout du listener pour la dynsatie Lanister
 		/*
@@ -219,12 +228,28 @@ public class ControleurSalleAttente implements ChangeListener {
 			MainApp.getInstance().getServeur().libererDynastie(d);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+			MainApp.getInstance().goToMenuPage();
 		}
 
 		this.deconnecterClient();
 
 		MainApp.getInstance().goToMenuPage();
+	}
+	
+	public void quitterJeu(){
+		Dynastie d;
+		try {
+			d = MainApp.getInstance().getClient().getJoueur().getDynastie();
+			MainApp.getInstance().getServeur().libererDynastie(d);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		this.deconnecterClient();
+		
+		System.exit(0);
 	}
 
 	@FXML
