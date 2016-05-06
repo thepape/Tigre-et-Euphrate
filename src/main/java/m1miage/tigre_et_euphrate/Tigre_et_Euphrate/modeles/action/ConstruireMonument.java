@@ -259,5 +259,9 @@ public class ConstruireMonument extends Action{
 
 		return ok;
 	}
+	
+	public String toString(){
+		return this.joueur.getNom()+" a construit un monument";
+	}
 
 }
