@@ -3,6 +3,7 @@ package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.action;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Position;
+import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 
 /**
@@ -49,8 +50,12 @@ public class RetirerChef extends Action {
 		}
 		this.partie.getPlateauJeu().getPlateau()[this.position.getX()][this.position.getY()] = null;
 		this.joueur.getDeckPublic().getDeckPublic().add(chef);
+		Territoire t = this.partie.getPlateauJeu().recupererTerritoireTuile(chef);
 
-
+		if(t != null){
+			t.deletChef(chef);
+		}
+		
 		return true;
 	}
 	
