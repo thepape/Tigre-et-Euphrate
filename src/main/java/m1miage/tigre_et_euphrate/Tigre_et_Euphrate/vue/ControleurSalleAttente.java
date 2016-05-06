@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.Client;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.connexion.EncoderJSON;
@@ -455,53 +454,31 @@ public class ControleurSalleAttente implements ChangeListener {
 		}
 
 		this.afficherPlateau();
-
 	}
 
 	@FXML
 	public void afficherPlateau() throws RemoteException {
 		if(this.partieChargee != null)
 		{
+
+			MainApp.getInstance().getServeur().setPartieCourante(this.partieChargee);
+			MainApp.getInstance().getServeur().chargerPartie();
 			for(int i = 0; i < MainApp.getInstance().getServeur().getClients().size(); i++)
 			{
-				InterfaceServeurClient client = MainApp.getInstance().getServeur().getClients().get(i);
-				Dynastie dynastie = client.getJoueur().getDynastie();
-				for(int j = 0; j < this.partieChargee.getListeJoueurs().size(); j++)
+				if(MainApp.getInstance().getServeur().getClients().get(i).getJoueur().getDynastie().getNom().equals(MainApp.getInstance().getClient().getJoueur().getDynastie().getNom()))
 				{
-					if(dynastie.getNom().equals(this.partieChargee.getListeJoueurs().get(j).getDynastie().getNom()))
-					{
-
-						client.setJoueur(this.partieChargee.getListeJoueurs().get(j));
-						MainApp.getInstance().setPartieJoueur(this.partieChargee);
-						MainApp.getInstance().getServeur().setPartieCourante(this.partieChargee);
-						MainApp.getInstance().getClient().setJoueur(this.partieChargee.getListeJoueurs().get(j));
-						for(int l = 0; l < 11; l++)
-						{
-							for(int k = 0; k < 16; k++)
-							{
-								if(this.partieChargee.getPlateauJeu().getPlateau()[l][k] instanceof Chef)
-								{
-									Chef chef = (Chef) this.partieChargee.getPlateauJeu().getPlateau()[l][k];
-									if(chef.getDynastie().getNom().equals(client.getJoueur().getDynastie().getNom()))
-									{
-										chef.setJoueur(client.getJoueur());
-									}
-								}
-							}
-						}
-					}
+					MainApp.getInstance().getClient().setJoueur(MainApp.getInstance().getServeur().getClients().get(i).getJoueur());
 				}
 			}
 		}
 
-		mainApp.getInstance().getServeur().chargerPartie();
-		/*Platform.runLater(new Runnable(){
+		Platform.runLater(new Runnable(){
 			public void run() {
 				// TODO Auto-generated method stub
 				MainApp.getInstance().afficherPlateau();
 			}
 
-		});*/
+		});
 
 	}
 

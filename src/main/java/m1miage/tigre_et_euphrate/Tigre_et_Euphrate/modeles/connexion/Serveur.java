@@ -590,14 +590,47 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	}
 
 	public void chargerPartie() throws RemoteException {
-		String arg="partieLancee";
+		for(int i = 0; i < this.partie.getListeJoueurs().size();i++)
+		{
+			Joueur joueur = this.partie.getListeJoueurs().get(i);
+			for(int j = 0; j < this.clients.size();j++)
+			{
+				Joueur joueurclient = (Joueur) this.clients.get(j).getJoueur();
+				System.out.println("JOUEUR dynastie : " + joueur.getDynastie().getNom());
+				System.out.println("Jouerur serveur dynastie : " + joueurclient.getDynastie().getNom());
+				if(joueur.getDynastie().getNom().equals(joueurclient.getDynastie().getNom()))
+				{
+					this.clients.get(j).setJoueur(joueur);
+					System.out.println("Chef joueur");
+					for(int l = 0; l < 11; l++)
+					{
+						for(int k = 0; k < 16; k++)
+						{
+							if(this.partie.getPlateauJeu().getPlateau()[l][k] instanceof Chef)
+							{
+								Chef chef = (Chef) this.partie.getPlateauJeu().getPlateau()[l][k];
+
+								if(chef.getDynastie().getNom().equals(joueur.getDynastie().getNom()))
+								{
+									chef.setJoueur(this.clients.get(j).getJoueur());
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 
 		for(InterfaceServeurClient c : this.clients){
 			ArrayList<Object> params = new ArrayList<Object>();
-			params.add(arg);
+			params.add("partie");
+			params.add("deckPublic");
+			params.add("deckPrive");
+			//params.add("partieLancee");
 			c.notifierChangement(params);
 		}
 	}
+
 	public void libererDynastie(Dynastie dynastie) throws RemoteException{
 		synchronized (this.listeDynastieDispo) {
 
