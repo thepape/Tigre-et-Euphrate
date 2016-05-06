@@ -172,22 +172,4 @@ public class Chef extends Placable implements Serializable{
 	public void setRetiree(boolean retiree) {
 		this.retiree = retiree;
 	}
-
-	/**
-	 * @return the territoire
-	 */
-	/*public Territoire getTerritoire() {
-		return territoire;
-	}*/
-
-	/**
-	 * @param pterritoire the territoire to set
-	 */
-	/*public void setTerritoire(Territoire pterritoire) {
-		this.territoire = pterritoire;
-	}*/
-
-
-
-
 }

@@ -39,10 +39,12 @@ public class TestConflits {
 		ArrayList<TuileCivilisation> listeRenfortDefenseur = new ArrayList<TuileCivilisation>();
 		
 		Joueur ja = new Joueur();
+		ja.setNom("Michel");
 		ja.setDeckPrive(new DeckPrive());
 		ja.setDeckPublic(new DeckPublic());
 		
 		Joueur jd = new Joueur();
+		jd.setNom("Momo");
 		jd.setDeckPrive(new DeckPrive());
 		jd.setDeckPublic(new DeckPublic());
 		

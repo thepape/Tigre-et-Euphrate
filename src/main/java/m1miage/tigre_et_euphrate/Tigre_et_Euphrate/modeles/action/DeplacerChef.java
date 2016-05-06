@@ -52,6 +52,12 @@ public class DeplacerChef extends Action {
 		return true;
 	}
 	
+	/**
+	 * Methode pour verifier si il est possible de deplacer un chef sur une position donnée
+	 * @param pchef
+	 * @param ppos
+	 * @return
+	 */
 	public boolean verifierDeplacerChef(Chef pchef, Position ppos){
 		int x = ppos.getX();
 		int y = ppos.getY();

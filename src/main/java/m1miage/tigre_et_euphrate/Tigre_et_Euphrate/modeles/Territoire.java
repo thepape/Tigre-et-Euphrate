@@ -203,6 +203,11 @@ public class Territoire implements Serializable{
 	}
 
 
+	/**
+	 * Methode permettant de savoir si le territoire contient une tuile donnée
+	 * @param tuile
+	 * @return
+	 */
 	public boolean contientTuileCivilisation(TuileCivilisation tuile){
 		for(TuileCivilisation t : this.tuilesCivilisation){
 			if(t.getId() == tuile.getId()){
@@ -213,6 +218,11 @@ public class Territoire implements Serializable{
 		return false;
 	}
 
+	/**
+	 * Methode permettant de savoir si le territoire contient un chef donné
+	 * @param chef
+	 * @return
+	 */
 	public boolean contientChef(Chef chef){
 		for(Chef t : this.chefs){
 			if(t.getId() == chef.getId()){
@@ -223,6 +233,11 @@ public class Territoire implements Serializable{
 		return false;
 	}
 
+	/**
+	 * Methode permettant de comparer deux territoires sur le contenu
+	 * @param t
+	 * @return
+	 */
 	public boolean comparerTuilesEtChef(Territoire t){
 		if(this.tuilesCivilisation.size() != t.tuilesCivilisation.size()){
 			return false;
@@ -251,6 +266,9 @@ public class Territoire implements Serializable{
 		return true;
 	}
 
+	/**
+	 * Methode equals sur l'objet territoire en comparant l'id
+	 */
 	public boolean equals(Object o){
 		if(o instanceof Territoire){
 			return this.idTerritoire == ((Territoire) o).idTerritoire;

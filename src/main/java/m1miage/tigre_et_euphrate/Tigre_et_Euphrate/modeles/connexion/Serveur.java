@@ -26,6 +26,10 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.conflit.Conflits;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TuileCivilisation;
 
+/**
+ * Classe représentant le serveur de la partie qui va dialoguer avec les clients
+ *
+ */
 public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceServeurClient, Serializable
 {
 	/**
@@ -68,11 +72,19 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 	 */
 	private String url;
 
+	/**
+	 * Liste des Dynasties de la partie
+	 */
 	ArrayList<Dynastie> listeDynastieDispo = new ArrayList<Dynastie>();
 
-
+	/**
+	 * Increment du serveur (id unique pour les clients)
+	 */
 	private int increment = 0;
 
+	/**
+	 * Liste des joueurs pour le classement Final 
+	 */
 	private ArrayList<Joueur> classementFinal = new ArrayList<Joueur>();
 
 
@@ -331,7 +343,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		}
 
 
-
+		//On ajoute des parametres pour les differents clients de la partie
 		for(InterfaceServeurClient c : this.clients){
 			ArrayList<Object> params = new ArrayList<Object>();
 			params.add("partie");
@@ -348,7 +360,9 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 				Conflits conflit = pc.getConflit();
 
 				params.add("conflitInterne");
-				params.add("message:Conflit entre "+conflit.getChefAttaquant().getJoueur().getNom()+" et "+conflit.getChefDefenseur().getJoueur().getNom());
+				params.add("message:Conflit entre "+conflit.getChefAttaquant().getJoueur().getNom()+" ["+conflit.getChefAttaquant().getJoueur().getDynastie().getNom()+"-"+conflit.getChefAttaquant().getTypeChef().getNom()+"] et "+conflit.getChefDefenseur().getJoueur().getNom()+" ["+conflit.getChefDefenseur().getJoueur().getDynastie().getNom()+"-"+conflit.getChefDefenseur().getTypeChef().getNom()+"]");
+				//params.add("message:Selectionnez vous renforts "+conflit.getChefAttaquant().getTypeChef().getCouleur());
+			
 			} else if(action instanceof ConstruireMonument)
 			{
 				params.add("listemonument");
@@ -358,7 +372,10 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			if(action instanceof PlacerTuileCivilisation && ((PlacerTuileCivilisation) action).isConflit()){
 				Conflits conflit = this.partie.getConflits().get(0);
 				params.add("conflitExterne");
-				params.add("message:Conflit entre "+conflit.getChefAttaquant().getJoueur().getNom()+" et "+conflit.getChefDefenseur().getJoueur().getNom());
+
+				params.add("message:Conflit entre "+conflit.getChefAttaquant().getJoueur().getNom()+" ["+conflit.getChefAttaquant().getJoueur().getDynastie().getNom()+"-"+conflit.getChefAttaquant().getTypeChef().getNom()+"] et "+conflit.getChefDefenseur().getJoueur().getNom()+" ["+conflit.getChefDefenseur().getJoueur().getDynastie().getNom()+"-"+conflit.getChefDefenseur().getTypeChef().getNom()+"]");
+				//params.add("message:Selectionnez vous renforts "+conflit.getChefAttaquant().getTypeChef().getCouleur());
+			
 
 			}
 
@@ -405,6 +422,9 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		return trouve;
 	}
 
+	/**
+	 * Methode permettant d'envoyer une liste de tuile renforts pour un joueur
+	 */
 	public void envoyerRenforts(ArrayList<TuileCivilisation> renforts, Joueur joueur) throws RemoteException{
 		Conflits conflit = this.partie.getConflits().get(0);
 
@@ -432,6 +452,12 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	}
 
+	/**
+	 * Methode permettant de resoudre les conflits internes
+	 * @param conflit
+	 * @return
+	 * @throws RemoteException
+	 */
 	public Chef resoudreConflitInterne(Conflits conflit) throws RemoteException{
 		Chef gagnant = conflit.definirChefGagnant();
 
@@ -463,7 +489,8 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		if(this.partie.getConflits().size() > 0){
 			Conflits newConflit = this.partie.getConflits().get(0);
 			params.add("conflitExterne");
-			params.add("message:Conflit entre "+newConflit.getChefAttaquant().getJoueur().getNom()+" et "+newConflit.getChefDefenseur().getJoueur().getNom());
+			params.add("message:Conflit entre "+newConflit.getChefAttaquant().getJoueur().getNom()+" ["+newConflit.getChefAttaquant().getJoueur().getDynastie().getNom()+"-"+newConflit.getChefAttaquant().getTypeChef().getNom()+"] et "+newConflit.getChefDefenseur().getJoueur().getNom()+" ["+newConflit.getChefDefenseur().getJoueur().getDynastie().getNom()+"-"+newConflit.getChefDefenseur().getTypeChef().getNom()+"]");
+			//params.add("message:Selectionnez vous renforts "+newConflit.getChefAttaquant().getTypeChef().getCouleur());
 		}
 
 		this.notifierClient(params);
@@ -471,6 +498,9 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		return gagnant;
 	}
 
+	/**
+	 * Methode permettant d'envoyer les points attribués à un joueur
+	 */
 	public void envoyerPointsAttribues(Joueur joueur) throws RemoteException{
 
 		if(!this.classementFinal.contains(joueur)){
@@ -631,6 +661,9 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		}
 	}
 
+	/**
+	 * Methode permettant de liberer une dynastie quand un joueur quitte la salle d'attente et qu'il avait choisi une dynastie
+	 */
 	public void libererDynastie(Dynastie dynastie) throws RemoteException{
 		synchronized (this.listeDynastieDispo) {
 
@@ -677,17 +710,20 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 	}
 
+	/**
+	 * Methode permettant de notifier chaque client que c'est la fin de la partie
+	 */
 	public void finirPartie() throws RemoteException{
 		ArrayList<Object> params = new ArrayList<Object>();
 		params.add("finpartie");
 		this.notifierClient(params);
 	}
 
+	/**
+	 * Methode permettant de passer le tour du joueur pour donner le tour au prochain grace a une liste de tours
+	 */
 	public void passerTour() throws RemoteException{
 		this.partie.passerTour();
-		/*for(InterfaceServeurClient client: this.clients){
-			client.passerTour();
-		}*/
 		ArrayList<Object> params = new ArrayList<Object>();
 		params.add("partie");
 		params.add("passerTour");
@@ -700,10 +736,17 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		this.notifierClient(params);
 	}
 
+	/**
+	 * Methode permettant de passer le tour d'un joueur dans une liste de tour de conflits
+	 * @throws RemoteException
+	 */
 	public void passerTourConflit() throws RemoteException{
 		this.partie.passerTourConflit();
 	}
 
+	/**
+	 * Methode permettant de piocher le nombre de cartes manquantes chez un joueur
+	 */
 	public boolean piocherCartesManquantes(Joueur joueur) throws RemoteException {
 		boolean res = this.partie.piocheCartesManquantes(joueur);
 
@@ -743,6 +786,9 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		return this.increment;
 	}
 
+	/**
+	 * Permet d'envoyer le nouveau conflit aux joueurs impactés
+	 */
 	public void envoyerNouveauConflit(Conflits conflit, int idClientSender) throws RemoteException{
 
 		//propagation du conflit chez les partie des autres
@@ -754,8 +800,10 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 
 	}
-
-
+	
+	/**
+	 * Methode permettant de recuperer la liste des joueurs présents dans la partie
+	 */
 	public ArrayList<Joueur> recupererListeJoueurPartie() throws RemoteException
 	{
 		ArrayList<Joueur> listeJoueur = new ArrayList<Joueur>();

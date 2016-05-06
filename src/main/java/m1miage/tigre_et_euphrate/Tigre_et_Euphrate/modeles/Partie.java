@@ -28,10 +28,18 @@ public class Partie implements Serializable {
 	@JsonIgnore
 	private InterfaceServeurClient serveur;
 
+	/**
+	 * Liste des Monuments de la partie
+	 * @return
+	 */
 	public ArrayList<Monument> getMonuments() {
 		return monuments;
 	}
 
+	/**
+	 * setter des monuments
+	 * @param monuments
+	 */
 	public void setMonuments(ArrayList<Monument> monuments) {
 		this.monuments = monuments;
 	}
@@ -244,6 +252,10 @@ public class Partie implements Serializable {
 		return this.joueur.getDynastie();
 	}
 
+	/**
+	 * Méthode permettant de vérifier si tous les joueurs sont prets dans la salle d'attente pour lancer la partie
+	 * @return true si tous pret sinon false
+	 */
 	public boolean tousLesJoueursPrets() {
 		boolean res = true;
 		for(Joueur joueur : this.listeJoueurs){
@@ -264,24 +276,30 @@ public class Partie implements Serializable {
 		return this.serveur;
 	}
 
-	public void send(String string, int idClient) {
-		//System.out.println(idClient);
-		//System.out.println(string);
-	}
-
-
 	public ArrayList<Conflits> getConflits(){
 		return this.conflits;
 	}
 
+	/**
+	 * Ajout un conflit dans la liste de conflit de la partie
+	 * @param pConflit
+	 */
 	public void ajouterConflit(Conflits pConflit){
 		this.conflits.add(pConflit);
 	}
 
+	/**
+	 * Supprime un conflit dans la liste de conflit
+	 * @param pConflit
+	 */
 	public void retirerConflit(Conflits pConflit){
 		this.conflits.remove(pConflit);
 	}
 
+	/**
+	 * Methode pour savoir si la partie est lancee
+	 * @return
+	 */
 	public boolean IsEstLancee(){
 		return this.estLancee;
 	}
@@ -374,42 +392,6 @@ public class Partie implements Serializable {
 		dynasties.add(Dynastie.Tyrell);
 		int it = 0;
 
-		//////initialisation des decks de chaque joueur et de leurs dynasties
-		/*
-		for(Joueur joueur : joueurs){
-
-			joueur.setDynastie(dynasties.get(it));
-			it++;
-
-			//attribution des chefs
-			Chef roi = new Chef(TypeChef.Roi, joueur);
-			Chef marchand = new Chef(TypeChef.Marchand, joueur);
-			Chef fermier = new Chef(TypeChef.Fermier, joueur);
-			Chef pretre = new Chef(TypeChef.Pretre, joueur);
-
-			DeckPublic dpub = new DeckPublic();
-			DeckPrive dpriv = new DeckPrive();
-
-			joueur.setDeckPublic(dpub);
-			joueur.setDeckPrive(dpriv);
-
-
-			joueur.getDeckPublic().ajouterChef(roi);
-			joueur.getDeckPublic().ajouterChef(marchand);
-			joueur.getDeckPublic().ajouterChef(fermier);
-			joueur.getDeckPublic().ajouterChef(pretre);
-
-			//attribution de 2 cartes cata
-			joueur.getDeckPublic().ajouterCatastrophe(new TuileCatastrophe());
-			joueur.getDeckPublic().ajouterCatastrophe(new TuileCatastrophe());
-
-			//attribution au hasard de 6 tuile civilisation
-			for(int i = 0; i < 6; i++){
-				TuileCivilisation tuile = this.pioche.piocherTuile();
-				joueur.getDeckPrive().ajouter(tuile);
-			}
-		}*/
-
 		this.estLancee=true;
 
 
@@ -487,6 +469,11 @@ public class Partie implements Serializable {
 		this.listeToursConflits = joueurs;
 	}
 
+	/**
+	 * Methode permettant d'ajouter un joueur dans un conflit
+	 * @param joueur
+	 * @return
+	 */
 	public boolean ajouterTourConflit(Joueur joueur){
 		if(this.listeToursConflits.contains(joueur)){
 			return false;
@@ -496,6 +483,11 @@ public class Partie implements Serializable {
 		return true;
 	}
 
+	/**
+	 * Methode permettant de supprimer un joueur dans un conflit
+	 * @param joueur
+	 * @return
+	 */
 	public boolean retirerTourConflit(Joueur joueur){
 		if(!this.listeToursConflits.contains(joueur)){
 			return false;
@@ -505,6 +497,10 @@ public class Partie implements Serializable {
 		return true;
 	}
 
+	/**
+	 * Méthode retournant le nombre de trésrs restants sur le terrain
+	 * @return le nb de tresors sur le terrain
+	 */
 	public int nombreTresorsRestant(){
 		int tresors = 0;
 
@@ -519,26 +515,4 @@ public class Partie implements Serializable {
 		return tresors;
 	}
 
-	public boolean contientDejaConflitIdentique(Conflits conflit){
-		for(Conflits c : this.conflits){
-			Chef attaquantc = c.getChefAttaquant();
-			Chef defenseurc = c.getChefDefenseur();
-			Territoire tattc = c.getTerritoireAttaquant();
-			Territoire tdefc = c.getTerritoireDefenseur();
-
-			Chef attaquant = conflit.getChefAttaquant();
-			Chef defenseur = conflit.getChefDefenseur();
-			Territoire tatt = conflit.getTerritoireAttaquant();
-			Territoire tdef = conflit.getTerritoireDefenseur();
-
-			if(attaquantc.getId() == attaquant.getId()
-					&& defenseurc.getId() == defenseur.getId()
-					&& tattc.getIdTerritoire() == tatt.getIdTerritoire()
-					&& tdefc.getIdTerritoire() == tdef.getIdTerritoire()){
-				return true;
-			}
-		}
-
-		return false;
-	}
 }

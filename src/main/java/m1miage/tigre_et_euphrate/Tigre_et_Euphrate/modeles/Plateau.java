@@ -103,6 +103,10 @@ public class Plateau implements Serializable {
 		pplateauTerrain[6][0] = false;
 	}
 
+	/**
+	 * Methode permettant de generer les 10 temples ainsi que leurs tresors
+	 * @param pplateau
+	 */
 	public void genererSphynx(Placable[][] pplateau){
 		for(int i =0; i<pplateau.length;i++){
 			for(int j=0; j<pplateau[i].length;j++){
@@ -250,10 +254,24 @@ public class Plateau implements Serializable {
 		this.listeTerritoire.remove(proyaume);
 	}
 
+	/**
+	 * Méthode permettant de placer une tuile civilisation sur le terrain
+	 * @param pTuile
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public boolean placerTuile(TuileCivilisation pTuile, int x, int y){
 		return this.placerTuile(pTuile, new Position(x,y));
 	}
 
+	
+	/**
+	 * Methode permettant de verifier si on peut placer une tuile civilisation sur une position précise
+	 * @param ptuile
+	 * @param ppos
+	 * @return
+	 */
 	public boolean verifierPlacerTuile(TuileCivilisation ptuile, Position ppos){
 		int x = ppos.getX();
 		int y = ppos.getY();
@@ -323,6 +341,13 @@ public class Plateau implements Serializable {
 		return true;
 	}
 
+	
+	/**
+	 * Permet de verifier si on peut placer un chef sur le plateau a une position precise
+	 * @param pchef
+	 * @param ppos
+	 * @return
+	 */
 	public boolean verifierPlacerChef(Chef pchef, Position ppos){
 		int x = ppos.getX();
 		int y = ppos.getY();
@@ -359,6 +384,7 @@ public class Plateau implements Serializable {
 		int y = ppos.getY();
 		TuileCivilisation tuileCivilisation;
 
+		//Test du voisin de gauche
 		if(x-1>=0 && x-1<=10){
 			if(this.plateau[x-1][y] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x-1][y];
@@ -367,6 +393,7 @@ public class Plateau implements Serializable {
 			}
 		}
 
+		//Test du voisin de droite
 		if(x+1<=10 && x+1>=0){
 			if(this.plateau[x+1][y] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x+1][y];
@@ -374,6 +401,7 @@ public class Plateau implements Serializable {
 					return true;
 			}
 		}
+		//Test du voisin du bas
 		if(y-1>=0 && y-1<=15){
 			if(this.plateau[x][y-1] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x][y-1];
@@ -382,6 +410,7 @@ public class Plateau implements Serializable {
 			}
 		}
 
+		//Test du voisin du haut
 		if(y+1<=15 && y+1>=0){
 			if(this.plateau[x][y+1] instanceof TuileCivilisation){
 				tuileCivilisation = (TuileCivilisation)this.plateau[x][y+1];
@@ -468,6 +497,12 @@ public class Plateau implements Serializable {
 		return listeAdjacente;
 	}
 
+	
+	/**
+	 * Methode permettant de recuperer la liste des chefs adjacents de la position
+	 * @param position
+	 * @return
+	 */
 	public ArrayList<Chef> recupererListeChefsAdjacente(Position position){
 		ArrayList<Chef> listeChefs = new ArrayList<Chef>();
 		int x = position.getX();
@@ -494,6 +529,10 @@ public class Plateau implements Serializable {
 		return listeChefs;
 	}
 
+	/**
+	 * Methode permettant de reconstruire les territoires a l'aide d'une certaine position
+	 * @param pDepart
+	 */
 	public void reconstruireTerritoires(Position pDepart){
 		Territoire tNord = new Territoire();
 		Territoire tEst = new Territoire();
@@ -537,13 +576,6 @@ public class Plateau implements Serializable {
 		for(Territoire t : territoires){
 			//Territoire oldTerritoire = t.getTuilesCivilisation().get(0).getTerritoire();
 			Territoire oldTerritoire = this.recupererTerritoireTuile(t.getTuilesCivilisation().get(0));
-			/*for(TuileCivilisation tuile : t.getTuilesCivilisation()){
-				//tuile.setTerritoire(t);
-			}*/
-
-			/*for(Chef chef : t.getChefs()){
-				chef.setTerritoire(t);
-			}*/
 
 			//on supprime l'ancien territoire on et on ajoute le nouveau
 			this.listeTerritoire.remove(oldTerritoire);
@@ -551,28 +583,22 @@ public class Plateau implements Serializable {
 		}
 	}
 
+	/**
+	 * Methode qui permet de parcourir en largueur la reconstruction des territoires
+	 * @param pDepart
+	 * @param territoire
+	 */
 	private void reconstruireTerritoiresRecurs(Position pDepart, Territoire territoire){
-		/*
-		Placable pNord = this.getPlacableAt(new Position(pDepart.getX()-1, pDepart.getY()));
-		this.gererTuileDansReconstruction(pNord, territoire);
-
-		Placable pEst = this.getPlacableAt(new Position(pDepart.getX(), pDepart.getY()+1));
-		this.gererTuileDansReconstruction(pEst, territoire);
-
-		Placable pSud = this.getPlacableAt(new Position(pDepart.getX()+1, pDepart.getY()));
-		this.gererTuileDansReconstruction(pSud, territoire);
-
-		Placable pOuest = this.getPlacableAt(new Position(pDepart.getX(), pDepart.getY()-1));
-		this.gererTuileDansReconstruction(pOuest, territoire);
-
-		//on ajoute finallement cette tuile
-		Placable centre = this.getPlacableAt(pDepart);
-		this.gererTuileDansReconstruction(centre, territoire);*/
 
 		Placable placable = this.getPlacableAt(pDepart);
 		this.gererTuileDansReconstruction(placable, territoire);
 	}
 
+	/**
+	 * A FAIRE
+	 * @param placable
+	 * @param territoire
+	 */
 	private void gererTuileDansReconstruction(Placable placable, Territoire territoire){
 		//on verifie que la case Nord est une tuile civ
 				if(placable != null && placable instanceof TuileCivilisation){
@@ -612,6 +638,11 @@ public class Plateau implements Serializable {
 
 
 
+	/**
+	 * Methode permettant de recuperer le territoire d'une tuile donnée
+	 * @param tuile
+	 * @return
+	 */
 	public Territoire recupererTerritoireTuile(Placable tuile) {
 		Territoire territoire = null;
 
@@ -652,6 +683,11 @@ public class Plateau implements Serializable {
 		return territoire;
 	}
 
+	
+	/**
+	 * Methode affichant le plateau en dur dans la console (pour le debug)
+	 * @return
+	 */
 	public String afficher(){
 		StringBuffer sb = new StringBuffer("");
 
@@ -682,6 +718,11 @@ public class Plateau implements Serializable {
 		return sb.toString();
 	}
 
+	
+	/**
+	 * Methode permettant d'afficher l'id des tuiles directement sur le jeu
+	 * @return
+	 */
 	public String afficherTuilesId(){
 		StringBuffer sb = new StringBuffer("");
 
@@ -743,6 +784,11 @@ public class Plateau implements Serializable {
 		return sb.toString();
 	}
 
+	
+	/**
+	 * Methode permettant de recuperer la tuile jonction sur le terrain
+	 * @return
+	 */
 	public TuileCivilisation recupererTuileJonction(){
 		for(int x = 0; x < 11 ; x++){
 			for(int y = 0;y < 16; y++){

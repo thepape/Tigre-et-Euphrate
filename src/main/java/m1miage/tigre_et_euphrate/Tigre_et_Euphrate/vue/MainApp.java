@@ -24,11 +24,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.fxml.FXML;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPrive;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.DeckPublic;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Joueur;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Partie;
-import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.PartieInterface;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Plateau;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Chef;
 import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.chefs.Dynastie;
@@ -72,6 +72,8 @@ public class MainApp extends Application implements App {
 	private FXMLLoader currentLoader;
 
 	public Object currentControler;
+	
+	public Exception currentException;
 
 	ArrayList<Dynastie> listeDynastieDispo = new ArrayList<Dynastie>();
 
@@ -375,16 +377,25 @@ public class MainApp extends Application implements App {
 
 			this.client.setPartieCourante(partie);
 			this.client.setJoueur(joueur);
-			//controleurPlateau.setDeckPriveJoueur(this.client.getJoueur().getDeckPrive().getDeckPrive());
+
 			controleurPlateau.setMainApp(this);
 
 			//on ajoute le controleurPlateau comme listener de ce client
 			this.client.addListener(controleurPlateau);
 			controleurPlateau.construirePlateau();
 			controleurPlateau.construireMonument();
+			controleurPlateau.initialiserBoutonPasserTour();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * permet de set le message d'erreur
+	 */
+	public void setMesageErreur(String message){
+		ControleurCreationPartie cp = this.currentLoader.getController();
+		cp.setMessageErreur(message);
 	}
 
 }

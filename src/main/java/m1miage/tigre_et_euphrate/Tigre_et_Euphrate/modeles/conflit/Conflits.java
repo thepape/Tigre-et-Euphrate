@@ -15,6 +15,9 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivil
 
 public class Conflits implements Serializable{
 
+	/**
+	 * Static representant l'id du conflit
+	 */
 	private static int idIncrementConflit = 0;
 	/**
 	 * Chef qui attaque
@@ -60,6 +63,9 @@ public class Conflits implements Serializable{
 	 */
 	private String typeConflit;
 	
+	/**
+	 * Attributs representant la partie
+	 */
 	private Partie partie;
 
 	public Partie getPartie() {
@@ -265,6 +271,8 @@ public class Conflits implements Serializable{
 		ArrayList<TuileCivilisation> soutiensAttaquant = new ArrayList<TuileCivilisation>();
 		ArrayList<TuileCivilisation> soutiensDefenseur = new ArrayList<TuileCivilisation>();
 
+		//Si le territoire de l'attaquant n'est pas null alors on lance le choix des tuiles renforts et on compte les tuiles du territoire
+		//Conflit externe
 		if(this.getTerritoireAttaquant() != null)
 		{
 			for(int i = 0; i < this.getTerritoireDefenseur().getTuilesCivilisation().size(); i++)
@@ -287,6 +295,8 @@ public class Conflits implements Serializable{
 				}
 			}
 		} else {
+			//Conflit interne
+			//recupere tous les temples voisins + recuperer les tuiles renforts
 			for(int i = 0; i < this.getTerritoireDefenseur().getTuilesCivilisation().size(); i++)
 			{
 				TuileCivilisation tuileAdjacente = this.getTerritoireDefenseur().getTuilesCivilisation().get(i);
@@ -309,6 +319,7 @@ public class Conflits implements Serializable{
 		nbTuileCivilisationDefenseur += this.getListeTuileRenfortDefenseur().size();
 		nbTuileCivilisationAttaquant += this.getListeTuileRenfortAttaquant().size();
 
+		//Si non egalite alors le defenseur gagne
 		if(nbTuileCivilisationDefenseur >= nbTuileCivilisationAttaquant)
 		{
 			this.setEstResolu(true);
@@ -432,6 +443,10 @@ public class Conflits implements Serializable{
 		}
 	}
 	
+	/**
+	 * Methode permettant de reconstruire une territoire apres un conflit externe (puisque des tuiles sautent)
+	 * @param perdant
+	 */
 	public void reconstruireTerritoires(Territoire perdant){
 		//on reconstruit les territoires suite au retrait de tuiles soutiens
 		
@@ -480,6 +495,11 @@ public class Conflits implements Serializable{
 		System.out.println(this.partie.getPlateauJeu().afficherTerritoires());
 	}
 	
+	/**
+	 * Methode permettant de reverifier les conflits sur le terrain apres la resolution d'un conflit externe par exemple
+	 * @param attaquant
+	 * @return
+	 */
 	public boolean reverifierConflits(Chef attaquant){
 		//reverifie si après reconstruction il y a toujours des conflits
 		TuileCivilisation jonction = this.partie.getPlateauJeu().recupererTuileJonction();
@@ -500,27 +520,13 @@ public class Conflits implements Serializable{
 		
 		return false;
 	}
-	
-	/*
-	public Conflits unifierTerritoires(Territoire territoireGagnant, Territoire territoirePerdant){
-		//on verifie si deux chefs de meme couleur sont présents
-		for(Chef chef1 : territoireGagnant.getChefs()){
-			for(Chef chef2 : territoirePerdant.getChefs()){
-				if(chef1.getTypeChef().equals(chef2.getTypeChef())){
-					return new Conflits(chef1, chef2, territoireGagnant, territoirePerdant);
-				}
-			}
-		}
-		
-		//si pas de nouveau conflits, on unifie les 2 territoires
-		territoireGagnant.addListeChefs(territoirePerdant.getChefs());
-		territoireGagnant.addListeTuiles(territoirePerdant.getTuilesCivilisation());
-		
-		this.partie.getPlateauJeu().supprRoyaume(territoirePerdant);
-		
-		return null;
-	}*/
 
+	/**
+	 * Methode permettant d'ajouter des renforts dans les conflits à l'aide du deck privé
+	 * @param listeTuileRenfort
+	 * @param tuileRenfort
+	 * @return
+	 */
 	public boolean ajoutRenfort(ArrayList<TuileCivilisation> listeTuileRenfort, TuileCivilisation tuileRenfort)
 	{
 		if(this.typeConflit.equals("E"))

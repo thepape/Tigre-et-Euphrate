@@ -16,6 +16,9 @@ public class Joueur implements Serializable{
 	@JsonProperty("id")
 	private int id;
 
+	/**
+	 * Incremente l'id du joueur
+	 */
 	private static int incId = 1;
 
 	/**
@@ -206,6 +209,11 @@ public class Joueur implements Serializable{
 		return this.PointVictoireBleu;
 	}
 
+	/**
+	 * Méthode permettant d'ajouter des points victoires d'une couleur prédéfinie
+	 * @param couleur
+	 * @param points
+	 */
 	public void ajouterPointsVictoire(String couleur, int points){
 		if(couleur.equals("rouge")){
 			this.PointVictoireRouge += points;
@@ -306,6 +314,9 @@ public class Joueur implements Serializable{
 		this.id = id;
 	}
 
+	/**
+	 * Méthode equals pour l'objet joueur sur l'id
+	 */
 	public boolean equals(Object o){
 		if(o instanceof Joueur){
 			return this.id == ((Joueur) o).getId();
@@ -314,6 +325,10 @@ public class Joueur implements Serializable{
 		return false;
 	}
 
+	/**
+	 * Méthode permettant d'ajouter des points de tresors dans un joueur
+	 * @param points
+	 */
 	public void ajouterPointTresor(int points){
 		this.PointTresor += points;
 	}

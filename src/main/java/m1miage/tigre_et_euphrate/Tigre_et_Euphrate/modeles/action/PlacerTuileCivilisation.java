@@ -23,8 +23,14 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles.TypeTuileCivil
  */
 public class PlacerTuileCivilisation extends Action {
 
+	/**
+	 * Position sur laquelle on va placer la tuile
+	 */
 	private Position position;
 
+	/**
+	 * Tuile que l'on veut placer
+	 */
 	private TuileCivilisation tuile;
 
 	/**
@@ -213,9 +219,10 @@ public class PlacerTuileCivilisation extends Action {
 		this.joueur.getDeckPrive().getDeckPrive().remove(this.tuile);
 		//System.out.println("DECK:"+this.joueur.getNom()+" - "+this.joueur.getDeckPrive());
 		
-		if(!this.conflit)
+		if(!conflit){
 			this.AttributionPointVictoire();
-		
+		}
+
 		return ok;
 	}
 
@@ -313,22 +320,6 @@ Dans ce cas, c’est le joueur à qui appartient le Roi qui remporte le point de
 					}else{
 						possesseur.ajouterPointsTresor(1);
 					}
-					
-					
-					/*
-					//on recupere le bon joueur auquel ajouter les points
-					for(InterfaceServeurClient client : this.partie.getServeur().getClients()){
-						int idJoueur = cmarchand.getJoueur().getId();
-						Joueur joueurAChanger = client.getJoueur();
-						
-						if(idJoueur == joueurAChanger.getId()){
-							joueurAChanger.ajouterPointsTresor(nbtuiletresor-1);
-							this.ajouterJoueurImpacte(joueurAChanger);
-						}
-					}*/
-					
-					
-					//System.out.println("Le joueur "+cmarchand.getJoueur().getNom()+" a recu un point tresor");
 				}
 				//on ajoute le joueur impacté dans laliste des impactés que si ce joueur n'est pasle joueur qui a send l'action
 				if(this.joueur.getId() != possesseur.getId()){

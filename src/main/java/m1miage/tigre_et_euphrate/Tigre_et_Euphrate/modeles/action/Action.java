@@ -25,6 +25,9 @@ public abstract class Action implements Serializable {
 	 */
 	protected Joueur joueur;
 	
+	/**
+	 * Liste de joueur impactés par l'action
+	 */
 	protected ArrayList<Joueur> joueursImpactes = new ArrayList<Joueur>();
 
 	/**
@@ -67,16 +70,28 @@ public abstract class Action implements Serializable {
 	 */
 	public abstract boolean verifier();
 	
+	/**
+	 * Methode permettant d'ajouter un joueur impacte par une action
+	 * @param j
+	 */
 	public void ajouterJoueurImpacte(Joueur j){
 		if(!this.joueursImpactes.contains(j)){
 			this.joueursImpactes.add(j);
 		}
 	}
 	
+	/**
+	 * Methode get pour recuperer les joueurs impactés par une action
+	 * @return
+	 */
 	public ArrayList<Joueur> getJoueurImpactes(){
 		return this.joueursImpactes;
 	}
 	
+	/**
+	 * Methode permettant de supprimer un joueur impacté par une action
+	 * @param j
+	 */
 	public void retirerJoueurImpacte(Joueur j){
 		if(this.joueursImpactes.contains(j)){
 			this.joueursImpactes.remove(j);

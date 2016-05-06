@@ -1,6 +1,5 @@
 package m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.tuiles;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonTypeName;
@@ -14,13 +13,14 @@ import m1miage.tigre_et_euphrate.Tigre_et_Euphrate.modeles.Territoire;
  * Classe représentant une tuile civilisation.
  *
  */
+@JsonTypeName("tuileCivilisation")
 @JsonIgnoreProperties(ignoreUnknown=true)
-
 public class TuileCivilisation extends Tuile {
 
 	/**
 	 * Type de la tuile civilisation.
 	 */
+	@JsonProperty("type")
 	private TypeTuileCivilisation type;
 
 	/**
@@ -37,7 +37,6 @@ public class TuileCivilisation extends Tuile {
 	/**
 	 * Réference vers le monument qui se trouve sur la tuile si monument il y a.
 	 */
-	@JsonIgnore
 	private Monument monument;
 
 	/**
@@ -137,6 +136,7 @@ public class TuileCivilisation extends Tuile {
 	/**
 	 * @return le type de la tuile
 	 */
+	@JsonProperty("type")
 	public TypeTuileCivilisation getType() {
 		return type;
 	}
@@ -165,14 +165,6 @@ public class TuileCivilisation extends Tuile {
 		return rep;
 	}
 
-	public Tresor getTresor() {
-		return tresor;
-	}
-
-	public void setTresor(Tresor tresor) {
-		this.tresor = tresor;
-	}
-
 	/**
 	 * Indique si cette tuile est une tuile à placer sur une case d'eau.
 	 * @return vrai si la tuile doit être placée sur une case d'eau.
@@ -190,16 +182,8 @@ public class TuileCivilisation extends Tuile {
 		return this.type.equals(pTuile.type);
 	}
 
-	/*public Territoire getTerritoire(){
-		return this.territoire;
-	}
-
-	public void setTerritoire(Territoire pTerritoire){
-		this.territoire = pTerritoire;
-	}*/
-
-
 	public boolean aTresor(){
 		return this.tresor != null;
 	}
 }
+
