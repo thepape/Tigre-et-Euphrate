@@ -522,10 +522,10 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextArea fx:id="texteAction" prefHeight="657.0" prefWidth="356.0" GridPane.rowIndex="1" />
+            <TextArea fx:id="texteAction" prefHeight="657.0" prefWidth="356.0" translateY="20.0" GridPane.rowIndex="1" />
             <Button fx:id="boutonFinTour" mnemonicParsing="false" onMouseClicked="#finirTour" text="Fin de tour" />
             <Button fx:id="boutonEchange" mnemonicParsing="false" onMouseClicked="#echangeTuile" text="Echanger ses tuiles" translateY="50.0" GridPane.rowIndex="2" />
-            <Label fx:id="nombrePoint" text="0 points" translateY="100.0" />
+            <Label fx:id="nombrePoint" text="0 points" translateY="30.0" />
          </children>
       </GridPane>
    </left>
