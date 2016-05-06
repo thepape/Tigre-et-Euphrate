@@ -354,14 +354,14 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 				params.add("listemonument");
 			}
 
-			
+
 			if(action instanceof PlacerTuileCivilisation && ((PlacerTuileCivilisation) action).isConflit()){
 				Conflits conflit = this.partie.getConflits().get(0);
 				params.add("conflitExterne");
 				params.add("message:Conflit entre "+conflit.getChefAttaquant().getJoueur().getNom()+" et "+conflit.getChefDefenseur().getJoueur().getNom());
-				
+
 			}
-			
+
 
 			c.notifierChangement(params);
 		}
@@ -429,7 +429,7 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 
 			}
 		}
-		
+
 	}
 
 	public Chef resoudreConflitInterne(Conflits conflit) throws RemoteException{
@@ -459,13 +459,13 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 			params.add("conflitExterneResolu");
 		}
 		params.add("message:Le joueur "+gagnant.getJoueur().getNom()+" a gagné le conflit !");
-		
+
 		if(this.partie.getConflits().size() > 0){
 			Conflits newConflit = this.partie.getConflits().get(0);
 			params.add("conflitExterne");
 			params.add("message:Conflit entre "+newConflit.getChefAttaquant().getJoueur().getNom()+" et "+newConflit.getChefDefenseur().getJoueur().getNom());
 		}
-		
+
 		this.notifierClient(params);
 
 		return gagnant;
@@ -585,6 +585,48 @@ public class Serveur extends UnicastRemoteObject implements Runnable, InterfaceS
 		for(InterfaceServeurClient c : this.clients){
 			ArrayList<Object> params = new ArrayList<Object>();
 			params.add(arg);
+			c.notifierChangement(params);
+		}
+	}
+
+	public void chargerPartie() throws RemoteException {
+		for(int i = 0; i < this.partie.getListeJoueurs().size();i++)
+		{
+			Joueur joueur = this.partie.getListeJoueurs().get(i);
+			for(int j = 0; j < this.clients.size();j++)
+			{
+				Joueur joueurclient = (Joueur) this.clients.get(j).getJoueur();
+				System.out.println("JOUEUR dynastie : " + joueur.getDynastie().getNom());
+				System.out.println("Jouerur serveur dynastie : " + joueurclient.getDynastie().getNom());
+				if(joueur.getDynastie().getNom().equals(joueurclient.getDynastie().getNom()))
+				{
+					this.clients.get(j).setJoueur(joueur);
+					System.out.println("Chef joueur");
+					for(int l = 0; l < 11; l++)
+					{
+						for(int k = 0; k < 16; k++)
+						{
+							if(this.partie.getPlateauJeu().getPlateau()[l][k] instanceof Chef)
+							{
+								Chef chef = (Chef) this.partie.getPlateauJeu().getPlateau()[l][k];
+
+								if(chef.getDynastie().getNom().equals(joueur.getDynastie().getNom()))
+								{
+									chef.setJoueur(this.clients.get(j).getJoueur());
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		for(InterfaceServeurClient c : this.clients){
+			ArrayList<Object> params = new ArrayList<Object>();
+			params.add("partie");
+			params.add("deckPublic");
+			params.add("deckPrive");
+			//params.add("partieLancee");
 			c.notifierChangement(params);
 		}
 	}

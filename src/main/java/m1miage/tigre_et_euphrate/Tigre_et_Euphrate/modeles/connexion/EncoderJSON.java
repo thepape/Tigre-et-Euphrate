@@ -36,7 +36,6 @@ public class EncoderJSON {
 		}
 
 		ObjectMapper mapper = new ObjectMapper();
-
 		mapper.writeValue(new File("partieEnCours.json"), partie);
 
 		return file;

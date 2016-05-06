@@ -485,24 +485,18 @@ public class ControleurSalleAttente implements ChangeListener {
 	public void afficherPlateau() throws RemoteException {
 		if(this.partieChargee != null)
 		{
+
+			MainApp.getInstance().getServeur().setPartieCourante(this.partieChargee);
+			MainApp.getInstance().getServeur().chargerPartie();
 			for(int i = 0; i < MainApp.getInstance().getServeur().getClients().size(); i++)
 			{
-				InterfaceServeurClient client = MainApp.getInstance().getServeur().getClients().get(i);
-				Dynastie dynastie = client.getJoueur().getDynastie();
-				for(int j = 0; j < this.partieChargee.getListeJoueurs().size(); j++)
+				if(MainApp.getInstance().getServeur().getClients().get(i).getJoueur().getDynastie().getNom().equals(MainApp.getInstance().getClient().getJoueur().getDynastie().getNom()))
 				{
-					if(dynastie.getNom().equals(this.partieChargee.getListeJoueurs().get(j).getDynastie().getNom()))
-					{
-
-						client.setJoueur(this.partieChargee.getListeJoueurs().get(j));
-						MainApp.getInstance().setPartieJoueur(this.partieChargee);
-						MainApp.getInstance().getServeur().setPartieCourante(this.partieChargee);
-						System.out.println(MainApp.getInstance().getServeur().getPartie().getPlateauJeu().getPlateau()[0][0]);
-						MainApp.getInstance().getClient().setJoueur(this.partieChargee.getListeJoueurs().get(j));
-					}
+					MainApp.getInstance().getClient().setJoueur(MainApp.getInstance().getServeur().getClients().get(i).getJoueur());
 				}
 			}
 		}
+
 		Platform.runLater(new Runnable(){
 			public void run() {
 				// TODO Auto-generated method stub

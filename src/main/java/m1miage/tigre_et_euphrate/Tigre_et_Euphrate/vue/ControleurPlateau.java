@@ -153,6 +153,8 @@ public class ControleurPlateau implements ChangeListener{
 
 	private boolean conflitInterne = false;
 
+	private boolean conflitExterne = false;
+
 	private Partie partie;
 
 	private Monument monumentEnCours;
@@ -162,7 +164,6 @@ public class ControleurPlateau implements ChangeListener{
 	private Position positionChefRetire;
 
 	private String messageTemporaire;
-	private boolean conflitExterne = false;
 
 	/**
 	 * getter de l'application
@@ -324,6 +325,7 @@ public class ControleurPlateau implements ChangeListener{
 
 		//on verifie que la tuile est du meme type que le chef
 		if(!renfort.getType().getCouleur().equals(chef.getTypeChef().getCouleur())){
+
 			return;
 		}
 
@@ -455,7 +457,7 @@ public class ControleurPlateau implements ChangeListener{
 		}
 
 		//on verifie si le client est en conflit
-		if(this.conflitInterne || this.conflitExterne){
+		if(this.conflitInterne){
 			return;
 		}
 
@@ -1030,7 +1032,6 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 
 							imgView.toBack();
 
-
 							//si la tuile est jonction, on l'affiche
 							if(tuileCiv.estJonction()){
 								ImageView jonction = new ImageView();
@@ -1096,6 +1097,7 @@ public void placerTuile(MouseEvent event) throws RemoteException{
 								}
 
 								//si le chef present dans cette case appartient au client là, on ajoute le drag and drop depuis plateau
+								//System.out.println(chef.getJoueur());
 								if(joueur.getId() == chef.getJoueur().getId()){
 
 									if(casePlateau.getChildren().size() > 0){
@@ -1234,6 +1236,105 @@ for(int x = 0; x < 11; x++){
 	 */
 
 	@FXML
+	/*private void finirTour(MouseEvent event) throws RemoteException
+	{
+		//si ce client est en conflit, le bouton fin de tour sert a envoyer ses renforts
+		if(this.conflitInterne){
+			//envoyer les renforts au serveur
+			MainApp.getInstance().getServeur().envoyerRenforts(this.tuilesRenfort, ((Client) MainApp.getInstance().getClient()).getJoueur());
+			Joueur tour = MainApp.getInstance().getServeur().getPartie().getJoueurTour();
+			Joueur local = MainApp.getInstance().getClient().getJoueur();
+
+			boolean envoieRenfort = false;
+
+			ArrayList<Joueur> toursConflit = MainApp.getInstance().getServeur().getPartie().getListeToursConflits();
+			ArrayList<Conflits> conflits = MainApp.getInstance().getServeur().getPartie().getConflits();
+
+
+			//on verifie si on est encore en conflit, mais dans un conflit différent du 1er
+			if(toursConflit.contains(((Client) MainApp.getInstance().getClient()).getJoueur())){
+			//if(this.conflitExterne || this.conflitInterne){
+				if(conflits.size() > 0 && !conflits.get(0).equals(conflitEnCours)){
+					//si on entre ici, c'est qu'un second conflit a été relevé après résolution du premier, on
+					//doit gérer le bouton "passer tour" en conséquence
+					this.modifierBoutonPasserTour(true, "Envoyer renforts");
+				}
+				else{
+					this.modifierBoutonPasserTour(false, "Envoyer renforts");
+				}
+
+			}
+			else if(tour.getId() == local.getId()){
+				this.modifierBoutonPasserTour(true, "Passer tour");
+			}else{
+				this.activerBoutonPasserTour(false);
+			}
+			//remettre le texte "passer tour" au bouton passer tour
+			Platform.runLater(new Runnable(){
+
+				public void run() {
+					boutonFinTour.setText("Passer tour");
+				}
+
+			});
+		}
+
+		if(this.echangeCarte){
+			//Le joueur ne peut pas passer son tour
+		}
+
+		boolean finpartie;
+		//On teste si l'action placerChef nous a retourner un conflit ou non
+		if(!this.conflitInterne){
+			//finpartie = mainApp.getServeur().getPartie().piocheCartesManquantes(mainApp.getClient().getJoueur());
+			finpartie = mainApp.getServeur().piocherCartesManquantes(mainApp.getClient().getJoueur());
+
+			//mise a jour du deck privé
+			this.construireDeckPrivee();
+
+			//System.out.println(mainApp.getServeur().getPartie().getJoueurTour().getNom());
+			//System.out.println(mainApp.getClient().getPartie().getJoueurTour().getNom());
+
+			//On test si la personne qui a cliquer sur passer tour est la même qui a le tour de jeu
+			if(mainApp.getInstance().getServeur().getPartie().getJoueurTour().getId() == mainApp.getInstance().getClient().getJoueur().getId()){
+				//On teste si il y a une condition de fin de partie avant de donner la main
+				if(!finpartie && mainApp.getServeur().getPartie().nombreTresorsRestant() > 2){
+					//System.out.println("Le joueur a finit son tour. " + mainApp.getClient().getNomJoueur());
+					this.viderListeAction();
+					mainApp.getServeur().passerTour();
+				}else{
+					this.mainApp.getServeur().finirPartie();
+				}
+			}
+			//Si le chef placé est en conflit (interne)
+		}else{
+			Conflits interne = new Conflits();
+		}
+	}*/
+
+	//Permet de vider la liste d'action du joueur qui joue
+	public void viderListeAction(){
+		this.listeActionTour.clear();
+	}
+
+	private Node getNode(int x, int y){
+		for(Node child : this.plateau.getChildren()){
+			int nx, ny = 0;
+			try{
+			ny = GridPane.getColumnIndex(child);
+			nx = GridPane.getRowIndex(child);
+			}catch(Exception e){
+				continue;
+			}
+
+			if(x == nx && y == ny){
+				return child;
+			}
+		}
+
+		return null;
+	}
+
 	private void finirTour(MouseEvent event) throws RemoteException
 	{
 		//si ce client est en conflit, le bouton fin de tour sert a envoyer ses renforts
@@ -1316,29 +1417,6 @@ for(int x = 0; x < 11; x++){
 		}
 	}
 
-	//Permet de vider la liste d'action du joueur qui joue
-	public void viderListeAction(){
-		this.listeActionTour.clear();
-	}
-
-	private Node getNode(int x, int y){
-		for(Node child : this.plateau.getChildren()){
-			int nx, ny = 0;
-			try{
-			ny = GridPane.getColumnIndex(child);
-			nx = GridPane.getRowIndex(child);
-			}catch(Exception e){
-				continue;
-			}
-
-			if(x == nx && y == ny){
-				return child;
-			}
-		}
-
-		return null;
-	}
-
 	public void construireDeckPrivee() throws RemoteException{
 		/*Partie partieCourante = mainApp.getServeur().getPartie();
 		this.partie = partieCourante;
@@ -1384,7 +1462,6 @@ for(int x = 0; x < 11; x++){
 
 					public void handle(MouseEvent arg0) {
 						selectionnerTuileRenfortConflitInterne(arg0);
-						selectionnerTuileRenfortConflitExterne(arg0);
 						selectionnerTuileAEchanger(arg0);
 					}
 
@@ -1666,6 +1743,7 @@ for(int x = 0; x < 11; x++){
 	}
 
 
+
 	public void activerBoutonPasserTour(final boolean activer){
 
 		//si on est en conflit, on set le text a "envoyer renforts", si le bouton est a true
@@ -1680,7 +1758,6 @@ for(int x = 0; x < 11; x++){
 
 			public void run() {
 				boutonFinTour.setDisable(!activer);
-				//boutonFinTour.setText(finalTexte);
 			}
 
 		});
@@ -1729,12 +1806,16 @@ for(int x = 0; x < 11; x++){
 		}
 	}
 
+
 	@FXML
 	private void sauvegarderPartie() throws RemoteException, IOException
 	{
 		try
 		{
+			System.out.println(this.partie.getListeJoueurs().size());
+
 			MainApp.getInstance().getServeur().getPartie().setListeJoueurs(MainApp.getInstance().getServeur().recupererListeJoueurPartie());
+			System.out.println(MainApp.getInstance().getServeur().getPartie().getListeJoueurs().size());
 			EncoderJSON e = new EncoderJSON(MainApp.getInstance().getServeur().getPartie());
 			File file = e.convertToJSON();
 		} catch(Exception e)
@@ -1765,9 +1846,9 @@ for(int x = 0; x < 11; x++){
 					this.construirePlateau();
 
 					Plateau plateau = this.partie.getPlateauJeu();
-					System.out.println(plateau.afficherTerritoires());
+					//System.out.println(plateau.afficherTerritoires());
 					//System.out.println(plateau.afficherTuilesId());
-					//Joueur j = ((Client) MainApp.getInstance().getClient()).getJoueur();
+					Joueur j = ((Client) MainApp.getInstance().getClient()).getJoueur();
 				} else if(param.equals("deckPublic"))
 				{
 					try
@@ -1796,14 +1877,11 @@ for(int x = 0; x < 11; x++){
 						Joueur jlocal = this.mainApp.getClient().getJoueur();
 
 						//si le joueur a qui c'est au tour de jouer == ce joueur là, on active le bouton passer tour
-						if( this.conflitInterne || this.conflitExterne){
-							this.modifierBoutonPasserTour(true, "Envoyer renforts");
-						}
-						else if(jlocal.getId() == j1.getId()){
-							this.modifierBoutonPasserTour(true, "Passer tour");
+						if(jlocal.getId() == j1.getId() || this.conflitInterne){
+							this.activerBoutonPasserTour(true);
 						}
 						else{
-							this.modifierBoutonPasserTour(false, "Passer tour");
+							this.activerBoutonPasserTour(false);
 						}
 					} catch (RemoteException e) {
 						// TODO Auto-generated catch block
@@ -1826,8 +1904,6 @@ for(int x = 0; x < 11; x++){
 					}
 				}else if(param.equals("conflitInterne")){
 					this.gererConflitInterne();
-				}else if(param.equals("conflitExterne")){
-					this.gererConflitExterne();
 				}else if(param.equals("conflitInterneResolu")){
 					this.conflitInterne = false;
 					Joueur jtour = null;

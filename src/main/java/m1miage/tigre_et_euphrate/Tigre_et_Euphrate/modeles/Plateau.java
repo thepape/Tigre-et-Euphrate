@@ -194,7 +194,7 @@ public class Plateau implements Serializable {
 	 * setter de plateau
 	 * @param plateau
 	 */
-	public void setPlateau(TuileCivilisation[][] plateau) {
+	public void setPlateau(Placable[][] plateau) {
 		this.plateau = plateau;
 	}
 
@@ -253,7 +253,7 @@ public class Plateau implements Serializable {
 	public boolean placerTuile(TuileCivilisation pTuile, int x, int y){
 		return this.placerTuile(pTuile, new Position(x,y));
 	}
-	
+
 	public boolean verifierPlacerTuile(TuileCivilisation ptuile, Position ppos){
 		int x = ppos.getX();
 		int y = ppos.getY();
@@ -317,12 +317,12 @@ public class Plateau implements Serializable {
 		if(!this.verifierPlacerChef(pchef, ppos)){
 			return false;
 		}
-		
+
 		this.plateau[ppos.getX()][ppos.getY()] = pchef;
-		
+
 		return true;
 	}
-	
+
 	public boolean verifierPlacerChef(Chef pchef, Position ppos){
 		int x = ppos.getX();
 		int y = ppos.getY();
@@ -467,17 +467,17 @@ public class Plateau implements Serializable {
 		}
 		return listeAdjacente;
 	}
-	
+
 	public ArrayList<Chef> recupererListeChefsAdjacente(Position position){
 		ArrayList<Chef> listeChefs = new ArrayList<Chef>();
 		int x = position.getX();
 		int y = position.getY();
-		
+
 		Placable pNord = this.getPlacableAt(new Position(x-1,y));
 		Placable pEst = this.getPlacableAt(new Position(x,y+1));
 		Placable pSud = this.getPlacableAt(new Position(x+1,y));
 		Placable pOuest = this.getPlacableAt(new Position(x,y-1));
-		
+
 		if(pNord != null && pNord instanceof Chef){
 			listeChefs.add((Chef) pNord);
 		}
@@ -490,7 +490,7 @@ public class Plateau implements Serializable {
 		if(pOuest != null && pOuest instanceof Chef){
 			listeChefs.add((Chef) pOuest);
 		}
-		
+
 		return listeChefs;
 	}
 
@@ -500,8 +500,8 @@ public class Plateau implements Serializable {
 		Territoire tSud = new Territoire();
 		Territoire tOuest = new Territoire();
 
-		
-		
+
+
 		//construction de 4 territoires en partant des 4 voisins
 		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX()-1, pDepart.getY()), tNord);
 		this.reconstruireTerritoiresRecurs(new Position(pDepart.getX(), pDepart.getY()+1), tEst);
@@ -568,7 +568,7 @@ public class Plateau implements Serializable {
 		//on ajoute finallement cette tuile
 		Placable centre = this.getPlacableAt(pDepart);
 		this.gererTuileDansReconstruction(centre, territoire);*/
-		
+
 		Placable placable = this.getPlacableAt(pDepart);
 		this.gererTuileDansReconstruction(placable, territoire);
 	}
@@ -585,7 +585,7 @@ public class Plateau implements Serializable {
 						//appel recursif sur les 4 voisins
 						int x= tuile.getPosition().getX();
 						int y= tuile.getPosition().getY();
-						
+
 						this.reconstruireTerritoiresRecurs(new Position(x-1,y), territoire);
 						this.reconstruireTerritoiresRecurs(new Position(x,y-1), territoire);
 						this.reconstruireTerritoiresRecurs(new Position(x+1,y), territoire);
@@ -601,7 +601,7 @@ public class Plateau implements Serializable {
 						//appel recursif
 						int x= chef.getPosition().getX();
 						int y= chef.getPosition().getY();
-						
+
 						this.reconstruireTerritoiresRecurs(new Position(x-1,y), territoire);
 						this.reconstruireTerritoiresRecurs(new Position(x,y-1), territoire);
 						this.reconstruireTerritoiresRecurs(new Position(x+1,y), territoire);
@@ -618,7 +618,7 @@ public class Plateau implements Serializable {
 		for(int i = 0; i < this.listeTerritoire.size(); i++)
 		{
 			Territoire t = this.listeTerritoire.get(i);
-			
+
 			if(tuile instanceof TuileCivilisation)
 			{
 				if(t.getTuilesCivilisation().contains(tuile)){
@@ -651,16 +651,16 @@ public class Plateau implements Serializable {
 		}
 		return territoire;
 	}
-	
+
 	public String afficher(){
 		StringBuffer sb = new StringBuffer("");
-		
+
 		for(int x = 0; x < 11; x++){
 			for(int y = 0; y < 16;y++){
 				sb.append("[");
-				
+
 				Placable placable = this.plateau[x][y];
-				
+
 				if(placable instanceof TuileCivilisation){
 					TuileCivilisation tuile = (TuileCivilisation) placable;
 					sb.append(tuile.getType().getNom().substring(0, 1)+" ");
@@ -672,25 +672,25 @@ public class Plateau implements Serializable {
 				else{
 					sb.append("  ");
 				}
-				
+
 				sb.append("]");
 			}
-			
+
 			sb.append("\n");
 		}
-		
+
 		return sb.toString();
 	}
-	
+
 	public String afficherTuilesId(){
 		StringBuffer sb = new StringBuffer("");
-		
+
 		for(int x = 0; x < 11; x++){
 			for(int y = 0; y < 16;y++){
 				sb.append("[");
-				
+
 				Placable placable = this.plateau[x][y];
-				
+
 				if(placable != null){
 					int id = placable.getId();
 					if(id < 10){
@@ -703,27 +703,27 @@ public class Plateau implements Serializable {
 				else{
 					sb.append("  ");
 				}
-				
+
 				sb.append("]");
 			}
-			
+
 			sb.append("\n");
 		}
-		
+
 		return sb.toString();
 	}
-	
+
 	public String afficherTerritoires(){
 		StringBuffer sb = new StringBuffer("");
-		
+
 		for(int x = 0; x < 11; x++){
 			for(int y = 0; y < 16;y++){
 				sb.append("[");
-				
+
 				Placable placable = this.plateau[x][y];
-				
+
 				Territoire terr = this.recupererTerritoireTuile(placable);
-				
+
 				if(terr != null){
 					if(terr.getIdTerritoire() < 10)
 						sb.append(" "+terr.getIdTerritoire());
@@ -733,27 +733,27 @@ public class Plateau implements Serializable {
 				else{
 					sb.append("  ");
 				}
-				
+
 				sb.append("]");
 			}
-			
+
 			sb.append("\n");
 		}
-		
+
 		return sb.toString();
 	}
-	
+
 	public TuileCivilisation recupererTuileJonction(){
 		for(int x = 0; x < 11 ; x++){
 			for(int y = 0;y < 16; y++){
 				Placable p = this.plateau[x][y];
-				
+
 				if(p instanceof TuileCivilisation && ((TuileCivilisation) p).estJonction()){
 					return (TuileCivilisation) p;
 				}
 			}
 		}
-		
+
 		return null;
 	}
 }
